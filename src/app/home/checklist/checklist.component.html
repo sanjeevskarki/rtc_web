@@ -1,0 +1,66 @@
+<div  id="modalTarget" #targetModal >
+    <!-- <div>
+        <button ejs-button cssClass="e-info">Refresh Data</button>&nbsp;
+        <button ejs-button cssClass="e-info">Delete Data</button>
+        
+    </div> -->
+    <br>
+    <ejs-grid #grid [dataSource]='releaseChecklist'  [allowTextWrap]="true" [allowSelection]='true' [allowSorting]='true' 
+                    [pageSettings]='initialPage' [gridLines]="lines" (queryCellInfo)='customiseCell($event)'>
+        <e-columns>
+            <!-- <e-column type='checkbox' [allowFiltering]='false' [allowSorting]='false' width='60'></e-column> -->
+            <e-column field='vector'  [filter]='filter' headerText='Vector' width=50 textAlign="left" isPrimaryKey='true'></e-column>
+                    
+            <e-column field='details'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'></e-column>
+            <e-column field='owner' headerText='Owner' textAlign="left" width=50></e-column>
+            <!-- <e-column field='status' headerText='Status' textAlign='Left' width=50></e-column> -->
+            
+            <e-column field='Status' [filter]='filter' headerText='Status' width='50'>
+                 <ng-template #template let-data>                   
+                   <div *ngIf="data.status === 'Done'" class="statustemp e-donecolor"> 
+                        <ejs-splitbutton content={{data.status}} 
+                        class="statustemp e-donecolor donecolor statustxt" [items]='items' (select)="onClick(id,data.vector,$event)">{{data.status}}
+                        </ejs-splitbutton>                                          
+                        <!-- <span class="statustxt e-donecolor">{{data.status}}</span>                   -->
+                    </div>
+                    <div *ngIf="data.status === 'WIP'" class="statustemp e-wipcolor">  
+                        <ejs-splitbutton content={{data.status}} 
+                        class="statustemp e-wipcolor statustxt" [items]='items' (select)="onClick(id,data.vector,$event)">{{data.status}}
+                        </ejs-splitbutton>                                                  
+                    </div>
+                    <div *ngIf="data.status === 'Open'" class="statustemp e-opencolor"> 
+                        <ejs-splitbutton content={{data.status}} 
+                        class="statustemp e-opencolor statustxt" [items]='items' (select)="onClick(id,data.vector,$event)">{{data.status}}
+                        </ejs-splitbutton>                                                      
+                    </div>
+                    <div *ngIf="data.status === 'N/A'" class="statustemp e-nacolor">                                          
+                        <ejs-splitbutton content={{data.status}} 
+                        class="statustemp e-nacolor statustxt" [items]='items' (select)="onClick(id,data.vector,$event)">{{data.status}}
+                        </ejs-splitbutton>        
+                    </div>  
+                    
+                    
+                    <!-- <button style="width: 57px;" #dropdownbutton ejs-dropdownbutton (select)="onClick(id,data.vector,$event)" [items]='items' ></button>    -->
+                </ng-template>  
+                
+                <!-- <button ejs-dropdownbutton [items]='items' iconCss='e-icons e-menu' cssClass='e-caret-hide'></button>              -->
+            </e-column>
+            
+            <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width=50></e-column>
+            <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width=50></e-column>
+            <e-column field='evidence' headerText='Evidence / Attachment' textAlign='Left' width=50></e-column>
+            <e-column headerText='Comments' textAlign='Left' width=50>
+                <ng-template #template let-data>
+                    <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="clicked(data.vector,data.comments)">View</button>
+                  </ng-template>
+            </e-column>
+           
+        </e-columns>
+    </ejs-grid>
+</div>
+
+<ejs-dialog id="modalDialog" #modalDialog [header]='header'
+[target]='target' [width]='width' [animationSettings]='animationSettings'
+[content]='content' (open)="modalDlgOpen()" (close)="modalDlgClose()">
+
+</ejs-dialog>

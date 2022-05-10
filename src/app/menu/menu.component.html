@@ -1,0 +1,42 @@
+<div class="control-section" id="sidebar-wrapper">
+    <!-- main content declaration -->
+    <div>
+        <ejs-toolbar cssClass="defaultToolbar" id="defaultToolbar">
+            <e-items>
+                <e-item>
+                    <ng-template #template>
+                        <div class="e-folder">
+                            <div class="e-folder-name" style="color: white;margin-left: 20px;">RTC 0.1</div>
+                        </div>
+                    </ng-template>
+                </e-item>
+                <e-item align="Right">
+                    <ng-template #template>
+                        <div class="image-container">
+                            <img height="30px" src="./assets/sqba.png" />
+                        </div>
+                    </ng-template>
+                </e-item>
+                <e-item cssClass="e-custom" align="Right">
+                    <ng-template #template>
+                        <div class="image-container" style="margin: 9px;">
+                            <img height="30px" src="./assets/intel-logo-white-100.png" />
+                        </div>
+                    </ng-template>
+                </e-item>
+            </e-items>
+        </ejs-toolbar> 
+    </div>
+    <div id="defaultSample" class="control-section ">
+        <div class="menu-control">
+            <ejs-menu [items]='menuItems' style="color: white;margin-left: 20px;" (select)='select($event)'></ejs-menu>
+        </div>
+    </div>
+    <div class="maincontent" style="height:35rem">
+        <div class="content container-fluid rightpane" cssClass="e-list-template">
+            <div class="e-list-wrapper e-list-avatar e-list-multi-line">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+    </div>
+</div>

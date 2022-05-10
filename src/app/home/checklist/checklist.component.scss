@@ -1,0 +1,185 @@
+.card-deatil{
+    margin:2%;
+    width: 100%;
+    height: 100%;
+}
+
+@font-face {
+    font-family: "button-icons";
+    src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+#button-control .e-btn-sb-icons {
+    font-family: "button-icons";
+    line-height: 1;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+#button-control .e-open-icon::before {
+    content: "\e70d";
+}
+
+#button-control .e-add-icon::before {
+    content: "\e70a";
+}
+/* custom code start*/
+
+#button-control {
+    width: 100%;
+    margin: 8% 0;
+    text-align: center;
+}
+
+@media only screen and (max-width: 500px) {
+    #button-control {
+        margin-left: -3%;
+    }
+}
+
+.button-section {
+    width: 80%;
+    margin: auto;
+}
+
+#button-control .col-xs-12 {
+    margin: 15px 0;
+}
+
+td.e-rowcell .statustxt.e-donecolor {
+    color: #fff;
+    position: relative;
+    float: center;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    padding: 2px 12px 3px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.statustemp.e-donecolor {
+    border-radius: 3px;
+    background-color: #064;
+    width: 57px;
+}
+
+td.e-rowcell .statustxt.e-opencolor {
+    color: #fff;
+    position: relative;
+    float: center;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    padding: 2px 12px 3px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.statustemp.e-opencolor {
+    border-radius: 3px;
+    background-color: #bf2600;
+    width: 57px;
+}
+
+td.e-rowcell .statustxt.e-wipcolor {
+    color: #fff;
+    position: relative;
+    float: center;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    padding: 2px 16px 3px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.statustemp.e-wipcolor {
+    border-radius: 3px;
+    background-color: #87a7eb;
+    width: 57px;
+}
+
+td.e-rowcell .statustxt.e-nacolor {
+    color: #fff;
+    position: relative;
+    float: center;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    padding: 2px 15px 3px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.statustemp.e-nacolor {
+    border-radius: 3px;
+    background-color: #42526e;
+    width: 57px;
+}
+
+#dropdownbutton-control {
+    width: 100%;
+    margin: 11% 0;
+    text-align: center;
+}
+/* custom code start*/
+.dropdownbutton-section {
+    width: 80%;
+    margin: auto;
+}
+
+#dropdownbutton-control .col-xs-12 {
+    margin: 15px 0;
+}
+
+.e-dropdown-popup ul{
+    font-size: 12px;
+}
+
+.e-dropdown-popup ul .e-item {
+    height: 25px;
+    line-height: 25px;
+}
+
+.e-grid .e-columnheader .e-headercell { // to apply css for normal header cell 
+    background-color: lightgray; 
+    
+ } 
+
+ .e-grid .e-gridheader {
+    color: black;
+ }
+
+ .e-grid th.e-headercell { 
+    height: 35px !important;     //for setting height for header row 
+    font-size: 50px;
+} 
+
+.doneBackgroundColor { 
+    background-color: #E3FCEF; 
+} 
+.naBackgroundColor { 
+     background-color: #F4F5F7; 
+} 
+.openBackgroundColor { 
+     background-color: #FFEBE6; 
+} 
+.wipBackgroundColor { 
+    background-color: #FFFAE6; 
+} 
