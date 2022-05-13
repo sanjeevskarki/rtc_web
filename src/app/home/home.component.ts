@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   onClick(event: any){
     let selecteditem =this.element.getSelectedItems();
-    this.router.navigate([ 'release' , selecteditem["data"].id]);
+    this.router.navigate([ 'release' ], {queryParams:{id:selecteditem["data"].id,name:selecteditem["data"].releaseName,milestone:selecteditem["data"].milestone}});
   }
 
 }

@@ -17,6 +17,10 @@ import { AdminComponent } from './admin/admin.component';
 import { HelpComponent } from './help/help.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { TextBoxModule, NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UploaderModule } from '@syncfusion/ej2-angular-inputs';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,8 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
     ToolbarModule,
     ListViewAllModule,SidebarModule, MenuAllModule, TreeViewAllModule, ToolbarAllModule, GridModule,
     ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, DropDownButtonModule, SplitButtonModule, 
-    ProgressButtonModule, DialogModule
+    ProgressButtonModule, DialogModule, TextBoxModule, NumericTextBoxModule, RichTextEditorAllModule,
+    FormsModule, ReactiveFormsModule, UploaderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

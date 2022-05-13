@@ -11,6 +11,7 @@ export interface Checklist {
 }
 
 export interface ReleaseChecklist {
+  id:string;
   vector: string;
   details:string;
   owner:string;
@@ -23,5 +24,33 @@ export interface ReleaseChecklist {
 
 export interface Comments {
   message:string;
-  date:Date;
+  date:number;
+}
+
+export interface Unit {
+  /**
+   * Name.
+   */
+  name?: string;
+  /**
+   * Value.
+   */
+  value: number;
+  /**
+   * Precision.
+   */
+  precision?: number;
+  /**
+   * More.
+   */
+  more?: string;
+  /**
+   * Exact.
+   */
+  exact?: number[];
+}
+
+export interface ViewComment {
+  message:string;
+  date:string | undefined;
 }

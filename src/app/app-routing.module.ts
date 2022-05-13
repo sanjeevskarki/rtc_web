@@ -9,7 +9,7 @@ import { ReportComponent } from './report/report.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'release/:id', component: ChecklistComponent },
+  { path: 'release', component: ChecklistComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'report', component: ReportComponent },
   { path: 'help', component: HelpComponent },

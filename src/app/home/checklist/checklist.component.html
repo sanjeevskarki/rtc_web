@@ -1,21 +1,17 @@
 <div  id="modalTarget" #targetModal >
-    <!-- <div>
-        <button ejs-button cssClass="e-info">Refresh Data</button>&nbsp;
-        <button ejs-button cssClass="e-info">Delete Data</button>
-        
-    </div> -->
+    <div class="checklist-div">
+        <span class="checklist-label">{{releaseName}} &nbsp;{{milestone}}</span>   
+    </div>
     <br>
     <ejs-grid #grid [dataSource]='releaseChecklist'  [allowTextWrap]="true" [allowSelection]='true' [allowSorting]='true' 
                     [pageSettings]='initialPage' [gridLines]="lines" (queryCellInfo)='customiseCell($event)'>
         <e-columns>
             <!-- <e-column type='checkbox' [allowFiltering]='false' [allowSorting]='false' width='60'></e-column> -->
-            <e-column field='vector'  [filter]='filter' headerText='Vector' width=50 textAlign="left" isPrimaryKey='true'></e-column>
-                    
+            <e-column field='vector'  [filter]='filter' headerText='Vector' width=40 textAlign="left" isPrimaryKey='true'></e-column>
             <e-column field='details'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'></e-column>
             <e-column field='owner' headerText='Owner' textAlign="left" width=50></e-column>
             <!-- <e-column field='status' headerText='Status' textAlign='Left' width=50></e-column> -->
-            
-            <e-column field='Status' [filter]='filter' headerText='Status' width='50'>
+            <e-column field='Status' [filter]='filter' headerText='Status' textAlign="left" width='40'>
                  <ng-template #template let-data>                   
                    <div *ngIf="data.status === 'Done'" class="statustemp e-donecolor"> 
                         <ejs-splitbutton content={{data.status}} 
@@ -38,29 +34,84 @@
                         class="statustemp e-nacolor statustxt" [items]='items' (select)="onClick(id,data.vector,$event)">{{data.status}}
                         </ejs-splitbutton>        
                     </div>  
-                    
-                    
                     <!-- <button style="width: 57px;" #dropdownbutton ejs-dropdownbutton (select)="onClick(id,data.vector,$event)" [items]='items' ></button>    -->
                 </ng-template>  
-                
                 <!-- <button ejs-dropdownbutton [items]='items' iconCss='e-icons e-menu' cssClass='e-caret-hide'></button>              -->
-            </e-column>
-            
-            <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width=50></e-column>
-            <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width=50></e-column>
-            <e-column field='evidence' headerText='Evidence / Attachment' textAlign='Left' width=50></e-column>
-            <e-column headerText='Comments' textAlign='Left' width=50>
+            </e-column> 
+            <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'></e-column>
+            <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width='50'></e-column>
+            <e-column field='evidence' headerText='Evidence / Attachment' textAlign='Left' width='50'></e-column>
+            <e-column headerText='Comments' textAlign='Left' width='70'>
                 <ng-template #template let-data>
-                    <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="clicked(data.vector,data.comments)">View</button>
+                    <!-- {{data.comments[0].message}} -->
+                    <div *ngIf="data.comments.length > 0" [innerHTML]="data.comments[0].message"></div><div *ngIf="data.comments.length > 0" style="font-size: 11px;"> {{data.comments[0].date | date:'medium'}} </div>
+                    <!-- <pre class="htmlcode">&lt;{{data.comments[0].message}}&gt;</pre>
+                    <div placeholder="' + data.comments[0].message + '"></div> -->
+                    <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="clicked(data.vector,data)">View More...</button>
                   </ng-template>
             </e-column>
-           
         </e-columns>
     </ejs-grid>
+    <br>
+    <button ejs-button cssClass="e-info" [isPrimary]="true" style="float: right;" (click)="saveRelease()">Save Release</button>
 </div>
 
-<ejs-dialog id="modalDialog" #modalDialog [header]='header'
-[target]='target' [width]='width' [animationSettings]='animationSettings'
-[content]='content' (open)="modalDlgOpen()" (close)="modalDlgClose()">
+<ejs-dialog id="commentDialog" #commentDialog [header]='header' [position]='position' [width]='width' [visible]='hidden' [isModal]='isModal'
+[target]='target' [width]='width' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon'>
+    <!-- <span *ngFor="let item of displayComments; let index = index" style="height: 25rem;">    
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="detailsAnswer">Added on {{item.date}}</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="posting">
+            <div [innerHTML]="item.message"></div>
+        </div>
+        <div class="separator"></div>
+    </span> -->
+    <ejs-listview #listview id='displayComments' style="height: 25rem;" [dataSource]='displayComments'
+    [showHeader]='false' [cssClass]='cssClass'>
+        <ng-template #template let-dataSource="">
+            <div>
+                <span class="detailsAnswer">Test User added a comment on {{dataSource.date}}</span>
+                <div class="posting" [innerHTML]="dataSource.message"></div><div style="font-size: 11px;"></div>
+            </div>
+            <div class="separator"></div>
+        </ng-template>
+    </ejs-listview>
+    <br>
+    <button ejs-button cssClass="e-info" [isPrimary]="true" (click)="openCommentDialog()">Add Comment</button>
+</ejs-dialog>         
+    
+<ejs-dialog id="addCommentDialog" #addCommentDialog [header]='addHeader' [position]='position' [width]='width' [visible]='hidden' [isModal]='isModal'
+[target]='target1' [width]='width1' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon'>
 
+    <form [formGroup]="rteForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <ejs-richtexteditor #fromRTE formControlName="name" [toolbarSettings]='tools' 
+            (created)="rteCreated()" [fileManagerSettings]='fileManagerSettings'>
+            </ejs-richtexteditor>
+           
+                <ejs-uploader #defaultupload id='defaultfileupload' [asyncSettings]='path' 
+                [dropArea]='dropElement' (removing)='onFileRemove($event)'></ejs-uploader>
+            
+            <!-- <ejs-uploader #defaultupload id='defaultfileupload' [asyncSettings]='path' [dropArea]='dropElement' (success)='onImageUploadSuccess($event)'></ejs-uploader> -->
+            <!-- <div *ngIf="rteForm.invalid && rteForm.controls.name.touched" class="alert alert-danger">
+                <div *ngIf="rteForm.controls.name.errors.required">
+                    Value is required.
+                </div> 
+            </div>-->
+        </div>
+        <br>
+        <div class="form-group" style="float: right;">
+            <button type="submit" ejs-button [disabled]="!rteForm.valid">Save</button>
+            <button type="reset" ejs-button (click)="rteForm.reset()" style="margin-left: 20px">Reset</button>
+        </div>
+    </form>
 </ejs-dialog>
+    <!-- <ejs-richtexteditor></ejs-richtexteditor> -->
+
