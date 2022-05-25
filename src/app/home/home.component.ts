@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { SidebarComponent } from '@syncfusion/ej2-angular-navigations';
+import { Router } from '@angular/router';
 import { ReleaseShortChecklist } from './home.models';
 import { HomeService } from './home.service';
 
@@ -39,8 +38,11 @@ export class HomeComponent implements OnInit {
   }
 
   onClick(event: any){
+    localStorage.removeItem('relaesechecklist');
     let selecteditem =this.element.getSelectedItems();
-    this.router.navigate([ 'release' ], {queryParams:{id:selecteditem["data"].id,name:selecteditem["data"].releaseName,milestone:selecteditem["data"].milestone}});
+    localStorage.setItem('relaesechecklist', JSON.stringify(selecteditem["data"])  );
+    // this.sharedChecklistService.setReleaseList(selecteditem["data"]);
+    this.router.navigate([ 'release' ]);
   }
 
 }

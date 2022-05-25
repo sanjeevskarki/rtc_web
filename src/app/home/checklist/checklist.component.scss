@@ -185,7 +185,7 @@ td.e-rowcell .statustxt.e-nacolor {
 } 
 
 ejs-dialog {
-    max-height: 775px !important;
+    max-height: 95% !important;
 }
 
 .hr {
@@ -272,9 +272,9 @@ body.bootstrap-dark .e-list-item .e-list-avatar.e-list-multi-line .e-list-conten
     font-style: normal;
 }
 
-#groupedList.e-listview .e-list-item {
-    cursor: pointer;
-}
+// #groupedList.e-listview .e-list-item {
+//     cursor: pointer;
+// }
 
 #groupedList.e-listview .e-content {
     height: 450px;
@@ -454,6 +454,7 @@ table.box-table td.formtext {
     font-size: 12px;
     font-family: roboto, SegoeUI;
     margin-top: 7px;
+    
 }
 
 .posting {
@@ -471,3 +472,37 @@ table.box-table td.formtext {
     border-bottom: 1px solid #DADADA;
     margin-bottom: 5px;
 }
+
+.e-search:before{
+    content:'\e345';
+    font-size: 15px;
+}
+
+.e-evidence:before{
+    content:'\e203';
+    font-size: 20px;
+}
+
+.e-evidencelink:before{
+    content:'\e72e';
+    font-size: 20px;
+}
+
+.e-delete:before{
+    content:'\e33e';
+    font-size: 20px;
+}
+
+.e-add:before{
+    content:'\e22c';
+    font-size: 15px;
+}
+
+e-delete-icon{
+    content:'\eb00';
+}
+
+.e-upload {
+    border: 0px solid rgba(0,0,0,0.12);
+}
+

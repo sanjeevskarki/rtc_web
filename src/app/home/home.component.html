@@ -1,36 +1,16 @@
-
-<!-- <ejs-sidebar id="default-sidebar" #sidebar target=".maincontent">
-    <div class="title"> Sidebar content
-
-    </div>
-</ejs-sidebar> -->
-<!-- <div class="col-lg-12 control-section"> <div class="row"> 
-    <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6" (click)="openChecklist();"> Your code here </div> <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6"> The text here </div> </div> </div> -->
-<!-- <div>
-<div id="box1">
-	<h2>Example 1</h2>
-</div>
-<div style="align-content: center;">
-    <div class="title">Welocme to RTC (Release Tracking Center)</div>
-</div>
-</div> -->
-<!-- <span *ngFor="let item of checklist; let index = index">
-    <p id="rcorners2">{{item.releaseName}}</p>
-
-</span> -->
 <div class="col-lg-12 control-section">
     <!-- ListView element -->
-    <ejs-listview #listview id='groupedList' [dataSource]='checklist' [cssClass]='cssClass'
+    <ejs-listview #listview id='groupedList' style="height: -webkit-fill-available;" [dataSource]='checklist' [cssClass]='cssClass'
     [showHeader]='false' (select)="onClick($event)">
         <ng-template #template let-dataSource="">
             <div class="settings e-list-wrapper e-list-multi-line">
-                <span class="e-list-item-header">{{dataSource.releaseName}} <span style="float: right;">{{dataSource.milestone}}</span></span>
+                <span class="e-list-item-header">{{dataSource.releaseName}} <span class="e-list-item-header" style="float: right">{{dataSource.milestone}}</span></span>
                 <span class="e-list-content">{{dataSource.workWeek}}</span>
             </div>
         </ng-template>
     </ejs-listview>
 </div>
 
-    <div class="title">Welocme to RTC (Release Tracking Center)</div>
+<div class="title">Welocme to RTC (Release Tracking Center)</div>
 
 

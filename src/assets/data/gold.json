@@ -1,0 +1,197 @@
+[
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad31",
+        "vector": "Requirements",
+        "details": [
+            {
+            "detail":"Requirements and Change Control",
+            "releaseCriteria":"Requirements under Change Control, reviewed and approved"
+            }
+        ]   
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad32",
+        "vector": "Development",
+        "details": [
+            {
+            "detail":"Code completion",
+            "releaseCriteria":" Feature Completeof Alpha committed requirements. Code review complete"
+            }
+        ]
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad33",
+        "vector": "Collateral",
+        "details": [
+            {
+            "detail":"Customer Documentation Readiness ",
+            "releaseCriteria":"All customer collateral for Alpha ready for release including known SW limitations & defects"
+            }
+        ]
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad34",
+        "vector": "Defects/Bugs",
+        "details": [
+            {
+            "detail":"Impact assessment of defects. Assess # of open defects, for both severity/exposure and priority.",
+            "releaseCriteria":"All milestone must-fix/P1 defects from all sources resolved and verified. No more than 3 critical severity open bugs"
+            }
+        ]
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad35",
+        "vector": "Validation",
+        "details": [
+            {
+            "detail":"Functional Validation Plan",
+            "releaseCriteria":"Plan Approved & coverage is 100% of the functional requirements"
+            },
+            {
+            "detail":"Functional validation  Execution",
+            "releaseCriteria":"Execution rate > 95%, Pass rate > 80%"
+            },
+            {
+            "detail":"KPIs targets Defnition",
+            "releaseCriteria":"All KPIs & targets defined & approved"
+            },
+            {
+            "detail":"KPI measurement",
+            "releaseCriteria":"All KPIs tested with each at < 15% deviation from target with >QS"
+            },
+            {
+            "detail":"Stability Plan",
+            "releaseCriteria":"Plan reviewed & Approved"
+            },
+            {
+            "detail":"Stability validation execution",
+            "releaseCriteria":"DPMO < 300"
+            }
+        ]
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad36",
+        "vector": "Compliance",
+        "details": [
+            {
+            "detail":"OS Cert completeness, Standards compliance (FUSA), Accessibility & Waiver Status",
+            "releaseCriteria":"80% Passing and issues recorded as defects."
+            }
+        ]
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad37",
+        "vector": "Legal",
+        "details": [
+            {
+            "detail":"Export",
+            "releaseCriteria":"Approved"
+            },
+            {
+            "detail":"TM&B",
+            "releaseCriteria":"Approved"
+            },
+            {
+            "detail":"Protex Scan",
+            "releaseCriteria":"Running"
+            },
+            {
+            "detail":"Protex BOM",
+            "releaseCriteria":"fully & accurately populated including the correct usage per component"
+            },
+            {
+            "detail":"Protex Matches & License conflicts",
+            "releaseCriteria":"All Protex Matches & License conflicts resolved"
+            },
+            {
+            "detail":"Protex Obligations",
+            "releaseCriteria":"All Protex Obligations fulfilled and checked in Protex"
+            },
+            {
+            "detail":"OBL",
+            "releaseCriteria":"Defined and approved by BU attorney"
+            },
+            {
+            "detail":"OS PDT",
+            "releaseCriteria":"Approved"
+            },
+            {
+            "detail":"Copyright readme file",
+            "releaseCriteria":"Ready"
+            },
+            {
+            "detail":"TPP/Attributions file",
+            "releaseCriteria":"Ready"
+            },
+            {
+            "detail":"Legal text file ",
+            "releaseCriteria":"Integrate as part of the released SW package "
+            },
+            {
+            "detail":"Record Center ",
+            "releaseCriteria":"Release SWLC evidence archived in the Record Center"
+            }
+        ]
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad38",
+        "vector": "Privacy",
+        "details": [
+            {
+            "detail":"PIA (Privacy Impact Assesment)",
+            "releaseCriteria":"Approved"
+            }
+        ]
+    },
+    {
+        "id": "yuiod5a66f5735b084075f81af70ad39",
+        "vector": "Security",
+        "details": [
+            {
+            "detail":"SDLe project creation",
+            "releaseCriteria":"SDLe Project survey completed & tasks dispositioned"
+            },
+            {
+            "detail":"Crypto review",
+            "releaseCriteria":"Approved"
+            },
+            {
+            "detail":"SAFE Review & Threat Model",
+            "releaseCriteria":"Approved"
+            },
+            {
+            "detail":"Static Analysis setup",
+            "releaseCriteria":"Running"
+            },
+            {
+            "detail":"Static Analysis issues",
+            "releaseCriteria":"Dispositioned"
+            },
+            {
+            "detail":"Composition Analysis setup (SNYK / BDBA)",
+            "releaseCriteria":"Running"
+            },
+            {
+            "detail":"Composition Analysis issues",
+            "releaseCriteria":"Dispositioned"
+            },
+            {
+            "detail":"NetSparker deployment on the pre-production environment",
+            "releaseCriteria":"Deployed & running and all issues resolved"
+            },
+            {
+            "detail":"NetSparker deployment on the production environment",
+            "releaseCriteria":"Deployed & Running "
+            },
+            {
+            "detail":"A/V Scan",
+            "releaseCriteria":"Scan is clean for the released SW "
+            },
+            {
+            "detail":"SDLe tasks",
+            "releaseCriteria":"All required pre-production tasks meet creteria"
+            }
+        ]
+    }
+]
+

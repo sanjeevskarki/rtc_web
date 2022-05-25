@@ -1,0 +1,128 @@
+[
+    {
+        "id": "fccbd5a66f5735b084075f81af70ad31",
+        "releaseChecklist":
+        [
+            {
+                "id": "fccbd5a66f5735b084075f81af70ad01",
+                "vector": "Collateral",            
+                "details":"jukid5a66f5735b084075f81af70ad31",
+                "owner":"TBD",
+                "status":"Done",
+                "detailedStatus":"PRD under version control to be provided",
+                "evidences":[
+                    {
+                        "id":"glcbd5a66f5735b084075f81af70ad01",
+                        "evidence":"<p><a class=\"e-rte-anchor\" href=\"http://test.com\" title=\"test\" target=\"_blank\">test</a></p>",
+                        "date":1652208497177,
+                        "title":"PCQ Approval",
+                        "comments":"This is a Beta release aprrovel evidence"
+                    }
+                ],
+                "comments":[
+                    {
+                        "message":"<p>this is a test image example</p><p><img src=\"blob:http://localhost:4200/c1945b7f-7841-4085-a743-0ef09e414eef\" class=\"e-rte-image e-imginline e-img-focus\" alt=\"sqba.png\" width=\"auto\" height=\"auto\" style=\"min-width: 0px; max-width: 559px; min-height: 0px;\"> </p>",
+                        "date":1652208497177
+                    },
+                    {
+                        "message":"<p>Test Data</p><p><a class=\"e-rte-anchor\" href=\"http://test.com\" title=\"test\" target=\"_blank\">test</a></p>",
+                        "date":1652208497178
+                    }
+                ]
+            },
+            {
+                "id": "fccbd5a66f5735b084075f81af70ad05",
+                "vector": "Validation",
+                "details":"jukid5a66f5735b084075f81af70ad32",
+                "owner":"TBD",
+                "status":"Done",
+                "detailedStatus":"Plan Approved & coverage is 100% of the functional requirements",
+                "evidences":[
+                    {
+                        "id":"glcbd5a66f5735b084075f81af70ad01",
+                        "evidence":"<p><a class=\"e-rte-anchor\" href=\"http://test.com\" title=\"test\" target=\"_blank\">test</a></p>",
+                        "date":1652208497177,
+                        "title":"PCQ Approval",
+                        "comments":"This is a Beta release aprrovel evidence"
+                    }
+                ],
+                "comments":[
+                    {
+                        "message":"<p>this is a test image example</p><p><img src=\"blob:http://localhost:4200/c1945b7f-7841-4085-a743-0ef09e414eef\" class=\"e-rte-image e-imginline e-img-focus\" alt=\"sqba.png\" width=\"auto\" height=\"auto\" style=\"min-width: 0px; max-width: 559px; min-height: 0px;\"> </p>",
+                        "date":1652208497177
+                    },
+                    {
+                        "message":"<p>Test Data</p><p><a class=\"e-rte-anchor\" href=\"http://test.com\" title=\"test\" target=\"_blank\">test</a></p>",
+                        "date":1652208497178
+                    }
+                ]
+            },
+            {
+                "id": "fccbd5a66f5735b084075f81af70ad02",
+                "vector": "Validation",
+                "details":"jukid5a66f5735b084075f81af70ad33",
+                "owner":"Demo User",
+                "status":"WIP",
+                "detailedStatus":"Documents ready and signed off by Legal",
+                "evidences":[
+                    {
+                        "id":"glcbd5a66f5735b084075f81af70ad10",
+                        "evidence":"PC Wallet POC Evidence",
+                        "date":1652208497177,
+                        "title":"PCQ Collatral Evidence",
+                        "comments":"This is a Beta release Collatral evidence"
+                    }
+                ],
+                "comments":[
+                    {
+                        "message":"<p><strong>This is Bold Font</strong></p><p><em>This is An Italic Font</em></p><p><span style=\"text-decoration: underline;\"><span style=\"font-size: 24pt;\">This is an Underlinr Font Changed</span></span></p><ol><li><span style=\"font-size: 10pt;\">﻿Test 1</span></li><li><span style=\"font-size: 10pt;\">Test2</span></li></ol><p><span style=\"font-size: 10pt;\"><a class=\"e-rte-anchor\" href=\"http://abc.com\" title=\"http://abc.com\" target=\"_blank\">anc website</a>﻿﻿<br></span></p>",
+                        "date":1652208497176
+                    },
+                    {
+                        "message":"PC Wallet POC Comments5",
+                        "date":1652208497176
+                    },
+                    {
+                        "message":"PC Wallet POC Comments6",
+                        "date":1652208497176
+                    }
+                ]
+            }
+        ]      
+    },
+    {
+        "id": "fccbd5a66f5735b084075f81af70ad32",
+        "releaseChecklist":
+        [
+            {
+                "id": "fccbd5a66f5735b084075f81af70ad03",
+                "vector": "Requirements",
+                "details":"Functional Validation Plan coverage is 100% of the functional requirements",
+                "owner":"Demo User2",
+                "status":"N/A",
+                "detailedStatus":"Functional Validation Plan coverage is 100% of the functional requirements",
+                "releaseCriteria":"Release Criteria",
+                "evidences":[],
+                "comments":[
+                    {
+                        "message":"PC Wallet Alpha Comments",
+                        "date":1652208497176
+                    }
+                ]
+            },
+            {
+                "id": "fccbd5a66f5735b084075f81af70ad04",
+                "vector": "Legal/Export",
+                "details":"Export Approval",
+                "owner":"Demo User2",
+                "status":"Open",
+                "detailedStatus":"Export Approval",
+                "releaseCriteria":"Release Criteria",
+                "evidences":[],
+                "comments":[
+                    
+                ]
+            }
+        ]   
+    }
+]

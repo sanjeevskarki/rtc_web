@@ -1,0 +1,27 @@
+[
+    {
+        "id": "fccbd5a66f5735b084075f81af70ad31",
+        "releaseName": "PC Wallet",
+        "milestone": "POC",
+        "workWeek" :"ww12'2022"
+    },
+    {
+        "id": "fccbd5a66f5735b084075f81af70ad32",
+        "releaseName": "PC Wallet",
+        "milestone": "Alpha",
+        "workWeek" :"ww23'2022"
+    },
+    {
+        "id": "fccbd5a66f5735b084075f81af70ad33",
+        "releaseName": "AIO Bench",
+        "milestone": "Dummy Beta",
+        "workWeek" :"ww01'2022"
+    },
+    {
+        "id": "fccbd5a66f5735b084075f81af70ad34",
+        "releaseName": "AIO Bench",
+        "milestone": "Dummy Gold",
+        "workWeek" :"ww18'2022"
+    }
+]
+

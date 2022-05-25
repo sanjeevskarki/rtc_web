@@ -21,7 +21,7 @@ export class HomeService {
   }
 
   public shortCheckList(): Observable<ReleaseShortChecklist[]> { 
-    return this.httpClient.get<ReleaseShortChecklist[]>("assets/data.json");
+    return this.httpClient.get<ReleaseShortChecklist[]>("assets/data/release.json");
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }

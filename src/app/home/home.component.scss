@@ -120,14 +120,9 @@ body.bootstrap-dark .e-list-item .e-list-avatar.e-list-multi-line .e-list-conten
     font-style: normal;
 }
 
-#groupedList.e-listview .e-list-item {
-    cursor: pointer;
-}
-
-#groupedList.e-listview .e-content {
-    height: 450px;
-    overflow-y: hidden;
-}
+// #groupedList.e-listview .e-list-item {
+//     cursor: pointer;
+// }
 
 #groupedList.e-listview .e-list-group-item {
     color: #837c7c;
@@ -258,9 +253,6 @@ body.bootstrap-dark .e-list-item .e-list-avatar.e-list-multi-line .e-list-conten
 .tailwind #groupedList.e-list-template .e-active .e-list-content {
     color: #4f46e5;
 }
-
-
-
 
 .e-listview{
     position: absolute;

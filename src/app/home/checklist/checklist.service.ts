@@ -66,7 +66,7 @@ export class ChecklistService {
 
 
   public checkList(): Observable<Checklist[]> { 
-    return this.httpClient.get<Checklist[]>("assets/checklist.json");
+    return this.httpClient.get<Checklist[]>("assets/data/checklist.json");
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }

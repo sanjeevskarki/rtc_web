@@ -17,10 +17,15 @@ import { AdminComponent } from './admin/admin.component';
 import { HelpComponent } from './help/help.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { ToastModule } from '@syncfusion/ej2-angular-notifications';
 import { TextBoxModule, NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploaderModule } from '@syncfusion/ej2-angular-inputs';
+import { EvidenceAddComponent } from './home/evidence.add/evidenceadd.component';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +35,8 @@ import { UploaderModule } from '@syncfusion/ej2-angular-inputs';
     ChecklistComponent,
     AdminComponent,
     HelpComponent,
+    EvidenceAddComponent,
+
     
   ],
   imports: [
@@ -40,7 +47,7 @@ import { UploaderModule } from '@syncfusion/ej2-angular-inputs';
     ListViewAllModule,SidebarModule, MenuAllModule, TreeViewAllModule, ToolbarAllModule, GridModule,
     ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, DropDownButtonModule, SplitButtonModule, 
     ProgressButtonModule, DialogModule, TextBoxModule, NumericTextBoxModule, RichTextEditorAllModule,
-    FormsModule, ReactiveFormsModule, UploaderModule
+    FormsModule, ReactiveFormsModule, UploaderModule, ToastModule
   ],
   providers: [],
   bootstrap: [AppComponent]
