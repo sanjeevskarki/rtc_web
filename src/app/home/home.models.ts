@@ -91,3 +91,9 @@ export interface Details {
   detail:string;
   releaseCriteria:string;
 }
+
+export interface ReleaseDetails {
+  id:string;
+  vector:string;
+  details:Details[];
+}

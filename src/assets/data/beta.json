@@ -4,8 +4,9 @@
         "vector": "Requirements",
         "details": [
             {
-            "detail":"Requirements and Change Control",
-            "releaseCriteria":"Requirements under Change Control, reviewed and approved"
+                "id": "vbghd5a66f5735b084075f81af70ad01",
+                "detail":"Requirements and Change Control",
+                "releaseCriteria":"Requirements under Change Control, reviewed and approved"
             }
         ]   
     },
@@ -14,8 +15,9 @@
         "vector": "Development",
         "details": [
             {
-            "detail":"Code completion",
-            "releaseCriteria":" Feature Completeof Alpha committed requirements. Code review complete"
+                "id": "vbghd5a66f5735b084075f81af70ad02",
+                "detail":"Code completion",
+                "releaseCriteria":" Feature Completeof Alpha committed requirements. Code review complete"
             }
         ]
     },
@@ -24,8 +26,9 @@
         "vector": "Collateral",
         "details": [
             {
-            "detail":"Customer Documentation Readiness ",
-            "releaseCriteria":"All customer collateral for Alpha ready for release including known SW limitations & defects"
+                "id": "vbghd5a66f5735b084075f81af70ad03",
+                "detail":"Customer Documentation Readiness ",
+                "releaseCriteria":"All customer collateral for Alpha ready for release including known SW limitations & defects"
             }
         ]
     },
@@ -34,8 +37,9 @@
         "vector": "Defects/Bugs",
         "details": [
             {
-            "detail":"Impact assessment of defects. Assess # of open defects, for both severity/exposure and priority.",
-            "releaseCriteria":"All milestone must-fix/P1 defects from all sources resolved and verified. No more than 3 critical severity open bugs"
+                "id": "vbghd5a66f5735b084075f81af70ad04",
+                "detail":"Impact assessment of defects. Assess # of open defects, for both severity/exposure and priority.",
+                "releaseCriteria":"All milestone must-fix/P1 defects from all sources resolved and verified. No more than 3 critical severity open bugs"
             }
         ]
     },
@@ -44,28 +48,34 @@
         "vector": "Validation",
         "details": [
             {
-            "detail":"Functional Validation Plan",
-            "releaseCriteria":"Plan Approved & coverage is 100% of the functional requirements"
+                "id": "vbghd5a66f5735b084075f81af70ad05",
+                "detail":"Functional Validation Plan",
+                "releaseCriteria":"Plan Approved & coverage is 100% of the functional requirements"
             },
             {
-            "detail":"Functional validation  Execution",
-            "releaseCriteria":"Execution rate > 95%, Pass rate > 80%"
+                "id": "vbghd5a66f5735b084075f81af70ad06",
+                "detail":"Functional validation  Execution",
+                "releaseCriteria":"Execution rate > 95%, Pass rate > 80%"
             },
             {
-            "detail":"KPIs targets Defnition",
-            "releaseCriteria":"All KPIs & targets defined & approved"
+                "id": "vbghd5a66f5735b084075f81af70ad07",
+                "detail":"KPIs targets Defnition",
+                "releaseCriteria":"All KPIs & targets defined & approved"
             },
             {
-            "detail":"KPI measurement",
-            "releaseCriteria":"All KPIs tested with each at < 15% deviation from target with >QS"
+                "id": "vbghd5a66f5735b084075f81af70ad08",
+                "detail":"KPI measurement",
+                "releaseCriteria":"All KPIs tested with each at < 15% deviation from target with >QS"
             },
             {
-            "detail":"Stability Plan",
-            "releaseCriteria":"Plan reviewed & Approved"
+                "id": "vbghd5a66f5735b084075f81af70ad09",
+                "detail":"Stability Plan",
+                "releaseCriteria":"Plan reviewed & Approved"
             },
             {
-            "detail":"Stability validation execution",
-            "releaseCriteria":"DPMO < 300"
+                "id": "vbghd5a66f5735b084075f81af70ad010",
+                "detail":"Stability validation execution",
+                "releaseCriteria":"DPMO < 300"
             }
         ]
     },
@@ -74,8 +84,9 @@
         "vector": "Compliance",
         "details": [
             {
-            "detail":"OS Cert completeness, Standards compliance (FUSA), Accessibility & Waiver Status",
-            "releaseCriteria":"80% Passing and issues recorded as defects."
+                "id": "vbghd5a66f5735b084075f81af70ad11",
+                "detail":"OS Cert completeness, Standards compliance (FUSA), Accessibility & Waiver Status",
+                "releaseCriteria":"80% Passing and issues recorded as defects."
             }
         ]
     },
@@ -84,52 +95,64 @@
         "vector": "Legal",
         "details": [
             {
-            "detail":"Export",
-            "releaseCriteria":"Approved"
+                "id": "vbghd5a66f5735b084075f81af70ad12",
+                "detail":"Export",
+                "releaseCriteria":"Approved"
             },
             {
-            "detail":"TM&B",
-            "releaseCriteria":"Approved"
+                "id": "vbghd5a66f5735b084075f81af70ad13",
+                "detail":"TM&B",
+                "releaseCriteria":"Approved"
             },
             {
-            "detail":"Protex Scan",
-            "releaseCriteria":"Running"
+                "id": "vbghd5a66f5735b084075f81af70ad14",
+                "detail":"Protex Scan",
+                "releaseCriteria":"Running"
             },
             {
-            "detail":"Protex BOM",
-            "releaseCriteria":"fully & accurately populated including the correct usage per component"
+                "id": "vbghd5a66f5735b084075f81af70ad15",
+                "detail":"Protex BOM",
+                "releaseCriteria":"fully & accurately populated including the correct usage per component"
             },
             {
-            "detail":"Protex Matches & License conflicts",
-            "releaseCriteria":"All Protex Matches & License conflicts resolved"
+                "id": "vbghd5a66f5735b084075f81af70ad16",
+                "detail":"Protex Matches & License conflicts",
+                "releaseCriteria":"All Protex Matches & License conflicts resolved"
             },
             {
-            "detail":"Protex Obligations",
-            "releaseCriteria":"All Protex Obligations fulfilled and checked in Protex"
+                "id": "vbghd5a66f5735b084075f81af70ad17",
+                "detail":"Protex Obligations",
+                "releaseCriteria":"All Protex Obligations fulfilled and checked in Protex"
             },
             {
-            "detail":"OBL",
-            "releaseCriteria":"Defined and approved by BU attorney"
+                "id": "vbghd5a66f5735b084075f81af70ad18",
+                "detail":"OBL",
+                "releaseCriteria":"Defined and approved by BU attorney"
             },
             {
-            "detail":"OS PDT",
-            "releaseCriteria":"Approved"
+                "id": "vbghd5a66f5735b084075f81af70ad19",
+                "detail":"OS PDT",
+                "releaseCriteria":"Approved"
             },
             {
-            "detail":"Copyright readme file",
-            "releaseCriteria":"Ready"
+                "id": "vbghd5a66f5735b084075f81af70ad20",
+                "detail":"Copyright readme file",
+                "releaseCriteria":"Ready"
             },
             {
-            "detail":"TPP/Attributions file",
-            "releaseCriteria":"Ready"
+                "id": "vbghd5a66f5735b084075f81af70ad21",
+                "detail":"TPP/Attributions file",
+                "releaseCriteria":"Ready"
             },
             {
-            "detail":"Legal text file ",
-            "releaseCriteria":"Integrate as part of the released SW package "
+                "id": "vbghd5a66f5735b084075f81af70ad22",
+                "detail":"Legal text file ",
+                "releaseCriteria":"Integrate as part of the released SW package "
             },
             {
-            "detail":"Record Center ",
-            "releaseCriteria":"Release SWLC evidence archived in the Record Center"
+                "id": "vbghd5a66f5735b084075f81af70ad23",
+                "detail":"Record Center ",
+                "releaseCriteria":"Release SWLC evidence archived in the Record Center"
             }
         ]
     },
@@ -138,6 +161,7 @@
         "vector": "Privacy",
         "details": [
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"PIA (Privacy Impact Assesment)",
             "releaseCriteria":"Approved"
             }
@@ -148,46 +172,57 @@
         "vector": "Security",
         "details": [
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"SDLe project creation",
             "releaseCriteria":"SDLe Project survey completed & tasks dispositioned"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"Crypto review",
             "releaseCriteria":"Approved"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"SAFE Review & Threat Model",
             "releaseCriteria":"Approved"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"Static Analysis setup",
             "releaseCriteria":"Running"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"Static Analysis issues",
             "releaseCriteria":"Dispositioned"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"Composition Analysis setup (SNYK / BDBA)",
             "releaseCriteria":"Running"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"Composition Analysis issues",
             "releaseCriteria":"Dispositioned"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"NetSparker deployment on the pre-production environment",
             "releaseCriteria":"Deployed & running and all issues resolved"
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"NetSparker deployment on the production environment",
             "releaseCriteria":"Deployed & Running "
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"A/V Scan",
             "releaseCriteria":"Scan is clean for the released SW "
             },
             {
+                "id": "vbghd5a66f5735b084075f81af70ad01",
             "detail":"SDLe tasks",
             "releaseCriteria":"All required pre-production tasks meet creteria"
             }

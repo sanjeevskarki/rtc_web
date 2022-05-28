@@ -45,6 +45,7 @@ export class EvidenceAddComponent implements OnInit {
   public toasts: { [key: string]: Object }[] = [
     { title: 'Error!', content: 'You have already added a link. Please remove it for upoading a file', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' },
     { title: 'Error!', content: 'You have already uploaded a file. Please remove it for adding a link', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' },
+    { title: 'Success!', content: 'Evidence Added Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
   ];
  
   ngAfterViewInit(): void {
@@ -134,6 +135,7 @@ export class EvidenceAddComponent implements OnInit {
   public Submit(): void {
     this.createNewEvidence();
     this.childEvent.emit(this.newEvidence);
+    this.toastObj.show(this.toasts[2]);
     this.addEvidenceDialog.hide();
   }
 

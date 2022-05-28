@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FUTURE, PAST, TIMEINTERVAL } from '../home.constants';
 
-import { Checklist, ReleaseChecklist, ReleaseShortChecklist, Unit } from '../home.models';
+import { Checklist, Details, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, Unit } from '../home.models';
 /**
  * Dependecy Injection.
  */
@@ -67,6 +67,18 @@ export class ChecklistService {
 
   public checkList(): Observable<Checklist[]> { 
     return this.httpClient.get<Checklist[]>("assets/data/checklist.json");
+    // this.apiUrl = API_URL(system);
+    // return this.httpClient.get<Data>(this.apiUrl);
+  }
+
+  public updateCheckList(id:string): Observable<Checklist[]> { 
+    return this.httpClient.put<Checklist[]>("assets/data/checklist.json",id);
+    // this.apiUrl = API_URL(system);
+    // return this.httpClient.get<Data>(this.apiUrl);
+  }
+
+  public details(fileName:string): Observable<ReleaseDetails[]> { 
+    return this.httpClient.get<ReleaseDetails[]>("assets/data/"+fileName+".json");
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }
