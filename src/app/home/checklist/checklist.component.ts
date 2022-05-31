@@ -18,8 +18,6 @@ import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-noti
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
 
-export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
-
 @Component({
   selector: 'app-checklist',
   templateUrl: './checklist.component.html',
@@ -30,10 +28,12 @@ export class ChecklistComponent implements OnInit,OnDestroy {
 
   checkList:Checklist[]=[];
   releaseChecklist : ReleaseChecklist[]| undefined =[];
+  release! : Checklist;
   /**
    * For storing selected Release Checklist
    */
   oldChecklist : ReleaseChecklist[]=[];
+  
 
   @ViewChild('commentDialog')
   public commentDialog!: DialogComponent;
@@ -57,7 +57,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   public target1: string = '#commentDialog';
   public evidenceDialogWidth: string = '850px';
   public width: string = '750px';
-  public width1: string = '660px';
+  public width1: string = '630px';
   public height: string = '250px';
   public commentsHeader!: string;
   public evidenceHeader!: string;
@@ -142,7 +142,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
     items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
         'FontName', 'FontSize','|',
         'Formats', 'NumberFormatList', 'BulletFormatList','|',
-        'CreateLink', 'image']
+        'CreateLink']
   };
 
   public evidenceTools: ToolbarModule = {
@@ -176,17 +176,18 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   public onFileRemove(args: RemovingEventArgs): void {
     args.postRawFile = false;
   }
-  hostUrl: string = 'https://ej2-aspcore-service.azurewebsites.net/';
-  fileManagerSettings: FileManagerSettingsModel = {
-    enable: true,
-    path: '/Pictures/Food',
-    ajaxSettings: {
-      url: this.hostUrl + 'api/FileManager/FileOperations',
-      getImageUrl: this.hostUrl + 'api/FileManager/GetImage',
-      uploadUrl: this.hostUrl + 'api/FileManager/Upload',
-      downloadUrl: this.hostUrl + 'api/FileManager/Download'
-    }
-  };
+
+  // hostUrl: string = 'https://ej2-aspcore-service.azurewebsites.net/';
+  // fileManagerSettings: FileManagerSettingsModel = {
+  //   enable: true,
+  //   path: '/Pictures/Food',
+  //   ajaxSettings: {
+  //     url: this.hostUrl + 'api/FileManager/FileOperations',
+  //     getImageUrl: this.hostUrl + 'api/FileManager/GetImage',
+  //     uploadUrl: this.hostUrl + 'api/FileManager/Upload',
+  //     downloadUrl: this.hostUrl + 'api/FileManager/Download'
+  //   }
+  // };
 
   public items: ItemModel[] = [
     {
@@ -204,10 +205,8 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   ];
 
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
-  
 
   ngOnInit(): void {
-    
     this.groupOptions = { showGroupedColumn: false, columns: ['vector'] };
     this.selectOptions = {persistSelection: true, type: "Multiple" };
     this.evidenceToolbar = [{ text: 'Add Evidence', tooltipText: 'Add Evidence', prefixIcon: 'e-add', id: 'Add' }];
@@ -219,15 +218,13 @@ export class ChecklistComponent implements OnInit,OnDestroy {
       'evidence': new FormControl(null, Validators.required)
     });
     
-    this.releaseShortChecklist = JSON.parse(localStorage.getItem('relaesechecklist')!);
-    
-    this.selectedReleaseId = this.releaseShortChecklist.id;
-    this.releaseName = this.releaseShortChecklist.releaseName;
-    this.milestone = this.releaseShortChecklist.milestone;
-    this.workWeek = this.releaseShortChecklist.workWeek;
+    // this.releaseShortChecklist = JSON.parse(localStorage.getItem('relaeseId')!);
+    this.selectedReleaseId = localStorage.getItem('releaseId');
+    // this.releaseName = this.releaseShortChecklist.releaseName;
+    // this.milestone = this.releaseShortChecklist.milestone;
+    // this.workWeek = this.releaseShortChecklist.workWeek;
     this.lines='Both';
     this.initialPage = {pageSize:5};
-    
     this.filter = { type: "CheckBox" };
     this.checkList = JSON.parse(localStorage.getItem("checkList")!);
     if(this.checkList === null || this.checkList.length === 0){
@@ -235,16 +232,15 @@ export class ChecklistComponent implements OnInit,OnDestroy {
     }else{
       this.setDetails();
     }
-    
   }
 
   ngAfterViewInit(): void {
     this.uploadObj.element.value = '';
   }
 
-  rteCreated(): void {
-    this.rteEle.element.focus();
-  }
+  // rteCreated(): void {
+  //   this.rteEle.element.focus();
+  // }
 
   eveidenceRteCreated(): void {
     this.evidenceEle.element.focus();
@@ -255,7 +251,6 @@ export class ChecklistComponent implements OnInit,OnDestroy {
     this.uploadObj.clearAll();
   }
 
-  
   public onFileSelect(args : SelectedEventArgs) : void {
     let filesData : FileInfo[] = this.uploadObj.getFilesData();
     this.uploadInput = args.filesData[0].name;
@@ -288,7 +283,12 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   }
 
   setDetails(){
-    this.releaseChecklist = this.checkList.find(x => x.id == this.selectedReleaseId)?.releaseChecklist;
+    this.release = this.checkList.find(x => x.id === this.selectedReleaseId)!;
+    this.releaseChecklist = this.release.releaseChecklist;
+    this.selectedReleaseId = this.release.id;
+    this.releaseName = this.release.releaseName;
+    this.milestone = this.release.milestone;
+    this.workWeek = this.release.workWeek;
     this.oldChecklist = this.releaseChecklist!;
     this.getDetails();
   }
@@ -307,7 +307,6 @@ export class ChecklistComponent implements OnInit,OnDestroy {
 
   createViewCheckList(){
     this.viewReleaseChecklist=[];
-    
     selectedDetail?.details.find(x => x.id === release.details)?.detail;
     for(var release of this.releaseChecklist!){
       var checkList:ViewReleaseChecklist=<ViewReleaseChecklist>{};
@@ -395,12 +394,12 @@ export class ChecklistComponent implements OnInit,OnDestroy {
 
   /**
    * Call when user click on View/Add Comment
-   * @param selectedReleaseChecklist Existing Release Checklist
+   * @param id Unique Release Id
    */
   onCommentClicked(id: string) {
     this.selectedRelease=<ReleaseChecklist>{}    
     this.selectedRelease = this.getCurrentRelease(id)!;
-    this.evidenceHeader = this.selectedRelease.vector + " Comments";    
+    this.commentsHeader = this.selectedRelease.vector + " Comments"; 
     this.createCommentList(this.selectedRelease);  
   } 
 
@@ -542,11 +541,6 @@ export class ChecklistComponent implements OnInit,OnDestroy {
     this.evidenceAddComponent.closeEvidence();
     this.toastObj.show(this.toasts[3]);
     
-  }
-
-
-  getEvidence() {
-    alert('get form parent');
   }
 
   clickHandler(args: ClickEventArgs): void {

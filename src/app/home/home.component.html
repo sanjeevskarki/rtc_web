@@ -4,7 +4,7 @@
     [showHeader]='false' (select)="onClick($event)">
         <ng-template #template let-dataSource="">
             <div class="settings e-list-wrapper e-list-multi-line">
-                <span class="e-list-item-header">{{dataSource.releaseName}} <span class="e-list-item-header" style="float: right">{{dataSource.milestone}}</span></span>
+                <span class="e-list-item-header">{{dataSource.releaseName}} <span class="e-list-item-header" style="float: right">{{dataSource.milestone | uppercase}}</span></span>
                 <span class="e-list-content">{{dataSource.workWeek}}</span>
             </div>
         </ng-template>

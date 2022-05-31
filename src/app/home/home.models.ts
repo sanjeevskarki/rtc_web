@@ -7,6 +7,9 @@ export interface ReleaseShortChecklist {
 
 export interface Checklist {
   id: string;
+  releaseName: string;
+  milestone:string;
+  workWeek:string;
   releaseChecklist:ReleaseChecklist[];
 }
 
@@ -96,4 +99,14 @@ export interface ReleaseDetails {
   id:string;
   vector:string;
   details:Details[];
+}
+
+export interface NewRelease {
+  id:string;
+  name:string;
+  type:string;
+  milestone:string;
+  date:Date;
+  contact:string;
+  email:string;
 }

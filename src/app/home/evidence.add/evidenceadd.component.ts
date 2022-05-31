@@ -109,27 +109,19 @@ export class EvidenceAddComponent implements OnInit {
     let linkCheck = this.evidenceForm.controls['link'].value;
     if(!this.isValueExist(linkCheck)){
       this.evidenceForm.controls['upload'].reset();
-      this.errorFileSelected();
+      this.toastObj.show(this.toasts[0]);
       return;
     }
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
-  }
-
-  public errorFileSelected(): void {
-    this.toastObj.show(this.toasts[0]);
   }
 
   onLinkSelected(){
     let uploadCheck = this.evidenceForm.controls['upload'].value;
     if(!this.isValueExist(uploadCheck)){
       this.evidenceForm.controls['link'].reset();
-      this.errorLinkSelected();
+      this.toastObj.show(this.toasts[1]);
       return;
     }
-  }
-
-  public errorLinkSelected(): void {
-    this.toastObj.show(this.toasts[1]);
   }
 
   public Submit(): void {

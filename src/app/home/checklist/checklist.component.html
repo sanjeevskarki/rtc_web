@@ -1,7 +1,6 @@
-<div id="container"></div>
 <div  id="modalTarget" #targetModal >
     <div class="checklist-div">
-        <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone}}&nbsp;-&nbsp;{{workWeek}}</span>   
+        <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek}}</span>   
     </div>
     <br>
     <ejs-grid #grid [dataSource]='viewReleaseChecklist'  [allowTextWrap]="true" [allowSelection]='true' [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions"
@@ -50,16 +49,16 @@
                   </ng-template>     
             </e-column>
             <e-column headerText='Comments' textAlign='Left' width='90'>
-                <ng-template #template let-data>
-                    <div *ngIf="data.comments.length > 0" [innerHTML]="data.comments[0].message"></div>
-                    <div *ngIf="data.comments.length > 0 ; else noComments" style="font-size: 11px;"> {{data.comments[0].date | date:'medium'}} 
-                        <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onCommentClicked(data.id)">View More...
+                <ng-template #template let-comment>
+                    <div *ngIf="comment.comments.length > 0" [innerHTML]="comment.comments[0].message"></div>
+                    <div *ngIf="comment.comments.length > 0 ; else noComments" style="font-size: 11px;"> {{comment.comments[0].date | date:'medium'}} 
+                        <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onCommentClicked(comment.id)">View More...
                             <span class="e-icons e-search"></span>
                         </button>
                     </div>
                     <ng-template #noComments>
                         <span>No Comment Found </span><br>
-                        <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onCommentClicked(data.id)">Add Comments...
+                        <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onCommentClicked(comment.id)">Add Comments...
                             <span class="e-icons e-add"></span>
                         </button>
                       </ng-template>
@@ -68,12 +67,12 @@
         </e-columns>
     </ejs-grid>
     <br>
-    <button ejs-button cssClass="e-info" [isPrimary]="true" style="float: right;" (click)="saveRelease()">Save Release</button>
+    <button ejs-button cssClass="e-info" [isPrimary]="true" style="float: right;margin-bottom: 10px;" (click)="saveRelease()">Save Release</button>
 </div>
 <!--
     Dialog shows the comments list
 -->
-<ejs-dialog class='e-fixed' id="commentDialog" #commentDialog [header]='commentsHeader' [position]='position' [visible]='hidden' [isModal]='isModal'
+<ejs-dialog class='e-fixed' id="commentDialog" #commentDialog [header]='commentsHeader' [visible]='hidden' [isModal]='isModal'
 [target]='target' [width]='width' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon'>
     <ejs-listview #listview id='displayComments' style="height: 23rem;" [dataSource]='displayComments'
     [showHeader]='false' [cssClass]='cssClass'>
@@ -93,23 +92,19 @@
 -->    
 <ejs-dialog id="addCommentDialog" #addCommentDialog [header]='addCommentHeader' [position]='position' [visible]='hidden' [isModal]='isModal'
 [target]='target1' [width]='width1' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon' (close)="commentDialogClose()">
-    <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit()">
+    <form [formGroup]="commentForm" style="height: 23rem;" (ngSubmit)="onCommentSubmit()">
         <div class="form-group">
-            <ejs-richtexteditor #fromRTE formControlName="comment" [toolbarSettings]='tools' 
-                (created)="rteCreated()" [fileManagerSettings]='fileManagerSettings'>
-            </ejs-richtexteditor>
+            <ejs-richtexteditor #fromRTE formControlName="comment" [toolbarSettings]='tools'></ejs-richtexteditor>
             <ejs-uploader #defaultupload id='defaultfileupload' [asyncSettings]='path'  [allowedExtensions]='allowExtensions' (success)="onUploadSuccess($event)" 
             (selected)='onFileSelect($event)' (failure)="onUploadFailure($event)" [dropArea]='dropElement' (removing)='onFileRemove($event)'>
-            </ejs-uploader>
-            
+            </ejs-uploader>           
                 <!-- <span class="text-muted" *ngIf="!commentForm.controls['name'].valid && 
                 commentForm.controls['name']?.touched"> Value is required.</span> -->
-
         </div>
         <br>
         <div class="form-group" style="float: right;">
-            <button type="submit" ejs-button>Save</button>
-            <button type="reset" ejs-button (click)="commentForm.reset()" style="margin-left: 20px">Reset</button>
+            <button type="submit" ejs-button cssClass="e-info" [isPrimary]="true">Save</button>
+            <button type="reset" ejs-button cssClass="e-info" [isPrimary]="true" (click)="commentForm.reset()" style="margin-left: 20px">Reset</button>
         </div>
     </form>
 </ejs-dialog>
@@ -154,7 +149,7 @@ header='Delete Evidence' width='450px' [buttons]='buttons' [showCloseIcon]='show
 <!--
     Add a new evidence
 -->
-<evidenceadd (childEvent)="addEvidence($event)" (childEvent2)= "getEvidence()"></evidenceadd>
+<evidenceadd (childEvent)="addEvidence($event)" ></evidenceadd>
 <!--
     Toast Message
 -->
@@ -162,5 +157,5 @@ header='Delete Evidence' width='450px' [buttons]='buttons' [showCloseIcon]='show
 <!--
     Confirmation Dialog Before Leaving the Release PAge without saving
 -->
-<ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' [position]='position' content='This page contains some changes that are not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
+<ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that are not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
 header='Leave Page?' width='450px' [buttons]='saveButtons' [showCloseIcon]='showCloseIcon'></ejs-dialog>  

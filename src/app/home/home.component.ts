@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReleaseShortChecklist } from './home.models';
+import { Checklist, ReleaseShortChecklist } from './home.models';
 import { HomeService } from './home.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { HomeService } from './home.service';
 })
 export class HomeComponent implements OnInit {
   
-  checklist:ReleaseShortChecklist[]=[];
+  checklist:Checklist[]=[];
 
   public urlValue!: String;
 
@@ -26,23 +26,23 @@ export class HomeComponent implements OnInit {
   }
 
   getShortList(){
-    this.service.shortCheckList().subscribe(
-      (response) => {
-        this.checklist = response;
-        console.log(this.checklist);
-      },
-      (err) => {
-        console.log(err.name);
-      }
-    );
+    this.checklist = JSON.parse(localStorage.getItem("checkList")!);
+    // this.service.shortCheckList().subscribe(
+    //   (response) => {
+    //     this.checklist = response;
+    //   },
+    //   (err) => {
+    //     console.log(err.name);
+    //   }
+    // );
   }
 
   onClick(event: any){
-    localStorage.removeItem('relaesechecklist');
+    // localStorage.removeItem('relaesechecklist');
     let selecteditem =this.element.getSelectedItems();
-    localStorage.setItem('relaesechecklist', JSON.stringify(selecteditem["data"])  );
+    localStorage.setItem('releaseId', selecteditem["data"].id);
     // this.sharedChecklistService.setReleaseList(selecteditem["data"]);
-    this.router.navigate([ 'release' ]);
+    this.router.navigate([ 'checklist' ]);
   }
 
 }

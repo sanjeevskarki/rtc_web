@@ -1,16 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ReleaseDetails } from '../home/home.models';
 
-import { Checklist, ReleaseShortChecklist } from './home.models';
 /**
  * Dependecy Injection.
  */
 @Injectable({
   providedIn: 'root',
 })
-export class HomeService {
+export class ReleaseService {
 
+  amount!: number;
+  displayTime!: string;
+  remaining!: number;
   /**
    *
    * @param httpClient Http Client.
@@ -20,11 +23,9 @@ export class HomeService {
     
   }
 
-  public shortCheckList(): Observable<Checklist[]> { 
-    return this.httpClient.get<Checklist[]>("assets/data/checklist.json");
-    // this.apiUrl = API_URL(system);
-    // return this.httpClient.get<Data>(this.apiUrl);
-  }
 
+  public details(fileName:string): Observable<ReleaseDetails[]> { 
+    return this.httpClient.get<ReleaseDetails[]>("assets/data/"+fileName+".json");
+  }
   
 }

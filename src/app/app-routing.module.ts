@@ -6,12 +6,14 @@ import { HelpComponent } from './help/help.component';
 import { HomeComponent } from './home/home.component';
 import { ReportComponent } from './report/report.component';
 import { ChecklistGuard } from './checklist-guard.guard';
+import { ReleaseComponent } from './release/release.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'release', component: ChecklistComponent,canDeactivate: [ChecklistGuard] },
+  { path: 'checklist', component: ChecklistComponent,canDeactivate: [ChecklistGuard] },
+  { path: 'release', component: ReleaseComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'report', component: ReportComponent },
   { path: 'help', component: HelpComponent },

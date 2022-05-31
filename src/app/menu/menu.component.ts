@@ -45,10 +45,10 @@ export class MenuComponent {
         {
             this.router.navigate([ 'home' ]);
         }
-        // else if (args.item.id === "release")
-        // {
-        //     this.router.navigate([ 'release' ]);
-        // }
+        else if (args.item.id === "release")
+        {
+            this.router.navigate([ 'release' ]);
+        }
         else if (args.item.id === "admin")
         {
             this.router.navigate([ 'admin' ]);
@@ -61,6 +61,7 @@ export class MenuComponent {
         {
             this.router.navigate([ 'help' ]);
         }
+        
     }
 }
 

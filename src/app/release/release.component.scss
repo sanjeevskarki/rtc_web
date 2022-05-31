@@ -1,0 +1,145 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Create three equal columns that floats next to each other */
+  .column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    //height: 300px; /* Should be removed. Only for demonstration */
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .content-wrapper {
+    width: 90%;
+    margin: 0 auto;
+    min-width: 185px;
+  }
+
+  .content-wrapper div.row {
+    padding: 5px 0px;
+  }
+    
+  .control-label {
+    padding: 24px 0px 0px 0px;
+    font-size: 12px;
+    opacity: 0.54;
+  }
+    
+  @media only screen and (max-width: 480px) {
+    .content-wrapper {
+      width: 92%;
+    }
+    .e-input-section .col-xs-6,
+    .e-input-section .col-xs-4,
+    .e-input-section .col-xs-12 {
+      padding: 10px 5px;
+      width: 100%;
+    }
+    .content-wrapper div.row {
+      padding: 0px;
+    }
+  }
+
+  ejs-textbox .e-outline.e-float-input,
+  ejs-textbox .e-outline.e-float-input.e-control-wrapper {
+      margin-top: 0;
+  }
+
+  .fabric .row.material,
+  .bootstrap .row.material,
+  .bootstrap4 .row.material,
+  .highcontrast .row.material,
+  .tailwind .row.material,
+  .bootstrap5 .row.material,
+  .bootstrap5-dark .row.material,
+  .tailwind-dark .row.material,
+  .fabric-dark .row.material,
+  .bootstrap-dark .row.material,
+  .fluent .row.material,
+  .fluent-dark .row.material {
+      display: none;
+  }
+  
+  #description td {
+    vertical-align: top;
+  }
+
+  .tailwind .e-upload-picture:before,
+  .tailwind-dark .e-upload-picture:before {
+      content: '\e7da';
+      font-size: 17px;
+  }
+
+  .e-bigger .e-upload-picture::before { 
+      font-size: 17px;
+  }
+
+  .tailwind.e-bigger .e-upload-picture:before,
+  .tailwind-dark.e-bigger .e-upload-picture:before {
+      font-size: 20px;
+  }
+
+  .bootstrap4 .e-upload-picture::before {
+      content: '\e769';
+      font-family: e-icons;
+  }
+
+  .bootstrap5 .e-upload-picture::before,
+  .bootstrap5-dark .e-upload-picture::before {
+      content: '\e712';
+      font-family: e-icons;
+  }
+
+  .small-textbox {
+    padding-top: 5px;
+}
+
+.tailwind .small-textbox,
+.tailwind-dark .small-textbox {
+    padding-top: 3px;
+}
+
+.e-bigger .small-textbox {
+    padding-top: 10px;
+}
+
+.tailwind.e-bigger .small-textbox,
+.tailwind-dark.e-bigger .small-textbox {
+    padding-top: 1px;
+}
+
+.fluent .e-upload-picture::before,
+.fluent-dark .e-upload-picture::before {
+    content: '\e712';
+    font-family: e-icons;
+}
+
+.fluent .e-float-input.e-control-wrapper.e-filled,
+.fluent-dark .e-float-input.e-control-wrapper.e-filled {
+    margin-top: 0px;
+}
+
+.release-header{
+    font-weight: 700;
+    font-size: 25px;
+    padding-bottom: 15px;
+    font-family: "Intel Clear", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-top: 5px
+}
+
+.release-message{
+    font-weight: 400;
+    font-size: 13px;
+    padding-bottom: 15px;
+    font-family: "Intel Clear", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.1;
+    color: inherit;
+}

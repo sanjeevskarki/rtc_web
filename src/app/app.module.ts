@@ -23,8 +23,11 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploaderModule } from '@syncfusion/ej2-angular-inputs';
 import { EvidenceAddComponent } from './home/evidence.add/evidenceadd.component';
-
-
+import { ReleaseComponent } from './release/release.component';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { CalendarModule, IslamicService } from '@syncfusion/ej2-angular-calendars';
+import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { ProgressBarAllModule } from '@syncfusion/ej2-angular-progressbar';
 
 @NgModule({
   declarations: [
@@ -36,18 +39,16 @@ import { EvidenceAddComponent } from './home/evidence.add/evidenceadd.component'
     AdminComponent,
     HelpComponent,
     EvidenceAddComponent,
+    ReleaseComponent,
 
     
   ],
   imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    ToolbarModule,
+    HttpClientModule, BrowserModule, AppRoutingModule, ToolbarModule, DatePickerModule,
     ListViewAllModule,SidebarModule, MenuAllModule, TreeViewAllModule, ToolbarAllModule, GridModule,
     ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, DropDownButtonModule, SplitButtonModule, 
     ProgressButtonModule, DialogModule, TextBoxModule, NumericTextBoxModule, RichTextEditorAllModule,
-    FormsModule, ReactiveFormsModule, UploaderModule, ToastModule
+    FormsModule, ReactiveFormsModule, UploaderModule, ToastModule, DropDownListModule, CalendarModule, ProgressBarAllModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
