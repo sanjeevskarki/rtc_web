@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group" >
                         <div class="e-float-input" >
-                            <ejs-textbox placeholder="Link" cssClass="e-outline" floatLabelType="Auto" formControlName="link"></ejs-textbox>
+                            <ejs-textbox placeholder="Link" cssClass="e-outline" floatLabelType="Auto" formControlName="link" (input)="onLinkSelected()"></ejs-textbox>
                             <!-- <input type="text" #linktextbox id="link" name="link" formControlName="link" (input)="onLinkSelected()">
                             <span class="e-float-line"></span>
                             <label class="e-float-text e-label-top" for="link">Link</label> -->
@@ -26,9 +26,9 @@
                     </div>
                     <div class="form-group" >
                         <div class="e-float-input">
-                            <ejs-textbox placeholder="Choose a file" style="width: 70%;" cssClass="e-outline" floatLabelType="Auto" formControlName="upload"></ejs-textbox>
+                            <ejs-textbox placeholder="Choose a file" cssClass="e-outline" floatLabelType="Auto" formControlName="upload" [(ngModel)]="uploadInput" (input)="onFileSelect($event)"></ejs-textbox>
                             <!-- <input type="text" id="upload" name="upload" [(ngModel)]="uploadInput" formControlName="upload"> -->
-                            <button id="browse" class="e-control e-btn e-info" (click)='onFileSelected()'>Browse...</button>                        
+                            <button id="browse" class="e-control e-btn e-info" style="float: right;" (click)='onFileSelected()'>Browse...</button>                        
                             <!-- <span class="e-float-line"></span> -->
                             <!-- <label class="e-float-text e-label-top" for="upload">Choose a file</label> -->
                         </div>            
