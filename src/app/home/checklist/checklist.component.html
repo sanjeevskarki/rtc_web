@@ -3,14 +3,24 @@
         <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek}}</span>   
     </div>
     <br>
-    <ejs-grid #grid [dataSource]='viewReleaseChecklist'  [allowTextWrap]="true" [allowSelection]='true' [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions"
-                    [pageSettings]='initialPage' [gridLines]="lines" (queryCellInfo)='customiseCell($event)' >
+    <ejs-grid #grid [dataSource]='viewReleaseChecklist'  [allowTextWrap]="true" [allowSelection]='true' [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
+                    [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  [toolbar]='toolbar' >
         <e-columns>
-            <e-column field='vector'  [filter]='filter' headerText='Vector' width=45 textAlign="left" isPrimaryKey='true'></e-column>
-            <e-column field='detail'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'></e-column>
-            <e-column field='owner' headerText='Owner' textAlign="left" width=40></e-column>
-            <e-column field='Status' [filter]='filter' headerText='Status' textAlign="left" width='40'>
-                 <ng-template #template let-data>                   
+            <e-column field='vector'  [filter]='filter' headerText='Vector' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+            <e-column field='detail'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+            <e-column field='owner' headerText='Owner' textAlign="left" width=40>
+                <ng-template #template let-data> 
+                    <div class="e-input-group">
+                        <input class="e-input" type="text" [(ngModel)]="data.owner"/>
+                        <ejs-tooltip #tooltip content='Update'>
+                            <span class="e-input-group-icon e-icons e-add1" (click)="addOwner(data.id,data.owner)"></span>
+                        </ejs-tooltip>
+                    </div>
+                         
+                </ng-template>
+            </e-column>    
+            <e-column field='Status' [filter]='filter' headerText='Status' textAlign="left" width='30'  [allowEditing]= 'false'>
+                <ng-template #template let-data>                   
                    <div *ngIf="data.status === 'Done'" class="statustemp e-donecolor"> 
                         <ejs-splitbutton content={{data.status}} 
                         class="statustemp e-donecolor donecolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
@@ -33,35 +43,66 @@
                     </div>  
                 </ng-template>  
             </e-column> 
-            <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'></e-column>
-            <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width='50'></e-column>
-            <e-column headerText='Evidence' textAlign='Center' width='50'>
+            <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'>
+                <ng-template #template let-data> 
+                    <div class="e-input-group">       
+                        <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus"></textarea>
+                        <ejs-tooltip #tooltip content='Update'>
+                            <span class="e-input-group-icon  e-icons e-add1" (click)="addDetailedStatus(data.id,data.detailedStatus)"></span>
+                        </ejs-tooltip>
+                    </div>
+                    <!-- <ejs-textbox rows="2" cssClass="e-outline" [multiline]="true"></ejs-textbox> -->
+                </ng-template>
+            </e-column>
+            <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width='70'  [allowEditing]= 'false'></e-column>
+            <e-column headerText='Evidence' textAlign='Center' width='50'  [allowEditing]= 'false'>
                 <ng-template #template let-evidence>
-                    <button *ngIf="evidence.evidences.length > 0 ; else noEvidence" ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">View Evidence...
-                        <span class="e-icons e-evidence"></span>
-                    </button>
+                    <div *ngIf="evidence.evidences.length > 0 ; else noEvidence">
+                        <ejs-tooltip #tooltip content='View / Add Evidence'>
+                            <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)" iconCss="e-icons e-evidence" >View / Add                            
+                                    <!-- <span class="e-icons e-evidence"></span> -->
+                            </button>
+                        </ejs-tooltip>
+                    </div>
                     <ng-template #noEvidence>
                         <span>No Evidence Found </span>
-                        <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">Add Evidence...
-                            <span class="e-icons e-add"></span>
-                        </button>
+                        <div>
+                            <ejs-tooltip #tooltip content='Add Evidence' >
+                                <button ejs-button cssClass="e-flat" iconCss="e-icons e-add" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">Add                               
+                                    <!-- <span class="e-icons e-add"></span> -->
+                                </button>
+                            </ejs-tooltip>
+                        </div>
                       </ng-template>
                   </ng-template>     
             </e-column>
-            <e-column headerText='Comments' textAlign='Left' width='90'>
+            <e-column headerText='Comments' textAlign='Center' width='90'  [allowEditing]= 'false'>
                 <ng-template #template let-comment>
                     <div *ngIf="comment.comments.length > 0" [innerHTML]="comment.comments[0].message"></div>
+                    <div *ngIf="comment.comments.length > 0" >
+                        <li *ngFor="let f of comment.comments[0].file; let i = index">
+                            {{ f.name }}
+                        </li> 
+                    </div>
                     <div *ngIf="comment.comments.length > 0 ; else noComments" style="font-size: 11px;"> {{comment.comments[0].date | date:'medium'}} 
-                        <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onCommentClicked(comment.id)">View More...
-                            <span class="e-icons e-search"></span>
-                        </button>
+                        <div>
+                            <ejs-tooltip #tooltip content='View / Add Comments'>
+                                <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-evidence" (click)="onCommentClicked(comment.id)">View / Add                              
+                                        <!-- <span class="e-icons e-evidence"></span>                           -->
+                                </button>
+                            </ejs-tooltip>
+                        </div>
                     </div>
                     <ng-template #noComments>
-                        <span>No Comment Found </span><br>
-                        <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onCommentClicked(comment.id)">Add Comments...
-                            <span class="e-icons e-add"></span>
-                        </button>
-                      </ng-template>
+                        <span>No Comment Found </span>
+                        <div>
+                            <ejs-tooltip #tooltip content='Add Comments'>
+                                <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-plus" (click)="onCommentClicked(comment.id)">Add 
+                                    <!-- <span class="e-icons e-plus"></span>  -->
+                                </button>
+                            </ejs-tooltip>
+                        </div>
+                    </ng-template>
                   </ng-template>
             </e-column>
         </e-columns>
@@ -73,61 +114,47 @@
     Dialog shows the comments list
 -->
 <ejs-dialog class='e-fixed' id="commentDialog" #commentDialog [header]='commentsHeader' [visible]='hidden' [isModal]='isModal'
-[target]='target' [width]='width' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon'>
+[target]='target' [width]='width' [animationSettings]='animationSettings' [position]='position'>
     <ejs-listview #listview id='displayComments' style="height: 23rem;" [dataSource]='displayComments'
     [showHeader]='false' [cssClass]='cssClass'>
-        <ng-template #template let-dataSource="">
+        <ng-template #template let-dataSource>
             <div>
                 <div style="float: right;margin-right: 10px;font-size: 11px;" class="detailsAnswer">{{dataSource.date}}</div>
-                <div style="padding-left: 5px;" class="posting" [innerHTML]="dataSource.message"></div>     
+                <div style="padding-left: 5px;" class="posting" [innerHTML]="dataSource.message"></div>   
+                <li *ngFor="let f of dataSource.file; let i = index">
+                   {{ f.name }}
+                  </li>  
             </div>
-            <div class="separator"></div>
+            <!-- <div class="separator"></div> -->
         </ng-template>
     </ejs-listview>
     <br>
-    <button ejs-button cssClass="e-info" [isPrimary]="true" style="float: right;" (click)="openCommentDialog()">Add Comment</button>
+    <div class="form-group" style="float: right;">
+        <button ejs-button cssClass="e-info" [isPrimary]="true" (click)="openCommentDialog()">Add Comment</button>
+        <button type="button" ejs-button cssClass="e-info" (click)="closeCommentDialog()" style="margin-left: 20px">Cancel</button>
+    </div>
 </ejs-dialog>         
 <!--
     Dialog for adding a new comment
 -->    
-<ejs-dialog id="addCommentDialog" #addCommentDialog [header]='addCommentHeader' [position]='position' [visible]='hidden' [isModal]='isModal'
-[target]='target1' [width]='width1' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon' (close)="commentDialogClose()">
-    <form [formGroup]="commentForm" style="height: 23rem;" (ngSubmit)="onCommentSubmit()">
-        <div class="form-group">
-            <ejs-richtexteditor #fromRTE formControlName="comment" [toolbarSettings]='tools'></ejs-richtexteditor>
-            <ejs-uploader #defaultupload id='defaultfileupload' [asyncSettings]='path'  [allowedExtensions]='allowExtensions' (success)="onUploadSuccess($event)" 
-            (selected)='onFileSelect($event)' (failure)="onUploadFailure($event)" [dropArea]='dropElement' (removing)='onFileRemove($event)'>
-            </ejs-uploader>           
-                <!-- <span class="text-muted" *ngIf="!commentForm.controls['name'].valid && 
-                commentForm.controls['name']?.touched"> Value is required.</span> -->
-        </div>
-        <br>
-        <div class="form-group" style="float: right;">
-            <button type="submit" ejs-button cssClass="e-info" [isPrimary]="true">Save</button>
-            <button type="reset" ejs-button cssClass="e-info" [isPrimary]="true" (click)="commentForm.reset()" style="margin-left: 20px">Reset</button>
-        </div>
-    </form>
-</ejs-dialog>
+<commentadd (childEvent)="addComment($event)" ></commentadd>
 <!--
     Dialog shows the evidence list
 -->
-<ejs-dialog class='e-fixed' id="evidenceDialog" #evidenceDialog [header]='evidenceHeader' [position]='position' [visible]='hidden' [isModal]='isModal'
-[target]='target' [width]='evidenceDialogWidth' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon'>
-<!-- <ejs-dialog id="evidenceDialog" #evidenceDialog class='e-fixed' [header]='evidenceHeader' [position]='position' [visible]='hidden' [isModal]='isModal'
-[target]='target' [width]='evidenceDialogWidth' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon'>-->
+<ejs-dialog class='e-fixed' id="evidenceDialog" #evidenceDialog [header]='evidenceHeader' [visible]='hidden' [isModal]='isModal'
+[target]='target' [width]='evidenceDialogWidth' [animationSettings]='animationSettings' [position]='position'>
     <div class="control-section"> 
-        <ejs-grid #grid id='displayComments' style="height: 23rem;" [dataSource]='displayEvidences' [allowTextWrap]="true"
-        class='cssClass' [toolbar]='evidenceToolbar' [editSettings]='evidenceEditSettings' (toolbarClick)='clickHandler($event)'>
-        <!-- <ejs-grid #grid [dataSource]='displayEvidences' style="height: 23rem;" [allowTextWrap]="true" [allowSelection]='true' [allowSorting]='true' [height]="600" (toolbarClick)='clickHandler($event)'
-        [pageSettings]='evidencePage' [gridLines]="lines" [toolbar]='evidenceToolbar' [editSettings]='evidenceEditSettings' [enableHover]='false' [enableHeaderFocus]='true'> -->
+        <ejs-grid #grid id='displayEvidences' style="height: 23rem;" [dataSource]='displayEvidences' [allowTextWrap]="true"
+            class='cssClass' [toolbar]='evidenceToolbar' [editSettings]='evidenceEditSettings' (toolbarClick)='clickEvidenceHandler($event)'>
             <e-columns>
                 <e-column width=20 textAlign="Center">
                     <ng-template #template let-evidence>
-                        <!-- <ejs-tooltip #tooltip content='Delete Evidence'> -->
+                        <ejs-tooltip #tooltip content='Delete Evidence'>             
                             <button ejs-button class="e-btn e-small e-round" iconCss="e-icons e-delete" (click)="selectDeletedEvidence(evidence)"></button>
-                        <!-- </ejs-tooltip> -->
+                        </ejs-tooltip>
                     </ng-template>
                 </e-column>
+               
                 <e-column field='seq'  [filter]='filter' headerText='#' width=20 textAlign="Left" isPrimaryKey='true'></e-column>
                 <e-column field='title'  [filter]='filter' headerText='Title' width=45 textAlign="Left" isPrimaryKey='true'></e-column>
                 <e-column [filter]='filter' headerText='Evidence' width=45 textAlign="Left" isPrimaryKey='true'>
@@ -139,13 +166,14 @@
                 <e-column field='comments'  [filter]='filter' headerText='Comments' width=80 textAlign="Left" isPrimaryKey='true'></e-column>
             </e-columns>
         </ejs-grid>
+        <button type="button" style="float: right;margin-top: 10px;" ejs-button cssClass="e-info" (click)="closeEvidenceDialog()">Cancel</button>
     </div>
 </ejs-dialog>
 <!--
     Confirmation Dialog for deleting existing evidence
 -->
-<ejs-dialog id='confirmDialog' #confirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' [position]='position' content='Are you sure you want to delete this Evidence?' [target]='target'
-header='Delete Evidence' width='450px' [buttons]='buttons' [showCloseIcon]='showCloseIcon'></ejs-dialog>  
+<ejs-dialog id='confirmDialog' #confirmDialog [visible]='hidden' [allowDragging]='true' [isModal]='isModal' [animationSettings]='animationSettings' content='Are you sure you want to delete this Evidence?' [target]='target'
+header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>  
 <!--
     Add a new evidence
 -->
@@ -158,4 +186,4 @@ header='Delete Evidence' width='450px' [buttons]='buttons' [showCloseIcon]='show
     Confirmation Dialog Before Leaving the Release PAge without saving
 -->
 <ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that are not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
-header='Leave Page?' width='450px' [buttons]='saveButtons' [showCloseIcon]='showCloseIcon'></ejs-dialog>  
+header='Leave Page?' width='450px' [buttons]='saveButtons' ></ejs-dialog>  

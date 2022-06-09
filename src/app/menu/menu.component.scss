@@ -166,8 +166,16 @@
 .e-toolbar .e-toolbar-items {
     background: rgb(0, 113, 197);
 }
+
+.e-menu-wrapper {
+    border: none;
+    border-radius: 0px;
+    display: inline-block;
+    line-height: 0;
+}
 .e-menu-wrapper, .e-menu-container{
     background: rgb(0, 113, 197);
     width: -webkit-fill-available;
 }
+
 

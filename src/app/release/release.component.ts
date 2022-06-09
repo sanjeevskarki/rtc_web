@@ -7,6 +7,9 @@ import { ReleaseService } from './release.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
+import { AnimationSettingsModel, DialogComponent, PositionDataModel } from '@syncfusion/ej2-angular-popups';
+import { Subject } from 'rxjs';
+import { EmitType } from '@syncfusion/ej2-base';
 
 export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
 
@@ -18,9 +21,14 @@ export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
 
 export class ReleaseComponent implements OnInit {
 
+  @ViewChild('releaseConfirmDialog')
+  public releaseConfirmDialog!: DialogComponent;
+
   releaseForm!: FormGroup;
+  public isModal: Boolean = true;
   // set the placeholder to DropDownList input element
   public type: string = 'Select a Release Type';
+  public handover: string = 'Select a Handover Type';
   public milestonePlaceholder: string = 'Select a Milestone';
   @ViewChild('release')
   public releaseObj!: DropDownListComponent;
@@ -30,6 +38,7 @@ export class ReleaseComponent implements OnInit {
   // set the height of the popup element
   public height: string = '220px';
   public date: Object = new Date();
+  public format: string = 'dd-MMM-yy';
   
   showSpinner :boolean=false; 
   public width: string = '70';
@@ -41,17 +50,18 @@ export class ReleaseComponent implements OnInit {
   public max3: number = 100;
   public type3: string = 'Circular';
   selectedMilestone!:string;
+  selectedType!:string;
+  selectedHandoverType!:string;
+  isExternal:boolean=false;
 
   public releaseTypes: Object[] = [
-    { Id: 'external', Game: 'External' },
-    { Id: 'internal', Game: 'Internal' }
+    { Id: 'external', Milestone: 'External' },
+    { Id: 'internal', Milestone: 'Internal' }
   ];
-  public milestones: Object[] = [
-    { Id: 'poc', Game: 'POC' },
-    { Id: 'alpha', Game: 'Alpha' },
-    { Id: 'pre-alpha', Game: 'Pre-Alpha' },
-    { Id: 'beta', Game: 'Beta' },
-    { Id: 'gold', Game: 'Gold' }
+  public milestones: Object[] = [];
+  public handoverType: Object[] = [
+    { Id: 'whandover', Milestone: 'With Handover' },
+    { Id: 'wohandover', Milestone: 'Without Handover' }
   ];
   details:ReleaseDetails[]=[];
   newChecklist!:Checklist;
@@ -71,49 +81,84 @@ export class ReleaseComponent implements OnInit {
   ];
 
   newRelease!:NewRelease;
+  workWeek!:string;
+  isWorkWeekVisible:boolean=false;
+  milestoneList:string[]=[];
+  public target: string = '#modalTarget';
+  public hidden: boolean = false;
+  
+  public animationSettings: AnimationSettingsModel = { effect: 'None' };
+  
   constructor(private formBuilder: FormBuilder, private service:ReleaseService) { }
 
   ngOnInit(): void {
+    this.getMilestones();
     var tempRelease:NewRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
-    
     this.existingCheckList = JSON.parse(localStorage.getItem("checkList")!);
     this.existingCheckList = this.existingCheckList === null ? []:this.existingCheckList
-    // this.format = this.value;
+
     this.releaseForm = this.formBuilder.group({
       name: [null, Validators.required],
       type: [null, Validators.required],
+      handover: [null, []],
       milestone:  [null, Validators.required],
       date: [null, Validators.required],
       contact: [null, Validators.required],
       email: [null, [Validators.required,Validators.email]],
     });
     if(tempRelease){
+      if(tempRelease.handover && tempRelease.type === 'external' && tempRelease.milestone === 'poc'){
+        this.isExternal=true;
+      }else{
+        this.isExternal=false;
+      }
       this.releaseForm.patchValue({
         name: tempRelease.name,
         type: tempRelease.type,
         milestone:  tempRelease.milestone,
+        handover:tempRelease.handover,
         date: tempRelease.date,
         contact: tempRelease.contact,
         email: tempRelease.email,
       });
-      // this.releaseForm.patchValue(value:tempRelease);
+      this.workWeek = "ww"+moment(new Date(tempRelease.date), "MM-DD-YYYY").week()+"'"+new Date(tempRelease.date).getFullYear();
+      this.isWorkWeekVisible=true;
     }
   }
 
   // maps the appropriate column to fields property
-  public fields: Object = { text: 'Game', value: 'Id' };
+  public fields: Object = { text: 'Milestone', value: 'Id' };
+  public milestonefields: Object = { text: 'label', value: 'Id' };
 
-  public onChange(args: any): void {
-    let value: Element = document.getElementById('value')!;
-    let text: Element = document.getElementById('text')!;
-    // update the text and value property values in property panel based on selected item in DropDownList
-    value.innerHTML = this.releaseObj.value.toString();
-    text.innerHTML = this.releaseObj.text;
-  }
+  // public onChange(args: any): void {
+  //   let value: Element = document.getElementById('value')!;
+  //   let text: Element = document.getElementById('text')!;
+  //   // update the text and value property values in property panel based on selected item in DropDownList
+  //   value.innerHTML = this.releaseObj.value.toString();
+  //   text.innerHTML = this.releaseObj.text;
+  // }
 
   onValueChange(args: any):void {
     /*Displays selected date in the label*/
     (<HTMLInputElement>document.getElementById('selected')).textContent = 'Selected Value: ' + args.value.toLocaleDateString();
+  }
+
+  onTypeSelect(args:any): void {
+    // alert(this.releaseForm.controls['type'].value);
+    if(args.value === 'external' && this.releaseForm.controls['milestone'].value === 'poc'){
+      this.isExternal=true;
+    }else{
+      this.isExternal=false;
+    }
+  }
+
+  onMilestoneSelect(args:any): void {
+    // alert(this.releaseForm.controls['type'].value);
+    if(args.value === 'poc' && this.releaseForm.controls['type'].value === 'external'){
+      this.isExternal=true;
+    }else{
+      this.isExternal=false;
+    }
   }
 
   save(){
@@ -126,11 +171,13 @@ export class ReleaseComponent implements OnInit {
     localStorage.setItem("tempCheckList", JSON.stringify(this.newRelease));
     this.toastObj.show(this.toasts[1]);
     this.releaseForm.reset();
+    this.isWorkWeekVisible=false;
   }
 
   reset(){
     this.releaseForm.reset();
     localStorage.removeItem("tempCheckList");
+    this.isWorkWeekVisible=false;
   }
 
   public onCreate(): void {
@@ -157,15 +204,31 @@ export class ReleaseComponent implements OnInit {
     this.newRelease.id = uuidv4();
     this.newRelease.name = this.releaseForm.controls['name'].value;
     this.newRelease.type = this.releaseForm.controls['type'].value;
+    this.newRelease.handover = this.releaseForm.controls['handover'].value;
     this.newRelease.milestone = this.releaseForm.controls['milestone'].value;
     this.newRelease.date = new Date(this.releaseForm.controls['date'].value);
     this.newRelease.contact =this.releaseForm.controls['contact'].value;
     this.newRelease.email = this.releaseForm.controls['email'].value;
   }
 
+  getMilestones() {
+    this.service.milestones().subscribe(
+      (response) => {
+        this.milestoneList = response;
+        this.createMilestoneDropdown();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+
+
   getDetails() {
     this.selectedMilestone=this.releaseForm.controls['milestone'].value;
-    this.service.details(this.selectedMilestone.toLocaleLowerCase()!).subscribe(
+    this.selectedType=this.releaseForm.controls['type'].value;
+    this.selectedHandoverType=this.releaseForm.controls['handover'].value;
+    this.service.details(this.selectedMilestone.toLocaleLowerCase()!,this.selectedHandoverType?.toLocaleLowerCase()!,this.selectedType?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
         this.createNewCheckList();
@@ -207,5 +270,77 @@ export class ReleaseComponent implements OnInit {
     this.showSpinner = false;
   }
 
+  onChange(args:any) {
+    this.workWeek = "ww"+moment(new Date(args.value), "MM-DD-YYYY").week()+"'"+new Date(args.value).getFullYear();
+    this.isWorkWeekVisible=true;
+  }
 
+  onLoad(args: any) {
+    /*Date need to be disabled*/
+    if (args.date.getTime() <= new Date().getTime()) {
+        args.isDisabled = true;
+    }
+  }
+
+  
+  createMilestoneDropdown(){
+    if(this.milestoneList != null){
+        for (var i = 0; i < this.milestoneList.length; i++) {
+            this.milestones.push({ Milestone: this.milestoneList[i], Id: this.milestoneList[i].toLocaleLowerCase() });
+        }
+    }
+  }
+
+    /**
+   * Check whether any data has been changed before routing to other page
+   * @returns boolean value true if data change, false when nothing changed
+   */
+  checkData(){
+    if(this.releaseForm.dirty || this.releaseForm.pristine){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  continueNavigation(){
+    this.onSelection(true);
+  }
+
+  subject = new Subject<boolean>();
+
+  onSelection(isNavigate: boolean) {
+    if (isNavigate) {
+      this.subject.next(true);
+    } else {
+      this.subject.next(false);
+    }
+  }
+
+  
+  openConfirmation(){
+    this.releaseConfirmDialog.show();
+  }
+
+  public hideReleaseConfirmDialog: EmitType<object> = () => {
+    this.releaseConfirmDialog.hide();
+    
+  }
+
+  public saveButtons: Object = [
+    {
+        'click': this.continueNavigation.bind(this),
+          buttonModel:{
+          content:"Dont'Save",
+          cssClass:'e-danger',
+        }
+    },
+    {
+        'click': this.hideReleaseConfirmDialog.bind(this),
+          buttonModel:{
+          content:'Cancel',
+          cssClass:'e-info',
+        }
+    }    
+  ];
 }

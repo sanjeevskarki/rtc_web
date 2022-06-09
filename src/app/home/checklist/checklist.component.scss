@@ -479,27 +479,32 @@ table.box-table td.formtext {
 }
 
 .e-evidence:before{
-    content:'\e203';
-    font-size: 20px;
-}
-
-.e-evidencelink:before{
-    content:'\e72e';
-    font-size: 20px;
+    content:'\e709';
+    font-size: 15px;
+    color: white;
 }
 
 .e-delete:before{
-    content:'\e33e';
-    font-size: 20px;
-}
-
-.e-add:before{
-    content:'\e22c';
+    content:'\e70c';
     font-size: 15px;
 }
 
-e-delete-icon{
-    content:'\eb00';
+.e-add:before{
+    content:'\e338';
+    font-size: 12px;
+    color: white;
+}
+
+.e-add1:before{
+    content:'\e338';
+    font-size: 15px;
+    color: black;
+}
+
+.e-plus:before{
+    content:'\e95c';
+    font-size: 12px;
+    color: white;
 }
 
 .e-upload {
@@ -566,3 +571,154 @@ e-delete-icon{
   .toast-icons.e-warning::before {
     content: "\e703";
   }
+
+
+  .control_wrapper {
+    max-width: 500px;
+    min-width: 245px;
+    margin: auto;
+  }
+  .address-field {
+  resize: none;
+  }
+  #control_wrapper {
+  max-width: 500px;
+  margin: auto;
+  border: 0.5px solid #BEBEBE;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.36);
+  padding: 1% 4% 0%;
+  background: #f9f9f9;
+  }
+  .highcontrast #control_wrapper {
+  background: #000000;
+  }
+  #reactive .form-group .upload-area {
+  width: 100%;
+  }
+  .fabric #reactive .form-group .upload-area {
+    background: transparent;
+  }
+  
+  .bootstrap #reactive .form-group .upload-area input, .fabric #reactive .form-group .upload-area input {
+    background: #ffffff;
+  }
+  .e-error {
+  padding-top:3px;
+  }
+  #reactive .form-group .submit-btn {
+  margin-top: 15px;
+  position: relative;            
+  }
+  #reactive .form-group .submitBtn .desc {
+  margin: 2% 23% 0% 18%;
+  }
+  @media only screen and (max-width: 500px) {
+  #reactive .form-group .submitBtn .desc {
+    margin: 12px;
+  }
+  }
+  #reactive .form-group .submitBtn {
+  position: relative;        
+  text-align: center;
+  }
+  .bootstrap #reactive .form-group .submit-btn {
+  margin-left: 8px;          
+  }
+  .e-bigger.material #reactive .form-group .submit-btn {
+  margin-left: -7px;          
+  }
+  .fabric #reactive .form-group .submit-btn, .highcontrast #reactive .form-group .submit-btn {
+  margin-left: -11px;          
+  }
+  .e-bigger.fabric #reactive .form-group .submit-btn, .e-bigger.highcontrast #reactive .form-group .submit-btn {
+  margin-left: -25px;          
+  }
+  .e-bigger.bootstrap #reactive .form-group .submit-btn {
+  margin-left: -8px;          
+  }
+  .success .successmsg {
+  border: 0.5px solid green;
+  padding: 10%;
+  color: green;
+  }
+  form#reactive {
+  position: relative;
+  top: 14%;
+  }
+  .material #reactive .form-group .e-upload, #reactive .form-group .e-upload {
+  display: none;
+  }
+  #reactive .upload-area button#browse {
+  float: right;
+  margin-top: -28px;
+  }
+  .material.e-bigger #reactive .upload-area button#browse {  
+    margin-top: -36px;
+    }
+  .fabric #reactive .upload-area button#browse,
+  .highcontrast #reactive .upload-area button#browse {
+    float: right;
+    margin-top: -32px;
+    }
+  .fabric.e-bigger #reactive .upload-area button#browse,
+  .highcontrast.e-bigger #reactive .upload-area button#browse,
+  .bootstrap.e-bigger #reactive .upload-area button#browse {
+      margin-top: -40px;
+    }
+    .bootstrap #reactive .upload-area button#browse {
+    float: right;
+    margin-top: -35px;
+    }  
+  #reactive .form-group .e-float-input.upload-area .e-float-line, .material .e-float-input.upload-area .e-float-line {  
+    width: 70%;
+    margin-top: initial;
+  }
+  #reactive .form-group .upload-area input {
+  width: 70%;
+  }
+  
+  .bootstrap4 button#browse {
+    margin-top: -33px;
+  }  
+  
+  @media (min-width: 250px) and (max-width: 500px) {
+  #control_wrapper.control_wrapper {
+    padding: 1% 4% 12%;
+  }
+  }
+  @media (max-width: 300px) {
+  #control_wrapper.control_wrapper {
+    padding: 1% 4% 15%;
+  }
+  }
+  .bootstrap #reactive .form-group .upload-area {
+   background: transparent;
+  }
+  .form-title {
+  text-align: center;
+  }
+  #mobileno::-webkit-inner-spin-button, 
+  #mobileno::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+  }
+  .highcontrast #control_wrapper.control_wrapper,
+  .material-dark #control_wrapper.control_wrapper,
+  .fabric-dark #control_wrapper.control_wrapper,
+  .bootstrap-dark #control_wrapper.control_wrapper,
+  .bootstrap5-dark #control_wrapper.control_wrapper {
+      background: #393939;
+  }
+  .tailwind-dark #control_wrapper.control_wrapper { 
+      background: #6c757d;
+  }
+
+  #button-control .e-add-icon::before {
+    content: "\e70a";
+}
+
+.e-grid .e-rowcell{
+    font-size: 12px;
+}
+
+  

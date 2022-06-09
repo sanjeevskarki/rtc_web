@@ -40,6 +40,7 @@ export interface ViewReleaseChecklist {
 export interface Comments {
   id:string;
   message:string;
+  file:Files[];
   date:number;
 }
 
@@ -77,6 +78,7 @@ export interface Unit {
 export interface ViewComment {
   id:string;
   message:string;
+  file:Files[];
   date:string | undefined;
 }
 
@@ -105,8 +107,14 @@ export interface NewRelease {
   id:string;
   name:string;
   type:string;
+  handover:string|null;
   milestone:string;
   date:Date;
   contact:string;
   email:string;
+}
+
+export interface Files {
+  id:string;
+  name:string;
 }

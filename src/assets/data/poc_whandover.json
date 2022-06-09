@@ -1,0 +1,169 @@
+[
+    {
+        "id": "asdfd5a66f5735b084075f81af70ad31",
+        "vector": "Collateral",
+        "details": [
+            {
+                "id": "jukid5a66f5735b084075f81af70ad31",   
+                "detail":"Customer Documentation Readiness ",
+                "releaseCriteria":"All customer documents identified and planned. All customer collateral for pre-Alpha ready for release including known SW limitations & defects"
+            }
+        ]   
+    },
+    {
+        "id": "asdfd5a66f5735b084075f81af70ad32",
+        "vector": "Validation",
+        "details": [
+            {
+                "id": "jukid5a66f5735b084075f81af70ad32",
+                "detail":"Functional Validation Plan",
+                "releaseCriteria":"Plan Approved & coverage is 100% of the functional requirements"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad33",
+                "detail":"Functional validation  Execution",
+                "releaseCriteria":"BAT is 100% completed and passed.Testing complete for ingredient features gating Platform POE-gating use cases"
+            }
+        ]
+    },
+    {
+        "id": "asdfd5a66f5735b084075f81af70ad33",
+        "vector": "Compliance",
+        "details": [
+            {
+                "id": "jukid5a66f5735b084075f81af70ad34",
+                "detail":"OS Cert completeness, Standards compliance (FUSA), Accessibility & Waiver Status",
+                "releaseCriteria":"All applicable standards/compliance including accessibility and FIPS requirements identified & reviewed/approved in PDT/PXT"
+            }
+        ]
+    },
+    {
+        "id": "asdfd5a66f5735b084075f81af70ad34",
+        "vector": "Legal",
+        "details": [
+            {
+                "id": "jukid5a66f5735b084075f81af70ad35",
+                "detail":"Export",
+                "releaseCriteria":"Approved"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad36",
+                "detail":"TM&B",
+                "releaseCriteria":"Approved"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad37",
+                "detail":"Protex Scan",
+                "releaseCriteria":"Running"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad38",
+                "detail":"Protex BOM",
+                "releaseCriteria":"fully & accurately  populated including the correct usage  per component"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad39",
+                "detail":"Protex Matches & License conflicts",
+                "releaseCriteria":"All Protex Matches & License conflicts resolved"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad40",
+                "detail":"Protex Obligations",
+                "releaseCriteria":"All Protex Obligations fulfilled and checked in Protex"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad41",
+                "detail":"OBL",
+                "releaseCriteria":"Defined and approved by BU attorney"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad42",
+                "detail":"OS PDT",
+                "releaseCriteria":"Approved"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad43",
+                "detail":"Copyright readme file",
+                "releaseCriteria":"Ready"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad44",
+                "detail":"TPP/Attributions file",
+                "releaseCriteria":"Ready"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad45",
+                "detail":"Legal text file ",
+                "releaseCriteria":"Integrate as part of the released SW package "
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad46",
+                "detail":"Record Center ",
+                "releaseCriteria":"Release SWLC evidence archived in the Record Center"
+            }
+        ]
+    },
+    {
+        "id": "asdfd5a66f5735b084075f81af70ad35",
+        "vector": "Privacy",
+        "details": [
+            {
+                "id": "jukid5a66f5735b084075f81af70ad47",
+                "detail":"PIA (Privacy Impact Assesment)",
+                "releaseCriteria":"Approved"
+            }
+        ]
+    },
+    {
+        "id": "asdfd5a66f5735b084075f81af70ad36",
+        "vector": "Security",
+        "details": [
+            {
+                "id": "jukid5a66f5735b084075f81af70ad48",
+                "detail":"SDLe project creation",
+                "releaseCriteria":"SDLe Project survey completed & tasks dispositioned"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad49",
+                "detail":"Static Analysis setup",
+                "releaseCriteria":"Running"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad50",
+                "detail":"Statuic Analysis issues",
+                "releaseCriteria":"Dispositioned"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad51",
+                "detail":"Composition Analysis setup (SNYK / BDBA)",
+                "releaseCriteria":"Running"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad52",
+                "detail":"Composition Analysis issues",
+                "releaseCriteria":"Dispositioned"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad53",
+                "detail":"NetSparker deployment on the pre-production environment",
+                "releaseCriteria":"Deployed & running and all issues resolved"
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad54",
+                "detail":"NetSparker deployment on the production environment",
+                "releaseCriteria":"Deployed & Running "
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad55",
+                "detail":"A/V Scan",
+                "releaseCriteria":"Scan is clean for the released SW "
+            },
+            {
+                "id": "jukid5a66f5735b084075f81af70ad56",
+                "detail":"SDLe tasks",
+                "releaseCriteria":"All required pre-production tasks meet creteria"
+            }
+        ]
+    }
+]
+

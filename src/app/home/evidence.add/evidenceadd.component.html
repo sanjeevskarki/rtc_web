@@ -1,5 +1,5 @@
-<ejs-dialog id="addEvidenceDialog" class='e-fixed' #addEvidenceDialog [header]='evidenceHeader' [position]='position' [visible]='hidden' [isModal]='isModal'
-[target]='target1' [width]='width' [animationSettings]='animationSettings' [showCloseIcon]='showCloseIcon' (close)="evidenceDialogClose()">
+<ejs-dialog id="addEvidenceDialog" class='e-fixed' #addEvidenceDialog [header]='evidenceHeader' [visible]='hidden' [isModal]='isModal'
+[target]='target1' [width]='width' [animationSettings]='animationSettings' (close)="evidenceDialogClose()" [position]='position'>
     <ng-template #content>
         <div class="control-section">
             <div class="col-lg-12">
@@ -12,7 +12,7 @@
                                 <span class="e-float-line"></span>
                                 <label class="e-float-text" for="title">Title</label> -->
                             </div> 
-                        <div *ngIf="evidenceForm.controls.title.hasError('required') && evidenceForm.controls.title.touched" class="e-error">Title is required</div>                                                 
+                        <div *ngIf="evidenceForm.controls.title.hasError('required') && evidenceForm.controls.title.touched" class="e-error">* Title is required</div>                                                 
                         </div>
                     </div>
                     <div class="form-group" >
@@ -22,13 +22,13 @@
                             <span class="e-float-line"></span>
                             <label class="e-float-text e-label-top" for="link">Link</label> -->
                         </div>
-                        <div *ngIf="evidenceForm.controls.link.hasError('pattern')" class="e-error">Enter a Valid Link</div> 
+                        <div *ngIf="evidenceForm.controls.link.hasError('pattern')" class="e-error">* Enter a Valid Link</div> 
                     </div>
                     <div class="form-group" >
                         <div class="e-float-input">
-                            <ejs-textbox placeholder="Choose a file" cssClass="e-outline" floatLabelType="Auto" formControlName="upload" [(ngModel)]="uploadInput" (input)="onFileSelect($event)"></ejs-textbox>
+                            <ejs-textbox placeholder="Choose a file" cssClass="e-outline" floatLabelType="Auto" formControlName="upload" readonly [(ngModel)]="uploadInput" (input)="onFileSelect($event)"></ejs-textbox>
                             <!-- <input type="text" id="upload" name="upload" [(ngModel)]="uploadInput" formControlName="upload"> -->
-                            <button id="browse" class="e-control e-btn e-info" style="float: right;" (click)='onFileSelected()'>Browse...</button>                        
+                            <button id="browse" class="e-control e-btn e-info" style="float: right;margin-top: 5px;" (click)='onFileSelected()'>Browse...</button>                        
                             <!-- <span class="e-float-line"></span> -->
                             <!-- <label class="e-float-text e-label-top" for="upload">Choose a file</label> -->
                         </div>            
@@ -41,10 +41,11 @@
                             <span class="e-float-line"></span>
                             <label class="e-float-text e-label-top" for="comment">Comments</label> -->
                         </div>
-                        <div *ngIf="evidenceForm.controls.comment.hasError('required') && evidenceForm.controls.comment.touched" class="e-error">Comment is required</div> 
-                        <div class="submitBtn">
-                            <button type="reset" ejs-button cssClass="e-info" [isPrimary]="true" [disabled]="!evidenceForm.valid" (click)= "Submit()" style="margin-top: 10px">Save</button>
-                            <!-- <button cssClass="e-info" id="submit-btn" [disabled]="!evidenceForm.valid" type="reset" (click)= "Submit()">Save</button>                   -->
+                        <div *ngIf="evidenceForm.controls.comment.hasError('required') && evidenceForm.controls.comment.touched" class="e-error">* Comment is required</div> 
+                        <div class="submitBtn" style="float: right;margin-top: 10px;">
+                            <button type="submit" ejs-button cssClass="e-info" [isPrimary]="true" [disabled]="!evidenceForm.valid" (click)= "Submit()" >Save</button>
+                            <button type="button" ejs-button cssClass="e-info" (click)="closeEvidence()" style="margin-left: 20px;">Cancel</button>
+                            <!-- <button cssClass="e-info" id="submit-btn" [disabled]="!evidenceForm.valid" type="reset" (click)= "Submit()">Save</button>-->
                         </div>
                     </div>                                       
                 </form>             

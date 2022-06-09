@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class EvidenceAddComponent implements OnInit {
 
   @ViewChild('addEvidenceDialog')
-    public addEvidenceDialog!: DialogComponent;
+  public addEvidenceDialog!: DialogComponent;
 
   public header: string = 'About SYNCFUSION Succinctly Series';
   
@@ -185,7 +185,6 @@ export class EvidenceAddComponent implements OnInit {
   public isFieldValid(field: string) {
     return !this.evidenceForm.get(field)!.valid && (this.evidenceForm.get(field)!.dirty || this.evidenceForm.get(field)!.touched);
   }
-
 
 
 }

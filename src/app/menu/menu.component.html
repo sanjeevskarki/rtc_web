@@ -1,6 +1,6 @@
 <div class="control-section" id="sidebar-wrapper">
     <!-- main content declaration -->
-    <div>
+   
         <ejs-toolbar cssClass="defaultToolbar" id="defaultToolbar">
             <e-items>
                 <e-item>
@@ -19,15 +19,15 @@
                 </e-item>
                 <e-item cssClass="e-custom" align="Right">
                     <ng-template #template>
-                        <div class="image-container" style="margin: 9px;">
+                        <div class="image-container">
                             <img height="30px" src="./assets/intel-logo-white-100.png" />
                         </div>
                     </ng-template>
                 </e-item>
             </e-items>
         </ejs-toolbar> 
-    </div>
-    <div id="defaultSample" class="control-section ">
+    
+    <div id="defaultSample" class="control-section">
         <div class="menu-control">
             <ejs-menu [items]='menuItems' style="color: white;margin-left: 20px;" (select)='select($event)'></ejs-menu>
         </div>
