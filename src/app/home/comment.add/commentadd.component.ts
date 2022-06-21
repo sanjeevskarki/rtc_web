@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RemovingEventArgs, UploaderComponent } from '@syncfusion/ej2-angular-inputs';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
@@ -7,11 +7,20 @@ import { AnimationSettingsModel, DialogComponent } from '@syncfusion/ej2-angular
 import { EmitType } from '@syncfusion/ej2-base';
 import { v4 as uuidv4 } from 'uuid';
 import { Comments, Files, ReleaseChecklist } from '../home.models';
+import {
+  ToolbarService,
+  LinkService,
+  ImageService,
+  HtmlEditorService,
+  RichTextEditorComponent
+} from '@syncfusion/ej2-angular-richtexteditor';
+
 
 @Component({
-  selector: 'commentadd',
+  selector: 'app-commentadd',
   templateUrl: './commentadd.component.html',
-  styleUrls: ['./commentadd.component.scss']
+  styleUrls: ['./commentadd.component.scss'],
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService],
 })
 export class CommentAddComponent implements OnInit {
 
@@ -21,6 +30,10 @@ export class CommentAddComponent implements OnInit {
   file!:Files;
   @ViewChild('addCommentDialog')
   public addCommentDialog!: DialogComponent;
+
+  height: number = 350;
+  value = '';
+  
   public target1: string = '#modalTarget';
   public target2: string = '#addCommentDialog';
   public toastPosition: ToastPositionModel = { X: 'Right' };
@@ -30,7 +43,7 @@ export class CommentAddComponent implements OnInit {
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
   public position: object={ X: 'center', Y: 'center' };
   public animationSettings: AnimationSettingsModel = { effect: 'None' };
-  public width: string = '51%';
+  public width: string = '37%';
 
   public isModal: Boolean = true;
   public hidden: Boolean = false;
@@ -50,7 +63,7 @@ export class CommentAddComponent implements OnInit {
   
   @ViewChild('toasttype')
   private toastObj!: ToastComponent;
-  @Output() childEvent = new EventEmitter<any>();
+  @Output() childEvent1 = new EventEmitter<any>();
 
   public toasts: { [key: string]: Object }[] = [
     { title: 'Success!', content: 'Comment Added Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
@@ -61,16 +74,19 @@ export class CommentAddComponent implements OnInit {
   };
   public dropElement: HTMLElement = document.getElementsByClassName('control-fluid')[0] as HTMLElement;
 
-  @ViewChild('defaultupload')
+  @ViewChild('commentUpload')
   public uploadObj!: UploaderComponent;
 
-  constructor() { }
+  @ViewChild('default', { static: false })
+  private rteObj!: RichTextEditorComponent;
+
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.addCommentHeader = "Add Comment";
-    this.commentForm = new FormGroup({
-      'comment': new FormControl(null, Validators.required),
-      'upload': new FormControl(null, [])
+    this.commentForm = this.formBuilder.group({
+      comment: [null, Validators.required],
+      upload:  [null, []],
     });
   }
 
@@ -88,7 +104,7 @@ export class CommentAddComponent implements OnInit {
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
   }
 
-  public onFileSelect: EmitType<Object> = (args: any) => {
+  public onCommentFileSelect: EmitType<Object> = (args: any) => {
     this.uploadCommentInput = args.filesData[0].name;
     this.file=<Files>{};
     this.file.id = args.filesData[0].id;
@@ -99,6 +115,7 @@ export class CommentAddComponent implements OnInit {
 
   addComment(){
     this.addCommentDialog.show();
+    this.rteObj.refreshUI();
   }
 
   closeComment(){
@@ -107,13 +124,12 @@ export class CommentAddComponent implements OnInit {
 
   public Submit(): void {
     this.createNewComment();
-    this.childEvent.emit(this.newComment);
+    this.childEvent1.emit(this.newComment);
     this.toastObj.show(this.toasts[0]);
     this.addCommentDialog.hide();
   }
  
   createNewComment() {
-    alert(this.files.length);
     const newComments: Comments = {
       id:uuidv4(),
       message: this.commentForm.controls['comment'].value,

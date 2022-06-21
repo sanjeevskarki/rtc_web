@@ -1,0 +1,5 @@
+# Staticfile
+ssi: enabled
+directory: visible
+pushstate: enabled
+force_https: true

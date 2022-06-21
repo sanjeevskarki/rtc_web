@@ -11,10 +11,11 @@ import { AnimationSettingsModel, ButtonPropsModel, DialogComponent } from '@sync
 import { ToastComponent, ToastCloseArgs, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
 import { Evidences } from '../home.models';
 import { v4 as uuidv4 } from 'uuid';
+import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
 
 
 @Component({
-  selector: 'evidenceadd',
+  selector: 'app-evidenceadd',
   templateUrl: './evidenceadd.component.html',
   styleUrls: ['./evidenceadd.component.scss']
 })
@@ -47,6 +48,9 @@ export class EvidenceAddComponent implements OnInit {
     { title: 'Error!', content: 'You have already uploaded a file. Please remove it for adding a link', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' },
     { title: 'Success!', content: 'Evidence Added Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
   ];
+
+  isFileUploadSelected:boolean=false;
+  isLinkSelected:boolean=false;
  
   ngAfterViewInit(): void {
       // document.getElementById('dlgbtn')!.focus();
@@ -65,6 +69,8 @@ export class EvidenceAddComponent implements OnInit {
   }
 
   addEvidence(){
+    this.isLinkSelected=false;
+    this.isFileUploadSelected=false;
     this.addEvidenceDialog.show();
   }
 
@@ -78,8 +84,10 @@ export class EvidenceAddComponent implements OnInit {
 
   evidenceForm!: FormGroup;
 
-  @ViewChild('upload')
-  public uploadObj!: UploaderComponent;
+  
+
+  @ViewChild('defaultupload')
+  public evidenceUploadObj!: UploaderComponent;
   @ViewChild('Dialog')
   public dialogObj!: DialogComponent;
   
@@ -95,8 +103,21 @@ export class EvidenceAddComponent implements OnInit {
   this.dialogObj.hide();
   }
 
-  public dlgButtons: Object[] = [{ click: this.dlgBtnClick.bind(this), buttonModel: { content: 'Ok', isPrimary: true } }];
+  public uploadTypes: Object[] = [
+    { Id: 'file', Upload: 'File' },
+    { Id: 'link', Upload: 'Link' }
+  ];
+
+  public fields: Object = { text: 'Upload', value: 'Id' };
+  public type: string = 'Select a Upload Type';
+
+  @ViewChild('uploadType')
+  public uploadTypeObj!: DropDownListComponent;
+
+  // public dlgButtons: Object[] = [{ click: this.dlgBtnClick.bind(this), buttonModel: { content: 'Ok', isPrimary: true } }];
   public uploadInput: string = '';
+
+  constructor(private formBuilder: FormBuilder) {}
 
   isValueExist(value:string): boolean {
     if (typeof value != 'undefined' && value) {
@@ -105,7 +126,7 @@ export class EvidenceAddComponent implements OnInit {
     return true;
   }
 
-  public onFileSelected() {
+  public browseClick() {
     let linkCheck = this.evidenceForm.controls['link'].value;
     if(!this.isValueExist(linkCheck)){
       this.evidenceForm.controls['upload'].reset();
@@ -114,6 +135,16 @@ export class EvidenceAddComponent implements OnInit {
     }
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
   }
+
+  // public onFileSelected() {
+  //   let linkCheck = this.evidenceForm.controls['link'].value;
+  //   if(!this.isValueExist(linkCheck)){
+  //     this.evidenceForm.controls['upload'].reset();
+  //     this.toastObj.show(this.toasts[0]);
+  //     return;
+  //   }
+  //   document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
+  // }
 
   onLinkSelected(){
     let uploadCheck = this.evidenceForm.controls['upload'].value;
@@ -131,16 +162,17 @@ export class EvidenceAddComponent implements OnInit {
     this.addEvidenceDialog.hide();
   }
 
-  public onFileSelect: EmitType<Object> = (args: any) => {
+  public onEvidenceFileSelect: EmitType<Object> = (args: any) => {
     this.uploadInput = args.filesData[0].name;
   }
 
-  constructor(private formBuilder: FormBuilder) {}
-  
   ngOnInit() {
+    this.isLinkSelected=false;
+    this.isFileUploadSelected=false;
     this.evidenceForm = this.formBuilder.group({
       title: [null, Validators.required],
-      link: [     , [Validators.pattern(this.reg)]],
+      type:[null, Validators.required],
+      link: [null, [Validators.pattern(this.reg)]],
       upload:  [null, []],
       comment: [null, Validators.required],
     });
@@ -155,15 +187,13 @@ export class EvidenceAddComponent implements OnInit {
     }.bind(this), 200);
   }
 
-  
   createNewEvidence() {
     const newEvidence: Evidences = {
       id:uuidv4(),
       title: this.evidenceForm.controls['title'].value,
       comments: this.evidenceForm.controls['comment'].value,
       evidence: this.getEvidence(),
-      date: new Date().getTime()
-      
+      date: new Date().getTime() 
     };
     this.newEvidence = newEvidence;
   }
@@ -178,13 +208,20 @@ export class EvidenceAddComponent implements OnInit {
       return evidence;
     }
     return '';
-
   }
-
 
   public isFieldValid(field: string) {
     return !this.evidenceForm.get(field)!.valid && (this.evidenceForm.get(field)!.dirty || this.evidenceForm.get(field)!.touched);
   }
 
+  onTypeSelect(args:any): void {
+    if(args.value === 'file'){
+      this.isFileUploadSelected=true;
+      this.isLinkSelected=false;
+    }else{
+      this.isLinkSelected=true;
+      this.isFileUploadSelected=false;
+    }
+  }
 
 }

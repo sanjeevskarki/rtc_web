@@ -31,20 +31,40 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "Staticfile",
+                "input": "",
+                "output": "/"
+              }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@syncfusion/ej2-angular-buttons/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-angular-grids/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-angular-dropdowns/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-grids/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-popups/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-inputs/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-angular-notifications/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-angular-inputs/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-angular-popups/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-angular-calendars/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-angular-navigations/styles/bootstrap.css",
+              "node_modules/@syncfusion/ej2-base/styles/bootstrap.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/moment/min/moment.min.js"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4mb",
-                  "maximumError": "6mb"
+                  "maximumWarning": "8mb",
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",

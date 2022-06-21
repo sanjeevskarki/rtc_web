@@ -118,3 +118,9 @@ export interface Files {
   id:string;
   name:string;
 }
+
+export interface Login {
+  userId:string;
+  password:string;
+}
+

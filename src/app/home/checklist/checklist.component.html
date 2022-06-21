@@ -3,14 +3,15 @@
         <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek}}</span>   
     </div>
     <br>
-    <ejs-grid #grid [dataSource]='viewReleaseChecklist'  [allowTextWrap]="true" [allowSelection]='true' [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
-                    [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  [toolbar]='toolbar' >
+    <ejs-grid #grid [dataSource]='viewReleaseChecklist' [allowTextWrap]="true" [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
+                    [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  [toolbar]='toolbar'  height='650' >
         <e-columns>
             <e-column field='vector'  [filter]='filter' headerText='Vector' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
             <e-column field='detail'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
             <e-column field='owner' headerText='Owner' textAlign="left" width=40>
                 <ng-template #template let-data> 
                     <div class="e-input-group">
+                         <!-- <ejs-textbox class="e-input" [(ngModel)]="data.owner"></ejs-textbox> -->
                         <input class="e-input" type="text" [(ngModel)]="data.owner"/>
                         <ejs-tooltip #tooltip content='Update'>
                             <span class="e-input-group-icon e-icons e-add1" (click)="addOwner(data.id,data.owner)"></span>
@@ -46,16 +47,16 @@
             <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'>
                 <ng-template #template let-data> 
                     <div class="e-input-group">       
-                        <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus"></textarea>
-                        <ejs-tooltip #tooltip content='Update'>
+                        <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus" (blur)="addDetailedStatus(data.id,data.detailedStatus)"></textarea>
+                        <!-- <ejs-tooltip #tooltip content='Update'>
                             <span class="e-input-group-icon  e-icons e-add1" (click)="addDetailedStatus(data.id,data.detailedStatus)"></span>
-                        </ejs-tooltip>
+                        </ejs-tooltip> -->
                     </div>
                     <!-- <ejs-textbox rows="2" cssClass="e-outline" [multiline]="true"></ejs-textbox> -->
                 </ng-template>
             </e-column>
             <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width='70'  [allowEditing]= 'false'></e-column>
-            <e-column headerText='Evidence' textAlign='Center' width='50'  [allowEditing]= 'false'>
+            <e-column headerText='Evidence' textAlign='Left' width='50'  [allowEditing]= 'false'>
                 <ng-template #template let-evidence>
                     <div *ngIf="evidence.evidences.length > 0 ; else noEvidence">
                         <ejs-tooltip #tooltip content='View / Add Evidence'>
@@ -68,7 +69,7 @@
                         <span>No Evidence Found </span>
                         <div>
                             <ejs-tooltip #tooltip content='Add Evidence' >
-                                <button ejs-button cssClass="e-flat" iconCss="e-icons e-add" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">Add                               
+                                <button ejs-button cssClass="e-flat" iconCss="e-icons e-plus" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">Add                               
                                     <!-- <span class="e-icons e-add"></span> -->
                                 </button>
                             </ejs-tooltip>
@@ -76,22 +77,24 @@
                       </ng-template>
                   </ng-template>     
             </e-column>
-            <e-column headerText='Comments' textAlign='Center' width='90'  [allowEditing]= 'false'>
+            <e-column headerText='Comments' textAlign='Left' width='90'  [allowEditing]= 'false'>
                 <ng-template #template let-comment>
-                    <div *ngIf="comment.comments.length > 0" [innerHTML]="comment.comments[0].message"></div>
-                    <div *ngIf="comment.comments.length > 0" >
-                        <li *ngFor="let f of comment.comments[0].file; let i = index">
-                            {{ f.name }}
-                        </li> 
-                    </div>
-                    <div *ngIf="comment.comments.length > 0 ; else noComments" style="font-size: 11px;"> {{comment.comments[0].date | date:'medium'}} 
-                        <div>
-                            <ejs-tooltip #tooltip content='View / Add Comments'>
-                                <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-evidence" (click)="onCommentClicked(comment.id)">View / Add                              
-                                        <!-- <span class="e-icons e-evidence"></span>                           -->
-                                </button>
-                            </ejs-tooltip>
+                    <div *ngIf="comment.comments.length > 0;" class="comment-div">
+                        <div [innerHTML]="comment.comments[0].message"></div>
+                        <div >
+                            <li *ngFor="let f of comment.comments[0].file; let i = index">
+                                {{ f.name }}
+                            </li> 
                         </div>
+                        <div style="font-size: 11px;"> {{comment.comments[0].date | date:'medium'}} </div>
+                    </div>
+                    
+                    <div *ngIf="comment.comments.length > 0 ; else noComments" style="margin-top:5px;">
+                        <ejs-tooltip #tooltip content='View / Add Comments'>
+                            <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-evidence" (click)="onCommentClicked(comment.id)">View / Add                              
+                                    <!-- <span class="e-icons e-evidence"></span>                           -->
+                            </button>
+                        </ejs-tooltip>
                     </div>
                     <ng-template #noComments>
                         <span>No Comment Found </span>
@@ -130,14 +133,14 @@
     </ejs-listview>
     <br>
     <div class="form-group" style="float: right;">
-        <button ejs-button cssClass="e-info" [isPrimary]="true" (click)="openCommentDialog()">Add Comment</button>
-        <button type="button" ejs-button cssClass="e-info" (click)="closeCommentDialog()" style="margin-left: 20px">Cancel</button>
+        <button ejs-button cssClass="e-info" [isPrimary]="true" (click)="openCommentDialog()">Add Another Comment</button>
+        <button type="button" ejs-button cssClass="e-info" (click)="closeCommentDialog()" style="margin-left: 20px">Close</button>
     </div>
 </ejs-dialog>         
 <!--
     Dialog for adding a new comment
 -->    
-<commentadd (childEvent)="addComment($event)" ></commentadd>
+<app-commentadd *ngIf="isAddCommentOpen" (childEvent1)="addComment($event)" ></app-commentadd>
 <!--
     Dialog shows the evidence list
 -->
@@ -166,7 +169,7 @@
                 <e-column field='comments'  [filter]='filter' headerText='Comments' width=80 textAlign="Left" isPrimaryKey='true'></e-column>
             </e-columns>
         </ejs-grid>
-        <button type="button" style="float: right;margin-top: 10px;" ejs-button cssClass="e-info" (click)="closeEvidenceDialog()">Cancel</button>
+        <button type="button" style="float: right;margin-top: 10px;" ejs-button cssClass="e-info" (click)="closeEvidenceDialog()">Close</button>
     </div>
 </ejs-dialog>
 <!--
@@ -177,7 +180,7 @@ header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>
 <!--
     Add a new evidence
 -->
-<evidenceadd (childEvent)="addEvidence($event)" ></evidenceadd>
+<app-evidenceadd (childEvent)="addEvidence($event)" ></app-evidenceadd>
 <!--
     Toast Message
 -->
@@ -185,5 +188,6 @@ header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>
 <!--
     Confirmation Dialog Before Leaving the Release PAge without saving
 -->
-<ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that are not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
-header='Leave Page?' width='450px' [buttons]='saveButtons' ></ejs-dialog>  
+<ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that were not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
+header='Leave Page?' width='450px' [buttons]='saveButtons' [position]="position"></ejs-dialog>  
+

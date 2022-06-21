@@ -1,0 +1,6 @@
+applications:
+- name: rtc
+  memory: 64M
+  instances: 2
+  buildpack: https://github.com/cloudfoundry/staticfile-buildpack
+  random-route: true

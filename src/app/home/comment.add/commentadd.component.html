@@ -4,22 +4,20 @@
         <div class="control-section">
             <div class="col-lg-12">
                 <form id="reactive" [formGroup]="commentForm">
-                    <div class="form-group" >
+                    <div class="form-group">
                         <div class="e-float-input">
-                            <ejs-richtexteditor #fromRTE formControlName="comment" [toolbarSettings]='tools'></ejs-richtexteditor>
+                            <ejs-richtexteditor #default formControlName="comment" [toolbarSettings]='tools'></ejs-richtexteditor>
                         </div>                                                
-                    </div> 
-                    
-                    <div class="form-group" >
+                    </div>        
+                    <div class="form-group">
                         <div class="e-float-input">
-                            <ejs-uploader #defaultupload id='fileupload' [asyncSettings]='path' [dropArea]='dropElement' [allowedExtensions]='allowExtensions' (removing)='onFileRemove($event)' (selected)='onFileSelect($event)'></ejs-uploader>
+                            <ejs-uploader #commentUpload id='commentUpload' [asyncSettings]='path' [dropArea]='dropElement' [allowedExtensions]='allowExtensions' (removing)='onFileRemove($event)' (selected)='onCommentFileSelect($event)'></ejs-uploader>
                         </div>            
                     </div> 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <div class="submitBtn" style="float: right;margin-top: 10px;">
-                            <button type="submit" ejs-button cssClass="e-info" [isPrimary]="true" [disabled]="!commentForm.valid" (click)= "Submit()" >Save</button>
-                            <button type="button" ejs-button cssClass="e-info" (click)="closeComment()" style="margin-left: 20px;">Cancel</button>
-                           
+                            <button type="submit" ejs-button cssClass="e-info" [isPrimary]="true" [disabled]="!commentForm.valid" (click)= "Submit()">Save</button>
+                            <button type="button" ejs-button cssClass="e-info" (click)="closeComment()" style="margin-left: 20px;">Close</button>           
                         </div>
                     </div>                                       
                 </form>             

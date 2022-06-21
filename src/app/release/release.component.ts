@@ -145,7 +145,7 @@ export class ReleaseComponent implements OnInit {
 
   onTypeSelect(args:any): void {
     // alert(this.releaseForm.controls['type'].value);
-    if(args.value === 'external' && this.releaseForm.controls['milestone'].value === 'poc'){
+    if(args.value === 'external' && (this.releaseForm.controls['milestone'].value === 'poc' || this.releaseForm.controls['milestone'].value === 'pre-alpha')){
       this.isExternal=true;
     }else{
       this.isExternal=false;
@@ -154,7 +154,7 @@ export class ReleaseComponent implements OnInit {
 
   onMilestoneSelect(args:any): void {
     // alert(this.releaseForm.controls['type'].value);
-    if(args.value === 'poc' && this.releaseForm.controls['type'].value === 'external'){
+    if((args.value === 'poc' || args.value === 'pre-alpha') && this.releaseForm.controls['type'].value === 'external'){
       this.isExternal=true;
     }else{
       this.isExternal=false;
@@ -164,6 +164,7 @@ export class ReleaseComponent implements OnInit {
   save(){
     this.showSpinner = true;
     this.getDetails();
+    this.isWorkWeekVisible=false;
   }
 
   draft(){
@@ -296,7 +297,7 @@ export class ReleaseComponent implements OnInit {
    * @returns boolean value true if data change, false when nothing changed
    */
   checkData(){
-    if(this.releaseForm.dirty || this.releaseForm.pristine){
+    if(this.releaseForm.dirty){
       return true;
     }else{
       return false;
@@ -331,7 +332,7 @@ export class ReleaseComponent implements OnInit {
     {
         'click': this.continueNavigation.bind(this),
           buttonModel:{
-          content:"Dont'Save",
+          content:"Don't Save & Leave",
           cssClass:'e-danger',
         }
     },

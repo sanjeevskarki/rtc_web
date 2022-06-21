@@ -1,21 +1,19 @@
-import { Component, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GridComponent, GridLine, QueryCellInfoEventArgs,GroupService, SortService, CommandModel, CommandColumnService, EditSettingsModel } from '@syncfusion/ej2-angular-grids';
-import { Checklist, Comments, Details, Evidences, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ViewComment, ViewEvidence, ViewReleaseChecklist } from '../home.models';
+import { Checklist, Comments, Evidences, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ViewComment, ViewEvidence, ViewReleaseChecklist } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import { ItemModel, MenuEventArgs } from '@syncfusion/ej2-angular-splitbuttons';
-import { DialogComponent, AnimationSettingsModel, ButtonPropsModel, PositionDataModel } from '@syncfusion/ej2-angular-popups';
+import { DialogComponent, AnimationSettingsModel, PositionDataModel } from '@syncfusion/ej2-angular-popups';
 import * as moment from 'moment';
-import { LinkService, ImageService, HtmlEditorService, TableService, FileManagerService, FileManagerSettingsModel, ToolbarSettingsModel, RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
+import { LinkService, ImageService, HtmlEditorService, TableService, FileManagerService, RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { ClickEventArgs, ToolbarModule } from '@syncfusion/ej2-angular-navigations';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmitType } from '@syncfusion/ej2-base';
-import { FileInfo, RemovingEventArgs, SelectedEventArgs, TextBoxComponent, UploaderComponent } from '@syncfusion/ej2-angular-inputs';
+import { RemovingEventArgs, TextBoxComponent, UploaderComponent } from '@syncfusion/ej2-angular-inputs';
 import { EditService, ToolbarService, PageService } from '@syncfusion/ej2-angular-grids';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
-import { v4 as uuidv4 } from 'uuid';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
-import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
 import { CommentAddComponent } from '../comment.add/commentadd.component';
 
@@ -23,9 +21,10 @@ import { CommentAddComponent } from '../comment.add/commentadd.component';
   selector: 'app-checklist',
   templateUrl: './checklist.component.html',
   styleUrls: ['./checklist.component.scss'],
-  providers:[ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, FileManagerService,EditService, ToolbarService, PageService,GroupService, SortService, CommandColumnService]
+  providers:[ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, FileManagerService,EditService, PageService,GroupService, SortService, CommandColumnService],
+  encapsulation: ViewEncapsulation.None
 })
-export class ChecklistComponent implements OnInit {
+export class ChecklistComponent implements OnInit  {
 
   checkList:Checklist[]=[];
   releaseChecklist : ReleaseChecklist[]| undefined =[];
@@ -42,11 +41,11 @@ export class ChecklistComponent implements OnInit {
   @ViewChild('evidenceDialog')
   public evidenceDialog!: DialogComponent;
 
-  @ViewChild('addCommentDialog')
-  public addCommentDialog!: DialogComponent;
+  // @ViewChild('addCommentDialog')
+  // public addCommentDialog!: DialogComponent;
 
-  @ViewChild('addEvidenceDialog')
-  public addEvidenceDialog!: DialogComponent;
+  // @ViewChild('addEvidenceDialog')
+  // public addEvidenceDialog!: DialogComponent;
 
   @ViewChild('confirmDialog')
   public confirmDialog!: DialogComponent;
@@ -156,6 +155,7 @@ export class ChecklistComponent implements OnInit {
   };
   isExit:boolean = true;
   public editSettings!: EditSettingsModel;
+  isAddCommentOpen:boolean = false;
   
   constructor(private route: ActivatedRoute,private service:ChecklistService) { 
     
@@ -182,11 +182,11 @@ export class ChecklistComponent implements OnInit {
     saveUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Save',
     removeUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Remove'
   };
-  @ViewChild('defaultupload1')
-  public uploadObj!: UploaderComponent;
+  // @ViewChild('defaultupload1')
+  // public uploadObj!: UploaderComponent;
 
-  @ViewChild('default', { static: true })
-  public textboxObj!: TextBoxComponent;
+  // @ViewChild('default', { static: true })
+  // public textboxObj!: TextBoxComponent;
   
   public onFileRemove(args: RemovingEventArgs): void {
     args.postRawFile = false;
@@ -222,11 +222,13 @@ export class ChecklistComponent implements OnInit {
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
   ngOnInit(): void {
+    this.isAddCommentOpen = false;
     this.editSettings = { allowEditing: true, mode: 'Normal' };
     this.toolbar = ['Search'];
-    this.groupOptions = { showGroupedColumn: false, columns: ['vector'] };
+    // this.groupOptions: { [x: string]: Object } = { showDropArea: false, columns: ['vector'] };
+    this.groupOptions = { showDropArea: false, showGroupedColumn: false, columns: ['vector'] };
     this.selectOptions = {persistSelection: true, type: "Multiple" };
-    this.evidenceToolbar = [{ text: 'Add Evidence', tooltipText: 'Add Evidence', prefixIcon: 'e-add', id: 'Add' }];
+    this.evidenceToolbar = [{ text: 'Add Evidence', tooltipText: 'Add Evidence', prefixIcon: 'e-plus1', id: 'Add' }];
     this.evidenceEditSettings = { allowAdding: true, allowDeleting: true, mode: 'Dialog' };
     // this.commentForm = new FormGroup({
     //   'comment': new FormControl(null, Validators.required),
@@ -269,7 +271,7 @@ export class ChecklistComponent implements OnInit {
 
   commentDialogClose(){
     this.commentForm.reset();
-    this.uploadObj.clearAll();
+    // this.uploadObj.clearAll();
   }
 
   // public onFileSelect1(args : SelectedEventArgs) : void {
@@ -361,17 +363,19 @@ export class ChecklistComponent implements OnInit {
   changeStatus (id:string,args: MenuEventArgs) {
     var newStatus:string|undefined = args.item.text;
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
-    var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
-    this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
-    newCheckList.status = newStatus;
-    this.viewReleaseChecklist?.push(newCheckList);
+    this.viewReleaseChecklist![objIndex].status=newStatus;
+    this.viewReleaseChecklist = [...this.viewReleaseChecklist]; 
+    // var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
+    // this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
+    // newCheckList.status = newStatus;
+    // this.viewReleaseChecklist?.push(newCheckList);
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
-    var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
-    this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
-    
-    newReleaseCheckList.status = newStatus;
-    this.releaseChecklist?.push(newReleaseCheckList);
+    this.releaseChecklist![objIndex1].status=newStatus;
+    // var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
+    // this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
+    // newReleaseCheckList.status = newStatus;
+    // this.releaseChecklist?.push(newReleaseCheckList);
 
     this.toastObj.show(this.toasts[1]);
   }
@@ -493,6 +497,14 @@ export class ChecklistComponent implements OnInit {
     this.createCommentList(this.selectedRelease);
   }
 
+    /**
+   * Create a new Comment
+   * @param newComment New Comment
+   */
+     getComment() {
+      
+    }
+
   /**
    * Create Evidence List to show on View Evidence link
    * @param _selectedRelease Release Checklist
@@ -562,6 +574,7 @@ export class ChecklistComponent implements OnInit {
    * Open Add Evidence Dialog
    */
    openCommentDialog() {
+    this.isAddCommentOpen = true;
     // this.addCommentHeader = "Add Comment";
     this.commentAddComponent.addComment();  
   }
@@ -597,9 +610,9 @@ export class ChecklistComponent implements OnInit {
     }
   }
   
-  public onOwnerTextboxCreate(args: any) :void {
-    this.textboxObj.addIcon("append", "e-icons e-add1");
-  }
+  // public onOwnerTextboxCreate(args: any) :void {
+  //   this.textboxObj.addIcon("append", "e-icons e-add1");
+  // }
 
   public hideEvidenceDialog: EmitType<object> = () => {
     this.confirmDialog.hide();
@@ -668,7 +681,7 @@ export class ChecklistComponent implements OnInit {
     {
         'click': this.continueNavigation.bind(this),
           buttonModel:{
-          content:"Dont'Save",
+          content:"Don't Save & Leave",
           cssClass:'e-danger',
         }
     },
@@ -718,9 +731,9 @@ export class ChecklistComponent implements OnInit {
     }.bind(this), 200);
   }
 
-  closeAddCommentDialog(){
-    this.addCommentDialog.hide();
-  }
+  // closeAddCommentDialog(){
+  //   this.addCommentDialog.hide();
+  // }
   closeCommentDialog(){
     this.commentDialog.hide();
   }
@@ -729,29 +742,25 @@ export class ChecklistComponent implements OnInit {
   }
 
   public onFileSelected() {
-    // let linkCheck = this.evidenceForm.controls['link'].value;
-    // if(!this.isValueExist(linkCheck)){
-    //   this.evidenceForm.controls['upload'].reset();
-    //   this.toastObj.show(this.toasts[0]);
-    //   return;
-    // }
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
   }
 
   addOwner(id:string,args:string){
     var owner:string|undefined = args;
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
-    var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
-    this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
-    newCheckList.owner = owner;
-    this.viewReleaseChecklist?.push(newCheckList);
+    this.viewReleaseChecklist![objIndex].owner=owner;
+    this.viewReleaseChecklist = [...this.viewReleaseChecklist];
+    // var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
+    // this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
+    // newCheckList.owner = owner;
+    // this.viewReleaseChecklist?.push(newCheckList);
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
-    var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
-    this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
-    
-    newReleaseCheckList.owner = owner;
-    this.releaseChecklist?.push(newReleaseCheckList);
+    this.releaseChecklist![objIndex1].owner=owner;
+    // var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
+    // this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
+    // newReleaseCheckList.owner = owner;
+    // this.releaseChecklist?.push(newReleaseCheckList);
 
     this.toastObj.show(this.toasts[6]);
   }
@@ -759,20 +768,28 @@ export class ChecklistComponent implements OnInit {
   addDetailedStatus(id:string,args:string){
     var detailStatus:string|undefined = args;
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
-    var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
-    this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
-    newCheckList.detailedStatus = detailStatus;
-    this.viewReleaseChecklist?.push(newCheckList);
+    this.viewReleaseChecklist![objIndex].detailedStatus=detailStatus;
+    this.viewReleaseChecklist = [...this.viewReleaseChecklist];
+    // var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
+    // this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
+    // newCheckList.detailedStatus = detailStatus;
+    // this.viewReleaseChecklist.push(newCheckList);
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
-    var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
-    this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
-    
-    newReleaseCheckList.detailedStatus = detailStatus;
-    this.releaseChecklist?.push(newReleaseCheckList);
+    this.releaseChecklist![objIndex1].detailedStatus=detailStatus;
+    // var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
+    // this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
+    // newReleaseCheckList.detailedStatus = detailStatus;
+    // this.releaseChecklist?.push(newReleaseCheckList);
 
-    this.toastObj.show(this.toasts[7]);
+    // this.toastObj.show(this.toasts[7]);
   }
+
+  @HostListener('window:beforeunload', ['$event'])
+  public beforeunloadHandler($event: { returnValue: string; }) {
+    alert("hi");
+  $event.returnValue = "Are you sure?";
+ }
 
 }
 

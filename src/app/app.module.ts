@@ -45,11 +45,11 @@ import { CommentAddComponent } from './home/comment.add/commentadd.component';
     CommentAddComponent,
   ],
   imports: [
-    HttpClientModule, BrowserModule, AppRoutingModule, ToolbarModule, DatePickerModule,
+    HttpClientModule, BrowserModule, AppRoutingModule, ToolbarModule, DatePickerModule, TooltipModule,
     ListViewAllModule,SidebarModule, MenuAllModule, TreeViewAllModule, ToolbarAllModule, GridModule,
     ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, DropDownButtonModule, SplitButtonModule, 
     ProgressButtonModule, DialogModule, TextBoxModule, NumericTextBoxModule, RichTextEditorAllModule,
-    FormsModule, ReactiveFormsModule, UploaderModule, ToastModule, DropDownListModule, CalendarModule, ProgressBarAllModule, TooltipModule 
+    FormsModule, ReactiveFormsModule, UploaderModule, ToastModule, DropDownListModule, CalendarModule, ProgressBarAllModule
   ],
   providers: [],
   bootstrap: [AppComponent]

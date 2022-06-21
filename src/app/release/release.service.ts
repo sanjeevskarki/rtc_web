@@ -28,6 +28,9 @@ export class ReleaseService {
     var fileName;
     if(milestone === 'poc' && type === 'external'){
       fileName = milestone+"_"+handoverType+".json";
+    }
+    else if(milestone === 'pre-alpha' && type === 'external'){
+      fileName = milestone+"_"+handoverType+".json";
     }else{
       fileName = milestone+".json";
     }
