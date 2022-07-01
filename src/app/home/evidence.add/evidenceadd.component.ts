@@ -1,14 +1,12 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
-  Validators,
-  FormControl
-} from '@angular/forms';
+  Validators} from '@angular/forms';
 import { EmitType } from '@syncfusion/ej2-base';
 import { UploaderComponent } from '@syncfusion/ej2-angular-inputs';
-import { AnimationSettingsModel, ButtonPropsModel, DialogComponent } from '@syncfusion/ej2-angular-popups';
-import { ToastComponent, ToastCloseArgs, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
+import { AnimationSettingsModel, DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
 import { Evidences } from '../home.models';
 import { v4 as uuidv4 } from 'uuid';
 import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';

@@ -30,3 +30,5 @@ export const TIMEINTERVAL = {
     YEARS_MONTH: (count: number, more: number) => `${count}  years and one month`,
     YEARS_MONTHS: (count: number, more: number) => `${count}  years and ${more} months`,
   };
+
+  export const PROJECT = 'project';

@@ -13,6 +13,8 @@ export interface Checklist {
   releaseChecklist:ReleaseChecklist[];
 }
 
+
+
 export interface ReleaseChecklist {
   id:string;
   vector: string;
@@ -112,6 +114,8 @@ export interface NewRelease {
   date:Date;
   contact:string;
   email:string;
+  businessunit:string;
+  description:string;
 }
 
 export interface Files {
@@ -122,5 +126,18 @@ export interface Files {
 export interface Login {
   userId:string;
   password:string;
+}
+
+/**
+ * New Model
+ */
+
+export interface Project {
+  project_id: number;
+  project_name: string;
+  project_release_date:string;
+  project_description:string;
+  project_business_unit_id:string;
+  project_milestone_id:string;
 }
 

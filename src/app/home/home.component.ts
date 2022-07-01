@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Checklist, ReleaseShortChecklist } from './home.models';
+import * as moment from 'moment';
+import { pipe } from 'rxjs';
+import { Checklist, Project } from './home.models';
 import { HomeService } from './home.service';
 
 @Component({
@@ -11,6 +13,8 @@ import { HomeService } from './home.service';
 export class HomeComponent implements OnInit {
   
   checklist:Checklist[]=[];
+
+  projects:Project[]=[];
 
   public urlValue!: String;
 
@@ -26,15 +30,15 @@ export class HomeComponent implements OnInit {
   }
 
   getShortList(){
-    this.checklist = JSON.parse(localStorage.getItem("checkList")!);
-    // this.service.shortCheckList().subscribe(
-    //   (response) => {
-    //     this.checklist = response;
-    //   },
-    //   (err) => {
-    //     console.log(err.name);
-    //   }
-    // );
+    // this.checklist = JSON.parse(localStorage.getItem("checkList")!);
+    this.service.shortCheckList().subscribe(
+      (response) => {
+        this.projects = response;
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
   }
 
   onClick(event: any){
@@ -46,3 +50,4 @@ export class HomeComponent implements OnInit {
   }
 
 }
+

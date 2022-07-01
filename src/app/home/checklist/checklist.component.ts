@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GridComponent, GridLine, QueryCellInfoEventArgs,GroupService, SortService, CommandModel, CommandColumnService, EditSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { Checklist, Comments, Evidences, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ViewComment, ViewEvidence, ViewReleaseChecklist } from '../home.models';
@@ -8,9 +8,9 @@ import { DialogComponent, AnimationSettingsModel, PositionDataModel } from '@syn
 import * as moment from 'moment';
 import { LinkService, ImageService, HtmlEditorService, TableService, FileManagerService, RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { ClickEventArgs, ToolbarModule } from '@syncfusion/ej2-angular-navigations';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { EmitType } from '@syncfusion/ej2-base';
-import { RemovingEventArgs, TextBoxComponent, UploaderComponent } from '@syncfusion/ej2-angular-inputs';
+import { RemovingEventArgs } from '@syncfusion/ej2-angular-inputs';
 import { EditService, ToolbarService, PageService } from '@syncfusion/ej2-angular-grids';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';

@@ -2,7 +2,6 @@
 <div class="col-lg-12 control-section e-input-section">
     <form id="reactive" [formGroup]="releaseForm">
         <div class="content-wrapper">
-            
             <div class="release-header">Generate Release</div>
             <div class="release-message">Enter values to Create a New Release Qualification:</div>
             <div style="border: 2px solid #0071c5;padding: 30px;border-radius:4px;width: 50%;">
@@ -24,35 +23,35 @@
                                 <span class="e-float-line"></span>
                                 <label class="e-float-text" for="title">Project Name</label> -->
                             </div> 
-                        <div *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched" class="e-error">* Project Name is required</div>                                                 
+                            <div *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched" class="e-error">* Project Name is required</div>                                                 
                         </div>
                         <!-- <ejs-textbox placeholder="First Name" floatLabelType="Auto"></ejs-textbox> -->
                     </div>
                     <div class="column">
                         <div class="form-group">
                             <div class="e-float-input">
-                                <ejs-dropdownlist id='milestone' cssClass="e-outline e-custom" #milestone floatLabelType="Auto" [dataSource]='milestones' (change)='onMilestoneSelect($event)' [fields]='fields' [placeholder]='milestonePlaceholder' [popupHeight]='height' formControlName="milestone"></ejs-dropdownlist>
+                                <ejs-textbox placeholder="Project Contact" cssClass="e-outline" floatLabelType="Auto" formControlName="contact"></ejs-textbox>
+                                <!-- <input type="text" id="contact" name="contact" class="required" formControlName="contact">
+                                <span class="e-float-line"></span>
+                                <label class="e-float-text" for="title">Project Contact</label> -->
                             </div> 
-                        <div *ngIf="releaseForm.controls.milestone.hasError('required') && releaseForm.controls.milestone.touched" class="e-error">* Milestone is required</div>                                                 
-                        </div> 
-                    </div>
-                    
+                            <div *ngIf="releaseForm.controls.contact.hasError('required') && releaseForm.controls.contact.touched" class="e-error">* Project Contact is required</div>                                                 
+                        </div>    
+                    </div>               
                 </div>
                 
                 <div class="row">
                     <div class="column">
                         <div class="form-group">
                             <div class="e-float-input">
-                                <ejs-dropdownlist id='release' cssClass="e-outline e-custom" floatLabelType="Auto" #release [dataSource]='releaseTypes' (change)='onTypeSelect($event)' [fields]='fields' [placeholder]='type' [popupHeight]='height' formControlName="type"></ejs-dropdownlist>
+                                <ejs-textbox placeholder="Email" cssClass="e-outline" floatLabelType="Auto" formControlName="email"></ejs-textbox>
+                                <!-- <input type="text" id="email" name="email" class="required" formControlName="email">
+                                <span class="e-float-line"></span>
+                                <label class="e-float-text" for="title">Email</label> -->
                             </div> 
-                        <div *ngIf="releaseForm.controls.type.hasError('required') && releaseForm.controls.type.touched" class="e-error">* Release Type is required</div>                                                 
-                        </div> 
-                        <div *ngIf="isExternal"  class="form-group">
-                            <div class="e-float-input">
-                                <ejs-dropdownlist id='handoverType' cssClass="e-outline e-custom" floatLabelType="Auto" #release [dataSource]='handoverType' [fields]='fields' [placeholder]='handover' [popupHeight]='height' formControlName="handover"></ejs-dropdownlist>
-                            </div> 
-                        <!-- <div *ngIf="releaseForm.controls.type.hasError('required') && releaseForm.controls.type.touched" class="e-error">* Release Type is required</div>                                                  -->
-                        </div>                   
+                            <div *ngIf="releaseForm.controls.email.hasError('required') && releaseForm.controls.email.touched" class="e-error">* Email is required</div>                                                 
+                        </div>       
+                                     
                     </div>
                    
                     <div class="column">          
@@ -62,34 +61,72 @@
                                 <!-- <ejs-datepicker formControlName="date" name="date" placeholder='Select a date' floatLabelType='Always'></ejs-datepicker> -->
                                 <ejs-datepicker (renderDayCell)="onLoad($event)" [value]="date" #listObj cssClass="e-outline" floatLabelType="Auto" formControlName="date" [format]="format" placeholder='Select a date' (change)="onChange($event)"></ejs-datepicker>
                             </div> 
-                            <span *ngIf="isWorkWeekVisible" class="work-week">{{workWeek}}</span>
-                        <div *ngIf="releaseForm.controls.date.hasError('required') && releaseForm.controls.milestone.touched" class="e-error">* Work Week Date is required</div>                                                 
+                            <span *ngIf="isWorkWeekVisible" class="work-week">{{workWeek | workWeekPipe}}</span>
+                            <div *ngIf="releaseForm.controls.date.hasError('required') && releaseForm.controls.milestone.touched" class="e-error">* Work Week Date is required</div>                                                 
                         </div>                
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="column">
                         <div class="form-group">
                             <div class="e-float-input">
-                                <ejs-textbox placeholder="Project Contact" cssClass="e-outline" floatLabelType="Auto" formControlName="contact"></ejs-textbox>
-                                <!-- <input type="text" id="contact" name="contact" class="required" formControlName="contact">
-                                <span class="e-float-line"></span>
-                                <label class="e-float-text" for="title">Project Contact</label> -->
+                                <ejs-dropdownlist id='businessunit' cssClass="e-outline e-custom" floatLabelType="Auto" #businessunit [dataSource]='businessUnits' [fields]='fields' [placeholder]='businessUnit' [popupHeight]='height' formControlName="businessunit"></ejs-dropdownlist>
                             </div> 
-                        <div *ngIf="releaseForm.controls.contact.hasError('required') && releaseForm.controls.contact.touched" class="e-error">* Project Contact is required</div>                                                 
+                            <div *ngIf="releaseForm.controls.businessunit.hasError('required') && releaseForm.controls.businessunit.touched" class="e-error">* Business Unit is required</div>                                                 
                         </div>               
                     </div>
+                    <div class="column">          
+                        <div class="form-group">
+                            <div class="e-float-input">
+                                <div class="multiline-row">
+                                    <ejs-textbox id="description" #default rows="2" [placeholder]='description' floatLabelType="Auto" [multiline]="true" formControlName="description" required></ejs-textbox>
+                                </div>
+                                <!-- <textarea class="e-input" cssClass="e-outline e-custom" id='description' rows="3" type="textarea" formControlName="description" floatLabelType="Auto" [placeholder]='description'></textarea> -->
+                            </div> 
+                            <div *ngIf="releaseForm.controls.description.hasError('required') && releaseForm.controls.description.touched" class="e-error">* Project Description is Required</div>
+                                                                            
+                        </div>   
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="column" >
                         <div class="form-group">
                             <div class="e-float-input">
-                                <ejs-textbox placeholder="Email" cssClass="e-outline" floatLabelType="Auto" formControlName="email"></ejs-textbox>
-                                <!-- <input type="text" id="email" name="email" class="required" formControlName="email">
-                                <span class="e-float-line"></span>
-                                <label class="e-float-text" for="title">Email</label> -->
+                                <ejs-dropdownlist id='milestone' cssClass="e-outline e-custom" #milestone floatLabelType="Auto" [dataSource]='milestones' (change)='onMilestoneSelect($event)' [fields]='fields' [placeholder]='milestonePlaceholder' [popupHeight]='height' formControlName="milestone"></ejs-dropdownlist>
                             </div> 
-                        <div *ngIf="releaseForm.controls.email.hasError('required') && releaseForm.controls.email.touched" class="e-error">* Email is required</div>                                                 
-                        </div>               
+                            <div *ngIf="releaseForm.controls.milestone.hasError('required') && releaseForm.controls.milestone.touched" class="e-error">* Milestone is required</div> 
+                        </div> 
                     </div>
+                    <div class="column">
+                        <div class="form-group">
+                            <div class="e-float-input">
+                                <ejs-dropdownlist id='release' cssClass="e-outline e-custom" floatLabelType="Auto" #release [dataSource]='releaseTypes' (change)='onTypeSelect($event)' [fields]='fields' [placeholder]='type' [popupHeight]='height' formControlName="type"></ejs-dropdownlist>
+                            </div> 
+                        <div *ngIf="releaseForm.controls.type.hasError('required') && releaseForm.controls.type.touched" class="e-error">* Release Type is required</div>                                                 
+                        </div> 
+                    </div>
+                   
+                    
+                </div>
+
+                <div class="row">
+                    <div class="column" *ngIf="isExternal">          
+                        <div class="form-group">
+                            <div class="e-float-input">
+                                <ejs-dropdownlist id='handoverType' cssClass="e-outline e-custom" floatLabelType="Auto" #release [dataSource]='handoverType' [fields]='fields' [placeholder]='handover' [popupHeight]='height' formControlName="handover"></ejs-dropdownlist>
+                            </div> 
+                            <!-- <div *ngIf="releaseForm.controls.type.hasError('required') && releaseForm.controls.type.touched" class="e-error">* Release Type is required</div>                                                  -->
+                        </div>    
+                    </div>
+                    <!-- <div class="column" *ngIf="isExternal">          
+                        <div class="form-group">
+                            <div class="e-float-input">
+                                <ejs-dropdownlist id='handoverType' cssClass="e-outline e-custom" floatLabelType="Auto" #release [dataSource]='handoverType' [fields]='fields' [placeholder]='handover' [popupHeight]='height' formControlName="handover"></ejs-dropdownlist>
+                            </div> 
+                        </div>    
+                    </div> -->
                 </div>
                 <div class="row">
                     <div class="submitBtn" style="float: right">

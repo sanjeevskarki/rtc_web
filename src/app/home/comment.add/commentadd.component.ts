@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RemovingEventArgs, UploaderComponent } from '@syncfusion/ej2-angular-inputs';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
@@ -139,7 +139,7 @@ export class CommentAddComponent implements OnInit {
     this.newComment = newComments;
   }
 
-  public onFileRemove(args: RemovingEventArgs): void {
+  onFileRemove(args: RemovingEventArgs): void {
     this.files = this.files.filter(item => item.id !== args.filesData[0].id);
     args.postRawFile = false;
   }

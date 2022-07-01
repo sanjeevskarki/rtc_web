@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { HomeComponent } from './home/home.component';
+import { WorkWeekPipePipe } from './home/work-week-pipe.pipe';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { ListViewAllModule } from '@syncfusion/ej2-angular-lists';
 import { GridModule } from '@syncfusion/ej2-angular-grids';
@@ -36,6 +37,7 @@ import { CommentAddComponent } from './home/comment.add/commentadd.component';
     AppComponent,
     MenuComponent,
     HomeComponent,
+    WorkWeekPipePipe,
     ReportComponent,
     ChecklistComponent,
     AdminComponent,
