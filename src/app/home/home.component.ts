@@ -1,8 +1,6 @@
-import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
-import { pipe } from 'rxjs';
-import { Checklist, Project } from './home.models';
+import { Project } from './home.models';
 import { HomeService } from './home.service';
 
 @Component({
@@ -11,8 +9,6 @@ import { HomeService } from './home.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  
-  checklist:Checklist[]=[];
 
   projects:Project[]=[];
 
@@ -20,17 +16,17 @@ export class HomeComponent implements OnInit {
 
   public cssClass: string = 'e-list-template';
 
-  @ViewChild('listview') element:any;
+  @ViewChild("listview") element: any;
   
   constructor(private service:HomeService, private router: Router) { 
   }
 
   ngOnInit(): void {
+    localStorage.removeItem('selectedProject');
     this.getShortList();
   }
 
   getShortList(){
-    // this.checklist = JSON.parse(localStorage.getItem("checkList")!);
     this.service.shortCheckList().subscribe(
       (response) => {
         this.projects = response;
@@ -41,10 +37,11 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  onClick(event: any){
+  onClick(selectedProject: Project){
     // localStorage.removeItem('relaesechecklist');
-    let selecteditem =this.element.getSelectedItems();
-    localStorage.setItem('releaseId', selecteditem["data"].id);
+    // alert(selectedProject.project_id);
+    // let selecteditem =this.element.getSelectedItems();
+    localStorage.setItem('selectedProject', JSON.stringify(selectedProject));
     // this.sharedChecklistService.setReleaseList(selecteditem["data"]);
     this.router.navigate([ 'checklist' ]);
   }

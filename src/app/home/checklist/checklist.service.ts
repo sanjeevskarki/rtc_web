@@ -1,9 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
+import { environment } from 'src/environments/environment';
 import { FUTURE, PAST, TIMEINTERVAL } from '../home.constants';
 
-import { Checklist, Details, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, Unit } from '../home.models';
+import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, Unit } from '../home.models';
+
 /**
  * Dependecy Injection.
  */
@@ -11,18 +14,27 @@ import { Checklist, Details, ReleaseChecklist, ReleaseDetails, ReleaseShortCheck
   providedIn: 'root',
 })
 export class ChecklistService {
-
+  endpoint_url:string= environment.ENDPOINT;
+  task:string=TASK_LOWER;
+  guideline:string = GUIDELINE_LOWER;
   unit!: Unit;
   UNITS: Unit[];
   amount!: number;
   displayTime!: string;
   remaining!: number;
+  headers! : HttpHeaders;
   /**
    *
    * @param httpClient Http Client.
    * @param sharedService Shared Service.
    */
-  constructor(public httpClient: HttpClient) {
+  constructor (public httpClient: HttpClient) {
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
+    });
     this.UNITS = [
       {
         name: 'YEAR',
@@ -65,22 +77,36 @@ export class ChecklistService {
   }
 
 
-  public checkList(): Observable<Checklist[]> { 
-    return this.httpClient.get<Checklist[]>("assets/data/checklist.json");
-    // this.apiUrl = API_URL(system);
-    // return this.httpClient.get<Data>(this.apiUrl);
-  }
+  // public checkList(): Observable<Checklist[]> { 
+  //   return this.httpClient.get<Checklist[]>("assets/data/checklist.json");
+  //   // this.apiUrl = API_URL(system);
+  //   // return this.httpClient.get<Data>(this.apiUrl);
+  // }
 
-  public updateCheckList(id:string): Observable<Checklist[]> { 
-    return this.httpClient.put<Checklist[]>("assets/data/checklist.json",id);
-    // this.apiUrl = API_URL(system);
-    // return this.httpClient.get<Data>(this.apiUrl);
-  }
+  // public updateCheckList(id:string): Observable<Checklist[]> { 
+  //   return this.httpClient.put<Checklist[]>("assets/data/checklist.json",id);
+  //   // this.apiUrl = API_URL(system);
+  //   // return this.httpClient.get<Data>(this.apiUrl);
+  // }
 
   public details(fileName:string): Observable<ReleaseDetails[]> { 
     return this.httpClient.get<ReleaseDetails[]>("assets/data/"+fileName+".json");
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
+  }
+
+  public getSelectedProject(projectId:number): Observable<BackendTask[]> { 
+    return this.httpClient.get<BackendTask[]>(this.endpoint_url+this.task+"/"+projectId);
+  }
+
+  public updateGuidelines(guideline:BackendGuideline[]): Observable<BackendGuideline[]> { 
+    // const body=JSON.stringify(guideline);
+    return this.httpClient.post<BackendGuideline[]>(this.endpoint_url+this.guideline, guideline,{headers:this.headers});
+  }
+
+  public updateTasks(task:ReleaseTask[]): Observable<ReleaseTask[]> { 
+    // const body=JSON.stringify(task);
+    return this.httpClient.post<ReleaseTask[]>(this.endpoint_url+this.task, task,{headers:this.headers});
   }
 
   /**

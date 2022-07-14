@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PROJECT } from './home.constants';
 
-import { Checklist, Project, ReleaseShortChecklist } from './home.models';
+import { Project } from './home.models';
 /**
  * Dependecy Injection.
  */

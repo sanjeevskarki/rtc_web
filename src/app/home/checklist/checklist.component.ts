@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GridComponent, GridLine, QueryCellInfoEventArgs,GroupService, SortService, CommandModel, CommandColumnService, EditSettingsModel } from '@syncfusion/ej2-angular-grids';
-import { Checklist, Comments, Evidences, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ViewComment, ViewEvidence, ViewReleaseChecklist } from '../home.models';
+import { BackendTask, Checklist, Comments, Evidences, Project, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ViewComment, ViewEvidence } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import { ItemModel, MenuEventArgs } from '@syncfusion/ej2-angular-splitbuttons';
 import { DialogComponent, AnimationSettingsModel, PositionDataModel } from '@syncfusion/ej2-angular-popups';
@@ -16,6 +16,7 @@ import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
 import { Subject } from 'rxjs';
 import { CommentAddComponent } from '../comment.add/commentadd.component';
+
 
 @Component({
   selector: 'app-checklist',
@@ -73,7 +74,8 @@ export class ChecklistComponent implements OnInit  {
   initialPage!:Object;
   evidencePage: Object = {pageSize:5};
   public filter!: Object;
-  selectedReleaseId!: string| null;
+  selectedProject!: Project;
+  selectedReleaseId!: number;
   releaseName!: string| null;
   milestone!: string| null;
   workWeek!: string| null;
@@ -120,7 +122,7 @@ export class ChecklistComponent implements OnInit  {
   selectedEvidence!:ViewEvidence;
   public uploadInput1: string = '';
   public multiple: boolean = false;
-  viewReleaseChecklist:ViewReleaseChecklist[]=[];
+  viewReleaseChecklist:ReleaseChecklist[]=[];
   public refresh!: Boolean;
   @ViewChild('grid')
   public grid!: GridComponent;
@@ -239,7 +241,9 @@ export class ChecklistComponent implements OnInit  {
     // });
     
     // this.releaseShortChecklist = JSON.parse(localStorage.getItem('relaeseId')!);
-    this.selectedReleaseId = localStorage.getItem('releaseId');
+    this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    // this.selectedReleaseId = this.selectedProject.project_id!;
+    // alert(this.selectedReleaseId);
     // this.releaseName = this.releaseShortChecklist.releaseName;
     // this.milestone = this.releaseShortChecklist.milestone;
     // this.workWeek = this.releaseShortChecklist.workWeek;
@@ -250,11 +254,76 @@ export class ChecklistComponent implements OnInit  {
     this.commands = [
         { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } }
       ];
-    if(this.checkList === null || this.checkList.length === 0){
-      this.getCheckList();
-    }else{
-      this.setDetails();
+    // if(this.checkList === null || this.checkList.length === 0){
+      // this.getCheckList();
+      this.getSelectedTask();
+    // }else{
+    //   this.setDetails();
+    // }
+  }
+
+  backendTasks:BackendTask[]=[];
+
+  getSelectedTask(){
+    this.setTitle();
+    this.service.getSelectedProject(this.selectedReleaseId!).subscribe(
+      (response) => {
+        this.backendTasks = response;
+        this.getDetails();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+
+  setTitle(){
+    // this.release = this.checkList.find(x => x.id === this.selectedReleaseId)!;
+    // this.releaseChecklist = this.release.releaseChecklist;
+    this.selectedReleaseId = this.selectedProject.project_id!;
+    this.releaseName = this.selectedProject.project_name;
+    this.milestone = this.selectedProject.project_milestone_id;
+    this.workWeek = this.selectedProject.project_release_date;
+    // this.oldChecklist = this.releaseChecklist!;
+    
+  }
+
+  getDetails() {
+    this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
+      (response) => {
+        this.details = response;
+        this.createTasks();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+
+  createTasks(){
+    var taskList:ReleaseChecklist[]=[];
+    for(var task of this.backendTasks!){
+      var checkList:ReleaseChecklist=<ReleaseChecklist>{};
+      checkList.id=task.guidelines_ptr_id;
+      checkList.vector=task.backend_guideline?.vector_id!;
+      checkList.owner=task.owner;
+      checkList.status=task.status_id;
+      checkList.detailedStatus='';
+      checkList.evidences=[];
+      checkList.comments=[];
+      // checkList.comments=release.comments.sort(function(a:any,b:any): any{
+      //   return new Date(b.date).getTime() - new Date(a.date).getTime();
+      // });
+      var selectedDetail = this.details.find( x => x.vector === task.backend_guideline?.vector_id);
+      // alert(selectedDetail?.vector);
+      checkList.details = task.backend_guideline?.task_name!;
+      checkList.releaseCriteria = selectedDetail?.details.find(x => x.detail === task.backend_guideline?.task_name)?.releaseCriteria!;
+      taskList.push(checkList);
     }
+    this.viewReleaseChecklist = taskList;
+    this.releaseChecklist = this.viewReleaseChecklist;
+    localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+        
   }
 
   // ngAfterViewInit(): void {
@@ -298,62 +367,39 @@ export class ChecklistComponent implements OnInit  {
     this.toastObj.show(this.toasts[2]);
   }
 
-  getCheckList() {
-    this.service.checkList().subscribe(
-      (response) => {
-        this.checkList = response;
-        localStorage.setItem("checkList", JSON.stringify(this.checkList));
-        this.setDetails();
-      },
-      (err) => {
-        console.log(err.name);
-      }
-    );
-  }
+  // getCheckList() {
+  //   this.service.checkList().subscribe(
+  //     (response) => {
+  //       this.checkList = response;
+  //       localStorage.setItem("checkList", JSON.stringify(this.checkList));
+  //       this.setDetails();
+  //     },
+  //     (err) => {
+  //       console.log(err.name);
+  //     }
+  //   );
+  // }
 
-  setDetails(){
-    this.release = this.checkList.find(x => x.id === this.selectedReleaseId)!;
-    this.releaseChecklist = this.release.releaseChecklist;
-    this.selectedReleaseId = this.release.id;
-    this.releaseName = this.release.releaseName;
-    this.milestone = this.release.milestone;
-    this.workWeek = this.release.workWeek;
-    this.oldChecklist = this.releaseChecklist!;
-    this.getDetails();
-  }
-
-  getDetails() {
-    this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
-      (response) => {
-        this.details = response;
-        this.createViewCheckList();
-      },
-      (err) => {
-        console.log(err.name);
-      }
-    );
-  }
-
-  createViewCheckList(){
-    this.viewReleaseChecklist=[];
-    selectedDetail?.details.find(x => x.id === release.details)?.detail;
-    for(var release of this.releaseChecklist!){
-      var checkList:ViewReleaseChecklist=<ViewReleaseChecklist>{};
-      checkList.id=release.id;
-      checkList.vector=release.vector;
-      checkList.owner=release.owner;
-      checkList.status=release.status;
-      checkList.detailedStatus=release.detailedStatus;
-      checkList.evidences=release.evidences;
-      checkList.comments=release.comments.sort(function(a:any,b:any): any{
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      });
-      var selectedDetail = this.details.find( x => x.vector === release.vector);
-      checkList.detail = selectedDetail?.details.find(x => x.id === release.details)?.detail!;
-      checkList.releaseCriteria = selectedDetail?.details.find(x => x.id === release.details)?.releaseCriteria!;
-      this.viewReleaseChecklist.push(checkList);
-    }
-  }
+  // createViewCheckList(){
+  //   this.viewReleaseChecklist=[];
+  //   selectedDetail?.details.find(x => x.id === release.details)?.detail;
+  //   for(var release of this.releaseChecklist!){
+  //     var checkList:ReleaseChecklist=<ReleaseChecklist>{};
+  //     checkList.id=release.id;
+  //     checkList.vector=release.vector;
+  //     checkList.owner=release.owner;
+  //     checkList.status=release.status;
+  //     checkList.detailedStatus=release.detailedStatus;
+  //     checkList.evidences=release.evidences;
+  //     checkList.comments=release.comments.sort(function(a:any,b:any): any{
+  //       return new Date(b.date).getTime() - new Date(a.date).getTime();
+  //     });
+  //     var selectedDetail = this.details.find( x => x.vector === release.vector);
+  //     checkList.details = selectedDetail?.details.find(x => x.id === release.details)?.detail!;
+  //     checkList.releaseCriteria = selectedDetail?.details.find(x => x.id === release.details)?.releaseCriteria!;
+  //     this.viewReleaseChecklist.push(checkList);
+  //   }
+  // }
 
   /**
    * Change Status of Checklist
@@ -365,17 +411,9 @@ export class ChecklistComponent implements OnInit  {
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
     this.viewReleaseChecklist![objIndex].status=newStatus;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist]; 
-    // var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
-    // this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
-    // newCheckList.status = newStatus;
-    // this.viewReleaseChecklist?.push(newCheckList);
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
     this.releaseChecklist![objIndex1].status=newStatus;
-    // var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
-    // this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
-    // newReleaseCheckList.status = newStatus;
-    // this.releaseChecklist?.push(newReleaseCheckList);
 
     this.toastObj.show(this.toasts[1]);
   }
@@ -556,9 +594,10 @@ export class ChecklistComponent implements OnInit  {
    * Save the new release CheckList
    */
   saveRelease() {
-    this.checkList.find(x => x.id === this.selectedReleaseId)?.releaseChecklist == this.releaseChecklist;
-    localStorage.setItem("checkList", JSON.stringify(this.checkList));
-    this.releaseChecklist = this.checkList.find(x => x.id == this.selectedReleaseId)?.releaseChecklist!;
+    console.log(JSON.stringify(this.releaseChecklist));
+    // this.checkList.find(x => x.id === this.selectedReleaseId)?.releaseChecklist == this.releaseChecklist;
+    // localStorage.setItem("checkList", JSON.stringify(this.checkList));
+    // this.releaseChecklist = this.checkList.find(x => x.id == this.selectedReleaseId)?.releaseChecklist!;
     this.toastObj.show(this.toasts[0]);
   }
 
@@ -670,7 +709,7 @@ export class ChecklistComponent implements OnInit  {
     this.isExit=true;
   }
 
-  public saveButtons: Object = [
+  public saveChecklistButtons: Object = [
     {
         'click': this.saveAndContinue.bind(this),
           buttonModel:{
@@ -700,9 +739,9 @@ export class ChecklistComponent implements OnInit  {
    * @returns boolean value true if data change, false when nothing changed
    */
   checkData(){
-    var storedRelaeseChecklist:Checklist[]=JSON.parse(localStorage.getItem("checkList")!);
-    var oldRelease:ReleaseChecklist[] = storedRelaeseChecklist.find(x => x.id == this.selectedReleaseId)?.releaseChecklist!;
-    if(JSON.stringify(oldRelease) === JSON.stringify(this.releaseChecklist)){
+    var storedReleaseChecklist:Checklist[]=JSON.parse(localStorage.getItem("checkList")!);
+    // var oldRelease:ReleaseChecklist[] = storedRelaeseChecklist.find(x => x.id == this.selectedReleaseId.toString())?.releaseChecklist!;
+    if(JSON.stringify(storedReleaseChecklist) === JSON.stringify(this.releaseChecklist)){
       return false;
     }else{
       return true;
@@ -750,17 +789,11 @@ export class ChecklistComponent implements OnInit  {
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
     this.viewReleaseChecklist![objIndex].owner=owner;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist];
-    // var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
-    // this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
-    // newCheckList.owner = owner;
-    // this.viewReleaseChecklist?.push(newCheckList);
+    
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
     this.releaseChecklist![objIndex1].owner=owner;
-    // var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
-    // this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
-    // newReleaseCheckList.owner = owner;
-    // this.releaseChecklist?.push(newReleaseCheckList);
+ 
 
     this.toastObj.show(this.toasts[6]);
   }
@@ -770,26 +803,14 @@ export class ChecklistComponent implements OnInit  {
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
     this.viewReleaseChecklist![objIndex].detailedStatus=detailStatus;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist];
-    // var newCheckList: ViewReleaseChecklist | undefined = this.viewReleaseChecklist![objIndex];
-    // this.viewReleaseChecklist = this.viewReleaseChecklist!.filter(val=>val.id!==id);
-    // newCheckList.detailedStatus = detailStatus;
-    // this.viewReleaseChecklist.push(newCheckList);
+  
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
     this.releaseChecklist![objIndex1].detailedStatus=detailStatus;
-    // var newReleaseCheckList: ReleaseChecklist | undefined = this.releaseChecklist![objIndex1];
-    // this.releaseChecklist = this.releaseChecklist!.filter(val=>val.id!==id);
-    // newReleaseCheckList.detailedStatus = detailStatus;
-    // this.releaseChecklist?.push(newReleaseCheckList);
+  
 
     // this.toastObj.show(this.toasts[7]);
   }
-
-  @HostListener('window:beforeunload', ['$event'])
-  public beforeunloadHandler($event: { returnValue: string; }) {
-    alert("hi");
-  $event.returnValue = "Are you sure?";
- }
 
 }
 

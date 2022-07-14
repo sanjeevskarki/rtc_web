@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
 import { AnimationModel, ILoadedEventArgs, ProgressTheme } from '@syncfusion/ej2-angular-progressbar';
-import { Checklist, NewRelease, Project, ReleaseChecklist, ReleaseDetails } from '../home/home.models';
+import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
 import { ReleaseService } from './release.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
@@ -10,7 +10,8 @@ import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-noti
 import { AnimationSettingsModel, DialogComponent } from '@syncfusion/ej2-angular-popups';
 import { Subject } from 'rxjs';
 import { EmitType } from '@syncfusion/ej2-base';
-import { BusinessUnit, Milestone } from './release.models';
+import { BusinessUnit,  Milestone } from './release.models';
+import { ALPHA, BUSINESS_UNIT_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EXTERNAL_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, TYPE_LOWER } from './release.constants';
 
 export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
 
@@ -58,21 +59,29 @@ export class ReleaseComponent implements OnInit {
   isExternal:boolean=false;
 
   public releaseTypes: Object[] = [
-    { Id: 'external', Milestone: 'External' },
-    { Id: 'internal', Milestone: 'Internal' }
+    { Id: EXTERNAL_LOWER, Type: 'External' },
+    { Id: INTERNAL_LOWER, Type: 'Internal' }
   ];
   public milestones: Object[] = [];
   public businessUnits: Object[] = [];
   public handoverType: Object[] = [
-    { Id: 'whandover', Milestone: 'With Handover' },
-    { Id: 'wohandover', Milestone: 'Without Handover' }
+    { Id: 'whandover', HandoverType: 'With Handover' },
+    { Id: 'wohandover', HandoverType: 'Without Handover' }
   ];
+
+  // maps the appropriate column to fields property
+  public releaseTypeFields: Object = { text: 'Type', value: 'Id' };
+  public handoverTypeFields: Object = { text: 'HandoverType', value: 'Id' };
+  public milestonefields: Object = { text: 'Milestone', value: 'Id' };
+  public businessUnitfields: Object = { text: 'BusinessUnit', value: 'Id' };
+
   details:ReleaseDetails[]=[];
-  newChecklist!:Checklist;
+  // newChecklist!:Checklist;
   newProject!:Project;
-  releaseChecklist!: ReleaseChecklist;
-  release: ReleaseChecklist[]=[];
-  existingCheckList:Checklist[]=[];
+  // releaseChecklist!: ReleaseChecklist;
+  
+  // release: ReleaseChecklist[]=[];
+  // existingCheckList:Checklist[]=[];
 
   @ViewChild('toasttype')
   private toastObj!: ToastComponent;
@@ -93,16 +102,25 @@ export class ReleaseComponent implements OnInit {
   public target: string = '#modalTarget';
   public hidden: boolean = false;
   
+  
   public animationSettings: AnimationSettingsModel = { effect: 'None' };
+
+  releaseGuideline!:BackendGuideline;
+  guidlines:BackendGuideline[]=[];
+  newGuidlines:BackendGuideline[]=[];
+  task!:ReleaseTask;
+  taskList:ReleaseTask[]=[];
+  tempRelease!:NewRelease;
   
   constructor(private formBuilder: FormBuilder, private service:ReleaseService) { }
 
   ngOnInit(): void {
+    this.tempRelease = <NewRelease>{};
     this.getMilestones();
     this.getBusinessUnits();
-    var tempRelease:NewRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
-    this.existingCheckList = JSON.parse(localStorage.getItem("checkList")!);
-    this.existingCheckList = this.existingCheckList === null ? []:this.existingCheckList
+    this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
+    // this.existingCheckList = JSON.parse(localStorage.getItem("checkList")!);
+    // this.existingCheckList = this.existingCheckList === null ? []:this.existingCheckList
 
     this.releaseForm = this.formBuilder.group({
       name: [null, Validators.required],
@@ -110,37 +128,15 @@ export class ReleaseComponent implements OnInit {
       handover: [null, []],
       milestone:  [null, Validators.required],
       date: [null, Validators.required],
-      contact: [null, Validators.required],
-      email: [null, [Validators.required,Validators.email]],
+      // contact: [null, Validators.required],
+      // email: [null, [Validators.required,Validators.email]],
       businessunit: [null, Validators.required],
       description:[null, Validators.required],
     });
-    if(tempRelease){
-      if(tempRelease.handover && tempRelease.type === 'external' && tempRelease.milestone === 'poc'){
-        this.isExternal=true;
-      }else{
-        this.isExternal=false;
-      }
-      this.releaseForm.patchValue({
-        name: tempRelease.name,
-        type: tempRelease.type,
-        milestone:  tempRelease.milestone,
-        handover:tempRelease.handover,
-        date: tempRelease.date,
-        contact: tempRelease.contact,
-        email: tempRelease.email,
-        businessunit:tempRelease.businessunit,
-        description:tempRelease.description
-      });
-      this.workWeek = tempRelease.date.toString();
-      // this.workWeek = "ww"+moment(new Date(tempRelease.date), "MM-DD-YYYY").week()+"'"+new Date(tempRelease.date).getFullYear();
-      this.isWorkWeekVisible=true;
-    }
+    
   }
 
-  // maps the appropriate column to fields property
-  public fields: Object = { text: 'Milestone', value: 'Id' };
-  public milestonefields: Object = { text: 'label', value: 'Id' };
+  
 
   // public onChange(args: any): void {
   //   let value: Element = document.getElementById('value')!;
@@ -156,8 +152,7 @@ export class ReleaseComponent implements OnInit {
   }
 
   onTypeSelect(args:any): void {
-    // alert(this.releaseForm.controls['type'].value);
-    if(args.value === 'external' && (this.releaseForm.controls['milestone'].value === 'poc' || this.releaseForm.controls['milestone'].value === 'pre-alpha')){
+    if(args.value === EXTERNAL_LOWER && (this.releaseForm.controls[MILESTONE_LOWER].value === POC_UPPER || this.releaseForm.controls[MILESTONE_LOWER].value === PRE_ALPHA || this.releaseForm.controls[MILESTONE_LOWER].value === ALPHA)){
       this.isExternal=true;
     }else{
       this.isExternal=false;
@@ -165,30 +160,20 @@ export class ReleaseComponent implements OnInit {
   }
 
   onMilestoneSelect(args:any): void {
-    // alert(this.releaseForm.controls['type'].value);
-    if((args.value === 'poc' || args.value === 'pre-alpha') && this.releaseForm.controls['type'].value === 'external'){
+    if((args.value === POC_UPPER || args.value === PRE_ALPHA || args.value === ALPHA) && this.releaseForm.controls[TYPE_LOWER].value === EXTERNAL_LOWER){
       this.isExternal=true;
     }else{
       this.isExternal=false;
     }
   }
 
-  // onBusinessUnitSelect(args:any): void {
-  //   // alert(this.releaseForm.controls['type'].value);
-  //   if((args.value === 'poc' || args.value === 'pre-alpha') && this.releaseForm.controls['type'].value === 'external'){
-  //     this.isExternal=true;
-  //   }else{
-  //     this.isExternal=false;
-  //   }
-  // }
-
-  save(){
+  saveRelease(){
     this.showSpinner = true;
     this.getDetails();
     this.isWorkWeekVisible=false;
   }
 
-  draft(){
+  draftRelease(){
     this.createNewRelease();
     localStorage.setItem("tempCheckList", JSON.stringify(this.newRelease));
     this.toastObj.show(this.toasts[1]);
@@ -196,7 +181,7 @@ export class ReleaseComponent implements OnInit {
     this.isWorkWeekVisible=false;
   }
 
-  reset(){
+  resetRelease(){
     this.releaseForm.reset();
     localStorage.removeItem("tempCheckList");
     this.isWorkWeekVisible=false;
@@ -224,13 +209,15 @@ export class ReleaseComponent implements OnInit {
   createNewRelease() {
     this.newRelease =<NewRelease>{};
     this.newRelease.id = uuidv4();
-    this.newRelease.name = this.releaseForm.controls['name'].value;
-    this.newRelease.type = this.releaseForm.controls['type'].value;
-    this.newRelease.handover = this.releaseForm.controls['handover'].value;
-    this.newRelease.milestone = this.releaseForm.controls['milestone'].value;
-    this.newRelease.date = new Date(this.releaseForm.controls['date'].value);
-    this.newRelease.contact =this.releaseForm.controls['contact'].value;
-    this.newRelease.email = this.releaseForm.controls['email'].value;
+    this.newRelease.name = this.releaseForm.controls[NAME_LOWER].value;
+    this.newRelease.type = this.releaseForm.controls[TYPE_LOWER].value;
+    this.newRelease.handover = this.releaseForm.controls[HANDOVER_LOWER].value;
+    this.newRelease.milestone = this.releaseForm.controls[MILESTONE_LOWER].value;
+    this.newRelease.date = new Date(this.releaseForm.controls[DATE_LOWER].value);
+    this.newRelease.description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
+    this.newRelease.businessunit = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
+    // this.newRelease.contact =this.releaseForm.controls['contact'].value;
+    // this.newRelease.email = this.releaseForm.controls['email'].value;
   }
 
   getMilestones() {
@@ -259,9 +246,9 @@ export class ReleaseComponent implements OnInit {
 
 
   getDetails() {
-    this.selectedMilestone=this.releaseForm.controls['milestone'].value;
-    this.selectedType=this.releaseForm.controls['type'].value;
-    this.selectedHandoverType=this.releaseForm.controls['handover'].value;
+    this.selectedMilestone=this.releaseForm.controls[MILESTONE_LOWER].value;
+    this.selectedType=this.releaseForm.controls[TYPE_LOWER].value;
+    this.selectedHandoverType=this.releaseForm.controls[HANDOVER_LOWER].value;
     this.service.details(this.selectedMilestone.toLocaleLowerCase()!,this.selectedHandoverType?.toLocaleLowerCase()!,this.selectedType?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
@@ -276,54 +263,96 @@ export class ReleaseComponent implements OnInit {
 
   createNewProject(){
     this.newProject=<Project>{};
-    this.newProject.project_id = Math.floor(Math.random()*90000) + 10000;;
-    this.newProject.project_name = this.releaseForm.controls['name'].value;
-    this.newProject.project_business_unit_id = this.releaseForm.controls['businessunit'].value;
-    this.newProject.project_milestone_id = this.releaseForm.controls['milestone'].value;
-    this.newProject.project_release_date = moment(this.releaseForm.controls['date'].value).format('YYYY-MM-DD');
-    this.newProject.project_description = this.releaseForm.controls['description'].value;
+    this.newProject.project_id = Math.floor(Math.random()*90000) + 10000;
+    this.newProject.project_name = this.releaseForm.controls[NAME_LOWER].value;
+    this.newProject.project_business_unit_id = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
+    this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWER].value;
+    this.newProject.project_release_date = moment(this.releaseForm.controls[DATE_LOWER].value).format(DATE_FORMAT);
+    this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
     this.saveProject();
+    
   }
 
   saveProject(){
-    this.service.addProject(this.newProject)
-      .subscribe(data => {
-        console.log(data);
-        this.toastObj.show(this.toasts[2]);
-      })      
-    }
+    this.service.addProject(this.newProject).subscribe(data => {
+      this.createGuideLine();
+    })
 
+  }
 
-  createNewCheckList(){
-    this.newChecklist=<Checklist>{};
-    this.release =[];
-    this.newChecklist.id=uuidv4();
-    this.newChecklist.releaseName = this.releaseForm.controls['name'].value;
-    this.newChecklist.milestone = this.releaseForm.controls['milestone'].value;
-    this.newChecklist.workWeek = "ww"+moment(new Date(this.releaseForm.controls['date'].value), "MM-DD-YYYY").week()+"'"+new Date(this.releaseForm.controls['date'].value).getFullYear();
-  
+  createGuideLine(){
+    this.guidlines=[];
     for(var release of this.details!){
       for(var detail of release.details){
-        this.releaseChecklist=<ReleaseChecklist>{};
-        this.releaseChecklist.id = uuidv4();
-        this.releaseChecklist.comments =[];
-        this.releaseChecklist.evidences=[];
-        this.releaseChecklist.details=detail.id;
-        this.releaseChecklist.status = "Open";
-        this.releaseChecklist.vector = release.vector;
-        this.releaseChecklist.owner = "";
-        this.releaseChecklist.detailedStatus = "";
-        this.release.push(this.releaseChecklist);
+        this.releaseGuideline=<BackendGuideline>{};
+
+        // this.releaseGuideline.id = Math.floor(Math.random()*90000) + 10000;
+        this.releaseGuideline.vector_id = release.vector;
+        this.releaseGuideline.task_name = detail.detail;
+        this.releaseGuideline.task_description = detail.detail;
+        this.releaseGuideline.required_evidence = "Yes";
+
+        this.guidlines.push(this.releaseGuideline);       
       }
     }
-    this.newChecklist.releaseChecklist = this.release;
-    this.existingCheckList.push(this.newChecklist);
-    this.toastObj.show(this.toasts[2]);
-    this.releaseForm.reset();
-    localStorage.setItem("checkList", JSON.stringify(this.existingCheckList));
-    localStorage.removeItem("tempCheckList");
-    this.showSpinner = false;
+    this.saveGuidelines();
   }
+
+  saveGuidelines(){
+    this.service.addGuidelines(this.guidlines).subscribe(data => {
+      this.newGuidlines = data;
+      this.saveTask();
+    });      
+  }
+
+  saveTask(){ 
+    this.taskList=[];
+    for(var _guideline of this.newGuidlines!){
+      this.task=<ReleaseTask>{};
+      this.task.guidelines_ptr_id = _guideline.id;
+      this.task.owner= "";
+      this.task.project_id_id = this.newProject.project_id!;
+      this.task.status_id= "Open";
+      this.taskList.push(this.task);
+    }
+    this.service.addTasks(this.taskList).subscribe(data => {
+      this.toastObj.show(this.toasts[2]);
+      this.releaseForm.reset();
+      this.showSpinner = false;
+    });      
+  }
+
+
+  // createNewCheckList(){
+  //   this.newChecklist=<Checklist>{};
+  //   this.release =[];
+  //   this.newChecklist.id=uuidv4();
+  //   this.newChecklist.releaseName = this.releaseForm.controls[NAME_LOWER].value;
+  //   this.newChecklist.milestone = this.releaseForm.controls[MILESTONE_LOWER].value;
+  //   this.newChecklist.workWeek = "ww"+moment(new Date(this.releaseForm.controls[DATE_LOWER].value), "MM-DD-YYYY").week()+"'"+new Date(this.releaseForm.controls[DATE_LOWER].value).getFullYear();
+  
+  //   for(var release of this.details!){
+  //     for(var detail of release.details){
+  //       this.releaseChecklist=<ReleaseChecklist>{};
+  //       this.releaseChecklist.id = uuidv4();
+  //       this.releaseChecklist.comments =[];
+  //       this.releaseChecklist.evidences=[];
+  //       this.releaseChecklist.details=detail.id;
+  //       this.releaseChecklist.status = "Open";
+  //       this.releaseChecklist.vector = release.vector;
+  //       this.releaseChecklist.owner = "";
+  //       this.releaseChecklist.detailedStatus = "";
+  //       this.release.push(this.releaseChecklist);
+  //     }
+  //   }
+  //   this.newChecklist.releaseChecklist = this.release;
+  //   this.existingCheckList.push(this.newChecklist);
+  //   this.toastObj.show(this.toasts[2]);
+  //   this.releaseForm.reset();
+  //   localStorage.setItem("checkList", JSON.stringify(this.existingCheckList));
+  //   localStorage.removeItem("tempCheckList");
+  //   this.showSpinner = false;
+  // }
 
   onChange(args:any) {
     this.workWeek = args.value;
@@ -342,7 +371,7 @@ export class ReleaseComponent implements OnInit {
   createMilestoneDropdown(){
     if(this.milestoneList != null){
         for (var i = 0; i < this.milestoneList.length; i++) {
-            this.milestones.push({ Milestone: this.milestoneList[i].milestone, Id: this.milestoneList[i].milestone.toLocaleLowerCase() });
+            this.milestones.push({ Milestone: this.milestoneList[i].milestone, Id: this.milestoneList[i].milestone });
         }
     }
   }
@@ -350,9 +379,34 @@ export class ReleaseComponent implements OnInit {
   createBusinessUnitDropdown(){
     if(this.businessUnitList != null){
         for (var i = 0; i < this.businessUnitList.length; i++) {
-            this.businessUnits.push({ Milestone: this.businessUnitList[i].name, Id: this.businessUnitList[i].name.toLocaleLowerCase() });
+            this.businessUnits.push({ BusinessUnit: this.businessUnitList[i].name, Id: this.businessUnitList[i].name });
         }
     }
+    if(this.tempRelease){
+      this.setDraftForm();
+    }
+  }
+
+  setDraftForm(){
+    if(this.tempRelease.handover && this.tempRelease.type === EXTERNAL_LOWER && this.tempRelease.milestone === POC_LOWER){
+      this.isExternal=true;
+    }else{
+      this.isExternal=false;
+    }
+    this.releaseForm.patchValue({
+      name: this.tempRelease.name,
+      type: this.tempRelease.type,
+      milestone:  this.tempRelease.milestone,
+      handover:this.tempRelease.handover,
+      date: this.tempRelease.date,
+      // contact: this.tempRelease.contact,
+      // email: this.tempRelease.email,
+      businessunit:this.tempRelease.businessunit,
+      description:this.tempRelease.description
+    });
+    this.workWeek = this.tempRelease.date.toString();
+    // this.workWeek = "ww"+moment(new Date(tempRelease.date), "MM-DD-YYYY").week()+"'"+new Date(tempRelease.date).getFullYear();
+    this.isWorkWeekVisible=true;
   }
 
     /**

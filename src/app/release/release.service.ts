@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Project, ReleaseDetails } from '../home/home.models';
-import { BUSINESS_UNIT, MILESTONE, PROJECT } from './release.constants';
-import { BusinessUnit, Milestone } from './release.models';
+import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
+import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER } from './release.constants';
+import { BusinessUnit,  Milestone } from './release.models';
 
 /**
  * Dependecy Injection.
@@ -16,11 +16,13 @@ export class ReleaseService {
   endpoint_url:string= environment.ENDPOINT;
   milestone:string=MILESTONE;
   businessUnit:string=BUSINESS_UNIT;
+  task:string=TASK_LOWER;
   project:string = PROJECT;
+  guideline:string = GUIDELINE_LOWER;
   amount!: number;
   displayTime!: string;
   remaining!: number;
-  headers! : HttpHeaders
+  headers! : HttpHeaders;
   /**
    *
    * @param httpClient Http Client.
@@ -31,8 +33,7 @@ export class ReleaseService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-      'Authorization': 'Bearer szdp79a2kz4wh4frjzuqu4sz6qeth8m3',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
     });
     
   }
@@ -62,11 +63,19 @@ export class ReleaseService {
     return this.httpClient.get<BusinessUnit[]>(this.endpoint_url+this.businessUnit);
   }
 
-  public addProject(project:Project): Observable<number> { 
-    // const headers = { 'content-type': 'application/json'}  
+  public addProject(project:Project): Observable<Project> { 
     const body=JSON.stringify(project);
-    console.log("------------>>>>>>>>>>>>>>>>>>>>>"+body)
-    return this.httpClient.post<number>(this.endpoint_url+this.project, body,{headers:this.headers});
+    return this.httpClient.post<Project>(this.endpoint_url+this.project, body,{headers:this.headers});
+  }
+
+  public addGuidelines(guideline:BackendGuideline[]): Observable<BackendGuideline[]> { 
+    // const body=JSON.stringify(guideline);
+    return this.httpClient.post<BackendGuideline[]>(this.endpoint_url+this.guideline, guideline,{headers:this.headers});
+  }
+
+  public addTasks(task:ReleaseTask[]): Observable<ReleaseTask[]> { 
+    // const body=JSON.stringify(task);
+    return this.httpClient.post<ReleaseTask[]>(this.endpoint_url+this.task, task,{headers:this.headers});
   }
   
 }

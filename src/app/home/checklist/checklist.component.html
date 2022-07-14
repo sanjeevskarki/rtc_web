@@ -1,13 +1,13 @@
 <div  id="modalTarget" #targetModal >
     <div class="checklist-div">
-        <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek}}</span>   
+        <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek| workWeekPipe}}</span>   
     </div>
     <br>
     <ejs-grid #grid [dataSource]='viewReleaseChecklist' [allowTextWrap]="true" [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
                     [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  [toolbar]='toolbar'  height='650' >
         <e-columns>
             <e-column field='vector'  [filter]='filter' headerText='Vector' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
-            <e-column field='detail'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+            <e-column field='details'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
             <e-column field='owner' headerText='Owner' textAlign="left" width=40>
                 <ng-template #template let-data> 
                     <div class="e-input-group">
@@ -189,5 +189,5 @@ header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>
     Confirmation Dialog Before Leaving the Release PAge without saving
 -->
 <ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that were not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
-header='Leave Page?' width='450px' [buttons]='saveButtons' [position]="position"></ejs-dialog>  
+header='Leave Page?' width='450px' [buttons]='saveChecklistButtons' [position]="position"></ejs-dialog>  
 

@@ -22,22 +22,22 @@ export interface ReleaseChecklist {
   owner:string;
   status:string|undefined;
   detailedStatus:string;
-  // releaseCriteria:string;
+  releaseCriteria?:string;
   evidences:Evidences[];
   comments:Comments[];
 }
 
-export interface ViewReleaseChecklist {
-  id:string;
-  vector: string;
-  detail:string;
-  owner:string;
-  status:string|undefined;
-  detailedStatus:string;
-  releaseCriteria:string;
-  evidences:Evidences[];
-  comments:Comments[];
-}
+// export interface ViewReleaseChecklist {
+//   id:string;
+//   vector: string;
+//   detail:string;
+//   owner:string;
+//   status:string|undefined;
+//   detailedStatus:string;
+//   releaseCriteria:string;
+//   evidences:Evidences[];
+//   comments:Comments[];
+// }
 
 export interface Comments {
   id:string;
@@ -133,11 +133,44 @@ export interface Login {
  */
 
 export interface Project {
-  project_id: number;
+  project_id?: number;
   project_name: string;
   project_release_date:string;
   project_description:string;
   project_business_unit_id:string;
   project_milestone_id:string;
+}
+
+export interface ReleaseTask {
+  guidelines_ptr_id:number;
+  owner:string;
+  project_id_id:Number;
+  status_id:string;
+}
+
+// export interface Guideline {
+//   id:number;
+//   task_name:string;
+//   task_description:string;
+//   required_evidence:string;
+//   vector_id:string
+// }
+
+export interface BackendTask {
+  guidelines_ptr_id: string;
+  owner: string;
+  project_id_id:string;
+  status_id:string;
+  backend_guideline?:BackendGuideline;
+  evidences?:string[];
+  comments?:string[];
+}
+
+export interface BackendGuideline {
+  id: number;
+  task_name: string;
+  task_description:string;
+  required_evidence:string;
+  vector_id:string;
 }
 
