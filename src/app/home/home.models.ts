@@ -16,7 +16,7 @@ export interface Checklist {
 
 
 export interface ReleaseChecklist {
-  id:string;
+  id:number;
   vector: string;
   details:string;
   owner:string;
@@ -157,7 +157,7 @@ export interface ReleaseTask {
 // }
 
 export interface BackendTask {
-  guidelines_ptr_id: string;
+  guidelines_ptr_id: number;
   owner: string;
   project_id_id:string;
   status_id:string;

@@ -101,12 +101,12 @@ export class ChecklistService {
 
   public updateGuidelines(guideline:BackendGuideline[]): Observable<BackendGuideline[]> { 
     // const body=JSON.stringify(guideline);
-    return this.httpClient.post<BackendGuideline[]>(this.endpoint_url+this.guideline, guideline,{headers:this.headers});
+    return this.httpClient.put<BackendGuideline[]>(this.endpoint_url+this.guideline, guideline,{headers:this.headers});
   }
 
   public updateTasks(task:ReleaseTask[]): Observable<ReleaseTask[]> { 
     // const body=JSON.stringify(task);
-    return this.httpClient.post<ReleaseTask[]>(this.endpoint_url+this.task, task,{headers:this.headers});
+    return this.httpClient.put<ReleaseTask[]>(this.endpoint_url+this.task, task,{headers:this.headers});
   }
 
   /**

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GridComponent, GridLine, QueryCellInfoEventArgs,GroupService, SortService, CommandModel, CommandColumnService, EditSettingsModel } from '@syncfusion/ej2-angular-grids';
-import { BackendTask, Checklist, Comments, Evidences, Project, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ViewComment, ViewEvidence } from '../home.models';
+import { BackendGuideline, BackendTask, Checklist, Comments, Evidences, Project, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import { ItemModel, MenuEventArgs } from '@syncfusion/ej2-angular-splitbuttons';
 import { DialogComponent, AnimationSettingsModel, PositionDataModel } from '@syncfusion/ej2-angular-popups';
@@ -158,6 +158,7 @@ export class ChecklistComponent implements OnInit  {
   isExit:boolean = true;
   public editSettings!: EditSettingsModel;
   isAddCommentOpen:boolean = false;
+  showSpinner:boolean=false;
   
   constructor(private route: ActivatedRoute,private service:ChecklistService) { 
     
@@ -224,6 +225,7 @@ export class ChecklistComponent implements OnInit  {
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
   ngOnInit(): void {
+    this.showSpinner = true;
     this.isAddCommentOpen = false;
     this.editSettings = { allowEditing: true, mode: 'Normal' };
     this.toolbar = ['Search'];
@@ -288,7 +290,7 @@ export class ChecklistComponent implements OnInit  {
     
   }
 
-  getDetails() {
+   getDetails() {
     this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
@@ -320,6 +322,7 @@ export class ChecklistComponent implements OnInit  {
       checkList.releaseCriteria = selectedDetail?.details.find(x => x.detail === task.backend_guideline?.task_name)?.releaseCriteria!;
       taskList.push(checkList);
     }
+    this.showSpinner = false;
     this.viewReleaseChecklist = taskList;
     this.releaseChecklist = this.viewReleaseChecklist;
     localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
@@ -408,11 +411,11 @@ export class ChecklistComponent implements OnInit  {
    */
   changeStatus (id:string,args: MenuEventArgs) {
     var newStatus:string|undefined = args.item.text;
-    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
+    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.viewReleaseChecklist![objIndex].status=newStatus;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist]; 
 
-    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
+    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.releaseChecklist![objIndex1].status=newStatus;
 
     this.toastObj.show(this.toasts[1]);
@@ -512,7 +515,7 @@ export class ChecklistComponent implements OnInit  {
   }
 
   getCurrentRelease(releaseId:string) {
-    var selectedRelease =  this.releaseChecklist!.find(t => t.id === releaseId)!;
+    var selectedRelease =  this.releaseChecklist!.find(t => t.id.toString() === releaseId)!;
     return selectedRelease;
   }
 
@@ -594,9 +597,34 @@ export class ChecklistComponent implements OnInit  {
    * Save the new release CheckList
    */
   saveRelease() {
-    console.log(JSON.stringify(this.releaseChecklist));
+    console.log(this.releaseChecklist);
+    var newBackendGuideline:BackendGuideline;
+    var newBackendTask:ReleaseTask;
+    var newBackendGuidelineArray:BackendGuideline[]=[];
+    var newBackendTaskArray:ReleaseTask[]=[];
+    for(var release of this.releaseChecklist!){
+      newBackendGuideline = <BackendGuideline>{};
+      newBackendTask = <ReleaseTask>{};
+      newBackendGuideline.id = release.id;
+      newBackendGuideline.task_name = release.details;
+      newBackendGuideline.vector_id = release.vector;
+
+      newBackendTask.guidelines_ptr_id = release.id;
+      newBackendTask.owner = release.owner;
+      newBackendTask.status_id = release.status!;
+      newBackendTask.project_id_id = this.selectedProject.project_id!;
+      
+      newBackendTaskArray.push(newBackendTask);
+      newBackendGuidelineArray.push(newBackendGuideline);
+    }
+    console.log(JSON.stringify(newBackendTaskArray));
+    // this.service.updateGuidelines(newBackendGuidelineArray).subscribe(data => {
+      this.service.updateTasks(newBackendTaskArray).subscribe(data => {
+        
+      });
+    // })
     // this.checkList.find(x => x.id === this.selectedReleaseId)?.releaseChecklist == this.releaseChecklist;
-    // localStorage.setItem("checkList", JSON.stringify(this.checkList));
+    localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
     // this.releaseChecklist = this.checkList.find(x => x.id == this.selectedReleaseId)?.releaseChecklist!;
     this.toastObj.show(this.toasts[0]);
   }
@@ -786,12 +814,12 @@ export class ChecklistComponent implements OnInit  {
 
   addOwner(id:string,args:string){
     var owner:string|undefined = args;
-    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
+    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.viewReleaseChecklist![objIndex].owner=owner;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist];
     
 
-    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
+    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.releaseChecklist![objIndex1].owner=owner;
  
 
@@ -800,12 +828,12 @@ export class ChecklistComponent implements OnInit  {
 
   addDetailedStatus(id:string,args:string){
     var detailStatus:string|undefined = args;
-    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id == id));
+    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.viewReleaseChecklist![objIndex].detailedStatus=detailStatus;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist];
   
 
-    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id == id));
+    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.releaseChecklist![objIndex1].detailedStatus=detailStatus;
   
 

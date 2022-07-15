@@ -3,113 +3,116 @@
         <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek| workWeekPipe}}</span>   
     </div>
     <br>
-    <ejs-grid #grid [dataSource]='viewReleaseChecklist' [allowTextWrap]="true" [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
-                    [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  [toolbar]='toolbar'  height='650' >
-        <e-columns>
-            <e-column field='vector'  [filter]='filter' headerText='Vector' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
-            <e-column field='details'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
-            <e-column field='owner' headerText='Owner' textAlign="left" width=40>
-                <ng-template #template let-data> 
-                    <div class="e-input-group">
-                         <!-- <ejs-textbox class="e-input" [(ngModel)]="data.owner"></ejs-textbox> -->
-                        <input class="e-input" type="text" [(ngModel)]="data.owner"/>
-                        <ejs-tooltip #tooltip content='Update'>
-                            <span class="e-input-group-icon e-icons e-add1" (click)="addOwner(data.id,data.owner)"></span>
-                        </ejs-tooltip>
-                    </div>
-                         
-                </ng-template>
-            </e-column>    
-            <e-column field='Status' [filter]='filter' headerText='Status' textAlign="left" width='30'  [allowEditing]= 'false'>
-                <ng-template #template let-data>                   
-                   <div *ngIf="data.status === 'Done'" class="statustemp e-donecolor"> 
-                        <ejs-splitbutton content={{data.status}} 
-                        class="statustemp e-donecolor donecolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                        </ejs-splitbutton>                                          
-                    </div>
-                    <div *ngIf="data.status === 'WIP'" class="statustemp e-wipcolor">  
-                        <ejs-splitbutton content={{data.status}} 
-                        class="statustemp e-wipcolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                        </ejs-splitbutton>                                                  
-                    </div>
-                    <div *ngIf="data.status === 'Open'" class="statustemp e-opencolor"> 
-                        <ejs-splitbutton content={{data.status}} 
-                        class="statustemp e-opencolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                        </ejs-splitbutton>                                                      
-                    </div>
-                    <div *ngIf="data.status === 'N/A'" class="statustemp e-nacolor">                                          
-                        <ejs-splitbutton content={{data.status}} 
-                        class="statustemp e-nacolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                        </ejs-splitbutton>        
-                    </div>  
-                </ng-template>  
-            </e-column> 
-            <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'>
-                <ng-template #template let-data> 
-                    <div class="e-input-group">       
-                        <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus" (blur)="addDetailedStatus(data.id,data.detailedStatus)"></textarea>
-                        <!-- <ejs-tooltip #tooltip content='Update'>
-                            <span class="e-input-group-icon  e-icons e-add1" (click)="addDetailedStatus(data.id,data.detailedStatus)"></span>
-                        </ejs-tooltip> -->
-                    </div>
-                    <!-- <ejs-textbox rows="2" cssClass="e-outline" [multiline]="true"></ejs-textbox> -->
-                </ng-template>
-            </e-column>
-            <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width='70'  [allowEditing]= 'false'></e-column>
-            <e-column headerText='Evidence' textAlign='Left' width='50'  [allowEditing]= 'false'>
-                <ng-template #template let-evidence>
-                    <div *ngIf="evidence.evidences.length > 0 ; else noEvidence">
-                        <ejs-tooltip #tooltip content='View / Add Evidence'>
-                            <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)" iconCss="e-icons e-evidence" >View / Add                            
-                                    <!-- <span class="e-icons e-evidence"></span> -->
-                            </button>
-                        </ejs-tooltip>
-                    </div>
-                    <ng-template #noEvidence>
-                        <span>No Evidence Found </span>
-                        <div>
-                            <ejs-tooltip #tooltip content='Add Evidence' >
-                                <button ejs-button cssClass="e-flat" iconCss="e-icons e-plus" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">Add                               
-                                    <!-- <span class="e-icons e-add"></span> -->
-                                </button>
+    <div *ngIf="showSpinner; else show" ></div>
+    <ng-template #show>
+        <ejs-grid #grid [dataSource]='viewReleaseChecklist' [allowTextWrap]="true" [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
+                        [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  [toolbar]='toolbar'  height='650' >
+            <e-columns>
+                <e-column field='vector'  [filter]='filter' headerText='Vector' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+                <e-column field='details'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+                <e-column field='owner' headerText='Owner' textAlign="left" width=40>
+                    <ng-template #template let-data> 
+                        <div class="e-input-group">
+                            <!-- <ejs-textbox class="e-input" [(ngModel)]="data.owner"></ejs-textbox> -->
+                            <input class="e-input" type="text" [(ngModel)]="data.owner"/>
+                            <ejs-tooltip #tooltip content='Update'>
+                                <span class="e-input-group-icon e-icons e-add1" (click)="addOwner(data.id,data.owner)"></span>
                             </ejs-tooltip>
                         </div>
-                      </ng-template>
-                  </ng-template>     
-            </e-column>
-            <e-column headerText='Comments' textAlign='Left' width='90'  [allowEditing]= 'false'>
-                <ng-template #template let-comment>
-                    <div *ngIf="comment.comments.length > 0;" class="comment-div">
-                        <div [innerHTML]="comment.comments[0].message"></div>
-                        <div >
-                            <li *ngFor="let f of comment.comments[0].file; let i = index">
-                                {{ f.name }}
-                            </li> 
-                        </div>
-                        <div style="font-size: 11px;"> {{comment.comments[0].date | date:'medium'}} </div>
-                    </div>
-                    
-                    <div *ngIf="comment.comments.length > 0 ; else noComments" style="margin-top:5px;">
-                        <ejs-tooltip #tooltip content='View / Add Comments'>
-                            <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-evidence" (click)="onCommentClicked(comment.id)">View / Add                              
-                                    <!-- <span class="e-icons e-evidence"></span>                           -->
-                            </button>
-                        </ejs-tooltip>
-                    </div>
-                    <ng-template #noComments>
-                        <span>No Comment Found </span>
-                        <div>
-                            <ejs-tooltip #tooltip content='Add Comments'>
-                                <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-plus" (click)="onCommentClicked(comment.id)">Add 
-                                    <!-- <span class="e-icons e-plus"></span>  -->
-                                </button>
-                            </ejs-tooltip>
-                        </div>
+                            
                     </ng-template>
-                  </ng-template>
-            </e-column>
-        </e-columns>
-    </ejs-grid>
+                </e-column>    
+                <e-column field='Status' [filter]='filter' headerText='Status' textAlign="left" width='30'  [allowEditing]= 'false'>
+                    <ng-template #template let-data>                   
+                    <div *ngIf="data.status === 'Done'" class="statustemp e-donecolor"> 
+                            <ejs-splitbutton content={{data.status}} 
+                            class="statustemp e-donecolor donecolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
+                            </ejs-splitbutton>                                          
+                        </div>
+                        <div *ngIf="data.status === 'WIP'" class="statustemp e-wipcolor">  
+                            <ejs-splitbutton content={{data.status}} 
+                            class="statustemp e-wipcolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
+                            </ejs-splitbutton>                                                  
+                        </div>
+                        <div *ngIf="data.status === 'Open'" class="statustemp e-opencolor"> 
+                            <ejs-splitbutton content={{data.status}} 
+                            class="statustemp e-opencolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
+                            </ejs-splitbutton>                                                      
+                        </div>
+                        <div *ngIf="data.status === 'N/A'" class="statustemp e-nacolor">                                          
+                            <ejs-splitbutton content={{data.status}} 
+                            class="statustemp e-nacolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
+                            </ejs-splitbutton>        
+                        </div>  
+                    </ng-template>  
+                </e-column> 
+                <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'>
+                    <ng-template #template let-data> 
+                        <div class="e-input-group">       
+                            <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus" (blur)="addDetailedStatus(data.id,data.detailedStatus)"></textarea>
+                            <!-- <ejs-tooltip #tooltip content='Update'>
+                                <span class="e-input-group-icon  e-icons e-add1" (click)="addDetailedStatus(data.id,data.detailedStatus)"></span>
+                            </ejs-tooltip> -->
+                        </div>
+                        <!-- <ejs-textbox rows="2" cssClass="e-outline" [multiline]="true"></ejs-textbox> -->
+                    </ng-template>
+                </e-column>
+                <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width='70'  [allowEditing]= 'false'></e-column>
+                <e-column headerText='Evidence' textAlign='Left' width='50'  [allowEditing]= 'false'>
+                    <ng-template #template let-evidence>
+                        <div *ngIf="evidence.evidences.length > 0 ; else noEvidence">
+                            <ejs-tooltip #tooltip content='View / Add Evidence'>
+                                <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)" iconCss="e-icons e-evidence" >View / Add                            
+                                        <!-- <span class="e-icons e-evidence"></span> -->
+                                </button>
+                            </ejs-tooltip>
+                        </div>
+                        <ng-template #noEvidence>
+                            <span>No Evidence Found </span>
+                            <div>
+                                <ejs-tooltip #tooltip content='Add Evidence' >
+                                    <button ejs-button cssClass="e-flat" iconCss="e-icons e-plus" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">Add                               
+                                        <!-- <span class="e-icons e-add"></span> -->
+                                    </button>
+                                </ejs-tooltip>
+                            </div>
+                        </ng-template>
+                    </ng-template>     
+                </e-column>
+                <e-column headerText='Comments' textAlign='Left' width='90'  [allowEditing]= 'false'>
+                    <ng-template #template let-comment>
+                        <div *ngIf="comment.comments.length > 0;" class="comment-div">
+                            <div [innerHTML]="comment.comments[0].message"></div>
+                            <div >
+                                <li *ngFor="let f of comment.comments[0].file; let i = index">
+                                    {{ f.name }}
+                                </li> 
+                            </div>
+                            <div style="font-size: 11px;"> {{comment.comments[0].date | date:'medium'}} </div>
+                        </div>
+                        
+                        <div *ngIf="comment.comments.length > 0 ; else noComments" style="margin-top:5px;">
+                            <ejs-tooltip #tooltip content='View / Add Comments'>
+                                <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-evidence" (click)="onCommentClicked(comment.id)">View / Add                              
+                                        <!-- <span class="e-icons e-evidence"></span>                           -->
+                                </button>
+                            </ejs-tooltip>
+                        </div>
+                        <ng-template #noComments>
+                            <span>No Comment Found </span>
+                            <div>
+                                <ejs-tooltip #tooltip content='Add Comments'>
+                                    <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-plus" (click)="onCommentClicked(comment.id)">Add 
+                                        <!-- <span class="e-icons e-plus"></span>  -->
+                                    </button>
+                                </ejs-tooltip>
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                </e-column>
+            </e-columns>
+        </ejs-grid>
+    </ng-template>
     <br>
     <button ejs-button cssClass="e-info" [isPrimary]="true" style="float: right;margin-bottom: 10px;" (click)="saveRelease()">Save Release</button>
 </div>
