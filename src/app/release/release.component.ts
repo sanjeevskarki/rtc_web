@@ -13,7 +13,7 @@ import { EmitType } from '@syncfusion/ej2-base';
 import { BusinessUnit,  Milestone } from './release.models';
 import { ALPHA, BUSINESS_UNIT_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EXTERNAL_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, TYPE_LOWER } from './release.constants';
 
-export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
+// export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
 
 @Component({
   selector: 'app-release',

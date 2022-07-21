@@ -1,0 +1,2373 @@
+{
+	"scan_id": "2101881",
+	"issues": [
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/Extensions.cs",
+			"line": "18",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=167"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/Extensions.cs",
+			"line": "36",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=168"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/Extensions.cs",
+			"line": "59",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=169"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/Extensions.cs",
+			"line": "82",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=170"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualEosagaViewModel.cs",
+			"line": "57",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=171"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualGoodbabyViewModel.cs",
+			"line": "103",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=172"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualIProvenViewModel.cs",
+			"line": "103",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=173"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualOmronViewModel.cs",
+			"line": "70",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=174"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualOmronViewModel.cs",
+			"line": "86",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=175"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualOmronViewModel.cs",
+			"line": "102",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=176"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualOmronViewModel.cs",
+			"line": "118",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=177"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualOmronViewModel.cs",
+			"line": "134",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=178"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.client.netcore/ManualEntry/ManualOmronViewModel.cs",
+			"line": "150",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=179"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.services/HealthCheckService.cs",
+			"line": "219",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=180"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/Common.cs",
+			"line": "49",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=181"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.services/WASA/WasaCameraSetting.cs",
+			"line": "212",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=182"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.services/WASA/WasaCameraSetting.cs",
+			"line": "338",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=183"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.services/WASA/WasaComPortManager.cs",
+			"line": "105",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=184"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.services/WASA/WasaComPortManager.cs",
+			"line": "334",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=185"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.shared/Common/LogManager.cs",
+			"line": "116",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=186"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Helpers/RegistryHelper.cs",
+			"line": "33",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=187"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "239",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=188"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "275",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=189"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "300",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=190"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "577",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=191"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "591",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=192"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "606",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=193"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "751",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=194"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "864",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=195"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1037",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=196"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1109",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=197"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1189",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=198"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1282",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=199"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1351",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=200"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1412",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=201"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1418",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=202"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "1445",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=203"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/LicenseAgreement.xaml.cs",
+			"line": "42",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=204"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/HealthCheck/HealthCheckPage.xaml.cs",
+			"line": "100",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=205"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/HealthCheck/HealthCheckPage.xaml.cs",
+			"line": "152",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=206"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/HealthCheck/HealthCheckPage.xaml.cs",
+			"line": "199",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=207"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/HealthCheck/HealthCheckPage.xaml.cs",
+			"line": "238",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=208"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/HealthCheck/HealthCheckPage.xaml.cs",
+			"line": "287",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=209"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/History/HistoryPage.xaml.cs",
+			"line": "104",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=210"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Other/UserInfoPage.xaml.cs",
+			"line": "59",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=211"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "57",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=212"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "288",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=213"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "313",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=214"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "345",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=215"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "385",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=216"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "427",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=217"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "475",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=218"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "509",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=219"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "533",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=220"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "551",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=221"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainUIWindow.xaml.cs",
+			"line": "66",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=222"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainUIWindow.xaml.cs",
+			"line": "94",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=223"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainUIWindow.xaml.cs",
+			"line": "201",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=224"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainUIWindow.xaml.cs",
+			"line": "293",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=225"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/CameraControl.xaml.cs",
+			"line": "82",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=226"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/CameraControl.xaml.cs",
+			"line": "111",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=227"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "110",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=228"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "164",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=229"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "216",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=230"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "256",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=231"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "263",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=232"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "321",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=233"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "344",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=234"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalCameraControl.xaml.cs",
+			"line": "364",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=235"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "apps/wpc.uwp.component/Controls/MinimalMaskControl.xaml.cs",
+			"line": "75",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=236"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "37",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=237"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "52",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=238"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/SerialPortLib/SerialPort.cs",
+			"line": "239",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=239"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/SerialPortLib/SerialPort.cs",
+			"line": "292",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=240"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/SerialPortLib/SerialPort.cs",
+			"line": "372",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=241"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/SerialPortLib/SerialPort.cs",
+			"line": "401",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=242"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/SerialPortLib/SerialPort.cs",
+			"line": "407",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=243"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "49",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=244"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "84",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=245"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "89",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=246"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "94",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=247"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "135",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=248"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "139",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=249"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "143",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=250"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "198",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=251"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "202",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=252"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "206",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=253"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "245",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=254"
+		},
+		{
+			"message": "Insufficient Logging of Exceptions",
+			"severity": "Information",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "360",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=255"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/HealthCheckService.cs",
+			"line": "48",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=94"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "106",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=95"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "25",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=96"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=97"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "28",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=98"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "29",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=99"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "30",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=100"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "37",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=101"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "40",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=102"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "44",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=103"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "53",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=104"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "58",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=105"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "59",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=106"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "751",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=107"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "752",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=108"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "753",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=109"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "754",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=110"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "755",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=111"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "756",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=112"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "757",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=113"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "758",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=114"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "759",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=115"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceManager.cs",
+			"line": "17",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=116"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceManager.cs",
+			"line": "18",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=117"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "28",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=118"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "29",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=119"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "36",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=120"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/Common/LogManager.cs",
+			"line": "40",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=121"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/NativeMethods.cs",
+			"line": "279",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=122"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/NativeMethods.cs",
+			"line": "284",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=123"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/NativeMethods.cs",
+			"line": "293",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=124"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/NativeMethods.cs",
+			"line": "294",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=125"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/NativeMethods.cs",
+			"line": "295",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=126"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/NativeMethods.cs",
+			"line": "296",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=127"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/PolarH10_BleData.cs",
+			"line": "9",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=128"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/PolarH10_BleData.cs",
+			"line": "10",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=129"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/PolarH10_BleData.cs",
+			"line": "11",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=130"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/PolarH10_BleData.cs",
+			"line": "12",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=131"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/PolarH10_BleData.cs",
+			"line": "13",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=132"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/TimeMeasurementResult.cs",
+			"line": "9",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=133"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/TimeMeasurementResult.cs",
+			"line": "10",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=134"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/UserData.cs",
+			"line": "10",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=135"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/UserData.cs",
+			"line": "11",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=136"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/UserData.cs",
+			"line": "12",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=137"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/UserData.cs",
+			"line": "13",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=138"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.shared/UserData.cs",
+			"line": "14",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=139"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/LoadingIndicator.xaml.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=140"
+		},
+		{
+			"message": "Exposure of Resource to Wrong Sphere",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/LoadingIndicator.xaml.cs",
+			"line": "28",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=141"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "1230",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=256"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "1897",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=257"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "74",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=258"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "121",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=259"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "181",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=260"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "334",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=261"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "353",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=262"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "358",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=263"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "397",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=264"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "483",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=265"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "630",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=266"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "2126",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=267"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "194",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=268"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "372",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=269"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "420",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=270"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "431",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=271"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceScanner.cs",
+			"line": "442",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=272"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "tr/DotNetApp/ConsoleApp1/WpfApp1/MyMainViewModel.cs",
+			"line": "90",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=273"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.services/PolarH10/BleHrDeviceDataCollector.cs",
+			"line": "250",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=274"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/MainWindow.xaml.cs",
+			"line": "124",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=275"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/FeetInchesTextBox.xaml.cs",
+			"line": "36",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=276"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/NavigationControl.xaml.cs",
+			"line": "130",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=277"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/ManualEntry/GoodbabyControl.xaml.cs",
+			"line": "41",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=278"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/ManualEntry/IProvenControl.xaml.cs",
+			"line": "41",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=279"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/ManualEntry/OmronControl.xaml.cs",
+			"line": "36",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=280"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Controls/Vitals/MeasurementControl.xaml.cs",
+			"line": "197",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=281"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Base/HistoryPageBase.cs",
+			"line": "44",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=282"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Base/WellnessPageBase.cs",
+			"line": "49",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=283"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/HealthCheck/HealthCheckPage.xaml.cs",
+			"line": "57",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=284"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/History/HistoryPage.xaml.cs",
+			"line": "66",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=285"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Other/UserInfoPage.xaml.cs",
+			"line": "67",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=286"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainNotificationWindow.xaml.cs",
+			"line": "139",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=287"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/MainUIWindow.xaml.cs",
+			"line": "209",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=288"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Windows/ManualEntryWindow.xaml.cs",
+			"line": "61",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=289"
+		},
+		{
+			"message": "Insufficient Logging of Sensitive Operations",
+			"severity": "Information",
+			"file": "tr/DotNetApp/ConsoleApp1/WpfApp1/MainWindow.xaml.cs",
+			"line": "27",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=290"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "91",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=143"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "140",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=144"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "180",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=145"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "218",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=146"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "272",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=147"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "307",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=148"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "308",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=149"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "335",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=150"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "336",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=151"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "416",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=152"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "417",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=153"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "434",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=154"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "435",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=155"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "575",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=156"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "576",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=157"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "667",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=158"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "711",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=159"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "89",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=160"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "138",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=161"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "178",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=162"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "216",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=163"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "270",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=164"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "665",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=165"
+		},
+		{
+			"message": "Insufficient Logging of Database Actions",
+			"severity": "Information",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "709",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=166"
+		},
+		{
+			"message": "Pages Without Global Error Handler",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/History/HistoryPage.xaml.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=291"
+		},
+		{
+			"message": "Pages Without Global Error Handler",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Vitals/VitalsPage.xaml.cs",
+			"line": "23",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=292"
+		},
+		{
+			"message": "Pages Without Global Error Handler",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Other/FTWelcomePage.xaml.cs",
+			"line": "23",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=293"
+		},
+		{
+			"message": "Pages Without Global Error Handler",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Other/UserInfoPage.xaml.cs",
+			"line": "23",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=294"
+		},
+		{
+			"message": "Pages Without Global Error Handler",
+			"severity": "Information",
+			"file": "apps/wpc.ui/Pages/Other/WelcomePage.xaml.cs",
+			"line": "12",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=295"
+		},
+		{
+			"message": "Dynamic SQL Queries",
+			"severity": "Information",
+			"file": "tr/CloudComp/DeepAffexCould/DeepAffexCould.cs",
+			"line": "175",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=93"
+		},
+		{
+			"message": "Hardcoded Absolute Path",
+			"severity": "Information",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=142"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "64",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=19"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "94",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=20"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "102",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=21"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "65",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=22"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "141",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=23"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "149",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=24"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "66",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=25"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "189",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=26"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "67",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=27"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "273",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=28"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "281",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=29"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "219",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=30"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "227",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=31"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "318",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=32"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "346",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=33"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "587",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=34"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "723",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=35"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "91",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=36"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "140",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=37"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "180",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=38"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "218",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=39"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "272",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=40"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "308",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=41"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "336",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=42"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "417",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=43"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "435",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=44"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "576",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=45"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "667",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=46"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "711",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=47"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "89",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=48"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "138",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=49"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "178",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=50"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "216",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=51"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "270",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=52"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "307",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=53"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "335",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=54"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "416",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=55"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "434",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=56"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "575",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=57"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "665",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=58"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "709",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=59"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "472",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=60"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "676",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=61"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "apps/wpc.services/MeasurementManager.cs",
+			"line": "188",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=62"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "1002",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=63"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "322",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=64"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "apps/wpc.ui/App.xaml.cs",
+			"line": "118",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=65"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "apps/wpc.ui/App.xaml.cs",
+			"line": "119",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=66"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "30",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=67"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "82",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=68"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "83",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=69"
+		},
+		{
+			"message": "Improper Exception Handling",
+			"severity": "Low",
+			"file": "apps/wpc.setup/BunderInstaller.cs",
+			"line": "38",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=70"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "294",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=71"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "231",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=72"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "294",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=73"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "231",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=74"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "294",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=75"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "231",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=76"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "231",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=77"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "294",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=78"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "231",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=79"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "294",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=80"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "231",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=81"
+		},
+		{
+			"message": "JavaScript Hijacking",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/DBHelper.cs",
+			"line": "294",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=82"
+		},
+		{
+			"message": "Use of Insufficiently Random Values",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "44",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=86"
+		},
+		{
+			"message": "Use of Insufficiently Random Values",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "46",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=87"
+		},
+		{
+			"message": "Use of Insufficiently Random Values",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "48",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=88"
+		},
+		{
+			"message": "Use of Insufficiently Random Values",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "50",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=89"
+		},
+		{
+			"message": "Use of Insufficiently Random Values",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "52",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=90"
+		},
+		{
+			"message": "Use of Insufficiently Random Values",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "54",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=91"
+		},
+		{
+			"message": "Use of Insufficiently Random Values",
+			"severity": "Low",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp1/Program.cs",
+			"line": "56",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=92"
+		},
+		{
+			"message": "Heap Inspection",
+			"severity": "Low",
+			"file": "apps/wpc.services/WASA/WasaCameraSetting.cs",
+			"line": "36",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=13"
+		},
+		{
+			"message": "Heap Inspection",
+			"severity": "Low",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "849",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=14"
+		},
+		{
+			"message": "Heap Inspection",
+			"severity": "Low",
+			"file": "tr/CloudComp/Common/Strings.cs",
+			"line": "134",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=15"
+		},
+		{
+			"message": "Heap Inspection",
+			"severity": "Low",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "23",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=16"
+		},
+		{
+			"message": "Heap Inspection",
+			"severity": "Low",
+			"file": "tr/CloudComp/Common/UserDemographicDetails.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=17"
+		},
+		{
+			"message": "Heap Inspection",
+			"severity": "Low",
+			"file": "tr/CloudComp/DBHelper/Tables/UserDemographicDetails_Table.cs",
+			"line": "30",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=18"
+		},
+		{
+			"message": "Use Of Hardcoded Password",
+			"severity": "Low",
+			"file": "apps/wpc.services/Nuralogix/NuralogixService.cs",
+			"line": "849",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=83"
+		},
+		{
+			"message": "Use Of Hardcoded Password",
+			"severity": "Low",
+			"file": "apps/wpc.services/WASA/WasaCameraSetting.cs",
+			"line": "36",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=84"
+		},
+		{
+			"message": "Use Of Hardcoded Password",
+			"severity": "Low",
+			"file": "tr/CloudComp/Uploader/S3Upload.cs",
+			"line": "23",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=85"
+		},
+		{
+			"message": "Path Traversal",
+			"severity": "Medium",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=3"
+		},
+		{
+			"message": "Path Traversal",
+			"severity": "Medium",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=4"
+		},
+		{
+			"message": "Path Traversal",
+			"severity": "Medium",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=5"
+		},
+		{
+			"message": "Path Traversal",
+			"severity": "Medium",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=6"
+		},
+		{
+			"message": "Path Traversal",
+			"severity": "Medium",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=7"
+		},
+		{
+			"message": "Path Traversal",
+			"severity": "Medium",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=8"
+		},
+		{
+			"message": "Privacy Violation",
+			"severity": "Medium",
+			"file": "tr/CloudComp/DeepAffexCould/DeepAffexCould.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=9"
+		},
+		{
+			"message": "Privacy Violation",
+			"severity": "Medium",
+			"file": "tr/CloudComp/DeepAffexCould/DeepAffexCould.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=10"
+		},
+		{
+			"message": "Privacy Violation",
+			"severity": "Medium",
+			"file": "tr/CloudComp/DeepAffexCould/DeepAffexCould.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=11"
+		},
+		{
+			"message": "Privacy Violation",
+			"severity": "Medium",
+			"file": "tr/CloudComp/DeepAffexCould/DeepAffexCould.cs",
+			"line": "26",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=12"
+		},
+		{
+			"message": "CGI XSS",
+			"severity": "Medium",
+			"file": "tr/DotNetApp/ConsoleApp1/ConsoleApp2/Program.cs",
+			"line": "15",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=1"
+		},
+		{
+			"message": "Improper Locking",
+			"severity": "Medium",
+			"file": "apps/wpc.ui/Helpers/Extensions.cs",
+			"line": "20",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=2"
+		},
+		{
+			"message": "Improper Locking",
+			"severity": "High",
+			"file": "apps/wpc.ui/Helpers/Extensions.cs",
+			"line": "20",
+			"state": "To Verify",
+			"url": "https://sast.intel.com/CxWebClient/ViewerMain.aspx?scanid=2101881&projectid=346248&pathid=2"
+		}
+	]
+}

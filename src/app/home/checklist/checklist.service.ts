@@ -5,7 +5,8 @@ import { GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
 import { FUTURE, PAST, TIMEINTERVAL } from '../home.constants';
 
-import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, Unit } from '../home.models';
+import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, Unit, Success } from '../home.models';
+import { Checkmarx } from './checklist.models';
 
 /**
  * Dependecy Injection.
@@ -104,9 +105,15 @@ export class ChecklistService {
     return this.httpClient.put<BackendGuideline[]>(this.endpoint_url+this.guideline, guideline,{headers:this.headers});
   }
 
-  public updateTasks(task:ReleaseTask[]): Observable<ReleaseTask[]> { 
+  public updateTasks(task:ReleaseTask[]): Observable<Success> { 
     // const body=JSON.stringify(task);
-    return this.httpClient.put<ReleaseTask[]>(this.endpoint_url+this.task, task,{headers:this.headers});
+    return this.httpClient.put<Success>(this.endpoint_url+this.task, task,{headers:this.headers});
+  }
+
+  public checkmarxScan(): Observable<Checkmarx> { 
+    return this.httpClient.get<Checkmarx>("assets/data/checkmarx_issues.json");
+    // this.apiUrl = API_URL(system);
+    // return this.httpClient.get<Data>(this.apiUrl);
   }
 
   /**

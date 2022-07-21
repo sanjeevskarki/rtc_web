@@ -16,6 +16,8 @@ import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
 import { Subject } from 'rxjs';
 import { CommentAddComponent } from '../comment.add/commentadd.component';
+import { Checkmarx, Severity } from './checklist.models';
+
 
 
 @Component({
@@ -25,6 +27,7 @@ import { CommentAddComponent } from '../comment.add/commentadd.component';
   providers:[ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, FileManagerService,EditService, PageService,GroupService, SortService, CommandColumnService],
   encapsulation: ViewEncapsulation.None
 })
+
 export class ChecklistComponent implements OnInit  {
 
   checkList:Checklist[]=[];
@@ -127,7 +130,7 @@ export class ChecklistComponent implements OnInit  {
   @ViewChild('grid')
   public grid!: GridComponent;
   details:ReleaseDetails[]=[];
-  public toolbar!: string[];
+  // public toolbar!: string[];
   // newComment!:Comments;
   @ViewChild('toasttype')
   private toastObj!: ToastComponent;
@@ -225,10 +228,11 @@ export class ChecklistComponent implements OnInit  {
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
   ngOnInit(): void {
+    this.getCheckMarxScan();
     this.showSpinner = true;
     this.isAddCommentOpen = false;
     this.editSettings = { allowEditing: true, mode: 'Normal' };
-    this.toolbar = ['Search'];
+    // this.toolbar = ['Search'];
     // this.groupOptions: { [x: string]: Object } = { showDropArea: false, columns: ['vector'] };
     this.groupOptions = { showDropArea: false, showGroupedColumn: false, columns: ['vector'] };
     this.selectOptions = {persistSelection: true, type: "Multiple" };
@@ -290,7 +294,7 @@ export class ChecklistComponent implements OnInit  {
     
   }
 
-   getDetails() {
+  getDetails() {
     this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
@@ -418,7 +422,7 @@ export class ChecklistComponent implements OnInit  {
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.releaseChecklist![objIndex1].status=newStatus;
 
-    this.toastObj.show(this.toasts[1]);
+    // this.toastObj.show(this.toasts[1]);
   }
 
   /**
@@ -594,39 +598,38 @@ export class ChecklistComponent implements OnInit  {
   // }
   
   /**
-   * Save the new release CheckList
+   * Create Updated Task List and Save 
    */
   saveRelease() {
-    console.log(this.releaseChecklist);
-    var newBackendGuideline:BackendGuideline;
+    // var newBackendGuideline:BackendGuideline;
+    // var newBackendGuidelineArray:BackendGuideline[]=[];
     var newBackendTask:ReleaseTask;
-    var newBackendGuidelineArray:BackendGuideline[]=[];
+    
     var newBackendTaskArray:ReleaseTask[]=[];
     for(var release of this.releaseChecklist!){
-      newBackendGuideline = <BackendGuideline>{};
-      newBackendTask = <ReleaseTask>{};
-      newBackendGuideline.id = release.id;
-      newBackendGuideline.task_name = release.details;
-      newBackendGuideline.vector_id = release.vector;
+      // newBackendGuideline = <BackendGuideline>{};
+      // newBackendGuideline.id = release.id;
+      // newBackendGuideline.task_name = release.details;
+      // newBackendGuideline.vector_id = release.vector;
+      // newBackendGuidelineArray.push(newBackendGuideline);
 
+      newBackendTask = <ReleaseTask>{};
       newBackendTask.guidelines_ptr_id = release.id;
       newBackendTask.owner = release.owner;
       newBackendTask.status_id = release.status!;
       newBackendTask.project_id_id = this.selectedProject.project_id!;
       
       newBackendTaskArray.push(newBackendTask);
-      newBackendGuidelineArray.push(newBackendGuideline);
+      
     }
-    console.log(JSON.stringify(newBackendTaskArray));
+    // console.log(JSON.stringify(newBackendTaskArray));
     // this.service.updateGuidelines(newBackendGuidelineArray).subscribe(data => {
-      this.service.updateTasks(newBackendTaskArray).subscribe(data => {
-        
+      this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
+        localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+        this.toastObj.show(this.toasts[0]);
       });
-    // })
-    // this.checkList.find(x => x.id === this.selectedReleaseId)?.releaseChecklist == this.releaseChecklist;
-    localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
-    // this.releaseChecklist = this.checkList.find(x => x.id == this.selectedReleaseId)?.releaseChecklist!;
-    this.toastObj.show(this.toasts[0]);
+    // });
+
   }
 
   /**
@@ -705,7 +708,6 @@ export class ChecklistComponent implements OnInit  {
 
 
   public browseClick1() {
-    alert('hello');
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
   }
 
@@ -839,6 +841,52 @@ export class ChecklistComponent implements OnInit  {
 
     // this.toastObj.show(this.toasts[7]);
   }
+  scanDate!:string;
+  checkMarxIssue!:Checkmarx;
+  severity!:Severity;
+  highCount:number=0;
+  lowCount:number=0;
+  mediumCount:number=0;
+  infoCount:number=0;
+  getCheckMarxScan() {
+    this.service.checkmarxScan().subscribe(
+      (response) => {
+        this.checkMarxIssue = response;
+        this.scanDate = "2022-02-02";
+        this.runCheckMarxScan();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+ 
+  runCheckMarxScan(){  
+    let scanCounts:string;
+    var newLine = "\r\n";                   
+    for(var issue of this.checkMarxIssue.issues){
+      switch (issue.severity)
+      {
+        case 'High':
+          this.highCount++;
+          break;
+        case 'Medium':
+          this.mediumCount++;
+          break;
+        case 'Information':
+          this.infoCount++;
+          break;
+        case 'Low':
+          this.lowCount++;
+          break;
+        default:
+      }
+    }
+    // scanCounts="<p><a class=\"e-rte-anchor\" href=\"'"+this.highCount+"\" title=\"'"+this.mediumCount+"\" target=\"_blank\">"+this.infoCount+"</a></p>";
+    alert("ScanDate: "+this.scanDate+newLine+"High: "+this.highCount+newLine+"Medium: "+this.mediumCount+newLine+"Low: "+this.lowCount+newLine+"Information: "+this.infoCount);
+  }
+
+
 
 }
 

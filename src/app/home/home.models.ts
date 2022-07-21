@@ -174,3 +174,7 @@ export interface BackendGuideline {
   vector_id:string;
 }
 
+export interface Success {
+  message:string;
+}
+

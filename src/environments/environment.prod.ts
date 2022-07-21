@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  ENDPOINT:"http://localhost:8080/api/"
+  ENDPOINT:"https://backend.apps1-fm-int.icloud.intel.com/api/"
 };
