@@ -139,6 +139,12 @@ export interface Project {
   project_description:string;
   project_business_unit_id:string;
   project_milestone_id:string;
+  project_notes?:string;
+}
+
+export interface Notes {
+  id:string;
+  note:string;
 }
 
 export interface ReleaseTask {

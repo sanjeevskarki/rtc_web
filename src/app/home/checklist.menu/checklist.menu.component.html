@@ -1,0 +1,11 @@
+<div class="control-section" id="sidebar-wrapper">        
+    <div class="checklist-div">
+        <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek| workWeekPipe}}</span>   
+    </div>
+    <div id="defaultSample" class="control-section">
+        <div class="menu-control">
+            <ejs-menu [items]='menuItems' style="color: white;margin-left: 20px;" (select)='select($event)' ></ejs-menu>
+        </div>
+    </div>
+    <router-outlet ></router-outlet>
+</div>

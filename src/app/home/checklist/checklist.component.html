@@ -1,7 +1,8 @@
 <div  id="modalTarget" #targetModal >
-    <div class="checklist-div">
+    <!-- <div class="checklist-div">
         <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek| workWeekPipe}}</span>   
-    </div>
+    </div> -->
+    <!-- <app-checklistmenu></app-checklistmenu> -->
     <div *ngIf="showSpinner; else show" ></div>
     <ng-template #show>
         <ejs-grid #grid [dataSource]='viewReleaseChecklist' [allowTextWrap]="true" [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'

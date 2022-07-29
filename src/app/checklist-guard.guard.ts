@@ -2,7 +2,7 @@ import { HostListener, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { ChecklistComponent } from './home/checklist/checklist.component';
-import { ReleaseComponent } from './release/release.component';
+import { ReleaseComponent } from './release/release.new/release.component';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,5 @@ export class ReleaseGuard implements CanDeactivate<ReleaseComponent> {
     }
     return true;
   }
-  
   
 }

@@ -414,6 +414,7 @@ export class ChecklistComponent implements OnInit  {
    * @param args New Changed Status
    */
   changeStatus (id:string,args: MenuEventArgs) {
+    this.showSpinner=true;
     var newStatus:string|undefined = args.item.text;
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.viewReleaseChecklist![objIndex].status=newStatus;
@@ -421,7 +422,7 @@ export class ChecklistComponent implements OnInit  {
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.releaseChecklist![objIndex1].status=newStatus;
-
+    this.showSpinner=false;
     // this.toastObj.show(this.toasts[1]);
   }
 
@@ -883,7 +884,7 @@ export class ChecklistComponent implements OnInit  {
       }
     }
     // scanCounts="<p><a class=\"e-rte-anchor\" href=\"'"+this.highCount+"\" title=\"'"+this.mediumCount+"\" target=\"_blank\">"+this.infoCount+"</a></p>";
-    alert("ScanDate: "+this.scanDate+newLine+"High: "+this.highCount+newLine+"Medium: "+this.mediumCount+newLine+"Low: "+this.lowCount+newLine+"Information: "+this.infoCount);
+    // alert("ScanDate: "+this.scanDate+newLine+"High: "+this.highCount+newLine+"Medium: "+this.mediumCount+newLine+"Low: "+this.lowCount+newLine+"Information: "+this.infoCount);
   }
 
 

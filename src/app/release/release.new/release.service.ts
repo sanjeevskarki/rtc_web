@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
+import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../../home/home.models';
 import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER } from './release.constants';
 import { BusinessUnit,  Milestone } from './release.models';
 
@@ -66,6 +66,11 @@ export class ReleaseService {
   public addProject(project:Project): Observable<Project> { 
     const body=JSON.stringify(project);
     return this.httpClient.post<Project>(this.endpoint_url+this.project, body,{headers:this.headers});
+  }
+
+  public updateProject(project:Project): Observable<string> { 
+    const body=JSON.stringify(project);
+    return this.httpClient.put<string>(this.endpoint_url+this.project, body,{headers:this.headers});
   }
 
   public addGuidelines(guideline:BackendGuideline[]): Observable<BackendGuideline[]> { 

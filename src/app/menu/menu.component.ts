@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MenuItemModel, MenuEventArgs } from '@syncfusion/ej2-angular-navigations';
 import { SelectEventArgs } from '@syncfusion/ej2-angular-lists';
 import { Router } from '@angular/router';
+import { RTC_VERSION } from '../release/release.new/release.constants';
 
 @Component({
   selector: 'app-menu',
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
+    rtcVersion:string = RTC_VERSION;
     public menuItems: MenuItemModel[] = [
         {
             id:'home',

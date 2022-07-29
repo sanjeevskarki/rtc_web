@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
+import { GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.new/release.constants';
 import { environment } from 'src/environments/environment';
 import { FUTURE, PAST, TIMEINTERVAL } from '../home.constants';
 

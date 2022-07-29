@@ -1,0 +1,181 @@
+/* Specifies sample level styles for sidebar*/
+#sidebar-wrapper.control-section {
+    padding: 0;
+}
+
+.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+#sidebar-wrapper .default-sidebar {
+    z-index: 20 !important;
+}
+
+#sidebar-wrapper .e-content-animation {
+    width: auto;
+}
+
+// .e-bigger #sidebar-wrapper .e-content-animation {
+//     height: 477px;
+// }
+
+.e-bigger .e-tbar-btn .tb-icons {
+    font-size: 20px;
+}
+
+.e-tbar-btn .tb-icons {
+    font-family: 'Material_toolbar';
+    speak: none;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+}
+
+#sidebar-wrapper .sf-icon-profile:before {
+    float: right;
+    content: '\e717';
+    font-size: 25px;
+}
+
+.e-toolbar .e-icons {
+    font-size: 20px;
+}
+
+.e-tbar-menu-icon:before {
+    content: "\e718";
+}
+
+/* Specifies sample level styles for toolbar alignment*/
+
+#sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-item:not(.e-separator) {
+    padding: 2px;
+}
+
+.material #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.material-dark #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child {
+    margin-left: 21px;
+}
+
+.e-bigger.material #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.e-bigger.material-dark #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child {
+    margin-left: 17px;
+}
+
+.fabric #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.fabric-dark #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.highcontrast #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.e-bigger.bootstrap #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.e-bigger.bootstrap-dark #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child {
+    margin-left: 15px;
+}
+
+.bootstrap #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.bootstrap-dark #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child {
+    margin-left: 18px;
+}
+
+.e-bigger.fabric #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.e-bigger.fabric-dark #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.e-bigger.highcontrast #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child
+{
+    margin-left: 10px;
+    padding: 0px;
+}
+
+.bootstrap4 #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child {
+    margin-left: 6px;
+}
+
+.defaultToolbar.e-toolbar .e-folder {
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: -2px;
+    margin-left: -1px;
+}
+
+.e-bigger .defaultToolbar.e-toolbar .e-folder {
+    font-size: 18px;
+    margin-left: -4px;
+}
+
+.e-bigger.bootstrap4 .defaultToolbar.e-toolbar .e-folder {
+    margin-left: 0;
+}
+
+.tailwind .defaultToolbar.e-toolbar .e-folder,
+.tailwind-dark .defaultToolbar.e-toolbar .e-folder,
+.bootstrap4 .defaultToolbar.e-toolbar .e-folder {
+    margin-top: 2px;
+}
+
+.material .defaultToolbar.e-toolbar .e-folder,
+.material-dark .defaultToolbar.e-toolbar .e-folder,
+.bootstrap .defaultToolbar.e-toolbar .e-folder,
+.highcontrast .defaultToolbar.e-toolbar .e-folder,
+.bootstrap-dark .defaultToolbar.e-toolbar .e-folder {
+    margin-top: 1px;
+}
+
+.fabric .defaultToolbar.e-toolbar .e-folder,
+.fabric-dark .defaultToolbar.e-toolbar .e-folder {
+    margin-top: 1px;
+    margin-left: -3px;
+}
+
+.defaultToolbar.e-toolbar .e-user-name {
+    font-weight: 500;
+    font-size: 14px
+}
+
+/* Specifies sample level styles for ListView*/
+.material-dark .e-listview.e-list-template .e-list-wrapper.e-list-multi-line .e-list-item-header,
+.material-dark .e-listview.e-list-template .e-list-wrapper.e-list-multi-line .e-list-content,
+.bootstrap-dark .e-listview.e-list-template .e-list-wrapper.e-list-multi-line .e-list-content {
+    color: #fff;
+}
+
+.e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar {
+    margin: 18px 16px 18px 12px;
+}
+
+.tailwind .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar,
+.tailwind-dark .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar {
+    margin-left: 14px;
+}
+
+.material .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar,
+.material-dark .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar {
+    margin: 14px 16px 14px 0;
+}
+
+.fabric .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar,
+.fabric-dark .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar,
+.highcontrast .e-listview.e-lfvist-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar {
+    margin: 6px 0 0 -5px;
+}
+
+.bootstrap4 .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar,
+.bootstrap .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar,
+.bootstrap-dark .e-listview.e-list-template .e-list-wrapper.e-list-multi-line.e-list-avatar .e-avatar {
+    margin: 12px 0 0 -4px;
+}
+
+.e-toolbar .e-toolbar-items {
+    background: rgb(0, 113, 197);
+}
+
+.e-menu-wrapper {
+    border: none;
+    border-radius: 0px;
+    display: inline-block;
+    line-height: 0;
+}
+.e-menu-wrapper, .e-menu-container{
+    background: rgb(0, 113, 197);
+    width: -webkit-fill-available;
+}
+
+

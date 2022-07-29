@@ -30,6 +30,7 @@
     "@syncfusion/ej2-angular-progressbar": "20.1.57",
     "@syncfusion/ej2-angular-richtexteditor": "20.1.56",
     "@syncfusion/ej2-angular-splitbuttons": "20.1.55",
+    "@syncfusion/ej2-angular-inplace-editor": "^20.2.38",
     "moment": "^2.29.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

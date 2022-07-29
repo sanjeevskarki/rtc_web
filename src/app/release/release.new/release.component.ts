@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
 import { AnimationModel, ILoadedEventArgs, ProgressTheme } from '@syncfusion/ej2-angular-progressbar';
-import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
+import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from '../../home/home.models';
 import { ReleaseService } from './release.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
@@ -11,7 +11,7 @@ import { AnimationSettingsModel, DialogComponent } from '@syncfusion/ej2-angular
 import { Subject } from 'rxjs';
 import { EmitType } from '@syncfusion/ej2-base';
 import { BusinessUnit,  Milestone } from './release.models';
-import { ALPHA, BUSINESS_UNIT_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EXTERNAL_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, TYPE_LOWER } from './release.constants';
+import { ALPHA, BUSINESS_UNIT_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EXTERNAL_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, TYPE_LOWER } from './release.constants';
 
 // export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
 
@@ -56,10 +56,11 @@ export class ReleaseComponent implements OnInit {
   selectedMilestone!:string;
   selectedType!:string;
   selectedHandoverType!:string;
-  isExternal:boolean=false;
+  // isExternal:boolean=false;
 
   public releaseTypes: Object[] = [
-    { Id: EXTERNAL_LOWER, Type: 'External' },
+    { Id: EXTERNAL_WITH_HANDOVER_LOWER, Type: 'External With Handover' },
+    { Id: EXTERNAL_WITHOUT_HANDOVER_LOWER, Type: 'External Without Handover' },
     { Id: INTERNAL_LOWER, Type: 'Internal' }
   ];
   public milestones: Object[] = [];
@@ -151,21 +152,21 @@ export class ReleaseComponent implements OnInit {
     (<HTMLInputElement>document.getElementById('selected')).textContent = 'Selected Value: ' + args.value.toLocaleDateString();
   }
 
-  onTypeSelect(args:any): void {
-    if(args.value === EXTERNAL_LOWER && (this.releaseForm.controls[MILESTONE_LOWER].value === POC_UPPER || this.releaseForm.controls[MILESTONE_LOWER].value === PRE_ALPHA || this.releaseForm.controls[MILESTONE_LOWER].value === ALPHA)){
-      this.isExternal=true;
-    }else{
-      this.isExternal=false;
-    }
-  }
+  // onTypeSelect(args:any): void {
+  //   if(args.value === EXTERNAL_LOWER && (this.releaseForm.controls[MILESTONE_LOWER].value === POC_UPPER || this.releaseForm.controls[MILESTONE_LOWER].value === PRE_ALPHA || this.releaseForm.controls[MILESTONE_LOWER].value === ALPHA)){
+  //     this.isExternal=true;
+  //   }else{
+  //     this.isExternal=false;
+  //   }
+  // }
 
-  onMilestoneSelect(args:any): void {
-    if((args.value === POC_UPPER || args.value === PRE_ALPHA || args.value === ALPHA) && this.releaseForm.controls[TYPE_LOWER].value === EXTERNAL_LOWER){
-      this.isExternal=true;
-    }else{
-      this.isExternal=false;
-    }
-  }
+  // onMilestoneSelect(args:any): void {
+  //   if((args.value === POC_UPPER || args.value === PRE_ALPHA || args.value === ALPHA) && this.releaseForm.controls[TYPE_LOWER].value === EXTERNAL_LOWER){
+  //     this.isExternal=true;
+  //   }else{
+  //     this.isExternal=false;
+  //   }
+  // }
 
   saveRelease(){
     this.showSpinner = true;
@@ -173,7 +174,7 @@ export class ReleaseComponent implements OnInit {
     this.isWorkWeekVisible=false;
   }
 
-  draftRelease(){
+  saveAsDraft(){
     this.createNewRelease();
     localStorage.setItem("tempCheckList", JSON.stringify(this.newRelease));
     this.toastObj.show(this.toasts[1]);
@@ -213,7 +214,13 @@ export class ReleaseComponent implements OnInit {
     this.newRelease.type = this.releaseForm.controls[TYPE_LOWER].value;
     this.newRelease.handover = this.releaseForm.controls[HANDOVER_LOWER].value;
     this.newRelease.milestone = this.releaseForm.controls[MILESTONE_LOWER].value;
-    this.newRelease.date = new Date(this.releaseForm.controls[DATE_LOWER].value);
+  
+    if(this.releaseForm.controls[DATE_LOWER].value !== null){
+      this.newRelease.date = this.releaseForm.controls[DATE_LOWER].value;
+    }else{
+      this.newRelease.date =  new Date();
+    }
+    
     this.newRelease.description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
     this.newRelease.businessunit = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
     // this.newRelease.contact =this.releaseForm.controls['contact'].value;
@@ -388,11 +395,11 @@ export class ReleaseComponent implements OnInit {
   }
 
   setDraftForm(){
-    if(this.tempRelease.handover && this.tempRelease.type === EXTERNAL_LOWER && this.tempRelease.milestone === POC_LOWER){
-      this.isExternal=true;
-    }else{
-      this.isExternal=false;
-    }
+    // if(this.tempRelease.handover && this.tempRelease.type === EXTERNAL_LOWER && this.tempRelease.milestone === POC_LOWER){
+    //   this.isExternal=true;
+    // }else{
+    //   this.isExternal=false;
+    // }
     this.releaseForm.patchValue({
       name: this.tempRelease.name,
       type: this.tempRelease.type,
@@ -404,7 +411,7 @@ export class ReleaseComponent implements OnInit {
       businessunit:this.tempRelease.businessunit,
       description:this.tempRelease.description
     });
-    this.workWeek = this.tempRelease.date.toString();
+    this.workWeek = this.tempRelease.date!.toString();
     // this.workWeek = "ww"+moment(new Date(tempRelease.date), "MM-DD-YYYY").week()+"'"+new Date(tempRelease.date).getFullYear();
     this.isWorkWeekVisible=true;
   }

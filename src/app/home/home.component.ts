@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
     // let selecteditem =this.element.getSelectedItems();
     localStorage.setItem('selectedProject', JSON.stringify(selectedProject));
     // this.sharedChecklistService.setReleaseList(selecteditem["data"]);
-    this.router.navigate([ 'checklist' ]);
+    this.router.navigate([ 'checklist/releasecompliance' ]);
   }
 
 }
