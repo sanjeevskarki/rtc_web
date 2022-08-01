@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { FUTURE, PAST, TIMEINTERVAL } from '../home.constants';
 
 import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, Unit, Success } from '../home.models';
-import { Checkmarx } from './checklist.models';
+import { Checkmarx, Kw } from './checklist.models';
 
 /**
  * Dependecy Injection.
@@ -115,6 +115,12 @@ export class ChecklistService {
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }
+  public kwScan(): Observable<Kw> { 
+    return this.httpClient.get<Kw>("assets/data/Perc_HW_WOS_kw.json");
+    // this.apiUrl = API_URL(system);
+    // return this.httpClient.get<Data>(this.apiUrl);
+  }
+  
 
   /**
    * Formats a duration as a nice string.

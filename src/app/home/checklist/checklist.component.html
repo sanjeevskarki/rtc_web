@@ -6,7 +6,7 @@
     <div *ngIf="showSpinner; else show" ></div>
     <ng-template #show>
         <ejs-grid #grid [dataSource]='viewReleaseChecklist' [allowTextWrap]="true" [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
-                        [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  height='710' >
+                        [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  height='710' (load)="onLoad($event)" >
             <e-columns>
                 <e-column field='vector'  [filter]='filter' headerText='Vector' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
                 <e-column field='details'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
@@ -100,7 +100,7 @@
                         </div>
                         <ng-template #noComments>
                             <span>No Comment Found </span>
-                            <div>
+                            <div *ngIf="isLoaded">
                                 <ejs-tooltip #tooltip content='Add Comments'>
                                     <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-plus" (click)="onCommentClicked(comment.id)">Add 
                                         <!-- <span class="e-icons e-plus"></span>  -->

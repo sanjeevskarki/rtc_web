@@ -16,7 +16,7 @@ import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
 import { Subject } from 'rxjs';
 import { CommentAddComponent } from '../comment.add/commentadd.component';
-import { Checkmarx, Severity } from './checklist.models';
+import { Checkmarx, Kw, Severity } from './checklist.models';
 
 
 
@@ -229,6 +229,7 @@ export class ChecklistComponent implements OnInit  {
 
   ngOnInit(): void {
     this.getCheckMarxScan();
+    this.getKwScan();
     this.showSpinner = true;
     this.isAddCommentOpen = false;
     this.editSettings = { allowEditing: true, mode: 'Normal' };
@@ -844,12 +845,16 @@ export class ChecklistComponent implements OnInit  {
   }
   scanDate!:string;
   checkMarxIssue!:Checkmarx;
-  severity!:Severity;
+  // severity!:Severity;
   highCount:number=0;
   lowCount:number=0;
   mediumCount:number=0;
   infoCount:number=0;
   getCheckMarxScan() {
+    this.highCount=0;
+    this.lowCount=0;
+    this.mediumCount=0;
+    this.infoCount=0;
     this.service.checkmarxScan().subscribe(
       (response) => {
         this.checkMarxIssue = response;
@@ -886,7 +891,55 @@ export class ChecklistComponent implements OnInit  {
     // scanCounts="<p><a class=\"e-rte-anchor\" href=\"'"+this.highCount+"\" title=\"'"+this.mediumCount+"\" target=\"_blank\">"+this.infoCount+"</a></p>";
     // alert("ScanDate: "+this.scanDate+newLine+"High: "+this.highCount+newLine+"Medium: "+this.mediumCount+newLine+"Low: "+this.lowCount+newLine+"Information: "+this.infoCount);
   }
+  kwIssue:Kw[]=[];
+  analyseCount:number=0;
+  ignoreCount:number=0;
 
+  getKwScan() {
+    // alert('get scan') 
+    this.analyseCount=0;
+    this.ignoreCount=0;
+    this.kwIssue=[];
+    this.service.kwScan().subscribe(
+      (response) => {
+        alert('response = '+response) 
+        // this.kwIssue = response;
+        alert('this.kwIssue'+this.kwIssue.length) 
+        this.runKwScan();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+ 
+  runKwScan(){ 
+    // alert('run scan') 
+    let scanCounts:string;
+    var newLine = "\r\n";                   
+    for(var issue of this.kwIssue){
+      switch (issue.severity)
+      {
+        case 'Ignore':
+          this.ignoreCount++;
+          break;
+        case 'Analyze':
+          this.analyseCount++;
+          break;
+        default:
+      }
+    }
+    // scanCounts="<p><a class=\"e-rte-anchor\" href=\"'"+this.highCount+"\" title=\"'"+this.mediumCount+"\" target=\"_blank\">"+this.infoCount+"</a></p>";
+    alert("Analyze Count: "+this.analyseCount+newLine);
+  }
+
+  isLoaded!:boolean;
+  onLoad(args: any) {
+    let proxy: ChecklistComponent = this;
+    setTimeout(() => {
+      proxy.isLoaded = true;
+    }, 1000);
+  }
 
 
 }

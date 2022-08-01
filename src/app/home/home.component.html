@@ -1,4 +1,26 @@
-<div class="col-lg-12 control-section">
+
+<div class="col-lg-12 control-section" >
+    <!-- <ejs-grid #grid id='projects' [dataSource]='projects' [allowTextWrap]="true" [allowSorting]='true' class='cssClass'
+            [gridLines]='lines' [toolbar]='homeToolbar' (toolbarClick)='clickHandler($event)' [editSettings]='homeEditSettings'  >
+        <e-columns>
+            <e-column width=12 >
+                <ng-template #template let-project>
+                    <ejs-tooltip #tooltip content='Edit Project'>
+                        <button ejs-button class="e-btn e-small e-round" iconCss="e-icons e-edit" (click)="updateRelease(project)"></button>
+                    </ejs-tooltip>
+                    &nbsp;
+                    <ejs-tooltip #tooltip content='Delete Project'>
+                        <button ejs-button class="e-btn e-small e-round" iconCss="e-icons e-delete" (click)="deleteRelease(project)"></button>
+                    </ejs-tooltip>
+                </ng-template>
+            </e-column>
+            <e-column field='project_business_unit_id'  headerText='Business Unit' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+            <e-column field='project_name' headerText='Product Name' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+            <e-column field='project_milestone_id' headerText='Milestone' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+            <e-column field='project_release_date' headerText='Release Date'  width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+            <e-column field='project_name' headerText='Release Type' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
+        </e-columns>
+    </ejs-grid> -->
     <!-- ListView element -->
     <ejs-listview #listview id='groupedList' style="height: -webkit-fill-available;" [dataSource]='projects' [cssClass]='cssClass'
     [showHeader]='false'>
