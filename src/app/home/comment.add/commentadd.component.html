@@ -6,14 +6,15 @@
                 <form id="reactive" [formGroup]="commentForm">
                     <div class="form-group">
                         <div class="e-float-input">
-                            <ejs-richtexteditor #default formControlName="comment" [toolbarSettings]='tools'></ejs-richtexteditor>
-                        </div>                                                
-                    </div>        
-                    <div class="form-group">
-                        <div class="e-float-input">
                             <ejs-uploader #commentUpload id='commentUpload' [asyncSettings]='path' [dropArea]='dropElement' [allowedExtensions]='allowExtensions' (removing)='onFileRemove($event)' (selected)='onCommentFileSelect($event)'></ejs-uploader>
                         </div>            
                     </div> 
+                    <div class="form-group">
+                        <div class="e-float-input">
+                            <ejs-richtexteditor #default formControlName="comment" [toolbarSettings]='tools'></ejs-richtexteditor>
+                        </div>                                                
+                    </div>        
+                    
                     <div class="form-group">
                         <div class="submitBtn" style="float: right;margin-top: 10px;">
                             <button type="submit" ejs-button cssClass="e-info" [isPrimary]="true" [disabled]="!commentForm.valid" (click)= "Submit()">Save</button>

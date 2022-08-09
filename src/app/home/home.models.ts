@@ -49,6 +49,9 @@ export interface Comments {
 export interface Evidences {
   id:string;
   title:string;
+  type:string;
+  project_id?:string;
+  guidelines_id?:number;
   comments:string;
   evidence:string|undefined;
   date:number;
@@ -184,3 +187,6 @@ export interface Success {
   message:string;
 }
 
+export interface Response {
+  message:string;
+}

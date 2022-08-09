@@ -22,8 +22,7 @@
         </e-columns>
     </ejs-grid> -->
     <!-- ListView element -->
-    <ejs-listview #listview id='groupedList' style="height: -webkit-fill-available;" [dataSource]='projects' [cssClass]='cssClass'
-    [showHeader]='false'>
+    <ejs-listview #listview id='groupedList' style="height: -webkit-fill-available;" [dataSource]='projects' [cssClass]='cssClass' [showHeader]='false'>
         <ng-template #template let-dataSource="">
             <div class="settings e-list-wrapper e-list-multi-line" (click)="onClick(dataSource)">
                 <span class="e-list-item-header">{{dataSource.project_name}} </span><br>

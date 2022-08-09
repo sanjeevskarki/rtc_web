@@ -10,6 +10,7 @@ import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-noti
 import { Evidences } from '../home.models';
 import { v4 as uuidv4 } from 'uuid';
 import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
+import { EvidenceAddService } from './evidenceadd.service';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class EvidenceAddComponent implements OnInit {
   public toastPosition: ToastPositionModel = { X: 'Right' };
   public evidenceHeader: string='Add Evidence';
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
+  public evidenceType!:string;
 
   @ViewChild('toasttype')
   private toastObj!: ToastComponent;
@@ -50,9 +52,6 @@ export class EvidenceAddComponent implements OnInit {
   isFileUploadSelected:boolean=false;
   isLinkSelected:boolean=false;
  
-  ngAfterViewInit(): void {
-      // document.getElementById('dlgbtn')!.focus();
-  }
   // On Dialog close, 'Open' Button will be shown
   public dialogClose = (): void => {
       document.getElementById('dlgbtn')!.style.display = '';
@@ -75,14 +74,7 @@ export class EvidenceAddComponent implements OnInit {
   closeEvidence(){
     this.addEvidenceDialog.hide();
   }
-
-  // getEvidence(){
-  //   alert('get form');
-  // }
-
   evidenceForm!: FormGroup;
-
-  
 
   @ViewChild('defaultupload')
   public evidenceUploadObj!: UploaderComponent;
@@ -97,6 +89,7 @@ export class EvidenceAddComponent implements OnInit {
   public content: string = 'Your details have been updated successfully, Thank you.';
   public reg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   newEvidence!:Evidences;
+  selectedFile!:File;
   public dlgBtnClick: EmitType<object> = () => {
   this.dialogObj.hide();
   }
@@ -115,7 +108,7 @@ export class EvidenceAddComponent implements OnInit {
   // public dlgButtons: Object[] = [{ click: this.dlgBtnClick.bind(this), buttonModel: { content: 'Ok', isPrimary: true } }];
   public uploadInput: string = '';
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder,private service:EvidenceAddService) {}
 
   isValueExist(value:string): boolean {
     if (typeof value != 'undefined' && value) {
@@ -155,13 +148,23 @@ export class EvidenceAddComponent implements OnInit {
 
   public Submit(): void {
     this.createNewEvidence();
+    if(this.evidenceType === 'file'){
+      alert("saved file name = "+this.selectedFile);
+      this.service.updateEvidenceFile(this.selectedFile).subscribe((status) => {
+        alert("status = "+status.type);
+        this.toastObj.show(this.toasts[0]);
+      });
+    }
     this.childEvent.emit(this.newEvidence);
     this.toastObj.show(this.toasts[2]);
     this.addEvidenceDialog.hide();
   }
 
+  
   public onEvidenceFileSelect: EmitType<Object> = (args: any) => {
+    
     this.uploadInput = args.filesData[0].name;
+    this.selectedFile = args.filesData[0];
   }
 
   ngOnInit() {
@@ -191,6 +194,7 @@ export class EvidenceAddComponent implements OnInit {
       title: this.evidenceForm.controls['title'].value,
       comments: this.evidenceForm.controls['comment'].value,
       evidence: this.getEvidence(),
+      type: this.evidenceType,
       date: new Date().getTime() 
     };
     this.newEvidence = newEvidence;
@@ -203,6 +207,7 @@ export class EvidenceAddComponent implements OnInit {
       return evidence;
     }else if (this.evidenceForm.controls['upload'].value){
       evidence = this.evidenceForm.controls['upload'].value;
+      alert(evidence);
       return evidence;
     }
     return '';
@@ -213,7 +218,10 @@ export class EvidenceAddComponent implements OnInit {
   }
 
   onTypeSelect(args:any): void {
-    if(args.value === 'file'){
+    this.evidenceType = args.value;
+    this.isFileUploadSelected=false;
+      this.isLinkSelected=false;
+    if(this.evidenceType === 'file'){
       this.isFileUploadSelected=true;
       this.isLinkSelected=false;
     }else{

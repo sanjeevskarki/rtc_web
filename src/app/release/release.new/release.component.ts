@@ -11,7 +11,7 @@ import { AnimationSettingsModel, DialogComponent } from '@syncfusion/ej2-angular
 import { Subject } from 'rxjs';
 import { EmitType } from '@syncfusion/ej2-base';
 import { BusinessUnit,  Milestone } from './release.models';
-import { ALPHA, BUSINESS_UNIT_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EXTERNAL_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, TYPE_LOWER } from './release.constants';
+import { ALPHA, ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EXTERNAL_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, REPORTS_LOWER, TYPE_LOWER } from './release.constants';
 
 // export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
 
@@ -280,11 +280,27 @@ export class ReleaseComponent implements OnInit {
     
   }
 
-  saveProject(){
-    this.service.addProject(this.newProject).subscribe(data => {
-      this.createGuideLine();
-    })
+  /**
+   * Check folder on server if not exist create it.
+   */
+  createBuFolder(){
+    let folders:string[]=[];
+    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase()+"\\"+this.newProject.project_name.toLocaleLowerCase()+"\\"+REPORTS_LOWER);
+    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase()+"\\"+this.newProject.project_name.toLocaleLowerCase()+"\\"+ATTACHMENTS_LOWER);
+    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase()+"\\"+this.newProject.project_name.toLocaleLowerCase());
+    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase());
+    this.service.createFolder(folders).subscribe(() => {  
+    });
+  }
 
+  /**
+   * Create a new project
+   */
+  saveProject(){
+    this.service.addProject(this.newProject).subscribe(() => {
+      this.createGuideLine();
+      this.createBuFolder();
+    });
   }
 
   createGuideLine(){

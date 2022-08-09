@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../../home/home.models';
-import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER } from './release.constants';
+import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST } from './release.constants';
 import { BusinessUnit,  Milestone } from './release.models';
 
 /**
@@ -17,6 +17,7 @@ export class ReleaseService {
   milestone:string=MILESTONE;
   businessUnit:string=BUSINESS_UNIT;
   task:string=TASK_LOWER;
+  isFolderExist:string=IS_FOLDER_EXIST;
   project:string = PROJECT;
   guideline:string = GUIDELINE_LOWER;
   amount!: number;
@@ -82,5 +83,16 @@ export class ReleaseService {
     // const body=JSON.stringify(task);
     return this.httpClient.post<ReleaseTask[]>(this.endpoint_url+this.task, task,{headers:this.headers});
   }
+
+  /**
+   * Check if the folder exist on SMB server or not
+   * @param path path of the folder
+   * @returns boolean based on the file existence
+   */
+  public createFolder(path:string[]): Observable<boolean> { 
+    const body=JSON.stringify({"names":path});
+    return this.httpClient.post<boolean>(this.endpoint_url+this.isFolderExist, body,{headers:this.headers});
+  }
+
   
 }

@@ -894,31 +894,33 @@ export class ChecklistComponent implements OnInit  {
   kwIssue:Kw[]=[];
   analyseCount:number=0;
   ignoreCount:number=0;
+  responseText!:string;
+  tempText!:string;
 
   getKwScan() {
-    // alert('get scan') 
     this.analyseCount=0;
     this.ignoreCount=0;
     this.kwIssue=[];
+    let re = /\}{/gi;
     this.service.kwScan().subscribe(
       (response) => {
-        alert('response = '+response) 
-        // this.kwIssue = response;
-        alert('this.kwIssue'+this.kwIssue.length) 
+        this.tempText = response;
+        this.responseText =  "[" + this.tempText.replace(re, "},{") + "]";
+        console.log('response = '+this.responseText);
+         
+        this.kwIssue = JSON.parse(this.responseText);
         this.runKwScan();
       },
       (err) => {
-        console.log(err.name);
+        alert(err.message);
       }
     );
   }
  
   runKwScan(){ 
-    // alert('run scan') 
-    let scanCounts:string;
     var newLine = "\r\n";                   
     for(var issue of this.kwIssue){
-      switch (issue.severity)
+      switch (issue.status)
       {
         case 'Ignore':
           this.ignoreCount++;

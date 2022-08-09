@@ -115,8 +115,12 @@ export class ChecklistService {
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }
-  public kwScan(): Observable<Kw> { 
-    return this.httpClient.get<Kw>("assets/data/Perc_HW_WOS_kw.json");
+  public kwScan(): Observable<any> { 
+    const requestOptions: Object = {
+      headers: this.headers,
+      responseType: 'text'
+    }
+    return this.httpClient.get<any>("assets/data/Perc_hw_wos_kw.json", requestOptions);
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }
