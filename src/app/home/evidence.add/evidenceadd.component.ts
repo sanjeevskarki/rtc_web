@@ -4,13 +4,15 @@ import {
   FormBuilder,
   Validators} from '@angular/forms';
 import { EmitType } from '@syncfusion/ej2-base';
-import { UploaderComponent } from '@syncfusion/ej2-angular-inputs';
+import { FilesPropModel, UploaderComponent } from '@syncfusion/ej2-angular-inputs';
 import { AnimationSettingsModel, DialogComponent } from '@syncfusion/ej2-angular-popups';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
 import { Evidences } from '../home.models';
 import { v4 as uuidv4 } from 'uuid';
 import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
 import { EvidenceAddService } from './evidenceadd.service';
+import { environment } from 'src/environments/environment';
+import { UPLOAD_LOWER } from 'src/app/release/release.new/release.constants';
 
 
 @Component({
@@ -22,6 +24,12 @@ export class EvidenceAddComponent implements OnInit {
 
   @ViewChild('addEvidenceDialog')
   public addEvidenceDialog!: DialogComponent;
+  baseUrl:string= environment.ENDPOINT;
+  upload:string=UPLOAD_LOWER;
+  public path: Object = {
+    saveUrl: this.baseUrl+this.upload,
+    removeUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Remove'
+  };
 
   public header: string = 'About SYNCFUSION Succinctly Series';
   
@@ -89,7 +97,7 @@ export class EvidenceAddComponent implements OnInit {
   public content: string = 'Your details have been updated successfully, Thank you.';
   public reg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   newEvidence!:Evidences;
-  selectedFile!:File;
+  selectedFile!:any;
   public dlgBtnClick: EmitType<object> = () => {
   this.dialogObj.hide();
   }
@@ -148,8 +156,10 @@ export class EvidenceAddComponent implements OnInit {
 
   public Submit(): void {
     this.createNewEvidence();
+    // const formData = new FormData();
+    // formData.append('file', this.selectedFile.webkitRelativePath);
     if(this.evidenceType === 'file'){
-      alert("saved file name = "+this.selectedFile);
+      alert("saved file name = "+this.evidenceForm.controls['upload'].value);
       this.service.updateEvidenceFile(this.selectedFile).subscribe((status) => {
         alert("status = "+status.type);
         this.toastObj.show(this.toasts[0]);

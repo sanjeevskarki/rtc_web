@@ -21,7 +21,7 @@ export interface ReleaseChecklist {
   details:string;
   owner:string;
   status:string|undefined;
-  detailedStatus:string;
+  detailedStatus:string[];
   releaseCriteria?:string;
   evidences:Evidences[];
   comments:Comments[];

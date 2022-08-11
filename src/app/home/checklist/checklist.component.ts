@@ -14,9 +14,10 @@ import { RemovingEventArgs } from '@syncfusion/ej2-angular-inputs';
 import { EditService, ToolbarService, PageService } from '@syncfusion/ej2-angular-grids';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { CommentAddComponent } from '../comment.add/commentadd.component';
-import { Checkmarx, Kw, Severity } from './checklist.models';
+import { Checkmarx, DATA_COLLECTION, Kw, Project as ProtexProject, Severity } from './checklist.models';
+import { PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 
 
 
@@ -44,12 +45,6 @@ export class ChecklistComponent implements OnInit  {
 
   @ViewChild('evidenceDialog')
   public evidenceDialog!: DialogComponent;
-
-  // @ViewChild('addCommentDialog')
-  // public addCommentDialog!: DialogComponent;
-
-  // @ViewChild('addEvidenceDialog')
-  // public addEvidenceDialog!: DialogComponent;
 
   @ViewChild('confirmDialog')
   public confirmDialog!: DialogComponent;
@@ -94,10 +89,7 @@ export class ChecklistComponent implements OnInit  {
   selectedRelease!:ReleaseChecklist;
 
   commentForm!: FormGroup;
-  // evidenceForm!: FormGroup;
 
-  // @ViewChild('fromRTE')
-  // private rteEle!: RichTextEditorComponent;
   @ViewChild('toolsRTE')
   public rteObj!: RichTextEditorComponent;
 
@@ -132,6 +124,15 @@ export class ChecklistComponent implements OnInit  {
   details:ReleaseDetails[]=[];
   // public toolbar!: string[];
   // newComment!:Comments;
+  scanDate!:string;
+  checkMarxIssue!:Checkmarx;
+  // severity!:Severity;
+  highCount:number=0;
+  lowCount:number=0;
+  mediumCount:number=0;
+  infoCount:number=0;
+  protexProj!:ProtexProject;
+  newLine = "\r\n";
   @ViewChild('toasttype')
   private toastObj!: ToastComponent;
   public toasts: { [key: string]: Object }[] = [
@@ -162,53 +163,30 @@ export class ChecklistComponent implements OnInit  {
   public editSettings!: EditSettingsModel;
   isAddCommentOpen:boolean = false;
   showSpinner:boolean=false;
-  
+  data_collection!:DATA_COLLECTION;
+  protexData!:string[];
+  checkmarxData!:string[];
+  kwIssue:Kw[]=[];
+  kwAnalyzeIssue:Kw[]=[];
+  errorCount:number=0;
+  criticalCount:number=0;
+  responseText!:string;
+  tempText!:string;
+  kwData:string[]=[];
+
   constructor(private route: ActivatedRoute,private service:ChecklistService) { 
     
-  } 
-
-  // public confirmDlgBtnClick = (): void => {
-  //   this.confirmDialog.hide();
-  // }
-
-  // public confirmSaveBtnClick = (): void => {
-  //   this.saveReleaseConfirmDialog.hide();
-  // }
-
-  // public confirmDlgButtons: ButtonPropsModel[] = [{ click: this.confirmDlgBtnClick.bind(this), buttonModel: { content: 'Yes', isPrimary: true } }, { click: this.confirmDlgBtnClick.bind(this), buttonModel: { content: 'No' } }];
-  // public confirmSaveButtons: ButtonPropsModel[] = [
-  //                                                   { click: this.confirmSaveBtnClick.bind(this), buttonModel: { content: 'Save & Continue', isPrimary: true } }, 
-  //                                                   { click: this.confirmSaveBtnClick.bind(this), buttonModel: { content: 'Discard' } },
-  //                                                   { click: this.confirmSaveBtnClick.bind(this), buttonModel: { content: 'Discard' } }
-  //                                                 ];
-  
+  }
 
   public dropElement: HTMLElement = document.getElementsByClassName('control-fluid')[0] as HTMLElement;
   public path: Object = {
     saveUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Save',
     removeUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Remove'
   };
-  // @ViewChild('defaultupload1')
-  // public uploadObj!: UploaderComponent;
-
-  // @ViewChild('default', { static: true })
-  // public textboxObj!: TextBoxComponent;
   
   public onFileRemove(args: RemovingEventArgs): void {
     args.postRawFile = false;
   }
-
-  // hostUrl: string = 'https://ej2-aspcore-service.azurewebsites.net/';
-  // fileManagerSettings: FileManagerSettingsModel = {
-  //   enable: true,
-  //   path: '/Pictures/Food',
-  //   ajaxSettings: {
-  //     url: this.hostUrl + 'api/FileManager/FileOperations',
-  //     getImageUrl: this.hostUrl + 'api/FileManager/GetImage',
-  //     uploadUrl: this.hostUrl + 'api/FileManager/Upload',
-  //     downloadUrl: this.hostUrl + 'api/FileManager/Download'
-  //   }
-  // };
 
   public items: ItemModel[] = [
     {
@@ -228,45 +206,29 @@ export class ChecklistComponent implements OnInit  {
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
   ngOnInit(): void {
-    this.getCheckMarxScan();
-    this.getKwScan();
+    this.data_collection = <DATA_COLLECTION>{};
+    this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    this.data_collection.business_unit = this.selectedProject.project_business_unit_id.toLowerCase().replace(/\s/g, "");
+    this.data_collection.milestone_id = this.selectedProject.project_milestone_id.toLowerCase().replace(/\s/g, "");
+    this.data_collection.project_id = this.selectedProject.project_name.toLowerCase().replace(/\s/g, "");
+
     this.showSpinner = true;
     this.isAddCommentOpen = false;
     this.editSettings = { allowEditing: true, mode: 'Normal' };
-    // this.toolbar = ['Search'];
-    // this.groupOptions: { [x: string]: Object } = { showDropArea: false, columns: ['vector'] };
+
     this.groupOptions = { showDropArea: false, showGroupedColumn: false, columns: ['vector'] };
     this.selectOptions = {persistSelection: true, type: "Multiple" };
     this.evidenceToolbar = [{ text: 'Add Evidence', tooltipText: 'Add Evidence', prefixIcon: 'e-plus1', id: 'Add' }];
     this.evidenceEditSettings = { allowAdding: true, allowDeleting: true, mode: 'Dialog' };
-    // this.commentForm = new FormGroup({
-    //   'comment': new FormControl(null, Validators.required),
-    //   'upload': new FormControl(null, [])
-    // });
-    // this.evidenceForm = new FormGroup({
-    //   'evidence': new FormControl(null, Validators.required)
-    // });
     
-    // this.releaseShortChecklist = JSON.parse(localStorage.getItem('relaeseId')!);
-    this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
-    // this.selectedReleaseId = this.selectedProject.project_id!;
-    // alert(this.selectedReleaseId);
-    // this.releaseName = this.releaseShortChecklist.releaseName;
-    // this.milestone = this.releaseShortChecklist.milestone;
-    // this.workWeek = this.releaseShortChecklist.workWeek;
     this.lines='Both';
     this.initialPage = {pageSize:5};
     this.filter = { type: "CheckBox" };
     this.checkList = JSON.parse(localStorage.getItem("checkList")!);
     this.commands = [
         { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } }
-      ];
-    // if(this.checkList === null || this.checkList.length === 0){
-      // this.getCheckList();
-      this.getSelectedTask();
-    // }else{
-    //   this.setDetails();
-    // }
+    ];
+    this.getSelectedTask();
   }
 
   backendTasks:BackendTask[]=[];
@@ -275,8 +237,8 @@ export class ChecklistComponent implements OnInit  {
     this.setTitle();
     this.service.getSelectedProject(this.selectedReleaseId!).subscribe(
       (response) => {
-        this.backendTasks = response;
-        this.getDetails();
+        this.getCheckMarxScan();
+        this.backendTasks = response;        
       },
       (err) => {
         console.log(err.name);
@@ -299,7 +261,20 @@ export class ChecklistComponent implements OnInit  {
     this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
+        this.getEvidence();
         this.createTasks();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+
+  getEvidence() {
+    this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
+      (response) => {
+        this.details = response;
+        
       },
       (err) => {
         console.log(err.name);
@@ -313,9 +288,19 @@ export class ChecklistComponent implements OnInit  {
       var checkList:ReleaseChecklist=<ReleaseChecklist>{};
       checkList.id=task.guidelines_ptr_id;
       checkList.vector=task.backend_guideline?.vector_id!;
+      checkList.details = task.backend_guideline?.task_name!;
       checkList.owner=task.owner;
       checkList.status=task.status_id;
-      checkList.detailedStatus='';
+      checkList.detailedStatus = [];
+      // alert(checkList.details.toLowerCase().replace(/\s/g, ""));
+      if(checkList.details.toLowerCase().replace(/\s/g, "") === STATIC_ANALYSIS_ISSUE){
+        checkList.detailedStatus = this.kwData.concat(this.checkmarxData);
+        // checkList.detailedStatus = this.kwData;
+      }
+      if(checkList.details.toLowerCase().replace(/\s/g, "") === PROTEX_MATCHES_LICENSE_CONFLICTS){
+        checkList.detailedStatus = this.protexData;
+      }
+      
       checkList.evidences=[];
       checkList.comments=[];
       // checkList.comments=release.comments.sort(function(a:any,b:any): any{
@@ -323,7 +308,7 @@ export class ChecklistComponent implements OnInit  {
       // });
       var selectedDetail = this.details.find( x => x.vector === task.backend_guideline?.vector_id);
       // alert(selectedDetail?.vector);
-      checkList.details = task.backend_guideline?.task_name!;
+     
       checkList.releaseCriteria = selectedDetail?.details.find(x => x.detail === task.backend_guideline?.task_name)?.releaseCriteria!;
       taskList.push(checkList);
     }
@@ -334,13 +319,6 @@ export class ChecklistComponent implements OnInit  {
         
   }
 
-  // ngAfterViewInit(): void {
-  //   this.uploadObj.element.value = '';
-  // }
-
-  // rteCreated(): void {
-  //   this.rteEle.element.focus();
-  // }
 
   eveidenceRteCreated(): void {
     this.evidenceEle.element.focus();
@@ -351,20 +329,6 @@ export class ChecklistComponent implements OnInit  {
     // this.uploadObj.clearAll();
   }
 
-  // public onFileSelect1(args : SelectedEventArgs) : void {
-  //   // alert('hi');
-  //   let filesData : FileInfo[] = this.uploadObj.getFilesData();
-  //   this.uploadInput1 = args.filesData[0].name;
-  //   args.filesData[0].name = 'modified-'+args.filesData[0].name;
-  //   this.createNewComment(this.uploadInput1);
-  //   this.toastObj.show(this.toasts[5]);
-  // }
-
-  // public demo: EmitType<Object> = (args: any) => {
-  //   alert('lop')
-  //   this.uploadInput1 = args.filesData[0].name;
-  // }
-
   public onUploadSuccess(args: any): void  {
     if (args.operation === 'upload') {
         // console.log('File uploaded successfully'+ JSON.stringify(args));
@@ -374,40 +338,6 @@ export class ChecklistComponent implements OnInit  {
   public onUploadFailure(args: any): void  {
     this.toastObj.show(this.toasts[2]);
   }
-
-  // getCheckList() {
-  //   this.service.checkList().subscribe(
-  //     (response) => {
-  //       this.checkList = response;
-  //       localStorage.setItem("checkList", JSON.stringify(this.checkList));
-  //       this.setDetails();
-  //     },
-  //     (err) => {
-  //       console.log(err.name);
-  //     }
-  //   );
-  // }
-
-  // createViewCheckList(){
-  //   this.viewReleaseChecklist=[];
-  //   selectedDetail?.details.find(x => x.id === release.details)?.detail;
-  //   for(var release of this.releaseChecklist!){
-  //     var checkList:ReleaseChecklist=<ReleaseChecklist>{};
-  //     checkList.id=release.id;
-  //     checkList.vector=release.vector;
-  //     checkList.owner=release.owner;
-  //     checkList.status=release.status;
-  //     checkList.detailedStatus=release.detailedStatus;
-  //     checkList.evidences=release.evidences;
-  //     checkList.comments=release.comments.sort(function(a:any,b:any): any{
-  //       return new Date(b.date).getTime() - new Date(a.date).getTime();
-  //     });
-  //     var selectedDetail = this.details.find( x => x.vector === release.vector);
-  //     checkList.details = selectedDetail?.details.find(x => x.id === release.details)?.detail!;
-  //     checkList.releaseCriteria = selectedDetail?.details.find(x => x.id === release.details)?.releaseCriteria!;
-  //     this.viewReleaseChecklist.push(checkList);
-  //   }
-  // }
 
   /**
    * Change Status of Checklist
@@ -445,33 +375,7 @@ export class ChecklistComponent implements OnInit  {
       else { 
         args.cell!.classList.add('wipBackgroundColor'); 
       } 
-  } 
-
-  /**
-   * Save the new Comment
-   */
-  // onCommentSubmit(): void {
-  //   var data = this.commentForm.controls['comment'].value;
-  //   this.createNewComment(data);
-  //   this.toastObj.show(this.toasts[5]);
-  // }
-
-  /**
-   * Create A new Comment object
-   * @param msg Comment Message
-   */
-  // createNewComment(msg:any) {
-  //   const newComments: Comments = {
-  //     id:uuidv4(),
-  //     message: msg,
-  //     date: new Date().getTime() 
-  //   };
-  //   this.newComment = newComments;
-  //   this.selectedRelease.comments.unshift(this.newComment);
-  //   this.createCommentList(this.selectedRelease);
-  //   //this.grid.refresh();
-  //   this.addCommentDialog.hide(); 
-  // }
+  }
 
   /**
    * Call when user click on View/Add Comment
@@ -532,7 +436,6 @@ export class ChecklistComponent implements OnInit  {
   addEvidence(newEvidence:Evidences) {
     this.selectedRelease.evidences.unshift(newEvidence);
     this.createEvidenceList(this.selectedRelease);
-    
   }
 
   /**
@@ -544,13 +447,13 @@ export class ChecklistComponent implements OnInit  {
     this.createCommentList(this.selectedRelease);
   }
 
-    /**
+  /**
    * Create a new Comment
    * @param newComment New Comment
    */
-     getComment() {
-      
-    }
+  getComment() {
+    
+  }
 
   /**
    * Create Evidence List to show on View Evidence link
@@ -681,10 +584,6 @@ export class ChecklistComponent implements OnInit  {
         this.evidenceAddComponent.addEvidence();
     }
   }
-  
-  // public onOwnerTextboxCreate(args: any) :void {
-  //   this.textboxObj.addIcon("append", "e-icons e-add1");
-  // }
 
   public hideEvidenceDialog: EmitType<object> = () => {
     this.confirmDialog.hide();
@@ -705,7 +604,6 @@ export class ChecklistComponent implements OnInit  {
           cssClass:'e-info',
         }
     }
-    
   ];
 
 
@@ -743,25 +641,25 @@ export class ChecklistComponent implements OnInit  {
 
   public saveChecklistButtons: Object = [
     {
-        'click': this.saveAndContinue.bind(this),
-          buttonModel:{
-          content:'Save & Continue',
-          cssClass:'e-success',
-        }
+      'click': this.saveAndContinue.bind(this),
+        buttonModel:{
+        content:'Save & Continue',
+        cssClass:'e-success',
+      }
     },
     {
-        'click': this.continueNavigation.bind(this),
-          buttonModel:{
-          content:"Don't Save & Leave",
-          cssClass:'e-danger',
-        }
+      'click': this.continueNavigation.bind(this),
+        buttonModel:{
+        content:"Don't Save & Leave",
+        cssClass:'e-danger',
+      }
     },
     {
-        'click': this.hideSaveConfirmationDialog.bind(this),
-          buttonModel:{
-          content:'Cancel',
-          cssClass:'e-info',
-        }
+      'click': this.hideSaveConfirmationDialog.bind(this),
+        buttonModel:{
+        content:'Cancel',
+        cssClass:'e-info',
+      }
     }
     
   ];
@@ -772,7 +670,6 @@ export class ChecklistComponent implements OnInit  {
    */
   checkData(){
     var storedReleaseChecklist:Checklist[]=JSON.parse(localStorage.getItem("checkList")!);
-    // var oldRelease:ReleaseChecklist[] = storedRelaeseChecklist.find(x => x.id == this.selectedReleaseId.toString())?.releaseChecklist!;
     if(JSON.stringify(storedReleaseChecklist) === JSON.stringify(this.releaseChecklist)){
       return false;
     }else{
@@ -802,9 +699,6 @@ export class ChecklistComponent implements OnInit  {
     }.bind(this), 200);
   }
 
-  // closeAddCommentDialog(){
-  //   this.addCommentDialog.hide();
-  // }
   closeCommentDialog(){
     this.commentDialog.hide();
   }
@@ -822,55 +716,40 @@ export class ChecklistComponent implements OnInit  {
     this.viewReleaseChecklist![objIndex].owner=owner;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist];
     
-
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.releaseChecklist![objIndex1].owner=owner;
- 
 
     this.toastObj.show(this.toasts[6]);
   }
 
-  addDetailedStatus(id:string,args:string){
-    var detailStatus:string|undefined = args;
-    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
-    this.viewReleaseChecklist![objIndex].detailedStatus=detailStatus;
-    this.viewReleaseChecklist = [...this.viewReleaseChecklist];
-  
 
-    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
-    this.releaseChecklist![objIndex1].detailedStatus=detailStatus;
-  
-
-    // this.toastObj.show(this.toasts[7]);
-  }
-  scanDate!:string;
-  checkMarxIssue!:Checkmarx;
-  // severity!:Severity;
-  highCount:number=0;
-  lowCount:number=0;
-  mediumCount:number=0;
-  infoCount:number=0;
   getCheckMarxScan() {
     this.highCount=0;
     this.lowCount=0;
     this.mediumCount=0;
     this.infoCount=0;
-    this.service.checkmarxScan().subscribe(
-      (response) => {
-        this.checkMarxIssue = response;
-        this.scanDate = "2022-02-02";
+    let res1 = this.service.checkmarxScan(this.data_collection);
+    let res2 = this.service.kwScan(this.data_collection);
+    let res3 = this.service.protexScan(this.data_collection);
+    forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
+      this.checkMarxIssue = data1;
+      this.tempText = data2;
+      this.protexProj = data3;
+      if(this.checkMarxIssue)
         this.runCheckMarxScan();
-      },
-      (err) => {
-        console.log(err.name);
-      }
-    );
+      if(this.tempText)
+        this.getKwScan();
+      if(this.protexProj)
+        this.geProtexFile();
+      
+      this.getDetails();
+    });
   }
- 
+  
+
   runCheckMarxScan(){  
-    let scanCounts:string;
-    var newLine = "\r\n";                   
-    for(var issue of this.checkMarxIssue.issues){
+    this.checkmarxData=[];
+    for(var issue of this.checkMarxIssue!.issues){
       switch (issue.severity)
       {
         case 'High':
@@ -888,52 +767,60 @@ export class ChecklistComponent implements OnInit  {
         default:
       }
     }
-    // scanCounts="<p><a class=\"e-rte-anchor\" href=\"'"+this.highCount+"\" title=\"'"+this.mediumCount+"\" target=\"_blank\">"+this.infoCount+"</a></p>";
-    // alert("ScanDate: "+this.scanDate+newLine+"High: "+this.highCount+newLine+"Medium: "+this.mediumCount+newLine+"Low: "+this.lowCount+newLine+"Information: "+this.infoCount);
+    this.checkmarxData.push("Checkmarx Scan Data".bold());
+    this.checkmarxData.push("ScanDate: "+this.scanDate);
+    this.checkmarxData.push("High: "+this.highCount);
+    this.checkmarxData.push("Medium: "+this.mediumCount);
+    this.checkmarxData.push("Low: "+this.lowCount);
+    this.checkmarxData.push("Information: "+this.infoCount);
+    this.checkmarxData.push("<br>");
+    // this.checkmarxData = " Checkmarx Scan Data "+newLine+"ScanDate: "+this.scanDate+newLine+"High: "+this.highCount+newLine+"Medium: "+this.mediumCount+newLine+"Low: "+this.lowCount+newLine+"Information: "+this.infoCount+newLine;
   }
-  kwIssue:Kw[]=[];
-  analyseCount:number=0;
-  ignoreCount:number=0;
-  responseText!:string;
-  tempText!:string;
+
 
   getKwScan() {
-    this.analyseCount=0;
-    this.ignoreCount=0;
+    this.errorCount=0;
+    this.criticalCount=0;
     this.kwIssue=[];
     let re = /\}{/gi;
-    this.service.kwScan().subscribe(
-      (response) => {
-        this.tempText = response;
-        this.responseText =  "[" + this.tempText.replace(re, "},{") + "]";
-        console.log('response = '+this.responseText);
-         
-        this.kwIssue = JSON.parse(this.responseText);
-        this.runKwScan();
-      },
-      (err) => {
-        alert(err.message);
-      }
-    );
+    this.responseText =  "[" + this.tempText.replace(re, "},{") + "]";         
+    this.kwIssue = JSON.parse(this.responseText);
+    console.log(JSON.parse(this.responseText));
+    this.runKwScan();
   }
  
+
   runKwScan(){ 
-    var newLine = "\r\n";                   
-    for(var issue of this.kwIssue){
-      switch (issue.status)
+    this.kwData = [];
+    this.kwAnalyzeIssue = this.kwIssue.filter(data => data.status === 'Analyze');
+    for(var issue of this.kwAnalyzeIssue){
+      switch (issue.severity)
       {
-        case 'Ignore':
-          this.ignoreCount++;
+        case 'Error':
+          this.errorCount++;
           break;
-        case 'Analyze':
-          this.analyseCount++;
+        case 'Critical':
+          this.criticalCount++;
           break;
         default:
       }
     }
-    // scanCounts="<p><a class=\"e-rte-anchor\" href=\"'"+this.highCount+"\" title=\"'"+this.mediumCount+"\" target=\"_blank\">"+this.infoCount+"</a></p>";
-    alert("Analyze Count: "+this.analyseCount+newLine);
+    this.kwData.push("KW Scan Data".bold());
+    this.kwData.push("Error Count: "+this.errorCount);
+    this.kwData.push("Critical Count: "+this.criticalCount);
+    this.kwData.push("<br>");
   }
+
+
+  async geProtexFile() {
+    this.protexData =[]; 
+    this.protexData.push("Protex Scan Data".bold());
+    this.protexData.push("Scan Date: "+this.protexProj.LastAnalyzed);
+    this.protexData.push("Code Matches :"+this.protexProj.ScanFileInfo.Analyzed);
+    this.protexData.push("License Conflicts :"+this.protexProj.BOM.LicenseViolations);
+    this.protexData.push("<br>");
+  }
+
 
   isLoaded!:boolean;
   onLoad(args: any) {

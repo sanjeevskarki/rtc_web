@@ -5,7 +5,7 @@
         "details": [
             {
                 "id": "jukid5a66f5735b084075f81af70ad31",   
-                "detail":"Customer Documentation Readiness ",
+                "detail":"Customer Documentation Readiness",
                 "releaseCriteria":"All customer documents identified and planned. All customer collateral for pre-Alpha ready for release including known SW limitations & defects"
             }
         ]   
@@ -93,12 +93,12 @@
             },
             {
                 "id": "jukid5a66f5735b084075f81af70ad45",
-                "detail":"Legal text file ",
-                "releaseCriteria":"Integrate as part of the released SW package "
+                "detail":"Legal text file",
+                "releaseCriteria":"Integrate as part of the released SW package"
             },
             {
                 "id": "jukid5a66f5735b084075f81af70ad46",
-                "detail":"Record Center ",
+                "detail":"Record Center",
                 "releaseCriteria":"Release SWLC evidence archived in the Record Center"
             }
         ]
@@ -130,7 +130,7 @@
             },
             {
                 "id": "jukid5a66f5735b084075f81af70ad50",
-                "detail":"Statuic Analysis issues",
+                "detail":"Static Analysis issues",
                 "releaseCriteria":"Dispositioned"
             },
             {
@@ -151,12 +151,12 @@
             {
                 "id": "jukid5a66f5735b084075f81af70ad54",
                 "detail":"NetSparker deployment on the production environment",
-                "releaseCriteria":"Deployed & Running "
+                "releaseCriteria":"Deployed & Running"
             },
             {
                 "id": "jukid5a66f5735b084075f81af70ad55",
                 "detail":"A/V Scan",
-                "releaseCriteria":"Scan is clean for the released SW "
+                "releaseCriteria":"Scan is clean for the released SW"
             },
             {
                 "id": "jukid5a66f5735b084075f81af70ad56",

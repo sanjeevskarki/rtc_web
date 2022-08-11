@@ -48,12 +48,19 @@
                 </e-column> 
                 <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'>
                     <ng-template #template let-data> 
-                        <div class="e-input-group">       
-                            <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus" (blur)="addDetailedStatus(data.id,data.detailedStatus)"></textarea>
+                        <div *ngIf="data.detailedStatus?.length > 0;" class="comment-div">
+                            <div *ngFor="let f of data.detailedStatus; let i = index">
+                                <div [innerHTML]="f"></div>
+                            </div> 
+                        </div>
+                        <!-- <div class="e-input-group">    
+                            <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus"></textarea> -->
+                               
+                            <!-- <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus" (blur)="addDetailedStatus(data.id,data.detailedStatus)"></textarea> -->
                             <!-- <ejs-tooltip #tooltip content='Update'>
                                 <span class="e-input-group-icon  e-icons e-add1" (click)="addDetailedStatus(data.id,data.detailedStatus)"></span>
                             </ejs-tooltip> -->
-                        </div>
+                        <!-- </div> -->
                         <!-- <ejs-textbox rows="2" cssClass="e-outline" [multiline]="true"></ejs-textbox> -->
                     </ng-template>
                 </e-column>

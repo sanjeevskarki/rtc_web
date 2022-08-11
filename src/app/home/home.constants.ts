@@ -32,3 +32,13 @@ export const TIMEINTERVAL = {
   };
 
   export const PROJECT = 'project';
+
+  export const PROTEX_SCAN_FILE = 'protex_scanresults_c_idiwellnesspcathena_46683.xml';
+  export const KW_SCAN_FILE = 'Perc_hw_wos_kw.json';
+  export const CHECKMARX_SCAN_FILE = 'checkmarx_issues.json';
+  export const FILE_PATH = 'assets/data/';
+
+  export const STATIC_ANALYSIS_ISSUE = 'staticanalysisissues';
+  export const PROTEX_MATCHES_LICENSE_CONFLICTS = 'protexmatches&licenseconflicts';
+  // export const STATIC_ANALYSIS_ISSUE = 'staticanalysisissues';
+ 

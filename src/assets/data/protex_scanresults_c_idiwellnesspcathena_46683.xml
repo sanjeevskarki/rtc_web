@@ -1,0 +1,25 @@
+<Project name="IDI Wellness PC Athena" id="c_idiwellnesspcathena_46683" >
+<ServerUrl>https://gerprotex013.devtools.intel.com</ServerUrl>
+<LastAnalyzed>29 Jun, 2022 02:24:57 PM</LastAnalyzed>
+<ScanFileInfo>
+	<Analyzed>833</Analyzed>
+	<Skipped>3</Skipped>
+	<PendingID>70</PendingID>
+	<NoDiscoveries>745</NoDiscoveries>
+	<Declared>0</Declared>
+	<Disapproved>0</Disapproved>
+</ScanFileInfo>
+<Components>
+	<DiscoveredComponents>3037</DiscoveredComponents>
+</Components>
+<BOM>
+	<TotalComponents>1</TotalComponents>
+	<TotalLicenses>1</TotalLicenses>
+	<LicenseList>
+		<License>[template] Basic Proprietary Commercial License</License>
+	</LicenseList>
+	<PendingReview>0</PendingReview>
+	<LicenseViolations>0</LicenseViolations>
+</BOM>
+</Project>
+

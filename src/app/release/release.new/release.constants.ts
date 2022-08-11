@@ -2,6 +2,7 @@
 
 export const MILESTONE = 'milestone';  
 export const TASK_LOWER = 'task';
+export const FILE_LOWER = 'file';
 export const UPLOAD_LOWER = 'upload';
 export const IS_FOLDER_EXIST = 'isExist';
 export const GUIDELINE_LOWER = 'guideline';
@@ -27,3 +28,5 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 export const RTC_VERSION = 'RTC V0.1';
 export const REPORTS_LOWER = 'reports';
 export const ATTACHMENTS_LOWER = 'attachments';
+export const DATA_COLLECTIONS_LOWER = 'data_collections';
+export const EVIDENCES_LOWER = 'evidences';
