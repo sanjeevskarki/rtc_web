@@ -1,17 +1,17 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
-import { AnimationModel, ILoadedEventArgs, ProgressTheme } from '@syncfusion/ej2-angular-progressbar';
-import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from '../../home/home.models';
+
+import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
 import { ReleaseService } from './release.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
-import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
-import { AnimationSettingsModel, DialogComponent } from '@syncfusion/ej2-angular-popups';
+
 import { Subject } from 'rxjs';
-import { EmitType } from '@syncfusion/ej2-base';
+
 import { BusinessUnit,  Milestone } from './release.models';
 import { ALPHA, ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTIONS_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EVIDENCES_LOWER, EXTERNAL_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, REPORTS_LOWER, TYPE_LOWER } from './release.constants';
+import { ReleaseConfirmDialogComponent } from './releaseconfirmdialog/release.confirm.dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 // export type Status = 'Done' | 'WIP'| 'N/A' | 'Open';
 
@@ -23,8 +23,8 @@ import { ALPHA, ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTIONS_LOWER, 
 
 export class ReleaseComponent implements OnInit {
 
-  @ViewChild('releaseConfirmDialog')
-  public releaseConfirmDialog!: DialogComponent;
+  // @ViewChild('releaseConfirmDialog')
+  // public releaseConfirmDialog!: DialogComponent;
 
   releaseForm!: FormGroup;
   public isModal: Boolean = true;
@@ -34,8 +34,8 @@ export class ReleaseComponent implements OnInit {
   public businessUnit: string = 'Select a Business Unit';
   public milestonePlaceholder: string = 'Select a Milestone';
   public description: string = 'Project Description';
-  @ViewChild('release')
-  public releaseObj!: DropDownListComponent;
+  // @ViewChild('release')
+  // public releaseObj!: DropDownListComponent;
   // public value: string = 'dd-MMM-yy';
   // public format: string = 'dd-MMM-yy';
   // public formatData: string[] = ['dd-MMM-yy', 'yyyy-MM-dd', 'dd-MMMM'];
@@ -47,7 +47,7 @@ export class ReleaseComponent implements OnInit {
   showSpinner :boolean=false; 
   public width: string = '70';
   public spinnerheight: string = '70';
-  public animation: AnimationModel = { enable: true, duration: 2000, delay: 0 };
+  // public animation: AnimationModel = { enable: true, duration: 2000, delay: 0 };
   public isIndeterminate3: boolean = true;
   public value3: number = 20;
   public min3: number = 0;
@@ -84,16 +84,16 @@ export class ReleaseComponent implements OnInit {
   // release: ReleaseChecklist[]=[];
   // existingCheckList:Checklist[]=[];
 
-  @ViewChild('toasttype')
-  private toastObj!: ToastComponent;
+  // @ViewChild('toasttype')
+  // private toastObj!: ToastComponent;
   @Output() childEvent = new EventEmitter<any>();
-  public toastPosition: ToastPositionModel = { X: 'Right' };
+  // public toastPosition: ToastPositionModel = { X: 'Right' };
 
-  public toasts: { [key: string]: Object }[] = [
-    { title: 'Error!', content: 'You have already added a link. Please remove it for upoading a file', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' },
-    { title: 'Success!', content: 'Release Drafted Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-    { title: 'Success!', content: 'Release Generate Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-  ];
+  // public toasts: { [key: string]: Object }[] = [
+  //   { title: 'Error!', content: 'You have already added a link. Please remove it for upoading a file', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' },
+  //   { title: 'Success!', content: 'Release Drafted Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  //   { title: 'Success!', content: 'Release Generate Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  // ];
 
   newRelease!:NewRelease;
   workWeek!:string;
@@ -104,7 +104,7 @@ export class ReleaseComponent implements OnInit {
   public hidden: boolean = false;
   
   
-  public animationSettings: AnimationSettingsModel = { effect: 'None' };
+  // public animationSettings: AnimationSettingsModel = { effect: 'None' };
 
   releaseGuideline!:BackendGuideline;
   guidlines:BackendGuideline[]=[];
@@ -113,7 +113,7 @@ export class ReleaseComponent implements OnInit {
   taskList:ReleaseTask[]=[];
   tempRelease!:NewRelease;
   
-  constructor(private formBuilder: FormBuilder, private service:ReleaseService) { }
+  constructor(private formBuilder: FormBuilder, private service:ReleaseService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.tempRelease = <NewRelease>{};
@@ -177,7 +177,7 @@ export class ReleaseComponent implements OnInit {
   saveAsDraft(){
     this.createNewRelease();
     localStorage.setItem("tempCheckList", JSON.stringify(this.newRelease));
-    this.toastObj.show(this.toasts[1]);
+    // this.toastObj.show(this.toasts[1]);
     this.releaseForm.reset();
     this.isWorkWeekVisible=false;
   }
@@ -193,19 +193,19 @@ export class ReleaseComponent implements OnInit {
     }.bind(this), 200);
   }
 
-  public load(args: ILoadedEventArgs): void {
-    let div: HTMLCollection = document.getElementsByClassName('progress-text-align');
-    let selectedTheme: string = location.hash.split('/')[1];
-    selectedTheme = selectedTheme ? selectedTheme : 'Material';
-    args.progressBar.theme = <ProgressTheme>(selectedTheme.charAt(0).toUpperCase() +
-        selectedTheme.slice(1)).replace(/-dark/i, 'Dark').replace(/contrast/i, 'Contrast');
-    if(args.progressBar.theme === 'HighContrast' || args.progressBar.theme === 'Bootstrap5Dark' || args.progressBar.theme === 'BootstrapDark' || args.progressBar.theme === 'FabricDark'
-    || args.progressBar.theme === 'TailwindDark' || args.progressBar.theme === 'MaterialDark' || args.progressBar.theme === 'FluentDark') {
-        for (let i = 0; i < div.length; i++) {
-            div[i].setAttribute('style', 'color:white');
-        }
-    }
-  }
+  // public load(args: ILoadedEventArgs): void {
+  //   let div: HTMLCollection = document.getElementsByClassName('progress-text-align');
+  //   let selectedTheme: string = location.hash.split('/')[1];
+  //   selectedTheme = selectedTheme ? selectedTheme : 'Material';
+  //   args.progressBar.theme = <ProgressTheme>(selectedTheme.charAt(0).toUpperCase() +
+  //       selectedTheme.slice(1)).replace(/-dark/i, 'Dark').replace(/contrast/i, 'Contrast');
+  //   if(args.progressBar.theme === 'HighContrast' || args.progressBar.theme === 'Bootstrap5Dark' || args.progressBar.theme === 'BootstrapDark' || args.progressBar.theme === 'FabricDark'
+  //   || args.progressBar.theme === 'TailwindDark' || args.progressBar.theme === 'MaterialDark' || args.progressBar.theme === 'FluentDark') {
+  //       for (let i = 0; i < div.length; i++) {
+  //           div[i].setAttribute('style', 'color:white');
+  //       }
+  //   }
+  // }
 
   createNewRelease() {
     this.newRelease =<NewRelease>{};
@@ -341,7 +341,7 @@ export class ReleaseComponent implements OnInit {
       this.taskList.push(this.task);
     }
     this.service.addTasks(this.taskList).subscribe(data => {
-      this.toastObj.show(this.toasts[2]);
+      // this.toastObj.show(this.toasts[2]);
       this.releaseForm.reset();
       this.showSpinner = false;
     });      
@@ -462,28 +462,39 @@ export class ReleaseComponent implements OnInit {
 
   
   openConfirmation(){
-    this.releaseConfirmDialog.show();
+    // this.releaseConfirmDialog.show();
+    const dialogRef = this.dialog.open(ReleaseConfirmDialogComponent, {
+      height: '20%',
+      width: '30%'
+      
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.data == "continue"){
+        this.continueNavigation();
+      }
+
+    });
   }
 
-  public hideReleaseConfirmDialog: EmitType<object> = () => {
-    this.releaseConfirmDialog.hide();
+  // public hideReleaseConfirmDialog: EmitType<object> = () => {
+  //   this.releaseConfirmDialog.hide();
     
-  }
+  // }
 
-  public saveButtons: Object = [
-    {
-        'click': this.continueNavigation.bind(this),
-          buttonModel:{
-          content:"Don't Save & Leave",
-          cssClass:'e-danger',
-        }
-    },
-    {
-        'click': this.hideReleaseConfirmDialog.bind(this),
-          buttonModel:{
-          content:'Cancel',
-          cssClass:'e-info',
-        }
-    }    
-  ];
+  // public saveButtons: Object = [
+  //   {
+  //       'click': this.continueNavigation.bind(this),
+  //         buttonModel:{
+  //         content:"Don't Save & Leave",
+  //         cssClass:'e-danger',
+  //       }
+  //   },
+  //   {
+  //       'click': this.hideReleaseConfirmDialog.bind(this),
+  //         buttonModel:{
+  //         content:'Cancel',
+  //         cssClass:'e-info',
+  //       }
+  //   }    
+  // ];
 }

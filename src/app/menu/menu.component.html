@@ -1,6 +1,6 @@
-<div class="control-section" id="sidebar-wrapper">
+<div>
     <!-- main content declaration -->
-        <ejs-toolbar cssClass="defaultToolbar" id="defaultToolbar">
+        <!-- <ejs-toolbar cssClass="defaultToolbar" id="defaultToolbar">
             <e-items>
                 <e-item>
                     <ng-template #template>
@@ -24,18 +24,58 @@
                     </ng-template>
                 </e-item>
             </e-items>
-        </ejs-toolbar> 
-    
-    <div id="defaultSample" class="control-section">
+        </ejs-toolbar>  -->
+        <!-- <mat-sidenav #sidenav>
+            <mat-nav-list>
+        
+              <a mat-list-item [routerLink]="'/accounts'"> Accounts </a>
+              <a mat-list-item [routerLink]="'/create-account'"> Create Account </a>
+              <a mat-list-item [routerLink]="'/contacts'"> Contacts </a>
+              <a mat-list-item [routerLink]="'/create-contact'"> Create Contact </a>
+              <a mat-list-item [routerLink]="'/activities'"> Activities </a>
+              <a mat-list-item [routerLink]="'/create-activity'"> Create Activity </a>
+              <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item>Close</a>
+        
+            </mat-nav-list>
+          </mat-sidenav> -->
+          <mat-toolbar color="primary">
+            <span>{{rtcVersion}}</span>
+            <span class="example-spacer"></span>
+            <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"> -->
+                <div class="image-container">
+                    <img class="img-div" src="./assets/sqba.png" />
+                </div>
+            <!-- </button> -->
+            &nbsp;
+            <div class="image-container">
+                <img class="img-div" src="./assets/intel-logo-white-100.png" />
+            </div>
+            <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+              <mat-icon>share</mat-icon>
+            </button> -->
+          </mat-toolbar>
+          <mat-toolbar color="primary">
+            <mat-toolbar-row>
+                <div>
+                  <a mat-button [routerLink]="'/home'" routerLinkActive="active-list-item"> Home </a>
+                  <!-- <a mat-button [routerLink]="'/release'" routerLinkActive="active-list-item"> New Release </a> -->
+                  <a mat-button [routerLink]="'/admin'" routerLinkActive="active-list-item"> Admin </a>
+                  <a mat-button [routerLink]="'/report'" routerLinkActive="active-list-item"> Reports </a>
+                  <a mat-button [routerLink]="'/help'" routerLinkActive="active-list-item"> Help </a>            
+                </div>
+              </mat-toolbar-row>
+          </mat-toolbar>
+    <!-- <div id="defaultSample" class="control-section">
         <div class="menu-control">
             <ejs-menu [items]='menuItems' style="color: white;margin-left: 20px;" (select)='select($event)'></ejs-menu>
         </div>
-    </div>
-    <div class="maincontent" style="height:35rem">
+    </div> -->
+    <router-outlet></router-outlet>
+    <!-- <div class="maincontent">
         <div class="content container-fluid rightpane" cssClass="e-list-template">
             <div class="e-list-wrapper e-list-avatar e-list-multi-line">
               <router-outlet></router-outlet>
             </div>
           </div>
-    </div>
+    </div> -->
 </div>

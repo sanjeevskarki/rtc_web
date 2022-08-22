@@ -1,3 +1,15 @@
+.mat-toolbar-row, .mat-toolbar-single-row {
+    height: 48px !important;
+}
+
+.mat-toolbar-multiple-rows {
+    min-height: 48px !important;
+}
+
+.active-list-item {
+    background-color: #324191 !important; /* Note: You could also use a custom theme */
+}
+
 /* Specifies sample level styles for sidebar*/
 #sidebar-wrapper.control-section {
     padding: 0;

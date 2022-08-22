@@ -1,31 +1,35 @@
-import { Component, EventEmitter, HostListener, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GridComponent, GridLine, QueryCellInfoEventArgs,GroupService, SortService, CommandModel, CommandColumnService, EditSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { BackendGuideline, BackendTask, Checklist, Comments, Evidences, Project, ReleaseChecklist, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
 import { ChecklistService } from './checklist.service';
-import { ItemModel, MenuEventArgs } from '@syncfusion/ej2-angular-splitbuttons';
-import { DialogComponent, AnimationSettingsModel, PositionDataModel } from '@syncfusion/ej2-angular-popups';
+import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
-import { LinkService, ImageService, HtmlEditorService, TableService, FileManagerService, RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
-import { ClickEventArgs, ToolbarModule } from '@syncfusion/ej2-angular-navigations';
-import { FormGroup } from '@angular/forms';
-import { EmitType } from '@syncfusion/ej2-base';
-import { RemovingEventArgs } from '@syncfusion/ej2-angular-inputs';
-import { EditService, ToolbarService, PageService } from '@syncfusion/ej2-angular-grids';
+
+
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
-import { ToastComponent, ToastPositionModel } from '@syncfusion/ej2-angular-notifications';
+
 import { forkJoin, Subject } from 'rxjs';
 import { CommentAddComponent } from '../comment.add/commentadd.component';
-import { Checkmarx, DATA_COLLECTION, Kw, Project as ProtexProject, Severity } from './checklist.models';
-import { PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
+import { Bdba, Checkmarx, DATA_COLLECTION, Kw, Project as ProtexProject, Severity } from './checklist.models';
+import { COMPOSITION_ANALYSIS_ISSUES, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChecklistConfirmDialogComponent } from '../checklistconfirmdialog/checklist.confirm.dialog.component';
 
+export class Group {
+	level = 0;
+	expanded = true;
+	totalCounts = 0;
+}
 
 
 @Component({
   selector: 'app-checklist',
   templateUrl: './checklist.component.html',
   styleUrls: ['./checklist.component.scss'],
-  providers:[ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, FileManagerService,EditService, PageService,GroupService, SortService, CommandColumnService],
+  providers:[],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -40,17 +44,17 @@ export class ChecklistComponent implements OnInit  {
   oldChecklist : ReleaseChecklist[]=[];
   
 
-  @ViewChild('commentDialog')
-  public commentDialog!: DialogComponent;
+  // @ViewChild('commentDialog')
+  // public commentDialog!: DialogComponent;
 
-  @ViewChild('evidenceDialog')
-  public evidenceDialog!: DialogComponent;
+  // @ViewChild('evidenceDialog')
+  // public evidenceDialog!: DialogComponent;
 
-  @ViewChild('confirmDialog')
-  public confirmDialog!: DialogComponent;
+  // @ViewChild('confirmDialog')
+  // public confirmDialog!: DialogComponent;
 
-  @ViewChild('saveReleaseConfirmDialog')
-  public saveReleaseConfirmDialog!: DialogComponent;
+  // @ViewChild('saveReleaseConfirmDialog')
+  // public saveReleaseConfirmDialog!: DialogComponent;
 
   public target: string = '#modalTarget';
   public target1: string = '#commentDialog';
@@ -65,10 +69,10 @@ export class ChecklistComponent implements OnInit  {
   public isModal: Boolean = true;
   public showCloseIcon: Boolean = true;
   public hidden: Boolean = false;
-  public position: PositionDataModel={ X: 'center', Y: 'center' };
-  public animationSettings: AnimationSettingsModel = { effect: 'None' };
+  // public position: PositionDataModel={ X: 'center', Y: 'center' };
+  // public animationSettings: AnimationSettingsModel = { effect: 'None' };
  
-  public lines!:GridLine;
+  // public lines!:GridLine;
   initialPage!:Object;
   evidencePage: Object = {pageSize:5};
   public filter!: Object;
@@ -88,13 +92,13 @@ export class ChecklistComponent implements OnInit  {
 
   selectedRelease!:ReleaseChecklist;
 
-  commentForm!: FormGroup;
+  // commentForm!: FormGroup;
 
-  @ViewChild('toolsRTE')
-  public rteObj!: RichTextEditorComponent;
+  // @ViewChild('toolsRTE')
+  // public rteObj!: RichTextEditorComponent;
 
-  @ViewChild('evidenceRTE')
-  private evidenceEle!: RichTextEditorComponent;
+  // @ViewChild('evidenceRTE')
+  // private evidenceEle!: RichTextEditorComponent;
 
   @Output() childEvent = new EventEmitter();
   @Output() childEvent2 = new EventEmitter();
@@ -117,10 +121,10 @@ export class ChecklistComponent implements OnInit  {
   selectedEvidence!:ViewEvidence;
   public uploadInput1: string = '';
   public multiple: boolean = false;
-  viewReleaseChecklist:ReleaseChecklist[]=[];
+  viewReleaseChecklist:ReleaseChecklist[] =[];
   public refresh!: Boolean;
-  @ViewChild('grid')
-  public grid!: GridComponent;
+  // @ViewChild('grid')
+  // public grid!: GridComponent;
   details:ReleaseDetails[]=[];
   // public toolbar!: string[];
   // newComment!:Comments;
@@ -132,40 +136,42 @@ export class ChecklistComponent implements OnInit  {
   mediumCount:number=0;
   infoCount:number=0;
   protexProj!:ProtexProject;
+  bdba!:Bdba;
   newLine = "\r\n";
-  @ViewChild('toasttype')
-  private toastObj!: ToastComponent;
-  public toasts: { [key: string]: Object }[] = [
-    { title: 'Success!', content: 'Release Saved Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-    { title: 'Success!', content: 'Status Changed Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-    { title: 'Error!', content: 'Some error occured during file upload.Please try after some time', cssClass: 'e-toast-error', icon: 'e-error toast-icons' },
-    { title: 'Success!', content: 'Evidence Deleted Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-    { title: 'Success!', content: 'Comment Added Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-    { title: 'Success!', content: 'File Uploaded Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-    { title: 'Success!', content: 'Owner Updated Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-    { title: 'Success!', content: 'Detailed Status Updated Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
-  ];
-  public toastPosition: ToastPositionModel = { X: 'Right' };
-  public commands!: CommandModel[];
+  // @ViewChild('toasttype')
+  // private toastObj!: ToastComponent;
+  // public toasts: { [key: string]: Object }[] = [
+  //   { title: 'Success!', content: 'Release Saved Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  //   { title: 'Success!', content: 'Status Changed Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  //   { title: 'Error!', content: 'Some error occured during file upload.Please try after some time', cssClass: 'e-toast-error', icon: 'e-error toast-icons' },
+  //   { title: 'Success!', content: 'Evidence Deleted Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  //   { title: 'Success!', content: 'Comment Added Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  //   { title: 'Success!', content: 'File Uploaded Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  //   { title: 'Success!', content: 'Owner Updated Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  //   { title: 'Success!', content: 'Detailed Status Updated Successfully', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+  // ];
+  // public toastPosition: ToastPositionModel = { X: 'Right' };
+  // public commands!: CommandModel[];
 
-  public tools: ToolbarModule = {
-    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
-        'FontName', 'FontSize','|',
-        'Formats', 'NumberFormatList', 'BulletFormatList','|',
-        'CreateLink']
-  };
+  // public tools: ToolbarModule = {
+  //   items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
+  //       'FontName', 'FontSize','|',
+  //       'Formats', 'NumberFormatList', 'BulletFormatList','|',
+  //       'CreateLink']
+  // };
 
-  public evidenceTools: ToolbarModule = {
-    items: [
-        'CreateLink', 'image']
-  };
+  // public evidenceTools: ToolbarModule = {
+  //   items: [
+  //       'CreateLink', 'image']
+  // };
   isExit:boolean = true;
-  public editSettings!: EditSettingsModel;
+  // public editSettings!: EditSettingsModel;
   isAddCommentOpen:boolean = false;
   showSpinner:boolean=false;
   data_collection!:DATA_COLLECTION;
   protexData!:string[];
   checkmarxData!:string[];
+  bdbaData!:string[];
   kwIssue:Kw[]=[];
   kwAnalyzeIssue:Kw[]=[];
   errorCount:number=0;
@@ -173,39 +179,56 @@ export class ChecklistComponent implements OnInit  {
   responseText!:string;
   tempText!:string;
   kwData:string[]=[];
+  groupByColumns: string[] = [];
+  color = '#f1f3f4';
+  expanded = true;
+  level = 0;
+  selected!:string;
 
-  constructor(private route: ActivatedRoute,private service:ChecklistService) { 
-    
+  public dataSource = new MatTableDataSource<any | Group>([]);
+  
+  constructor(private formBuilder: FormBuilder,private route: ActivatedRoute,private service:ChecklistService, public dialog: MatDialog) { 
+    this.groupByColumns = ['vector'];
   }
 
   public dropElement: HTMLElement = document.getElementsByClassName('control-fluid')[0] as HTMLElement;
-  public path: Object = {
-    saveUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Save',
-    removeUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Remove'
-  };
+  // public path: Object = {
+  //   saveUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Save',
+  //   removeUrl: 'https://ej2.syncfusion.com/services/api/uploadbox/Remove'
+  // };
   
-  public onFileRemove(args: RemovingEventArgs): void {
-    args.postRawFile = false;
-  }
+  // public onFileRemove(args: RemovingEventArgs): void {
+  //   args.postRawFile = false;
+  // }
 
-  public items: ItemModel[] = [
-    {
-      text: 'Done',
-    },
-    {
-      text: 'N/A',  
-    },
-    {
-      text: 'Open',
-    },
-    {
-      text: 'WIP',  
-    }
+  statusList: any[] = [
+    {value: 'Done', viewValue: 'Done'},
+    {value: 'N/A', viewValue: 'N/A'},
+    {value: 'Open', viewValue: 'Open'},
+    {value: 'WIP', viewValue: 'WIP'},
   ];
 
+  // public statusList: ItemModel[] = [
+  //   {
+  //     text: 'Done',
+  //   },
+  //   {
+  //     text: 'N/A',  
+  //   },
+  //   {
+  //     text: 'Open',
+  //   },
+  //   {
+  //     text: 'WIP',  
+  //   }
+  // ];
+
+  displayedColumns = ['vector','details','owner','detailedStatus','status','releaseCriteria','evidence','comments'];
+  evidenceDisplayedColumns= ['seq','title','evidenceChild','evidenceDate','comments'];
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
   ngOnInit(): void {
+    // this.evidenceLoaded=false;
     this.data_collection = <DATA_COLLECTION>{};
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.data_collection.business_unit = this.selectedProject.project_business_unit_id.toLowerCase().replace(/\s/g, "");
@@ -214,21 +237,30 @@ export class ChecklistComponent implements OnInit  {
 
     this.showSpinner = true;
     this.isAddCommentOpen = false;
-    this.editSettings = { allowEditing: true, mode: 'Normal' };
+    // this.editSettings = { allowEditing: true, mode: 'Normal' };
 
     this.groupOptions = { showDropArea: false, showGroupedColumn: false, columns: ['vector'] };
     this.selectOptions = {persistSelection: true, type: "Multiple" };
     this.evidenceToolbar = [{ text: 'Add Evidence', tooltipText: 'Add Evidence', prefixIcon: 'e-plus1', id: 'Add' }];
     this.evidenceEditSettings = { allowAdding: true, allowDeleting: true, mode: 'Dialog' };
-    
-    this.lines='Both';
+    this.addCommentForm = this.formBuilder.group({
+      comment: [null, Validators.required],
+      upload:  [null, []],
+    });    
+    // this.lines='Both';
     this.initialPage = {pageSize:5};
     this.filter = { type: "CheckBox" };
     this.checkList = JSON.parse(localStorage.getItem("checkList")!);
-    this.commands = [
-        { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } }
-    ];
+    // this.commands = [
+    //     { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } }
+    // ];
     this.getSelectedTask();
+    
+    
+  }
+
+  ngDoCheck(){
+    
   }
 
   backendTasks:BackendTask[]=[];
@@ -258,6 +290,7 @@ export class ChecklistComponent implements OnInit  {
   }
 
   getDetails() {
+    // alert("get other detail");
     this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
@@ -282,10 +315,14 @@ export class ChecklistComponent implements OnInit  {
     );
   }
 
+  testData!:string[];
   createTasks(){
+    this.testData=[];
     var taskList:ReleaseChecklist[]=[];
     for(var task of this.backendTasks!){
+      
       var checkList:ReleaseChecklist=<ReleaseChecklist>{};
+      checkList.bdbaStatus = false;
       checkList.id=task.guidelines_ptr_id;
       checkList.vector=task.backend_guideline?.vector_id!;
       checkList.details = task.backend_guideline?.task_name!;
@@ -296,10 +333,18 @@ export class ChecklistComponent implements OnInit  {
       if(checkList.details.toLowerCase().replace(/\s/g, "") === STATIC_ANALYSIS_ISSUE){
         checkList.detailedStatus = this.kwData.concat(this.checkmarxData);
         // checkList.detailedStatus = this.kwData;
+        this.testData = checkList.detailedStatus;
       }
       if(checkList.details.toLowerCase().replace(/\s/g, "") === PROTEX_MATCHES_LICENSE_CONFLICTS){
         checkList.detailedStatus = this.protexData;
+        this.testData = checkList.detailedStatus;
       }
+      if(checkList.details.toLowerCase().replace(/\s/g, "") === COMPOSITION_ANALYSIS_ISSUES){
+        checkList.detailedStatus = this.bdbaData;
+        checkList.bdbaStatus = true;
+      }
+      
+
       
       checkList.evidences=[];
       checkList.comments=[];
@@ -314,20 +359,25 @@ export class ChecklistComponent implements OnInit  {
     }
     this.showSpinner = false;
     this.viewReleaseChecklist = taskList;
+    // this.dataSource.data = this.getGroups(this.viewReleaseChecklist, this.groupByColumns);
     this.releaseChecklist = this.viewReleaseChecklist;
     localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
         
   }
 
-
-  eveidenceRteCreated(): void {
-    this.evidenceEle.element.focus();
+  openBdbaReport(){
+    alert('Hi');
   }
 
-  commentDialogClose(){
-    this.commentForm.reset();
-    // this.uploadObj.clearAll();
-  }
+
+  // eveidenceRteCreated(): void {
+  //   this.evidenceEle.element.focus();
+  // }
+
+  // commentDialogClose(){
+  //   this.commentForm.reset();
+  //   // this.uploadObj.clearAll();
+  // }
 
   public onUploadSuccess(args: any): void  {
     if (args.operation === 'upload') {
@@ -335,18 +385,18 @@ export class ChecklistComponent implements OnInit  {
     }
   }
 
-  public onUploadFailure(args: any): void  {
-    this.toastObj.show(this.toasts[2]);
-  }
+  // public onUploadFailure(args: any): void  {
+  //   this.toastObj.show(this.toasts[2]);
+  // }
 
   /**
    * Change Status of Checklist
    * @param id Unique Release Checklist ID
    * @param args New Changed Status
    */
-  changeStatus (id:string,args: MenuEventArgs) {
+  changeStatus (id:string,value: string) {
     this.showSpinner=true;
-    var newStatus:string|undefined = args.item.text;
+    var newStatus:string|undefined = value;
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.viewReleaseChecklist![objIndex].status=newStatus;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist]; 
@@ -357,45 +407,57 @@ export class ChecklistComponent implements OnInit  {
     // this.toastObj.show(this.toasts[1]);
   }
 
+  // changeStatus1 (op:string,value: string) {
+  //   alert(op);
+    
+  //   alert(value);
+  // }
+
   /**
    * Used for Cell Background Color
    * @param args Cell Information
    */
-  customiseCell(args: QueryCellInfoEventArgs) { 
-    let rcList : ReleaseChecklist |undefined= <ReleaseChecklist> args.data;
-      if (rcList?.status === "Done") { 
-        args.cell!.classList.add('doneBackgroundColor'); 
-      } 
-      else if (rcList?.status === "N/A") { 
-        args.cell!.classList.add('naBackgroundColor'); 
-      } 
-      else if (rcList?.status === "Open") { 
-        args.cell!.classList.add('openBackgroundColor'); 
-      } 
-      else { 
-        args.cell!.classList.add('wipBackgroundColor'); 
-      } 
-  }
-
+  // customiseCell(args: QueryCellInfoEventArgs) { 
+  //   let rcList : ReleaseChecklist |undefined= <ReleaseChecklist> args.data;
+  //     if (rcList?.status === "Done") { 
+  //       args.cell!.classList.add('doneBackgroundColor'); 
+  //     } 
+  //     else if (rcList?.status === "N/A") { 
+  //       args.cell!.classList.add('naBackgroundColor'); 
+  //     } 
+  //     else if (rcList?.status === "Open") { 
+  //       args.cell!.classList.add('openBackgroundColor'); 
+  //     } 
+  //     else { 
+  //       args.cell!.classList.add('wipBackgroundColor'); 
+  //     } 
+  // }
+  commentDialogRef:any;
+  commentTemplateRef:any
   /**
    * Call when user click on View/Add Comment
    * @param id Unique Release Id
    */
-  onCommentClicked(id: string) {
+  onCommentClicked(_templateRef:any,id: string) {
+    this.commentLoaded = true;
+    this.commentTemplateRef = _templateRef;
     this.selectedRelease=<ReleaseChecklist>{}    
     this.selectedRelease = this.getCurrentRelease(id)!;
+   
     this.commentsHeader = this.selectedRelease.vector + " Comments"; 
-    this.createCommentList(this.selectedRelease);  
+
+    this.createCommentList(this.selectedRelease,true);  
+   
   } 
 
   /**
    * Create a New Comment List with updated comments
    * @param _selectedRelease Update Release Checklist
    */
-  createCommentList(_selectedRelease:ReleaseChecklist){
+  createCommentList(_selectedRelease:ReleaseChecklist,state:boolean){
     this.viewComments=[];
     this.displayComments=[];
-    if(_selectedRelease.comments.length > 0){
+    // if(_selectedRelease.comments.length > 0){
       for(var comment of _selectedRelease.comments){
         this.viewComment = <ViewComment>{};
         this.viewComment.message=comment.message;
@@ -404,24 +466,75 @@ export class ChecklistComponent implements OnInit  {
         this.viewComments.push(this.viewComment);
       }
       this.displayComments = this.viewComments;
-      this.commentDialog.show(); 
-    }else{
-      this.commentDialog.show(); 
-      this.openCommentDialog();
-    }    
+      // alert(this.displayComments[0].message);
+      // this.commentDialog.show(); 
+    // }else{
+    //   this.commentDialog.show(); 
+    //   this.openCommentDialog();
+    // } 
+    if(state)
+      this.openCommentListDialog();
+    
+
     this.updateReleaseCheckList(this.selectedRelease);
   }
-
+  evidenceDialogRef:any;
+  templateRef:any
   /**
    * Call when user click on View/Add Evidence
    * @param selectedReleaseChecklist Existing Release ChecklIst
    */
-  onEvidenceClicked(id: string) {
+  onEvidenceClicked(_templateRef:any,id: string) {
+    this.evidenceLoaded = true;
+    this.templateRef = _templateRef;
     this.selectedRelease=<ReleaseChecklist>{};
     this.selectedRelease = this.getCurrentRelease(id)!;
     this.evidenceHeader = this.selectedRelease.vector + " Evidences";
     
-    this.createEvidenceList(this.selectedRelease);
+    this.createEvidenceList(this.selectedRelease,true);
+    
+  }
+
+  openEvidenceListDialog(){
+    this.evidenceDialogRef = this.dialog.open(this.templateRef, {
+      height: '60%',
+      width: '70%'
+    });
+
+    this.evidenceDialogRef.afterClosed().subscribe(() => {
+      
+      // this.animal = result;
+    });
+  }
+
+  addCommentTemplateRef:any
+  openAddCommentDialog(){
+    this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
+      height: '60%',
+      width: '70%'
+    });
+
+    this.commentDialogRef.afterClosed().subscribe(() => {
+      
+      // this.animal = result;
+    });
+  }
+
+  openCommentListDialog(){
+    this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
+      height: '60%',
+      width: '70%'
+    });
+
+    this.commentDialogRef.afterClosed().subscribe(() => {
+      
+      // this.animal = result;
+    });
+  }
+
+  closeEvidenceListDialog(){
+    this.evidenceDialogRef.close();
+    // this.evidenceDialog.hide();
   }
 
   getCurrentRelease(releaseId:string) {
@@ -433,10 +546,11 @@ export class ChecklistComponent implements OnInit  {
    * Create a new Evidence
    * @param newEvidence New Evidence
    */
-  addEvidence(newEvidence:Evidences) {
-    this.selectedRelease.evidences.unshift(newEvidence);
-    this.createEvidenceList(this.selectedRelease);
-  }
+  // addEvidence(newEvidence:Evidences) {
+  //   alert("parent component evidence" +newEvidence.title);
+  //   this.selectedRelease.evidences.unshift(newEvidence);
+  //   this.createEvidenceList(this.selectedRelease,false);
+  // }
 
   /**
    * Create a new Comment
@@ -444,7 +558,7 @@ export class ChecklistComponent implements OnInit  {
    */
   addComment(newComment:Comments) {
     this.selectedRelease.comments.unshift(newComment);
-    this.createCommentList(this.selectedRelease);
+    this.createCommentList(this.selectedRelease,false);
   }
 
   /**
@@ -459,11 +573,12 @@ export class ChecklistComponent implements OnInit  {
    * Create Evidence List to show on View Evidence link
    * @param _selectedRelease Release Checklist
    */
-  createEvidenceList(_selectedRelease:ReleaseChecklist){
+  createEvidenceList(_selectedRelease:ReleaseChecklist,state:boolean){
     let num : number =0;
     this.displayEvidences=[];
     this.viewEvidences=[];
-    if(_selectedRelease.evidences.length > 0){
+    
+    // if(_selectedRelease.evidences.length > 0){
       for(var evidence of _selectedRelease.evidences){
         num++;
         this.viewEvidence = <ViewEvidence>{};
@@ -477,11 +592,16 @@ export class ChecklistComponent implements OnInit  {
         this.viewEvidences.push(this.viewEvidence);
       }
       this.displayEvidences = this.viewEvidences;
-      this.evidenceDialog.show();
-    }else{
-      this.evidenceDialog.show(); 
-      this.openEvidenceDialog();
-    }
+      if(state)
+      this.openEvidenceListDialog();
+      // this.evidenceDialog.show();
+    // }
+    // else{
+    //   // this.evidenceDialog.show(); 
+    //   this.openEvidenceListDialog();
+    //   this.openEvidenceDialog();
+    // }
+
     this.updateReleaseCheckList(_selectedRelease);
   }
 
@@ -506,6 +626,7 @@ export class ChecklistComponent implements OnInit  {
    * Create Updated Task List and Save 
    */
   saveRelease() {
+    console.log(JSON.stringify(this.releaseChecklist));
     // var newBackendGuideline:BackendGuideline;
     // var newBackendGuidelineArray:BackendGuideline[]=[];
     var newBackendTask:ReleaseTask;
@@ -529,38 +650,51 @@ export class ChecklistComponent implements OnInit  {
     }
     // console.log(JSON.stringify(newBackendTaskArray));
     // this.service.updateGuidelines(newBackendGuidelineArray).subscribe(data => {
-      this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
-        localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
-        this.toastObj.show(this.toasts[0]);
-      });
+    this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
+      localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+      // this.toastObj.show(this.toasts[0]);
+    });
     // });
 
   }
-
+  evidenceLoaded:boolean =false;
+  commentLoaded:boolean =false;
   /**
    * Open Add Evidence Dialog
    */
   openEvidenceDialog() {
+    
     //this.addEvidenceHeader = "Add Evidence";
     this.evidenceAddComponent.addEvidence();  
   }
-  
+  addCommentDialogRef!:any;
   /**
    * Open Add Evidence Dialog
    */
-   openCommentDialog() {
-    this.isAddCommentOpen = true;
+   openCommentDialog(_templateRef:any) {
+    this.addCommentTemplateRef =_templateRef;
+    this.selectedCommentFile = <any>{};
     // this.addCommentHeader = "Add Comment";
-    this.commentAddComponent.addComment();  
-  }
+    this.addCommentDialogRef = this.dialog.open(this.addCommentTemplateRef, {
+      height: '50%',
+      width: '40%'
+    });
 
+    // addCommentDialogRef.afterClosed().subscribe((result ) => {
+    //   this.commentLoaded = false;
+    //   this.selectedRelease.comments.unshift(result);
+    //   this.createCommentList(this.selectedRelease,false);
+    //   // this.animal = result;
+    // });
+  }
+  addCommentForm!: FormGroup;
   /**
    * Call when evidence delete
    * @param _selectedEvidence Selected Evidence to delete
    */
   selectDeletedEvidence (_selectedEvidence: ViewEvidence): void {
     this.selectedEvidence = _selectedEvidence;
-    this.confirmDialog.show();
+    // this.confirmDialog.show();
   }
 
   /**
@@ -572,39 +706,52 @@ export class ChecklistComponent implements OnInit  {
     let deletedItemIndex = evidence!.evidences.findIndex(x => x.id === this.selectedEvidence.id);  
     evidence?.evidences.splice(deletedItemIndex, 1);
 
-    this.createEvidenceList(evidence!);
-    this.confirmDialog.hide();  
-    this.evidenceAddComponent.closeEvidence();
-    this.toastObj.show(this.toasts[3]);
+    this.createEvidenceList(evidence!,false);
+    // this.confirmDialog.hide();  
+    // this.evidenceAddComponent.closeEvidence();
+    // this.toastObj.show(this.toasts[3]);
     
   }
 
-  clickEvidenceHandler(args: ClickEventArgs): void {
-    if (args.item.id === 'Add') {
-        this.evidenceAddComponent.addEvidence();
-    }
+  createEvidence(){
+    const addEvidenceDialogRef = this.dialog.open(EvidenceAddComponent, {
+      height: '50%',
+      width: '40%'
+    });
+
+    addEvidenceDialogRef.afterClosed().subscribe((result ) => {
+      this.evidenceLoaded = false;
+      this.selectedRelease.evidences.unshift(result.data);
+      this.createEvidenceList(this.selectedRelease,false);
+    });
   }
 
-  public hideEvidenceDialog: EmitType<object> = () => {
-    this.confirmDialog.hide();
-  }
+  // clickEvidenceHandler(args: ClickEventArgs): void {
+  //   if (args.item.id === 'Add') {
+  //       this.evidenceAddComponent.addEvidence();
+  //   }
+  // }
+
+  // public hideEvidenceDialog: EmitType<object> = () => {
+  //   // this.confirmDialog.hide();
+  // }
   
-  public buttons: Object = [
-    {
-        'click': this.deleteEvidence.bind(this),
-          buttonModel:{
-          content:'Yes',
-          cssClass:'e-danger',
-        }
-    },
-    {
-        'click': this.hideEvidenceDialog.bind(this),
-          buttonModel:{
-          content:'No',
-          cssClass:'e-info',
-        }
-    }
-  ];
+  // public buttons: Object = [
+  //   {
+  //       'click': this.deleteEvidence.bind(this),
+  //         buttonModel:{
+  //         content:'Yes',
+  //         cssClass:'e-danger',
+  //       }
+  //   },
+  //   {
+  //       'click': this.hideEvidenceDialog.bind(this),
+  //         buttonModel:{
+  //         content:'No',
+  //         cssClass:'e-info',
+  //       }
+  //   }
+  // ];
 
 
   public browseClick1() {
@@ -634,35 +781,35 @@ export class ChecklistComponent implements OnInit  {
     this.continueNavigation();
   }
 
-  public hideSaveConfirmationDialog: EmitType<object> = () => {
-    this.saveReleaseConfirmDialog.hide();
-    this.isExit=true;
-  }
+  // public hideSaveConfirmationDialog: EmitType<object> = () => {
+  //   this.saveReleaseConfirmDialog.hide();
+  //   this.isExit=true;
+  // }
 
-  public saveChecklistButtons: Object = [
-    {
-      'click': this.saveAndContinue.bind(this),
-        buttonModel:{
-        content:'Save & Continue',
-        cssClass:'e-success',
-      }
-    },
-    {
-      'click': this.continueNavigation.bind(this),
-        buttonModel:{
-        content:"Don't Save & Leave",
-        cssClass:'e-danger',
-      }
-    },
-    {
-      'click': this.hideSaveConfirmationDialog.bind(this),
-        buttonModel:{
-        content:'Cancel',
-        cssClass:'e-info',
-      }
-    }
+  // public saveChecklistButtons: Object = [
+  //   {
+  //     'click': this.saveAndContinue.bind(this),
+  //       buttonModel:{
+  //       content:'Save & Continue',
+  //       cssClass:'e-success',
+  //     }
+  //   },
+  //   {
+  //     'click': this.continueNavigation.bind(this),
+  //       buttonModel:{
+  //       content:"Don't Save & Leave",
+  //       cssClass:'e-danger',
+  //     }
+  //   },
+  //   {
+  //     'click': this.hideSaveConfirmationDialog.bind(this),
+  //       buttonModel:{
+  //       content:'Cancel',
+  //       cssClass:'e-info',
+  //     }
+  //   }
     
-  ];
+  // ];
 
   /**
    * Check whether any data has been changed before routing to other page
@@ -688,7 +835,23 @@ export class ChecklistComponent implements OnInit  {
   }
 
   openConfirmation(){
-    this.saveReleaseConfirmDialog.show();
+    // this.saveReleaseConfirmDialog.show();
+   
+    const dialogRef = this.dialog.open(ChecklistConfirmDialogComponent, {
+      height: '20%',
+      width: '30%'
+      
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.data == "save"){
+        this.saveAndContinue();
+      }else if(result.data == "continue"){
+        this.continueNavigation();
+      }
+
+    });
+   
   }
 
   /**
@@ -700,12 +863,14 @@ export class ChecklistComponent implements OnInit  {
   }
 
   closeCommentDialog(){
-    this.commentDialog.hide();
-  }
-  closeEvidenceDialog(){
-    this.evidenceDialog.hide();
+    this.commentDialogRef.close();
+    // this.commentDialog.hide();
   }
 
+  closeAddCommentDialog(){
+    this.addCommentDialogRef.close();
+    this.addCommentForm.reset();
+  }
   public onFileSelected() {
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
   }
@@ -719,11 +884,12 @@ export class ChecklistComponent implements OnInit  {
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
     this.releaseChecklist![objIndex1].owner=owner;
 
-    this.toastObj.show(this.toasts[6]);
+    // this.toastObj.show(this.toasts[6]);
   }
 
 
   getCheckMarxScan() {
+    // alert('get data collection');
     this.highCount=0;
     this.lowCount=0;
     this.mediumCount=0;
@@ -731,22 +897,42 @@ export class ChecklistComponent implements OnInit  {
     let res1 = this.service.checkmarxScan(this.data_collection);
     let res2 = this.service.kwScan(this.data_collection);
     let res3 = this.service.protexScan(this.data_collection);
-    forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
+    let res4 = this.service.bdbaScan(this.data_collection);
+    forkJoin([res1, res2, res3, res4]).subscribe(([data1, data2, data3, data4]) => {
+      // forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
       this.checkMarxIssue = data1;
+      // alert("this.checkMarxIssue = "+this.checkMarxIssue);
       this.tempText = data2;
+      // alert("this.tempText = "+this.tempText);
       this.protexProj = data3;
+      // alert("this.protexProj = "+this.protexProj);
+      this.bdba = data4;
+      // alert("this.bdba = "+this.bdba);
       if(this.checkMarxIssue)
         this.runCheckMarxScan();
       if(this.tempText)
         this.getKwScan();
       if(this.protexProj)
         this.geProtexFile();
+      if(this.bdba)
+        this.geBdbaFile();
       
-      this.getDetails();
+        this.getDetails();
     });
+    
+  }
+
+  geBdbaFile(){
+    this.bdbaData =[];
+    const summary = this.bdba.results.summary;
+    const totalVun = summary["vuln-count"].total;
+    
+    this.bdbaData.push("BDBA Scan Data".bold());
+    this.bdbaData.push("ScanDate: "+moment(this.bdba.results.last_updated).format('MM/DD/YYYY'));
+    this.bdbaData.push("Total Vulnerability: "+totalVun);
   }
   
-
+  isBdba!:boolean;
   runCheckMarxScan(){  
     this.checkmarxData=[];
     for(var issue of this.checkMarxIssue!.issues){
@@ -830,6 +1016,78 @@ export class ChecklistComponent implements OnInit  {
     }, 1000);
   }
 
+  getClass(proj:ReleaseChecklist){
+    if(proj.status === 'Done'){
+      return '#E3FCEF';
+    }
+    if(proj.status === 'WIP'){
+      return '#d6dbf0';
+    }
+    if(proj.status === 'Open'){
+      return '#FFEBE6';
+    }
+    if(proj.status === 'N/A'){
+      return '#F4F5F7';
+    }
+    // else{
+    //   return 'green';
+    // }
+  }
+
+  openCommentInput(){ 
+    document!.getElementById("commentFileInput")!.click();
+  }
+
+  selectedFiles?: FileList;
+  currentFile?: File;
+  public selectedCommentFile!:any;
+
+  commentInputChange(fileInputEvent: any) {
+    this.selectedFiles = fileInputEvent.target.files;
+    this.selectedCommentFile = fileInputEvent.target.files[0];
+  }
+
+  newComment!:Comments;
+  public Submit(): void {
+    this.createNewComment();
+    if (this.selectedFiles) {
+        const file: File | null = this.selectedFiles.item(0);
+        if (file) {
+          this.currentFile = file;
+          this.service.uploadFile(this.currentFile,this.selectedProject.project_business_unit_id,this.selectedProject.project_name,this.selectedProject.project_milestone_id).subscribe((status) => {
+          });
+        }
+    }
+    this.addComment(this.newComment);
+    this.addCommentForm.reset();
+    this.addCommentDialogRef.close();
+  }
+ 
+  createNewComment() {
+    const newComments: Comments = {
+      id:uuidv4(),
+      message: this.addCommentForm.controls['comment'].value,
+      date: new Date().getTime(),
+      file: this.selectedCommentFile?.name 
+    };
+    this.newComment = newComments;
+  }
+
 
 }
 
+// @Component({
+//   selector: 'releaseconfirmdialog',
+//   templateUrl: './releaseconfirmdialog.html',
+//   encapsulation: ViewEncapsulation.None
+// })
+// export class SaveReleaseConfirmDialog {
+//   constructor(
+//     public dialogRef: MatDialogRef<SaveReleaseConfirmDialog>,
+//     @Inject(MAT_DIALOG_DATA) public data: any,
+//   ) {}
+
+//   onNoClick(): void {
+//     this.dialogRef.close();
+//   }
+// }

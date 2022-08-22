@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UPLOAD_LOWER } from 'src/app/release/release.new/release.constants';
+import { UPLOAD_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
 
 import { ReleaseTask, Success } from '../home.models';
@@ -13,7 +13,7 @@ import { ReleaseTask, Success } from '../home.models';
   providedIn: 'root',
 })
 export class CommentAddService {
-  endpoint_url:string= environment.ENDPOINT;
+  baseUrl:string= environment.ENDPOINT;
   upload:string=UPLOAD_LOWER;
   
   headers! : HttpHeaders;
@@ -33,8 +33,27 @@ export class CommentAddService {
 
   public updateCommentFile(task:ReleaseTask[]): Observable<Success> { 
     // const body=JSON.stringify(task);
-    return this.httpClient.post<Success>(this.endpoint_url+this.upload, task,{headers:this.headers});
+    return this.httpClient.post<Success>(this.baseUrl+this.upload, task,{headers:this.headers});
   }
 
+  public uploadFile(file: File,businessUnit:string,projectName:string,milestone:string): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    
+    let params = new HttpParams().set('businessUnit', businessUnit.toLowerCase().replace(/\s/g, ""))
+    .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
+    .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
+    .set('dataCollection', 'attachments');
+    
+    const requestOptions: Object = {
+      reportProgress: true,
+      responseType: 'json',
+      params:params,
+    }
+   
+    const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, requestOptions);
+    
+    return this.httpClient.request(req);
+  }
   
 }

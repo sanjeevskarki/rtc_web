@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+    <p>This page contains some changes that were not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.</p>
+    </div>
+<div mat-dialog-actions>
+    <button mat-flat-button color="primary" (click)="saveAndContinue()">Save & Continue</button>
+    <button mat-flat-button color="accent" (click)="continueNavigation()">Don't Save & Leave</button>
+    <button mat-button [mat-dialog-close] cdkFocusInitial>Close</button>
+</div>

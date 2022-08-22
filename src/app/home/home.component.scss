@@ -1,5 +1,107 @@
-.e-edit:before{
-    content:'\e338';
-    font-size: 15px;
-
+/* Structure */
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 25rem;
+  max-height: 50rem;
+  overflow: auto;
 }
+
+/* Toolbar */
+.spacer {
+  flex: 1 1 auto;
+}
+
+
+/* Mat table */
+.no-results {
+  display: flex;
+  justify-content: center;
+  padding: 14px;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.mat-header-cell {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mat-cell:nth-child(0),
+.mat-header-cell:nth-child(0){
+  flex: 0 0 1%;
+}
+
+.mat-cell:nth-child(1),
+.mat-header-cell:nth-child(1){
+  flex: 0 0 5%;
+}
+
+.mat-cell:nth-child(2),
+.mat-header-cell:nth-child(2){
+  flex: 0 0 8%;
+}
+
+.mat-cell:nth-child(3),
+.mat-header-cell:nth-child(3){
+  flex: 0 0 10%;
+}
+
+.mat-cell:nth-child(4),
+.mat-header-cell:nth-child(4){
+  flex: 0 0 7%;
+}
+
+.mat-cell:nth-child(5),
+.mat-header-cell:nth-child(5){
+  flex: 0 0 10%;
+}
+
+.mat-cell:nth-child(6),
+.mat-header-cell:nth-child(6){
+  flex: 0 0 57%;
+}
+
+.mat-header-row{
+  min-height: 45px !important;
+}
+
+mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+  padding-left: 16px !important;
+}
+
+.mat-cell, .mat-footer-cell {
+  font-size: 12px !important;
+}
+
+table{
+  min-height: 500px;
+  max-height: 500px;
+  overflow: auto !important;
+}
+
+.table-container {
+  position: relative !important;    
+}
+thead {
+  position: absolute !important;
+  top: 0;
+}
+
+.mat-elevation-z8 {
+  display: flex;
+  flex-direction: column;
+  max-height: 730px;
+  margin: 1% 1% 1% 1%;
+  overflow: auto;
+}
+.tableStyle{
+  max-height: 670px;
+  overflow: auto;
+ }
+ mat-header-cell, mat-header-row{
+  position: sticky;
+  top:0;
+  background: white;
+ }

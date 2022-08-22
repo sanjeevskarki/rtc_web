@@ -25,6 +25,7 @@ export interface ReleaseChecklist {
   releaseCriteria?:string;
   evidences:Evidences[];
   comments:Comments[];
+  bdbaStatus?:boolean;
 }
 
 // export interface ViewReleaseChecklist {
@@ -42,7 +43,7 @@ export interface ReleaseChecklist {
 export interface Comments {
   id:string;
   message:string;
-  file:Files[];
+  file:string;
   date:number;
 }
 
@@ -50,7 +51,7 @@ export interface Evidences {
   id:string;
   title:string;
   type:string;
-  project_id?:string;
+  project_id?:number;
   guidelines_id?:number;
   comments:string;
   evidence:string|undefined;
@@ -83,7 +84,7 @@ export interface Unit {
 export interface ViewComment {
   id:string;
   message:string;
-  file:Files[];
+  file:string;
   date:string | undefined;
 }
 

@@ -1,203 +1,275 @@
-<div  id="modalTarget" #targetModal >
-    <!-- <div class="checklist-div">
-        <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek| workWeekPipe}}</span>   
-    </div> -->
-    <!-- <app-checklistmenu></app-checklistmenu> -->
-    <div *ngIf="showSpinner; else show" ></div>
-    <ng-template #show>
-        <ejs-grid #grid [dataSource]='viewReleaseChecklist' [allowTextWrap]="true" [allowSorting]='true' [allowGrouping]="true" [groupSettings]="groupOptions" class='cssClass'
-                        [gridLines]="lines" (queryCellInfo)='customiseCell($event)'  height='710' (load)="onLoad($event)" >
-            <e-columns>
-                <e-column field='vector'  [filter]='filter' headerText='Vector' width=25 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
-                <e-column field='details'  [filter]='filter' headerText='Detail' width=50 textAlign="left" isPrimaryKey='true'  [allowEditing]= 'false'></e-column>
-                <e-column field='owner' headerText='Owner' textAlign="left" width=40>
-                    <ng-template #template let-data> 
-                        <div class="e-input-group">
-                            <!-- <ejs-textbox class="e-input" [(ngModel)]="data.owner"></ejs-textbox> -->
-                            <input class="e-input" type="text" [(ngModel)]="data.owner"/>
-                            <ejs-tooltip #tooltip content='Update'>
-                                <span class="e-input-group-icon e-icons e-add1" (click)="addOwner(data.id,data.owner)"></span>
-                            </ejs-tooltip>
+<div  id="modalTarget" #targetModal class="container mat-elevation-z8">
+    <!-- <mat-spinner strokeWidth="3" [diameter]="50" style="align-self: center;"></mat-spinner> -->
+    <mat-table #table [dataSource]="viewReleaseChecklist" class="tableStyle">
+        <ng-container matColumnDef="vector">
+            <mat-header-cell *matHeaderCellDef >Vector</mat-header-cell>
+            <mat-cell *matCellDef="let row" >{{row.vector}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="details">
+            <mat-header-cell *matHeaderCellDef >Details</mat-header-cell>
+            <mat-cell *matCellDef="let row" >{{row.details}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="owner">
+            <mat-header-cell *matHeaderCellDef >Owner</mat-header-cell>
+            <mat-cell *matCellDef="let row" >{{row.owner}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="detailedStatus" >
+            <mat-header-cell *matHeaderCellDef >Detailed Status</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+               
+                <div *ngIf="row.detailedStatus.length > 0;">
+                    <div *ngIf="row.bdbaStatus" >
+                        <button mat-icon-button matTooltip="View Report" color="accent" aria-label="Example icon button with a menu icon" (click)="openBdbaReport()">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+                    </div>
+                    <div *ngFor="let f of row.detailedStatus; let i = index">
+                        <div [innerHTML]="f"></div>
+                    </div> 
+                    
+                </div>
+            </mat-cell>
+        </ng-container>
+       
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef >Status</mat-header-cell>
+            
+            <mat-cell *matCellDef="let row" >
+                <div *ngIf="row.status === 'Done'" class="statustemp e-donecolor"> 
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
+                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                            {{status.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div *ngIf="row.status === 'WIP'" class="statustemp e-wipcolor"> 
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
+                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                            {{status.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div *ngIf="row.status === 'Open'" class="statustemp e-opencolor"> 
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
+                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                            {{status.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div *ngIf="row.status === 'N/A'" class="statustemp e-nacolor"> 
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
+                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                            {{status.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="releaseCriteria">
+            <mat-header-cell *matHeaderCellDef >Release Criteria</mat-header-cell>
+            <mat-cell *matCellDef="let row" >{{row.releaseCriteria}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="evidence">
+            <mat-header-cell *matHeaderCellDef >Evidence</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+                <div *ngIf="row.evidences.length > 0 ; else noEvidence">
+                    <button mat-flat-button matTooltip="View / Add Evidence" color="primary" style="line-height: 20px !important;
+                    font-size: 12px !important" (click)="onEvidenceClicked(evidenceDialog,row.id)">
+                        <mat-icon>add</mat-icon>View / Add
+                    </button>
+                </div>
+                <ng-template #noEvidence>
+                    <div>
+                        <div class="firstline cell-line">No Evidence Found</div>
+                        <div class="secondline cell-line">
+                            <button mat-stroked-button matTooltip="Add Evidence" color="primary" (click)="onEvidenceClicked(evidenceDialog,row.id)">
+                                <mat-icon>add</mat-icon>Add Evidence
+                            </button>
                         </div>
-                            
-                    </ng-template>
-                </e-column>    
-                <e-column field='Status' [filter]='filter' headerText='Status' textAlign="left" width='30'  [allowEditing]= 'false'>
-                    <ng-template #template let-data>                   
-                    <div *ngIf="data.status === 'Done'" class="statustemp e-donecolor"> 
-                            <ejs-splitbutton content={{data.status}} 
-                            class="statustemp e-donecolor donecolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                            </ejs-splitbutton>                                          
+                    </div>                   
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="comments">
+            <mat-header-cell *matHeaderCellDef >Comments</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+                <div *ngIf="row.comments.length > 0; else noComments" class="firstline cell-line comment-div">
+                    <div class="firstline cell-line">
+                        <div>{{row.comments[0].message}}</div>
+                        <div >
+                                {{ row.comments[0].file }}
                         </div>
-                        <div *ngIf="data.status === 'WIP'" class="statustemp e-wipcolor">  
-                            <ejs-splitbutton content={{data.status}} 
-                            class="statustemp e-wipcolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                            </ejs-splitbutton>                                                  
-                        </div>
-                        <div *ngIf="data.status === 'Open'" class="statustemp e-opencolor"> 
-                            <ejs-splitbutton content={{data.status}} 
-                            class="statustemp e-opencolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                            </ejs-splitbutton>                                                      
-                        </div>
-                        <div *ngIf="data.status === 'N/A'" class="statustemp e-nacolor">                                          
-                            <ejs-splitbutton content={{data.status}} 
-                            class="statustemp e-nacolor statustxt" [items]='items' (select)="changeStatus(data.id,$event)">{{data.status}}
-                            </ejs-splitbutton>        
-                        </div>  
-                    </ng-template>  
-                </e-column> 
-                <e-column field='detailedStatus' headerText='Detailed Status' textAlign='Left' width='50'>
-                    <ng-template #template let-data> 
-                        <div *ngIf="data.detailedStatus?.length > 0;" class="comment-div">
-                            <div *ngFor="let f of data.detailedStatus; let i = index">
-                                <div [innerHTML]="f"></div>
-                            </div> 
-                        </div>
-                        <!-- <div class="e-input-group">    
-                            <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus"></textarea> -->
-                               
-                            <!-- <textarea class="e-input" rows="2" type="textarea" [(ngModel)]="data.detailedStatus" (blur)="addDetailedStatus(data.id,data.detailedStatus)"></textarea> -->
-                            <!-- <ejs-tooltip #tooltip content='Update'>
-                                <span class="e-input-group-icon  e-icons e-add1" (click)="addDetailedStatus(data.id,data.detailedStatus)"></span>
-                            </ejs-tooltip> -->
-                        <!-- </div> -->
-                        <!-- <ejs-textbox rows="2" cssClass="e-outline" [multiline]="true"></ejs-textbox> -->
-                    </ng-template>
-                </e-column>
-                <e-column field='releaseCriteria' headerText='Release Criteria' textAlign='Left' width='70'  [allowEditing]= 'false'></e-column>
-                <e-column headerText='Evidence' textAlign='Left' width='50'  [allowEditing]= 'false'>
-                    <ng-template #template let-evidence>
-                        <div *ngIf="evidence.evidences.length > 0 ; else noEvidence">
-                            <ejs-tooltip #tooltip content='View / Add Evidence'>
-                                <button ejs-button cssClass="e-flat" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)" iconCss="e-icons e-evidence" >View / Add                            
-                                        <!-- <span class="e-icons e-evidence"></span> -->
-                                </button>
-                            </ejs-tooltip>
-                        </div>
-                        <ng-template #noEvidence>
-                            <span>No Evidence Found </span>
-                            <div>
-                                <ejs-tooltip #tooltip content='Add Evidence' >
-                                    <button ejs-button cssClass="e-flat" iconCss="e-icons e-plus" [isPrimary]="true" (click)="onEvidenceClicked(evidence.id)">Add                               
-                                        <!-- <span class="e-icons e-add"></span> -->
-                                    </button>
-                                </ejs-tooltip>
-                            </div>
-                        </ng-template>
-                    </ng-template>     
-                </e-column>
-                <e-column headerText='Comments' textAlign='Left' width='90'  [allowEditing]= 'false'>
-                    <ng-template #template let-comment>
-                        <div *ngIf="comment.comments.length > 0;" class="comment-div">
-                            <div [innerHTML]="comment.comments[0].message"></div>
-                            <div >
-                                <li *ngFor="let f of comment.comments[0].file; let i = index">
-                                    {{ f.name }}
-                                </li> 
-                            </div>
-                            <div style="font-size: 11px;"> {{comment.comments[0].date | date:'medium'}} </div>
-                        </div>
+                        <div style="font-size: 11px;"> {{row.comments[0].date | date:'medium'}} </div>
+                    </div>
+                    <div class="secondline cell-line">
                         
-                        <div *ngIf="comment.comments.length > 0 ; else noComments" style="margin-top:5px;">
-                            <ejs-tooltip #tooltip content='View / Add Comments'>
-                                <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-evidence" (click)="onCommentClicked(comment.id)">View / Add                              
-                                        <!-- <span class="e-icons e-evidence"></span>                           -->
-                                </button>
-                            </ejs-tooltip>
+                            <button mat-flat-button matTooltip="View / Add Comments" color="primary" style="line-height: 20px !important;
+                            font-size: 12px !important" (click)="onCommentClicked(commentDialog,row.id)">
+                                <mat-icon>add</mat-icon>View / Add
+                            </button>
+                       
+                    </div>
+                </div>
+               
+                <ng-template #noComments>
+                    <div>
+                        <div class="firstline cell-line">No Comment Found</div>
+                        <div class="secondline cell-line">
+                            <button mat-stroked-button matTooltip="Add Comments" color="primary" (click)="onCommentClicked(commentDialog,row.id)" >
+                                <mat-icon>add</mat-icon>Add Comments
+                            </button>
                         </div>
-                        <ng-template #noComments>
-                            <span>No Comment Found </span>
-                            <div *ngIf="isLoaded">
-                                <ejs-tooltip #tooltip content='Add Comments'>
-                                    <button ejs-button cssClass="e-flat" [isPrimary]="true" iconCss="e-icons e-plus" (click)="onCommentClicked(comment.id)">Add 
-                                        <!-- <span class="e-icons e-plus"></span>  -->
-                                    </button>
-                                </ejs-tooltip>
-                            </div>
-                        </ng-template>
-                    </ng-template>
-                </e-column>
-            </e-columns>
-        </ejs-grid>
-    </ng-template>
+                    </div>  
+                </ng-template>
+            
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
+        
+        <mat-row *matRowDef="let row; columns: displayedColumns;" [style.background-color]="getClass(row)">
+            
+        </mat-row>
+
+	    <ng-container matColumnDef="groupHeader">
+            <mat-cell colspan="999" *matCellDef="let group">
+            <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+            <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+            <strong>{{groupByColumns[group.level-1]}} = {{group[groupByColumns[group.level-1]]}} ({{group.totalCounts}})</strong>
+            </mat-cell>
+        </ng-container>
+    </mat-table>
+    
+        <button mat-flat-button matTooltip="Save Release" color="primary" (click)= "saveRelease()" style="width: 10%;
+        margin-top: 5px;
+        margin-inline: auto;">Save Release</button>
+    
     <br>
-    <button ejs-button cssClass="e-info" [isPrimary]="true" style="float: right;margin-bottom: 10px;" (click)="saveRelease()">Save Release</button>
+   
 </div>
 <!--
     Dialog shows the comments list
 -->
-<ejs-dialog class='e-fixed' id="commentDialog" #commentDialog [header]='commentsHeader' [visible]='hidden' [isModal]='isModal'
-[target]='target' [width]='width' [animationSettings]='animationSettings' [position]='position'>
-    <ejs-listview #listview id='displayComments' style="height: 23rem;" [dataSource]='displayComments'
-    [showHeader]='false' [cssClass]='cssClass'>
-        <ng-template #template let-dataSource>
-            <div>
-                <div style="float: right;margin-right: 10px;font-size: 11px;" class="detailsAnswer">{{dataSource.date}}</div>
-                <div style="padding-left: 5px;" class="posting" [innerHTML]="dataSource.message"></div>   
-                <li *ngFor="let f of dataSource.file; let i = index">
-                   {{ f.name }}
-                  </li>  
+<ng-template #commentDialog>
+    <h1 mat-dialog-title>{{commentsHeader}}</h1>
+    <mat-list>
+        <mat-list-item *ngFor="let comment of displayComments">
+            <div style="width:100%">
+                <div style="float: right;margin-right: 10px;font-size: 11px;" class="detailsAnswer">{{comment.date}}</div>
+                <div class="posting" >{{comment.message}}</div>   
+               <div class="posting" >  {{ comment.file }}</div>
             </div>
-            <!-- <div class="separator"></div> -->
-        </ng-template>
-    </ejs-listview>
+        </mat-list-item>
+    </mat-list>
     <br>
-    <div class="form-group" style="float: right;">
-        <button ejs-button cssClass="e-info" [isPrimary]="true" (click)="openCommentDialog()">Add Another Comment</button>
-        <button type="button" ejs-button cssClass="e-info" (click)="closeCommentDialog()" style="margin-left: 20px">Close</button>
+    <div class="no-results" [style.display]="displayComments.length == 0 ? '' : 'none'">
+        No Comments Found, Click <b> &nbsp;Add Another Comment&nbsp; </b> for adding New Comment
     </div>
-</ejs-dialog>         
+    <div class="form-group" style="float: right;">
+        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 8px 0;" (click)="closeCommentDialog()">Close</button>
+        <button mat-flat-button matTooltip="Add Comment" color="primary" style="float: right;margin: 8px 0 0;" (click)="openCommentDialog(addCommentDialog)">Add Another Comment</button>
+       
+    </div>
+</ng-template>
+
 <!--
     Dialog for adding a new comment
--->    
-<app-commentadd *ngIf="isAddCommentOpen" (childEvent1)="addComment($event)" ></app-commentadd>
+-->  
+<ng-template #addCommentDialog>
+<h1 mat-dialog-title>Add Comment</h1>
+<form class="example-form" [formGroup]="addCommentForm">
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Comments</mat-label>
+        <textarea  matInput formControlName="comment"></textarea>
+        <mat-error *ngIf="addCommentForm.controls.comment.hasError('required') && addCommentForm.controls.comment.touched">
+            Comment is required
+        </mat-error>
+    </mat-form-field>
+    <div class="form-group">
+            <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
+            <input id="commentFileInput" hidden type="file" (change)="commentInputChange($event)" formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
+            <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
+    </div> 
+    <br>
+    
+
+    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;" (click)="closeAddCommentDialog()">Close</button>
+    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()" [disabled]="!addCommentForm.valid">Save</button>
+
+</form>  
+</ng-template>
+<!-- <app-commentadd *ngIf="commentLoaded" ></app-commentadd> -->
 <!--
     Dialog shows the evidence list
 -->
-<ejs-dialog class='e-fixed' id="evidenceDialog" #evidenceDialog [header]='evidenceHeader' [visible]='hidden' [isModal]='isModal'
-[target]='target' [width]='evidenceDialogWidth' [animationSettings]='animationSettings' [position]='position'>
-    <div class="control-section"> 
-        <ejs-grid #grid id='displayEvidences' style="height: 23rem;" [dataSource]='displayEvidences' [allowTextWrap]="true"
-            class='cssClass' [toolbar]='evidenceToolbar' [editSettings]='evidenceEditSettings' (toolbarClick)='clickEvidenceHandler($event)'>
-            <e-columns>
-                <e-column width=20 textAlign="Center">
-                    <ng-template #template let-evidence>
-                        <ejs-tooltip #tooltip content='Delete Evidence'>             
-                            <button ejs-button class="e-btn e-small e-round" iconCss="e-icons e-delete" (click)="selectDeletedEvidence(evidence)"></button>
-                        </ejs-tooltip>
-                    </ng-template>
-                </e-column>
-               
-                <e-column field='seq'  [filter]='filter' headerText='#' width=20 textAlign="Left" isPrimaryKey='true'></e-column>
-                <e-column field='title'  [filter]='filter' headerText='Title' width=45 textAlign="Left" isPrimaryKey='true'></e-column>
-                <e-column [filter]='filter' headerText='Evidence' width=45 textAlign="Left" isPrimaryKey='true'>
-                    <ng-template #template let-data>
-                        <div [innerHTML]="data.evidence"></div>
-                    </ng-template>
-                </e-column>
-                <e-column field='date'  [filter]='filter' headerText='Date' width=60 textAlign="Left" isPrimaryKey='true'></e-column>
-                <e-column field='comments'  [filter]='filter' headerText='Comments' width=80 textAlign="Left" isPrimaryKey='true'></e-column>
-            </e-columns>
-        </ejs-grid>
-        <button type="button" style="float: right;margin-top: 10px;" ejs-button cssClass="e-info" (click)="closeEvidenceDialog()">Close</button>
-    </div>
-</ejs-dialog>
+<ng-template #evidenceDialog>
+    <h1 mat-dialog-title>{{evidenceHeader}}</h1>
+    <button mat-stroked-button matTooltip="Add Evidence" color="primary" style="margin: 0 0 8px" (click)="createEvidence()">
+        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>Add Evidence
+    </button>
+    <br>
+    <mat-table #evidencetable [dataSource]="displayEvidences" >    
+        <ng-container matColumnDef="evidenceActions">
+          <mat-header-cell *matHeaderCellDef >
+          </mat-header-cell>
+    
+          <mat-cell *matCellDef="let row; let i=index;">    
+            <button mat-icon-button color="primary" matTooltip="Delete Release" (click)="selectDeletedEvidence(row)">
+              <mat-icon aria-label="Delete">delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container> 
+        <ng-container matColumnDef="seq">
+            <mat-header-cell *matHeaderCellDef >#</mat-header-cell>
+            <mat-cell *matCellDef="let row" >{{row.seq}}</mat-cell>
+          </ng-container>   
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef >Title</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.title}}</mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="evidenceChild">
+          <mat-header-cell *matHeaderCellDef >Evidence</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.evidence}}</mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="evidenceDate">
+          <mat-header-cell *matHeaderCellDef >Date</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.date}}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="comments">
+          <mat-header-cell *matHeaderCellDef >Comments</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.comments}}</mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="evidenceDisplayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: evidenceDisplayedColumns;"></mat-row>
+        </mat-table>
+        <div class="no-results" [style.display]="displayEvidences.length == 0 ? '' : 'none'">
+            No Evidence Found, Click <b> &nbsp;Add Evidence&nbsp; </b> for adding New Evidence
+          </div>
+        <button mat-flat-button matTooltip="Add Evidence" color="primary" style="float: right;margin: 8px 0 0;" (click)="closeEvidenceListDialog()">
+            Close
+        </button>
+    
+</ng-template>
+
 <!--
     Confirmation Dialog for deleting existing evidence
 -->
-<ejs-dialog id='confirmDialog' #confirmDialog [visible]='hidden' [allowDragging]='true' [isModal]='isModal' [animationSettings]='animationSettings' content='Are you sure you want to delete this Evidence?' [target]='target'
-header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>  
+<!-- <ejs-dialog id='confirmDialog' #confirmDialog [visible]='hidden' [allowDragging]='true' [isModal]='isModal' [animationSettings]='animationSettings' content='Are you sure you want to delete this Evidence?' [target]='target'
+header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>   -->
 <!--
     Add a new evidence
 -->
-<app-evidenceadd (childEvent)="addEvidence($event)" ></app-evidenceadd>
+<app-evidenceadd *ngIf="evidenceLoaded" ></app-evidenceadd>
 <!--
     Toast Message
 -->
-<ejs-toast #toasttype id='toasttype' [position]="toastPosition" (created)="onCreate()" [target]="target"></ejs-toast>
+<!-- <ejs-toast #toasttype id='toasttype' [position]="toastPosition" (created)="onCreate()" [target]="target"></ejs-toast> -->
 <!--
     Confirmation Dialog Before Leaving the Release PAge without saving
 -->
-<ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that were not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
-header='Leave Page?' width='450px' [buttons]='saveChecklistButtons' [position]="position"></ejs-dialog>  
+<!-- <ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that were not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
+header='Leave Page?' width='450px' [buttons]='saveChecklistButtons' [position]="position"></ejs-dialog>   -->
 

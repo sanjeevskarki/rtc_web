@@ -6,7 +6,7 @@ import { HelpComponent } from './help/help.component';
 import { HomeComponent } from './home/home.component';
 import { ReportComponent } from './report/report.component';
 import { ChecklistGuard, ReleaseGuard } from './checklist-guard.guard';
-import { ReleaseComponent } from './release/release.new/release.component';
+import { ReleaseComponent } from './release/release.component';
 import { ReleaseEditComponent } from './release/release.edit/release.edit.component';
 import { BkcComponent } from './home/bkc/bkc.component';
 import { ChecklistMenuComponent } from './home/checklist.menu/checklist.menu.component';

@@ -39,20 +39,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/@syncfusion/ej2-angular-buttons/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-angular-grids/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-angular-dropdowns/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-grids/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-popups/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-inputs/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-angular-notifications/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-angular-inputs/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-angular-popups/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-angular-calendars/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-angular-navigations/styles/bootstrap.css",
-              "node_modules/@syncfusion/ej2-base/styles/bootstrap.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js"
@@ -63,8 +50,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "8mb",
-                  "maximumError": "10mb"
+                  "maximumWarning": "12mb",
+                  "maximumError": "14mb"
                 },
                 {
                   "type": "anyComponentStyle",

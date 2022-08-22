@@ -1,12 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.new/release.constants';
+import { FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
-import { CHECKMARX_SCAN_FILE, FILE_PATH, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
+import { BDBA_SCAN_FILE, CHECKMARX_SCAN_FILE, FILE_PATH, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
 import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, Unit, Success } from '../home.models';
-import { Checkmarx, DATA_COLLECTION, Kw, Project } from './checklist.models';
+import { Bdba, Checkmarx, DATA_COLLECTION, Kw, Project } from './checklist.models';
 import { switchMap } from "rxjs/operators";
 
 declare var require: any;
@@ -125,6 +125,14 @@ export class ChecklistService {
                 .set('project_id', data_collection.project_id)
                 .set('file_name', CHECKMARX_SCAN_FILE);
     return this.httpClient.get<Checkmarx>(this.endpoint_url+this.file,  { params: params });
+  }
+
+  public bdbaScan(data_collection:DATA_COLLECTION): Observable<Bdba>{
+    let params = new HttpParams().set('business_unit', data_collection.business_unit)
+                .set('milestone_id', data_collection.milestone_id)
+                .set('project_id', data_collection.project_id)
+                .set('file_name', BDBA_SCAN_FILE);
+    return this.httpClient.get<Bdba>(this.endpoint_url+this.file,  { params: params });
   }
 
   public kwScan(data_collection:DATA_COLLECTION): Observable<any> { 
@@ -250,6 +258,26 @@ export class ChecklistService {
     } else {
       return;
     }
+  }
+
+  public uploadFile(file: File,businessUnit:string,projectName:string,milestone:string): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    
+    let params = new HttpParams().set('businessUnit', businessUnit.toLowerCase().replace(/\s/g, ""))
+    .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
+    .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
+    .set('dataCollection', 'attachments');
+    
+    const requestOptions: Object = {
+      reportProgress: true,
+      responseType: 'json',
+      params:params,
+    }
+   
+    const req = new HttpRequest('POST', `${this.endpoint_url}upload`, formData, requestOptions);
+    
+    return this.httpClient.request(req);
   }
 
   

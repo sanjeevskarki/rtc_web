@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { GridLine } from '@syncfusion/ej2-angular-grids';
-import { ClickEventArgs } from '@syncfusion/ej2-angular-navigations';
+
+import { ChecklistMenuComponent } from './checklist.menu/checklist.menu.component';
 import { Project } from './home.models';
 import { HomeService } from './home.service';
 
@@ -17,13 +18,15 @@ export class HomeComponent implements OnInit {
   public urlValue!: String;
 
   public cssClass: string = 'e-list-template';
-  public lines:GridLine = 'Both';
+  // public lines:GridLine = 'Both';
   public homeToolbar!:Object[];
   public homeEditSettings!: Object;
   public formatoptions!: Object;
   @ViewChild("listview") element: any;
-  
+  displayedColumns = ['actions','businessunit', 'name', 'milestone', 'date', 'releaseType'];
+  color = '#f1f3f4';
   constructor(private service:HomeService, private router: Router) { 
+    
   }
 
   ngOnInit(): void {
@@ -54,7 +57,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate([ 'checklist/releasecompliance' ]);
   }
 
-  updateRelease(project:Project){
+  openEditReleaseDialog(project:Project){
     alert(project.project_name);
   }
 
@@ -62,12 +65,16 @@ export class HomeComponent implements OnInit {
     alert(project.project_name);
   }
 
-  clickHandler(args: ClickEventArgs): void {
-    if (args.item.id === 'Add') {
-        // this.childEvent1.emit(true);
-    }
-    
-}
+  // clickHandler(args: ClickEventArgs): void {
+  //   if (args.item.id === 'Add') {
+  //       // this.childEvent1.emit(true);
+  //   }
+  // }
+
+  openReleaseInfo(){
+    this.router.navigate([ 'checklist/releaseinfo' ]);
+  }
+
 
 }
 

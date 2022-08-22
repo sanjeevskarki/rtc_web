@@ -1,7 +1,7 @@
-import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UPLOAD_LOWER } from 'src/app/release/release.new/release.constants';
+import { UPLOAD_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
 
 
@@ -27,16 +27,24 @@ export class EvidenceAddService {
     });
     
   }
-   
 
-  public updateEvidenceFile(file:any): Observable<HttpEvent<any>> { 
-
+  public uploadFile(file: File,businessUnit:string,projectName:string,milestone:string): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     formData.append('file', file);
-
-    const req = new HttpRequest('POST', this.baseUrl+this.upload, file, {
-      reportProgress: true
-    });
+    
+    let params = new HttpParams().set('businessUnit', businessUnit.toLowerCase().replace(/\s/g, ""))
+    .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
+    .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
+    .set('dataCollection', 'evidence');
+    
+    const requestOptions: Object = {
+      reportProgress: true,
+      responseType: 'json',
+      params:params,
+    }
+   
+    const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, requestOptions);
+    
     return this.httpClient.request(req);
   }
 

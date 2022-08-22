@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../../home/home.models';
+import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
 import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST } from './release.constants';
 import { BusinessUnit,  Milestone } from './release.models';
 
