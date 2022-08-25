@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>Add Evidence</h1>
 <form class="example-form" [formGroup]="evidenceForm">
     <mat-form-field appearance="outline">
-      <mat-label>Title</mat-label>
-      <input type="text" matInput formControlName="title">
+        <mat-label>Title</mat-label>
+        <input type="text" matInput formControlName="title">
         <mat-error *ngIf="evidenceForm.controls.title.hasError('required') && evidenceForm.controls.title.touched">
             Title is required
         </mat-error>
@@ -18,10 +18,10 @@
                 {{status.viewValue}}
             </mat-option>
         </mat-select>
-          <mat-error *ngIf="evidenceForm.controls.type.hasError('required') && evidenceForm.controls.type.touched">
+        <mat-error *ngIf="evidenceForm.controls.type.hasError('required') && evidenceForm.controls.type.touched">
             Upload Type is required
-          </mat-error>
-          <!-- <mat-error *ngIf="evidenceForm.controls.type.hasError('required')">
+        </mat-error>
+        <!-- <mat-error *ngIf="evidenceForm.controls.type.hasError('required')">
             Upload Type is required
           </mat-error> -->
     </mat-form-field>
@@ -30,31 +30,33 @@
         <mat-form-field appearance="outline">
             <mat-label>Link</mat-label>
             <input type="text" matInput formControlName="link" (input)="onLinkSelected()">
-                <mat-error *ngIf="evidenceForm.controls.link.hasError('required') && evidenceForm.controls.link.touched">
-                    Link is required
-                </mat-error>
-                <mat-error *ngIf="evidenceForm.controls.link.hasError('pattern')">
-                    Enter a valid Link
-                </mat-error>
+            <mat-error *ngIf="evidenceForm.controls.link.hasError('required') && evidenceForm.controls.link.touched">
+                Link is required
+            </mat-error>
+            <mat-error *ngIf="evidenceForm.controls.link.hasError('pattern')">
+                Enter a valid Link
+            </mat-error>
         </mat-form-field>
     </div>
     <div class="form-group" *ngIf="isFileUploadSelected">
         <!-- <mat-form-field appearance="fill"> -->
-            <!-- <mat-label>File</mat-label> -->
-            <button mat-flat-button (click)="openInput()" color="primary" style="margin-bottom: 10px;">Select File to Upload</button>
-            <input id="fileInput" hidden type="file" (change)="csvInputChange($event)" formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
-            <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
-    
+        <!-- <mat-label>File</mat-label> -->
+        <button mat-flat-button (click)="openInput()" color="primary" style="margin-bottom: 10px;">Select File to
+            Upload</button>
+        <input id="fileInput" hidden type="file" (change)="csvInputChange($event)" formControlName="upload"
+            name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
+        <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
+
         <!-- <input class="ng-hide" id="input-file-id" multiple ormControlName="upload" type="file" (change)="csvInputChange($event)"/>
         <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label> -->
         <!-- </mat-form-field> -->
-        
-    </div> 
-    
+
+    </div>
+
 
     <mat-form-field appearance="outline">
         <mat-label>Comments</mat-label>
-        <textarea  matInput formControlName="comment"></textarea>
+        <textarea matInput formControlName="comment"></textarea>
         <mat-error *ngIf="evidenceForm.controls.comment.hasError('required') && evidenceForm.controls.comment.touched">
             Comment is required
         </mat-error>
@@ -63,54 +65,9 @@
         </mat-error> -->
     </mat-form-field>
 
-    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;" [mat-dialog-close]="true">Close</button>
-    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" [disabled]="!evidenceForm.valid" (click)="Submit()">Save</button>
+    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+        [mat-dialog-close]="true">Close</button>
+    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
+        [disabled]="!evidenceForm.valid" (click)="Submit()">Save</button>
 
-  </form>
- 
-<!-- <ejs-dialog id="addEvidenceDialog" class='e-fixed' #addEvidenceDialog [header]='evidenceHeader' [visible]='hidden' [isModal]='isModal'
-[target]='target1' [width]='width' [animationSettings]='animationSettings' (close)="evidenceDialogClose()" [position]='position'>
-    <ng-template #content>
-        <div class="control-section">
-            <div class="col-lg-12">
-                <form id="reactive" [formGroup]="evidenceForm">
-                    <div class="form-group template">
-                        <div class="form-group" >
-                            <div class="e-float-input" >
-                                <ejs-textbox placeholder="Title" cssClass="e-outline" floatLabelType="Auto" formControlName="title"></ejs-textbox>                         
-                            </div> 
-                        <div *ngIf="evidenceForm.controls.title.hasError('required') && evidenceForm.controls.title.touched" class="e-error">* Title is required</div>                                                 
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="e-float-input">
-                            <ejs-dropdownlist id='uploadType' cssClass="e-outline" floatLabelType="Auto" #uploadType [dataSource]='uploadTypes' (change)='onTypeSelect($event)' [fields]='fields' [placeholder]='type' [popupHeight]='height' formControlName="type"></ejs-dropdownlist>
-                        </div> 
-                    <div *ngIf="evidenceForm.controls.type.hasError('required') && evidenceForm.controls.type.touched" class="e-error">* Upload Type is required</div>                                                 
-                    </div> 
-                    <div class="form-group" *ngIf="isLinkSelected">
-                        <div class="e-float-input" >
-                            <ejs-textbox placeholder="Link" cssClass="e-outline" floatLabelType="Auto" formControlName="link" (input)="onLinkSelected()"></ejs-textbox>          
-                        </div>
-                        <div *ngIf="evidenceForm.controls.link.hasError('pattern')" class="e-error">* Enter a Valid Link</div> 
-                    </div>
-                    <div class="form-group" *ngIf="isFileUploadSelected">
-                        <input class="ng-hide" id="input-file-id" multiple type="file" (change)="csvInputChange($event)"/>
-                        <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label>
-                    </div> 
-                    <div class="form-group">
-                        <div class="e-float-input">
-                            <ejs-textbox placeholder="Comments" cssClass="e-outline" rows="3" floatLabelType="Auto" formControlName="comment"></ejs-textbox>                           
-                        </div>
-                        <div *ngIf="evidenceForm.controls.comment.hasError('required') && evidenceForm.controls.comment.touched" class="e-error">* Comment is required</div> 
-                        <div class="submitBtn" style="float: right;margin-top: 10px;">
-                            <button type="submit" ejs-button cssClass="e-info" [isPrimary]="true" [disabled]="!evidenceForm.valid" (click)= "Submit()" >Save</button>
-                            <button type="button" ejs-button cssClass="e-info" (click)="closeEvidence()" style="margin-left: 20px;">Close</button>
-                        </div>
-                    </div>                                       
-                </form>             
-            </div> 
-        </div>
-    </ng-template>
-</ejs-dialog>
-<ejs-toast #toasttype id='toasttype' [position]="toastPosition" (created)="onCreate()" [target]="target2"></ejs-toast> -->
+</form>

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
-import { BDBA_SCAN_FILE, CHECKMARX_SCAN_FILE, FILE_PATH, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
+import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, FILE_PATH, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
 import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, Unit, Success } from '../home.models';
 import { Bdba, Checkmarx, DATA_COLLECTION, Kw, Project } from './checklist.models';
@@ -19,22 +19,22 @@ const xml2js = require("xml2js");
   providedIn: 'root',
 })
 export class ChecklistService {
-  endpoint_url:string= environment.ENDPOINT;
-  task:string=TASK_LOWER;
-  file:string=FILE_LOWER;
-  guideline:string = GUIDELINE_LOWER;
+  endpoint_url: string = environment.ENDPOINT;
+  task: string = TASK_LOWER;
+  file: string = FILE_LOWER;
+  guideline: string = GUIDELINE_LOWER;
   unit!: Unit;
   UNITS: Unit[];
   amount!: number;
   displayTime!: string;
   remaining!: number;
-  headers! : HttpHeaders;
+  headers!: HttpHeaders;
   /**
    *
    * @param httpClient Http Client.
    * @param sharedService Shared Service.
    */
-  constructor (public httpClient: HttpClient) {
+  constructor(public httpClient: HttpClient) {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -95,79 +95,93 @@ export class ChecklistService {
   //   // return this.httpClient.get<Data>(this.apiUrl);
   // }
 
-  public details(fileName:string): Observable<ReleaseDetails[]> { 
-    return this.httpClient.get<ReleaseDetails[]>("assets/data/"+fileName+".json");
+  public details(fileName: string): Observable<ReleaseDetails[]> {
+    return this.httpClient.get<ReleaseDetails[]>("assets/data/" + fileName + ".json");
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }
 
-  public getSelectedProject(projectId:number): Observable<BackendTask[]> { 
-    return this.httpClient.get<BackendTask[]>(this.endpoint_url+this.task+"/"+projectId);
+  public getSelectedProject(projectId: number): Observable<BackendTask[]> {
+    return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
   }
 
-  public getEvidences(projectId:number): Observable<BackendTask[]> { 
-    return this.httpClient.get<BackendTask[]>(this.endpoint_url+this.task+"/"+projectId);
+  public getEvidences(projectId: number): Observable<BackendTask[]> {
+    return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
   }
 
-  public updateGuidelines(guideline:BackendGuideline[]): Observable<BackendGuideline[]> { 
+  public updateGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
     // const body=JSON.stringify(guideline);
-    return this.httpClient.put<BackendGuideline[]>(this.endpoint_url+this.guideline, guideline,{headers:this.headers});
+    return this.httpClient.put<BackendGuideline[]>(this.endpoint_url + this.guideline, guideline, { headers: this.headers });
   }
 
-  public updateTasks(task:ReleaseTask[]): Observable<Success> { 
+  public updateTasks(task: ReleaseTask[]): Observable<Success> {
     // const body=JSON.stringify(task);
-    return this.httpClient.put<Success>(this.endpoint_url+this.task, task,{headers:this.headers});
+    return this.httpClient.put<Success>(this.endpoint_url + this.task, task, { headers: this.headers });
   }
 
-  public checkmarxScan(data_collection:DATA_COLLECTION): Observable<Checkmarx>{
+  public checkmarxScan(data_collection: DATA_COLLECTION): Observable<Checkmarx> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
-                .set('milestone_id', data_collection.milestone_id)
-                .set('project_id', data_collection.project_id)
-                .set('file_name', CHECKMARX_SCAN_FILE);
-    return this.httpClient.get<Checkmarx>(this.endpoint_url+this.file,  { params: params });
+      .set('milestone_id', data_collection.milestone_id)
+      .set('project_id', data_collection.project_id)
+      .set('file_name', CHECKMARX_SCAN_FILE);
+    return this.httpClient.get<Checkmarx>(this.endpoint_url + this.file, { params: params });
   }
 
-  public bdbaScan(data_collection:DATA_COLLECTION): Observable<Bdba>{
+  public bdbaScan(data_collection: DATA_COLLECTION): Observable<Bdba> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
-                .set('milestone_id', data_collection.milestone_id)
-                .set('project_id', data_collection.project_id)
-                .set('file_name', BDBA_SCAN_FILE);
-    return this.httpClient.get<Bdba>(this.endpoint_url+this.file,  { params: params });
+      .set('milestone_id', data_collection.milestone_id)
+      .set('project_id', data_collection.project_id)
+      .set('file_name', BDBA_SCAN_FILE);
+    return this.httpClient.get<Bdba>(this.endpoint_url + this.file, { params: params });
   }
 
-  public kwScan(data_collection:DATA_COLLECTION): Observable<any> { 
+  public bdbaPdf(data_collection: DATA_COLLECTION): Observable<any> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
-    .set('milestone_id', data_collection.milestone_id)
-    .set('project_id', data_collection.project_id)
-    .set('file_name', KW_SCAN_FILE);
+      .set('milestone_id', data_collection.milestone_id)
+      .set('project_id', data_collection.project_id)
+      .set('file_name', BDBA_SCAN_PDF_FILE);
     const requestOptions: Object = {
       headers: this.headers,
       responseType: 'text',
-      params:params,
+      params: params,
     }
-   
-    return this.httpClient.get<any>(this.endpoint_url+this.file, requestOptions);
+
+    return this.httpClient.get<any>(this.endpoint_url + this.file, requestOptions);
   }
 
-  public protexScan(data_collection:DATA_COLLECTION): Observable<Project> {
+  public kwScan(data_collection: DATA_COLLECTION): Observable<any> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
-    .set('milestone_id', data_collection.milestone_id)
-    .set('project_id', data_collection.project_id)
-    .set('file_name', PROTEX_SCAN_FILE);
+      .set('milestone_id', data_collection.milestone_id)
+      .set('project_id', data_collection.project_id)
+      .set('file_name', KW_SCAN_FILE);
     const requestOptions: Object = {
       headers: this.headers,
       responseType: 'text',
-      params:params,
-    } 
+      params: params,
+    }
+
+    return this.httpClient.get<any>(this.endpoint_url + this.file, requestOptions);
+  }
+
+  public protexScan(data_collection: DATA_COLLECTION): Observable<Project> {
+    let params = new HttpParams().set('business_unit', data_collection.business_unit)
+      .set('milestone_id', data_collection.milestone_id)
+      .set('project_id', data_collection.project_id)
+      .set('file_name', PROTEX_SCAN_FILE);
+    const requestOptions: Object = {
+      headers: this.headers,
+      responseType: 'text',
+      params: params,
+    }
     return this.httpClient
-      .get(this.endpoint_url+this.file, requestOptions)
+      .get(this.endpoint_url + this.file, requestOptions)
       .pipe(
         switchMap(async xml => await this.parseXmlToJson(xml))
       );
     // return this.httpClient.get<Project>(FILE_PATH+PROTEX_SCAN_FILE, requestOptions);
   }
 
-  async parseXmlToJson(xml:any) {
+  async parseXmlToJson(xml: any) {
     // With parser
     /* const parser = new xml2js.Parser({ explicitArray: false });
     parser
@@ -181,15 +195,15 @@ export class ChecklistService {
       }); */
 
     // Without parser
-    if(xml){
-    return await xml2js
-      .parseStringPromise(xml, { explicitArray: false })
-      .then((response: { Project: Project; }) => response.Project);
-    }else{
+    if (xml) {
+      return await xml2js
+        .parseStringPromise(xml, { explicitArray: false })
+        .then((response: { Project: Project; }) => response.Project);
+    } else {
       return '';
     }
   }
-  
+
 
   /**
    * Formats a duration as a nice string.
@@ -197,7 +211,7 @@ export class ChecklistService {
    * @param duration Duration.
    * @returns Nice Formatted String.
    */
-   getNiceTime(duration: number) {
+  getNiceTime(duration: number) {
     this.displayTime = duration <= 0 ? 'PAST' : 'FUTURE';
     // we handle seconds only, not millis
     duration = Math.round(Math.abs(duration) / 1000);
@@ -260,25 +274,25 @@ export class ChecklistService {
     }
   }
 
-  public uploadFile(file: File,businessUnit:string,projectName:string,milestone:string): Observable<HttpEvent<any>> {
+  public uploadFile(file: File, businessUnit: string, projectName: string, milestone: string): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     formData.append('file', file);
-    
+
     let params = new HttpParams().set('businessUnit', businessUnit.toLowerCase().replace(/\s/g, ""))
-    .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
-    .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
-    .set('dataCollection', 'attachments');
-    
+      .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
+      .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
+      .set('dataCollection', 'attachments');
+
     const requestOptions: Object = {
       reportProgress: true,
       responseType: 'json',
-      params:params,
+      params: params,
     }
-   
+
     const req = new HttpRequest('POST', `${this.endpoint_url}upload`, formData, requestOptions);
-    
+
     return this.httpClient.request(req);
   }
 
-  
+
 }

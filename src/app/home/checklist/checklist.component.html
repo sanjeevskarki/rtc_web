@@ -1,62 +1,60 @@
-<div  id="modalTarget" #targetModal class="container mat-elevation-z8">
-    <!-- <mat-spinner strokeWidth="3" [diameter]="50" style="align-self: center;"></mat-spinner> -->
+<div id="modalTarget" #targetModal class="container mat-elevation-z8">
     <mat-table #table [dataSource]="viewReleaseChecklist" class="tableStyle">
         <ng-container matColumnDef="vector">
-            <mat-header-cell *matHeaderCellDef >Vector</mat-header-cell>
-            <mat-cell *matCellDef="let row" >{{row.vector}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Vector</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.vector}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="details">
-            <mat-header-cell *matHeaderCellDef >Details</mat-header-cell>
-            <mat-cell *matCellDef="let row" >{{row.details}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.details}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="owner">
-            <mat-header-cell *matHeaderCellDef >Owner</mat-header-cell>
-            <mat-cell *matCellDef="let row" >{{row.owner}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Owner</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.owner}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="detailedStatus" >
-            <mat-header-cell *matHeaderCellDef >Detailed Status</mat-header-cell>
-            <mat-cell *matCellDef="let row" >
-               
-                <div *ngIf="row.detailedStatus.length > 0;">
-                    <div *ngIf="row.bdbaStatus" >
-                        <button mat-icon-button matTooltip="View Report" color="accent" aria-label="Example icon button with a menu icon" (click)="openBdbaReport()">
-                            <mat-icon>menu</mat-icon>
-                        </button>
-                    </div>
+        <ng-container matColumnDef="detailedStatus">
+            <mat-header-cell *matHeaderCellDef>Detailed Status</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <div *ngIf="row.detailedStatus">
                     <div *ngFor="let f of row.detailedStatus; let i = index">
                         <div [innerHTML]="f"></div>
-                    </div> 
-                    
+                    </div>
+                </div>
+                <div *ngIf="row.bdbaStatus && row.detailedStatus">
+                    <button mat-icon-button matTooltip="View Report" color="accent"
+                        aria-label="Example icon button with a menu icon" (click)="openBdbaReport()">
+                        <mat-icon>file_copy</mat-icon>
+                    </button>
                 </div>
             </mat-cell>
         </ng-container>
-       
+
         <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef >Status</mat-header-cell>
-            
-            <mat-cell *matCellDef="let row" >
-                <div *ngIf="row.status === 'Done'" class="statustemp e-donecolor"> 
+            <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+
+            <mat-cell *matCellDef="let row">
+                <div *ngIf="row.status === 'Done'" class="statustemp e-donecolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
                         <mat-option *ngFor="let status of statusList" [value]="status.value">
                             {{status.viewValue}}
                         </mat-option>
                     </mat-select>
                 </div>
-                <div *ngIf="row.status === 'WIP'" class="statustemp e-wipcolor"> 
+                <div *ngIf="row.status === 'WIP'" class="statustemp e-wipcolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
                         <mat-option *ngFor="let status of statusList" [value]="status.value">
                             {{status.viewValue}}
                         </mat-option>
                     </mat-select>
                 </div>
-                <div *ngIf="row.status === 'Open'" class="statustemp e-opencolor"> 
+                <div *ngIf="row.status === 'Open'" class="statustemp e-opencolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
                         <mat-option *ngFor="let status of statusList" [value]="status.value">
                             {{status.viewValue}}
                         </mat-option>
                     </mat-select>
                 </div>
-                <div *ngIf="row.status === 'N/A'" class="statustemp e-nacolor"> 
+                <div *ngIf="row.status === 'N/A'" class="statustemp e-nacolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
                         <mat-option *ngFor="let status of statusList" [value]="status.value">
                             {{status.viewValue}}
@@ -66,12 +64,12 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="releaseCriteria">
-            <mat-header-cell *matHeaderCellDef >Release Criteria</mat-header-cell>
-            <mat-cell *matCellDef="let row" >{{row.releaseCriteria}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Release Criteria</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.releaseCriteria}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="evidence">
-            <mat-header-cell *matHeaderCellDef >Evidence</mat-header-cell>
-            <mat-cell *matCellDef="let row" >
+            <mat-header-cell *matHeaderCellDef>Evidence</mat-header-cell>
+            <mat-cell *matCellDef="let row">
                 <div *ngIf="row.evidences.length > 0 ; else noEvidence">
                     <button mat-flat-button matTooltip="View / Add Evidence" color="primary" style="line-height: 20px !important;
                     font-size: 12px !important" (click)="onEvidenceClicked(evidenceDialog,row.id)">
@@ -82,69 +80,76 @@
                     <div>
                         <div class="firstline cell-line">No Evidence Found</div>
                         <div class="secondline cell-line">
-                            <button mat-stroked-button matTooltip="Add Evidence" color="primary" (click)="onEvidenceClicked(evidenceDialog,row.id)">
+                            <button mat-stroked-button matTooltip="Add Evidence" color="primary"
+                                (click)="onEvidenceClicked(evidenceDialog,row.id)">
                                 <mat-icon>add</mat-icon>Add Evidence
                             </button>
                         </div>
-                    </div>                   
+                    </div>
                 </ng-template>
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="comments">
-            <mat-header-cell *matHeaderCellDef >Comments</mat-header-cell>
-            <mat-cell *matCellDef="let row" >
+            <mat-header-cell *matHeaderCellDef>Comments</mat-header-cell>
+            <mat-cell *matCellDef="let row">
                 <div *ngIf="row.comments.length > 0; else noComments" class="firstline cell-line comment-div">
                     <div class="firstline cell-line">
                         <div>{{row.comments[0].message}}</div>
-                        <div >
-                                {{ row.comments[0].file }}
+                        <div>
+                            {{ row.comments[0].file }}
                         </div>
                         <div style="font-size: 11px;"> {{row.comments[0].date | date:'medium'}} </div>
                     </div>
                     <div class="secondline cell-line">
-                        
-                            <button mat-flat-button matTooltip="View / Add Comments" color="primary" style="line-height: 20px !important;
+
+                        <button mat-flat-button matTooltip="View / Add Comments" color="primary" style="line-height: 20px !important;
                             font-size: 12px !important" (click)="onCommentClicked(commentDialog,row.id)">
-                                <mat-icon>add</mat-icon>View / Add
-                            </button>
-                       
+                            <mat-icon>add</mat-icon>View / Add
+                        </button>
+
                     </div>
                 </div>
-               
+
                 <ng-template #noComments>
                     <div>
                         <div class="firstline cell-line">No Comment Found</div>
                         <div class="secondline cell-line">
-                            <button mat-stroked-button matTooltip="Add Comments" color="primary" (click)="onCommentClicked(commentDialog,row.id)" >
+                            <button mat-stroked-button matTooltip="Add Comments" color="primary"
+                                (click)="onCommentClicked(commentDialog,row.id)">
                                 <mat-icon>add</mat-icon>Add Comments
                             </button>
                         </div>
-                    </div>  
+                    </div>
                 </ng-template>
-            
+
             </mat-cell>
         </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
-        
+        <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" [style.background-color]="color">
+        </mat-header-row>
+
         <mat-row *matRowDef="let row; columns: displayedColumns;" [style.background-color]="getClass(row)">
-            
+
         </mat-row>
 
-	    <ng-container matColumnDef="groupHeader">
+        <ng-container matColumnDef="groupHeader">
             <mat-cell colspan="999" *matCellDef="let group">
-            <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
-            <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
-            <strong>{{groupByColumns[group.level-1]}} = {{group[groupByColumns[group.level-1]]}} ({{group.totalCounts}})</strong>
+                <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+                <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+                <strong>{{groupByColumns[group.level-1]}} = {{group[groupByColumns[group.level-1]]}}
+                    ({{group.totalCounts}})</strong>
             </mat-cell>
         </ng-container>
     </mat-table>
-    
-        <button mat-flat-button matTooltip="Save Release" color="primary" (click)= "saveRelease()" style="width: 10%;
+    <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: white;">
+        <mat-progress-spinner strokeWidth="3" [diameter]="50" color="primary" mode="indeterminate">
+        </mat-progress-spinner>
+    </div>
+    <button mat-flat-button matTooltip="Save Release" color="primary" (click)="saveRelease()" style="width: 10%;
         margin-top: 5px;
         margin-inline: auto;">Save Release</button>
-    
+
     <br>
-   
+
 </div>
 <!--
     Dialog shows the comments list
@@ -154,9 +159,10 @@
     <mat-list>
         <mat-list-item *ngFor="let comment of displayComments">
             <div style="width:100%">
-                <div style="float: right;margin-right: 10px;font-size: 11px;" class="detailsAnswer">{{comment.date}}</div>
-                <div class="posting" >{{comment.message}}</div>   
-               <div class="posting" >  {{ comment.file }}</div>
+                <div style="float: right;margin-right: 10px;font-size: 11px;" class="detailsAnswer">{{comment.date}}
+                </div>
+                <div class="posting">{{comment.message}}</div>
+                <div class="posting"> {{ comment.file }}</div>
             </div>
         </mat-list-item>
     </mat-list>
@@ -165,37 +171,43 @@
         No Comments Found, Click <b> &nbsp;Add Another Comment&nbsp; </b> for adding New Comment
     </div>
     <div class="form-group" style="float: right;">
-        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 8px 0;" (click)="closeCommentDialog()">Close</button>
-        <button mat-flat-button matTooltip="Add Comment" color="primary" style="float: right;margin: 8px 0 0;" (click)="openCommentDialog(addCommentDialog)">Add Another Comment</button>
-       
+        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 8px 0;"
+            (click)="closeCommentDialog()">Close</button>
+        <button mat-flat-button matTooltip="Add Comment" color="primary" style="float: right;margin: 8px 0 0;"
+            (click)="openCommentDialog(addCommentDialog)">Add Another Comment</button>
+
     </div>
 </ng-template>
 
 <!--
     Dialog for adding a new comment
--->  
+-->
 <ng-template #addCommentDialog>
-<h1 mat-dialog-title>Add Comment</h1>
-<form class="example-form" [formGroup]="addCommentForm">
-    <mat-form-field appearance="outline" style="display: inline;">
-        <mat-label>Comments</mat-label>
-        <textarea  matInput formControlName="comment"></textarea>
-        <mat-error *ngIf="addCommentForm.controls.comment.hasError('required') && addCommentForm.controls.comment.touched">
-            Comment is required
-        </mat-error>
-    </mat-form-field>
-    <div class="form-group">
+    <h1 mat-dialog-title>Add Comment</h1>
+    <form class="example-form" [formGroup]="addCommentForm">
+        <mat-form-field appearance="outline" style="display: inline;">
+            <mat-label>Comments</mat-label>
+            <textarea matInput formControlName="comment"></textarea>
+            <mat-error
+                *ngIf="addCommentForm.controls.comment.hasError('required') && addCommentForm.controls.comment.touched">
+                Comment is required
+            </mat-error>
+        </mat-form-field>
+        <div class="form-group">
             <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
-            <input id="commentFileInput" hidden type="file" (change)="commentInputChange($event)" formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
+            <input id="commentFileInput" hidden type="file" (change)="commentInputChange($event)"
+                formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
             <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
-    </div> 
-    <br>
-    
+        </div>
+        <br>
 
-    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;" (click)="closeAddCommentDialog()">Close</button>
-    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()" [disabled]="!addCommentForm.valid">Save</button>
 
-</form>  
+        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+            (click)="closeAddCommentDialog()">Close</button>
+        <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
+            (click)="Submit()" [disabled]="!addCommentForm.valid">Save</button>
+
+    </form>
 </ng-template>
 <!-- <app-commentadd *ngIf="commentLoaded" ></app-commentadd> -->
 <!--
@@ -203,55 +215,63 @@
 -->
 <ng-template #evidenceDialog>
     <h1 mat-dialog-title>{{evidenceHeader}}</h1>
-    <button mat-stroked-button matTooltip="Add Evidence" color="primary" style="margin: 0 0 8px" (click)="createEvidence()">
+    <!-- <button mat-stroked-button matTooltip="Add Evidence" color="primary" style="margin: 0 0 8px" (click)="createEvidence()">
         <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>Add Evidence
     </button>
-    <br>
-    <mat-table #evidencetable [dataSource]="displayEvidences" >    
+    <br> -->
+    <mat-table #evidencetable [dataSource]="displayEvidences">
         <ng-container matColumnDef="evidenceActions">
-          <mat-header-cell *matHeaderCellDef >
-          </mat-header-cell>
-    
-          <mat-cell *matCellDef="let row; let i=index;">    
-            <button mat-icon-button color="primary" matTooltip="Delete Release" (click)="selectDeletedEvidence(row)">
-              <mat-icon aria-label="Delete">delete</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container> 
+            <mat-header-cell *matHeaderCellDef>
+            </mat-header-cell>
+
+            <mat-cell *matCellDef="let row; let i=index;">
+                <button mat-icon-button color="primary" matTooltip="Delete Release"
+                    (click)="selectDeletedEvidence(row)">
+                    <mat-icon aria-label="Delete">delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
         <ng-container matColumnDef="seq">
-            <mat-header-cell *matHeaderCellDef >#</mat-header-cell>
-            <mat-cell *matCellDef="let row" >{{row.seq}}</mat-cell>
-          </ng-container>   
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.seq}}</mat-cell>
+        </ng-container>
         <ng-container matColumnDef="title">
-          <mat-header-cell *matHeaderCellDef >Title</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.title}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.title}}</mat-cell>
         </ng-container>
-  
+
         <ng-container matColumnDef="evidenceChild">
-          <mat-header-cell *matHeaderCellDef >Evidence</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.evidence}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Evidence</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.evidence}}</mat-cell>
         </ng-container>
-  
+
         <ng-container matColumnDef="evidenceDate">
-          <mat-header-cell *matHeaderCellDef >Date</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.date}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.date}}</mat-cell>
         </ng-container>
-    
+
         <ng-container matColumnDef="comments">
-          <mat-header-cell *matHeaderCellDef >Comments</mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.comments}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Comments</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.comments}}</mat-cell>
         </ng-container>
-  
-        <mat-header-row *matHeaderRowDef="evidenceDisplayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
+
+        <mat-header-row *matHeaderRowDef="evidenceDisplayedColumns;sticky: true" [style.background-color]="color">
+        </mat-header-row>
         <mat-row *matRowDef="let row; columns: evidenceDisplayedColumns;"></mat-row>
-        </mat-table>
-        <div class="no-results" [style.display]="displayEvidences.length == 0 ? '' : 'none'">
-            No Evidence Found, Click <b> &nbsp;Add Evidence&nbsp; </b> for adding New Evidence
-          </div>
-        <button mat-flat-button matTooltip="Add Evidence" color="primary" style="float: right;margin: 8px 0 0;" (click)="closeEvidenceListDialog()">
-            Close
-        </button>
-    
+    </mat-table>
+    <div class="no-results" [style.display]="displayEvidences.length == 0 ? '' : 'none'">
+        No Evidence Found, Click <b> &nbsp;Add Evidence&nbsp; </b> for adding New Evidence
+    </div>
+
+    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+        (click)="closeEvidenceListDialog()">
+        Close
+    </button>
+    <button mat-flat-button matTooltip="Add Evidence" color="primary" style="float: right;margin: 8px 8px 0;"
+        (click)="createEvidence()">
+        Add Evidence
+    </button>
+
 </ng-template>
 
 <!--
@@ -262,7 +282,7 @@ header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>   -->
 <!--
     Add a new evidence
 -->
-<app-evidenceadd *ngIf="evidenceLoaded" ></app-evidenceadd>
+<app-evidenceadd *ngIf="evidenceLoaded"></app-evidenceadd>
 <!--
     Toast Message
 -->
@@ -273,3 +293,6 @@ header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>   -->
 <!-- <ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that were not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
 header='Leave Page?' width='450px' [buttons]='saveChecklistButtons' [position]="position"></ejs-dialog>   -->
 
+<!-- <pdf-viewer [src]="pdfSource"
+              [original-size]="false"
+  ></pdf-viewer> -->

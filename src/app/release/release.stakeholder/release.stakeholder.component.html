@@ -1,0 +1,41 @@
+
+<h1 mat-dialog-title>Add Stakeholder</h1>
+<form class="example-form" [formGroup]="addStakeholderForm">
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Name</mat-label>
+        <input type="text" matInput formControlName="name">
+        <mat-error *ngIf="addStakeholderForm.controls.name.hasError('required') && addStakeholderForm.controls.name.touched">
+            Name is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Email</mat-label>
+        <input type="text" matInput formControlName="email">
+        <mat-error *ngIf="addStakeholderForm.controls.email.hasError('required') && addStakeholderForm.controls.email.touched">
+            Email is required
+        </mat-error>
+        <mat-error *ngIf="addStakeholderForm.controls.email.hasError('email')"
+        >Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>WWID</mat-label>
+        <input type="text" matInput formControlName="wwid">
+        <mat-error *ngIf="addStakeholderForm.controls.wwid.hasError('required') && addStakeholderForm.controls.wwid.touched">
+            WWID is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Role</mat-label>
+        <input type="text" matInput formControlName="role">
+        <mat-error *ngIf="addStakeholderForm.controls.role.hasError('required') && addStakeholderForm.controls.role.touched">
+            Role is required
+        </mat-error>
+    </mat-form-field>
+
+    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+        [mat-dialog-close]="true">Close</button>
+    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"
+        [disabled]="!addStakeholderForm.valid">Save</button>
+
+</form>

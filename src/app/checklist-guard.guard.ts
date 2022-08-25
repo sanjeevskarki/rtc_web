@@ -8,10 +8,10 @@ import { ReleaseComponent } from './release/release.component';
   providedIn: 'root'
 })
 export class ChecklistGuard implements CanDeactivate<ChecklistComponent> {
-  
+
   @HostListener('window:beforeunload')
-  canDeactivate(component: ChecklistComponent, currentRoute:ActivatedRouteSnapshot): boolean | Observable<boolean> {
-    if(component.checkData()){
+  canDeactivate(component: ChecklistComponent, currentRoute: ActivatedRouteSnapshot): boolean | Observable<boolean> {
+    if (component.checkData()) {
       let subject = new Subject<boolean>();
       component.openConfirmation();
       subject = component.subject;
@@ -25,10 +25,10 @@ export class ChecklistGuard implements CanDeactivate<ChecklistComponent> {
   providedIn: 'root'
 })
 export class ReleaseGuard implements CanDeactivate<ReleaseComponent> {
-  
+
   @HostListener('window:beforeunload')
-  canDeactivate(component: ReleaseComponent, currentRoute:ActivatedRouteSnapshot): boolean | Observable<boolean> {
-    if(component.checkData()){
+  canDeactivate(component: ReleaseComponent, currentRoute: ActivatedRouteSnapshot): boolean | Observable<boolean> {
+    if (component.checkData()) {
       let subject = new Subject<boolean>();
       component.openConfirmation();
       subject = component.subject;
@@ -36,5 +36,5 @@ export class ReleaseGuard implements CanDeactivate<ReleaseComponent> {
     }
     return true;
   }
-  
+
 }

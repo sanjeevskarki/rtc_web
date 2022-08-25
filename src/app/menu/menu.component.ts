@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { RTC_VERSION } from '../release/release.constants';
-import {ViewEncapsulation} from '@angular/core';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -10,60 +9,9 @@ import {ViewEncapsulation} from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class MenuComponent {
-    rtcVersion:string = RTC_VERSION;
-    // public menuItems: MenuItemModel[] = [
-    //     {
-    //         id:'home',
-    //         text: 'Home',
-    //     },
-    //     {
-    //         id:'release',
-    //         text: 'New Release',
-    //     },
-    //     {
-    //         id:'admin',
-    //         text: 'Admin',
-    //     },
-    //     {
-    //         id:'report',
-    //         text: 'Reports',
-    //     },
-    //     { 
-    //         id:'help',
-    //         text: 'Help' 
-    //     }
-    // ];
-   
-    constructor(private router: Router) {
 
-    }
-    
-    // onListSelect(args: SelectEventArgs) {
-    //     args.item.classList.remove("e-active");
-    // }
+  rtcVersion: string = RTC_VERSION;
 
-    // select(args: MenuEventArgs): void {
-    //     if (args.item.id === "home")
-    //     {
-    //         this.router.navigate([ 'home' ]);
-    //     }
-    //     else if (args.item.id === "release")
-    //     {
-    //         this.router.navigate([ 'release' ]);
-    //     }
-    //     else if (args.item.id === "admin")
-    //     {
-    //         this.router.navigate([ 'admin' ]);
-    //     }
-    //     else if (args.item.id === "report")
-    //     {
-    //         this.router.navigate([ 'report' ]);
-    //     }
-    //     else if (args.item.id === "help")
-    //     {
-    //         this.router.navigate([ 'help' ]);
-    //     }
-        
-    // }
+  constructor() { }
+
 }
-

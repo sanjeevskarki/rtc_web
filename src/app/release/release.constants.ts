@@ -1,6 +1,5 @@
 
-
-export const MILESTONE = 'milestone';  
+export const MILESTONE = 'milestone';
 export const TASK_LOWER = 'task';
 export const FILE_LOWER = 'file';
 export const UPLOAD_LOWER = 'upload';

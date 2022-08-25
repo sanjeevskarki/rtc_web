@@ -1,40 +1,48 @@
-<mat-grid-list cols="1" rowHeight="500px">
-    <mat-grid-tile>
-    <div class="container" style="width: 70%;">
+<div class="container" class="container mat-elevation-z9">
     <h1 mat-dialog-title></h1>
-    <form class="mat-dialog-content" (ngSubmit)="submit" [formGroup]="releaseForm">
-  
-        <mat-form-field appearance="outline" class="width-50" style="width: 35%;">
+    <form [formGroup]="releaseForm" style="align-self: center;
+            width: 70%;">
+
+        <mat-form-field appearance="outline" style="width: 50%;">
             <mat-label>Business Unit</mat-label>
             <mat-select formControlName="businessunit">
                 <mat-option *ngFor="let businessunit of businessUnits" [value]="businessunit.value">
                     {{businessunit.viewValue}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="releaseForm.controls.businessunit.hasError('required') && releaseForm.controls.businessunit.touched">
+            <mat-error
+                *ngIf="releaseForm.controls.businessunit.hasError('required') && releaseForm.controls.businessunit.touched">
                 Business unit is required
             </mat-error>
         </mat-form-field>&nbsp;
-        <mat-form-field appearance="outline" class="width-50 ml-2" style="width: 35%;">
+        <mat-form-field appearance="outline" style="width: 49%;">
             <mat-label>Product Name</mat-label>
             <input type="text" matInput formControlName="name">
-                <mat-error *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched">
-                    Product Name is required
-                </mat-error>
+            <mat-error *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched">
+                Product Name is required
+            </mat-error>
         </mat-form-field>
         <br>
-        <mat-form-field appearance="outline" class="width-50" style="width: 35%;">
+        <mat-form-field appearance="outline" style="width: 39%;">
             <mat-label>Release Date</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="date" (dateChange)="onChange($event)">
+
             
-            <mat-hint *ngIf="isWorkWeekVisible">{{workWeek | workWeekPipe}}</mat-hint>
-           
+
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            
+
         </mat-form-field>
         &nbsp;
-        <mat-form-field appearance="outline" class="width-50 ml-2" style="width: 35%;">
+        <mat-form-field  appearance="outline" style="width: 10%;">
+            <mat-label>Work Week</mat-label>
+            <input  type="text" matInput value="{{(workWeek) ? (workWeek | workWeekPipe) : ''}}">
+           
+            <!-- <div *ngIf="isWorkWeekVisible">{{workWeek | workWeekPipe}}</div> -->
+        </mat-form-field>
+        
+        &nbsp;
+        <mat-form-field appearance="outline" style="width: 49%;">
             <mat-label>Release Type</mat-label>
             <mat-select formControlName="type">
                 <mat-option *ngFor="let release of releaseTypes" [value]="release.value">
@@ -46,179 +54,133 @@
             </mat-error>
         </mat-form-field>
         <br>
-        <mat-form-field appearance="outline" class="width-50 ml-2" style="width: 35%;">
+        <mat-form-field appearance="outline" style="width: 50%;">
             <mat-label>Select Milestone</mat-label>
             <mat-select formControlName="milestone">
                 <mat-option *ngFor="let milestone of milestones" [value]="milestone.value">
                     {{milestone.viewValue}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="releaseForm.controls.milestone.hasError('required') && releaseForm.controls.milestone.touched">
+            <mat-error
+                *ngIf="releaseForm.controls.milestone.hasError('required') && releaseForm.controls.milestone.touched">
                 Milestone is required
             </mat-error>
         </mat-form-field>&nbsp;
-        <mat-form-field appearance="outline" class="width-50 ml-2" style="width: 35%;">
-            <mat-label>Owner</mat-label>
+        <mat-form-field appearance="outline" style="width: 49%;">
+            <mat-label>Qual Owner</mat-label>
             <input type="text" matInput formControlName="qualowner">
-                <mat-error *ngIf="releaseForm.controls.qualowner.hasError('required') && releaseForm.controls.qualowner.touched">
-                    Owner is required
-                </mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="outline" class="width-50" style="width: 35%;">
-            <mat-label>Status</mat-label>
-            <input type="text" matInput formControlName="status">
-                <mat-error *ngIf="releaseForm.controls.status.hasError('required') && releaseForm.controls.status.touched">
-                    Status Unit is required
-                </mat-error>
-        </mat-form-field>&nbsp;
-        <mat-form-field appearance="outline" class="width-50 ml-2" style="width: 35%;">
-            <mat-label>Attorney</mat-label>
-            <input type="text" matInput formControlName="attorney">
-                <mat-error *ngIf="releaseForm.controls.attorney.hasError('required') && releaseForm.controls.attorney.touched">
-                    Attorney is required
-                </mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="outline" style="width: 70%;">
-            <mat-label>Description</mat-label>
-            <textarea  matInput formControlName="description"></textarea>
-            <mat-error *ngIf="releaseForm.controls.description.hasError('required') && releaseForm.controls.description.touched">
-                Description is required
+            <mat-error
+                *ngIf="releaseForm.controls.qualowner.hasError('required') && releaseForm.controls.qualowner.touched">
+                Owner is required
             </mat-error>
         </mat-form-field>
         <br>
-        <button mat-flat-button matTooltip="Update Release" color="primary" [disabled]="!releaseForm.valid" (click)= "updateRelease()">Save</button>
-      
-
+        <mat-form-field appearance="outline" style="width: 50%;">
+            <mat-label>Status</mat-label>
+            <input type="text" matInput formControlName="status">
+            <mat-error *ngIf="releaseForm.controls.status.hasError('required') && releaseForm.controls.status.touched">
+                Status Unit is required
+            </mat-error>
+        </mat-form-field>&nbsp;
+        <mat-form-field appearance="outline" style="width: 49%;">
+            <mat-label>Attorney</mat-label>
+            <input type="text" matInput formControlName="attorney">
+            <mat-error
+                *ngIf="releaseForm.controls.attorney.hasError('required') && releaseForm.controls.attorney.touched">
+                Attorney is required
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+            <mat-error
+                *ngIf="releaseForm.controls.description.hasError('required') && releaseForm.controls.description.touched">
+                Description is required
+            </mat-error>
+        </mat-form-field>
     </form>
-  </div>
-  </mat-grid-tile>
-  </mat-grid-list>
+        <br>
+        <div style="align-self: center;width: 70%;">
+            <!-- <button mat-flat-button matTooltip="Add Stakeholder" color="primary" (click)="addContact()">
+                <mat-icon>add</mat-icon>Add Stakeholder
+            </button> -->
+            <button mat-flat-button matTooltip="Add Stakeholder" color="primary" (click)="addStakeholder()"
+                style="margin-bottom: 10px;">
+                <mat-icon style="margin-bottom: 3px">add</mat-icon>Add Stakeholder
+            </button>
+            <div id="modalTarget" #targetModal style="width: 100%;">
+                <mat-table #stakeholdertable [dataSource]="stakeholders">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+                    </ng-container>
 
+                    <ng-container matColumnDef="wwid">
+                        <mat-header-cell *matHeaderCellDef>WWID</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.wwid}}</mat-cell>
+                    </ng-container>
 
-<!-- <div class="col-lg-12 control-section e-input-section">
-    <form id="reactive" [formGroup]="releaseForm">
-        <div class="content-wrapper">
-            <div class="release-header">Update Release Qualification</div>
-            <div class="release-div">
-                <div *ngIf="showSpinner" class="col-lg-3 col-md-3 col-3" align="center">
-                    <div id="rounded-container">
-                        <ejs-progressbar #circular3 id='circular4' [type]='type3' [maximum]='max3' [minimum]='min3'
-                        [value]='value3' [width]='width' [height]='spinnerheight' [isIndeterminate]='isIndeterminate3'
-                        [animation]='animation' (load)='load($event)'>
-                    </ejs-progressbar>
-                    </div>
-                    <div class="progress-text-align">Wait ! System is updating Release !!</div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-textbox placeholder="Business Unit (BU)" cssClass="e-outline" floatLabelType="Auto" formControlName="businessunit"></ejs-textbox>                              
-                            </div> 
-                            <div *ngIf="releaseForm.controls.businessunit.hasError('required') && releaseForm.controls.businessunit.touched" class="e-error">* Project Name is required</div>                                                 
-                        </div>                      
-                    </div>
-                    <div class="column">
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-textbox placeholder="Project Name" cssClass="e-outline" floatLabelType="Auto" formControlName="name"></ejs-textbox>                              
-                            </div> 
-                            <div *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched" class="e-error">* Project Name is required</div>                                                 
-                        </div>                      
-                    </div>
-                    <div class="column">          
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-datepicker (renderDayCell)="onLoad($event)" [value]="date" #listObj cssClass="e-outline" floatLabelType="Auto" formControlName="date" [format]="format" placeholder='Release Date' (change)="onChange($event)"></ejs-datepicker>
-                            </div> 
-                            <span *ngIf="isWorkWeekVisible" class="work-week">{{workWeek | workWeekPipe}}</span>
-                            <div *ngIf="releaseForm.controls.date.hasError('required') && releaseForm.controls.date.touched" class="e-error">* Work Week Date is required</div>                                                 
-                        </div>                
-                    </div>  
-                    <div class="column">
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-dropdownlist id='release' cssClass="e-outline e-custom" floatLabelType="Auto" #release [dataSource]='releaseTypes' [fields]='releaseTypeFields' [placeholder]='type' [popupHeight]='height' formControlName="type"></ejs-dropdownlist>
-                            </div> 
-                        <div *ngIf="releaseForm.controls.type.hasError('required') && releaseForm.controls.type.touched" class="e-error">* Release Type is required</div>                                                 
-                        </div> 
-                    </div>                                 
-                </div>
+                    <ng-container matColumnDef="role">
+                        <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.role}}</mat-cell>
+                    </ng-container>
 
-                <div class="row">
-                    <div class="column" >
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-dropdownlist id='milestone' cssClass="e-outline e-custom" #milestone floatLabelType="Auto" [dataSource]='milestones' [fields]='milestonefields' [placeholder]='milestonePlaceholder' [popupHeight]='height' formControlName="milestone"></ejs-dropdownlist>
-                            </div> 
-                            <div *ngIf="releaseForm.controls.milestone.hasError('required') && releaseForm.controls.milestone.touched" class="e-error">* Milestone is required</div> 
-                        </div> 
-                    </div>
-                    <div class="column">
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-textbox placeholder="Qual Owner" cssClass="e-outline" floatLabelType="Auto" formControlName="qualowner"></ejs-textbox>                              
-                            </div> 
-                            <div *ngIf="releaseForm.controls.qualowner.hasError('required') && releaseForm.controls.qualowner.touched" class="e-error">* Project Name is required</div>                                                                                                 
-                        </div> 
-                    </div>
-                    <div class="column">
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-textbox placeholder="Status" cssClass="e-outline" floatLabelType="Auto" formControlName="status"></ejs-textbox>
-                            </div> 
-                            <div *ngIf="releaseForm.controls.status.hasError('required') && releaseForm.controls.status.touched" class="e-error">* Project Contact is required</div>                                                 
-                        </div>    
-                    </div> 
-                    <div class="column">
-                        <div class="form-group">
-                            <div class="e-float-input">
-                                <ejs-textbox placeholder="BU Attorney" cssClass="e-outline" floatLabelType="Auto" formControlName="attorney"></ejs-textbox>
-                            </div> 
-                            <div *ngIf="releaseForm.controls.attorney.hasError('required') && releaseForm.controls.attorney.touched" class="e-error">* Email is required</div>                                                 
-                        </div>                                           
-                    </div>    
-                </div>
-                
-                <div class="row">
-                    <div class="column-footer">
-                        <div class="release-label">Notes</div>
-                        <hr class="hr">
-                        <div class="form-group">
-
-                            <ejs-inplaceeditor #inplaceCommentEditor mode="Inline" emptyText='Enter Notes' formControlName="notes" width="10px"
-                                submitOnEnter='false' type='RTE' name='rte' data-underline="false" [popupSettings]="commentsPopSettings"
-                                [model]="commentEditorModel" [validationRules]='commentRule' (created)='commentCreated()'></ejs-inplaceeditor>
-
-                        </div>
-
-                    </div>
-                   
-                </div>
-                <br>
-                <div class="row">
-                    <div class="column-footer">
-                        <div class="release-label">Contacts</div>
-                        <hr class="hr">
-                        <ejs-grid #normalgrid id='Normalgrid' [editSettings]='editSettings' [toolbar]='toolbar' (actionBegin)='actionBegin($event)' (actionComplete)="actionContactComplete($event)">
-                            <e-columns>
-                                <e-column field='name' headerText='Name' width='140' textAlign='Left'></e-column>
-                                <e-column field='email' headerText='Email' width='140' textAlign='Left'></e-column>
-                                <e-column field='role' headerText='Role' width='140' textAlign='Left'></e-column>
-                            </e-columns>
-                        </ejs-grid>
-                    </div>
-                </div>
-            
-                <div class="row">
-                    <div class="submitBtn" style="float: right">
-                        <button ejs-button cssClass="e-info" [isPrimary]="true" [disabled]="!releaseForm.valid" (click)= "updateRelease()" style="margin-top: 40px">Update Release</button>
-                                    
-                    </div>
-                </div>
+                    <mat-header-row *matHeaderRowDef="contactDisplayedColumns;sticky: true"
+                        [style.background-color]="color">
+                    </mat-header-row>
+                    <mat-row *matRowDef="let row; columns: contactDisplayedColumns;"></mat-row>
+                </mat-table>
             </div>
         </div>
-    </form>
-</div> -->
+   
+        <!-- <ng-template #addContactDialog>
+            <h1 mat-dialog-title>Add Contact</h1>
+            <form class="example-form" [formGroup]="addContactForm">
+                <mat-form-field appearance="outline" style="display: inline;">
+                    <mat-label>Name</mat-label>
+                    <input type="text" matInput formControlName="name">
+                    <mat-error *ngIf="addContactForm.controls.name.hasError('required') && addContactForm.controls.name.touched">
+                        Name is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="display: inline;">
+                    <mat-label>Email</mat-label>
+                    <input type="text" matInput formControlName="email">
+                    <mat-error *ngIf="addContactForm.controls.email.hasError('required') && addContactForm.controls.email.touched">
+                        Email is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="display: inline;">
+                    <mat-label>WWID</mat-label>
+                    <input type="text" matInput formControlName="wwid">
+                    <mat-error *ngIf="addContactForm.controls.wwid.hasError('required') && addContactForm.controls.wwid.touched">
+                        WWID is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="display: inline;">
+                    <mat-label>Role</mat-label>
+                    <input type="text" matInput formControlName="role">
+                    <mat-error *ngIf="addContactForm.controls.role.hasError('required') && addContactForm.controls.role.touched">
+                        Role is required
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+                    (click)="Submit()">Close</button>
+                <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"
+                    [disabled]="!addContactForm.valid">Save</button>
+
+            </form>
+        </ng-template>
+       -->
+        <button mat-flat-button matTooltip="Add/Update Release" color="primary" [disabled]="!releaseForm.valid" style="width: 10%;
+                margin-top: 10px; margin-bottom: 10px;margin-inline: auto;" (click)="updateRelease()">Save</button> 
+
+
+    
+</div>

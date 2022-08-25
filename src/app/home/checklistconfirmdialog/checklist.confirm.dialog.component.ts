@@ -8,17 +8,17 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ChecklistConfirmDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ChecklistConfirmDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: string) { }
+  constructor(public dialogRef: MatDialogRef<ChecklistConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: string) { }
 
   ngOnInit(): void {
   }
 
-  saveAndContinue(){
-    this.dialogRef.close({data:"save"});
+  saveAndContinue() {
+    this.dialogRef.close({ data: "save" });
   }
 
-  continueNavigation(){
-    this.dialogRef.close({data:"continue"});
+  continueNavigation() {
+    this.dialogRef.close({ data: "continue" });
   }
 
 }

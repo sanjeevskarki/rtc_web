@@ -74,13 +74,6 @@ export interface DATA_COLLECTION {
 	file_name:string;
 }
 
-// export interface Severity {
-//   high:number;
-//   medium:number;
-//   low:number;
-//   information:number;
-// }
-
 export interface Bdba {
 	results:Result;
 	meta:Meta;

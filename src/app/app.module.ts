@@ -42,7 +42,8 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ChecklistConfirmDialogComponent } from './home/checklistconfirmdialog/checklist.confirm.dialog.component';
 import { ReleaseConfirmDialogComponent } from './release/releaseconfirmdialog/release.confirm.dialog.component';
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ReleaseStakeholderComponent } from './release/release.stakeholder/release.stakeholder.component';
 
 @NgModule({
   declarations: [
@@ -61,14 +62,15 @@ import { ReleaseConfirmDialogComponent } from './release/releaseconfirmdialog/re
     ReleaseEditComponent,
     BkcComponent,
     ChecklistConfirmDialogComponent,
-    ReleaseConfirmDialogComponent
+    ReleaseConfirmDialogComponent,
+    ReleaseStakeholderComponent
     
   ],
   imports: [
     HttpClientModule, BrowserModule, AppRoutingModule,
     FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
     MatToolbarModule,MatIconModule,MatSidenavModule,MatListModule,MatButtonModule,MatTableModule,MatDialogModule,MatInputModule,MatPaginatorModule,MatSortModule,MatTooltipModule,
-    MatSelectModule,MatGridListModule,MatDatepickerModule,MatNativeDateModule, MatRippleModule, MatProgressSpinnerModule
+    MatSelectModule,MatGridListModule,MatDatepickerModule,MatNativeDateModule, MatRippleModule, MatProgressSpinnerModule, PdfViewerModule 
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
