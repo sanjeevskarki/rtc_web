@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../../home/home.models';
-import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST } from '../release.constants';
+import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST, STAKEHOLDER_LOWER } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
-
+import { Stakeholder } from 'src/app/home/home.models';
 /**
  * Dependecy Injection.
  */
@@ -20,6 +20,7 @@ export class ReleaseEditService {
   isFolderExist: string = IS_FOLDER_EXIST;
   project: string = PROJECT;
   guideline: string = GUIDELINE_LOWER;
+  stakeholder: string = STAKEHOLDER_LOWER;
   amount!: number;
   displayTime!: string;
   remaining!: number;
@@ -94,5 +95,13 @@ export class ReleaseEditService {
     return this.httpClient.post<boolean>(this.endpoint_url + this.isFolderExist, body, { headers: this.headers });
   }
 
+  public addStakeholders(stakeholders: Stakeholder[]): Observable<Stakeholder[]> {
+    // const body=JSON.stringify(guideline);
+    return this.httpClient.post<Stakeholder[]>(this.endpoint_url + this.stakeholder, stakeholders, { headers: this.headers });
+  }
+
+  public getProjectStakeholders(projectId:number): Observable<Stakeholder[]> {
+    return this.httpClient.get<Stakeholder[]>(this.endpoint_url + this.stakeholder+ "/" + projectId);
+  }
 
 }

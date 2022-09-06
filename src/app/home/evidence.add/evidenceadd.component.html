@@ -13,7 +13,7 @@
 
     <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
-        <mat-select (selectionChange)="onTypeSelect($event)" formControlName="type">
+        <mat-select (selectionChange)="onEvidenceTypeSelect($event)" formControlName="type">
             <mat-option *ngFor="let status of uploadTypes" [value]="status.value">
                 {{status.viewValue}}
             </mat-option>
@@ -43,7 +43,7 @@
         <!-- <mat-label>File</mat-label> -->
         <button mat-flat-button (click)="openInput()" color="primary" style="margin-bottom: 10px;">Select File to
             Upload</button>
-        <input id="fileInput" hidden type="file" (change)="csvInputChange($event)" formControlName="upload"
+        <input id="fileInput" hidden type="file" (change)="selectEvidenceFile($event)" formControlName="upload"
             name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
         <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
 
@@ -66,7 +66,7 @@
     </mat-form-field>
 
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
-        [mat-dialog-close]="true">Close</button>
+        (click)="Close()">Close</button>
     <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
         [disabled]="!evidenceForm.valid" (click)="Submit()">Save</button>
 

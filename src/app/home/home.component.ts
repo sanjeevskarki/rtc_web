@@ -40,7 +40,11 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  onClick(selectedProject: Project) {
+  /**
+   * Select a Release
+   * @param selectedProject Selected Project
+   */
+  onReleaseSelect(selectedProject: Project) {
     localStorage.setItem('selectedProject', JSON.stringify(selectedProject));
     // this.sharedChecklistService.setReleaseList(selecteditem["data"]);
     this.router.navigate(['checklist/releasecompliance']);

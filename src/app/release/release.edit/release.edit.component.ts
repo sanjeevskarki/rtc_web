@@ -5,12 +5,13 @@ import {
   EVIDENCES_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER,
   NAME_LOWER, TYPE_LOWER
 } from '../release.constants';
-import { BusinessUnit, Milestone, Stakeholder } from '../release.models';
+import { BusinessUnit, Milestone } from '../release.models';
+import { Stakeholder } from 'src/app/home/home.models';
 import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
 import { v4 as uuidv4 } from 'uuid';
 
 import * as moment from 'moment';
-import { ReleaseEditService } from './release.service';
+import { ReleaseEditService } from './release.edit.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ReleaseStakeholderComponent } from '../release.stakeholder/release.stakeholder.component';
 
@@ -63,7 +64,7 @@ export class ReleaseEditComponent implements OnInit {
   };
   newStakeholder!:Stakeholder;
   stakeholders!:Stakeholder[];
-
+  projectStakeholders!:Stakeholder[];
   constructor(private formBuilder: FormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -72,9 +73,13 @@ export class ReleaseEditComponent implements OnInit {
     this.tempRelease = <NewRelease>{};
     this.getBusinessUnits();
     this.getMilestones();
-
+    
+    this.projectStakeholders =[];
     this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    if(this.selectedProject){
+      this.getProjectStakeholders();
+    }
 
     this.releaseForm = this.formBuilder.group({
       name: [null, Validators.required],
@@ -84,6 +89,7 @@ export class ReleaseEditComponent implements OnInit {
       date: [null, Validators.required],
       // contact: [null, Validators.required],
       // email: [null, [Validators.required,Validators.email]],
+      email: [null, []],
       businessunit: [null, Validators.required],
       description: [null, Validators.required],
       qualowner: [null, []],
@@ -99,6 +105,20 @@ export class ReleaseEditComponent implements OnInit {
       role: [null, Validators.required],
     });
 
+  }
+
+ 
+  getProjectStakeholders(){
+    this.projectStakeholders =[];
+    this.service.getProjectStakeholders(this.selectedProject.project_id).subscribe(
+      (response) => {
+        this.projectStakeholders = response;
+        this.stakeholders = this.projectStakeholders;
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
   }
 
   newRelease!: NewRelease;
@@ -119,7 +139,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newRelease.description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
     this.newRelease.businessunit = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
     // this.newRelease.contact =this.releaseForm.controls['contact'].value;
-    // this.newRelease.email = this.releaseForm.controls['email'].value;
+    this.newRelease.email = this.releaseForm.controls['email'].value;
   }
 
 
@@ -205,7 +225,7 @@ export class ReleaseEditComponent implements OnInit {
       handover: this.tempRelease.handover,
       date: this.tempRelease.date,
       // contact: this.tempRelease.contact,
-      // email: this.tempRelease.email,
+      email: this.tempRelease.email,
       businessunit: this.tempRelease.businessunit,
       description: this.tempRelease.description
     });
@@ -268,6 +288,7 @@ export class ReleaseEditComponent implements OnInit {
         // description:this.selectedProject.description,
         qualowner: '',
         status: '',
+        email:'',
         attorney: '',
         notes: ''
       });
@@ -298,17 +319,23 @@ export class ReleaseEditComponent implements OnInit {
       this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
       this.getDetails();
     }
-
+    
   }
 
   saveProject() {
-    this.service.addProject(this.newProject).subscribe(() => {
+    let project:Project;
+    this.service.addProject(this.newProject).subscribe((data) => {
+      project = data;
       this.createGuideLine();
       this.createBuFolder();
+      this.createStakehoders(project.project_id!);
     });
   }
 
-
+  /**
+   * Get Details for Guidelines file, Getting the file based on the Project Data.
+   * (Currently we are picking those file from asset folder)
+   */
   getDetails() {
     this.selectedMilestone = this.releaseForm.controls[MILESTONE_LOWER].value;
     this.selectedType = this.releaseForm.controls[TYPE_LOWER].value;
@@ -316,7 +343,6 @@ export class ReleaseEditComponent implements OnInit {
     this.service.details(this.selectedMilestone.toLocaleLowerCase()!, this.selectedHandoverType?.toLocaleLowerCase()!, this.selectedType?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
-        // this.createNewCheckList();
         this.saveProject();
       },
       (err) => {
@@ -326,8 +352,9 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   /**
- * Check folder on server if not exist create it.
- */
+   * Check folder heirarchy on server if not exist create it.
+   * It is used for saving Data Collection, Evidences and Attachments file
+   */
   createBuFolder() {
     let folders: string[] = [];
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + EVIDENCES_LOWER);
@@ -381,15 +408,22 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  // updateExistingProject(){
-
-
-  // }
+  createStakehoders(projectId:number){
+    let tempStakeHolders:Stakeholder[]=[];
+    for(var stakeholder of this.stakeholders){
+      stakeholder.project_id = projectId;
+      tempStakeHolders.push(stakeholder);
+    }
+    this.service.addStakeholders(tempStakeHolders).subscribe(data => {
+      this.stakeholders=[];
+    });
+  }
 
   updateProject() {
     // alert(this.newProject.project_name);
     this.service.updateProject(this.newProject).subscribe(data => {
       // alert(data);
+      this.createStakehoders(this.newProject.project_id);
       // this.releaseForm.reset();
       this.clear(this.releaseForm);
     })
@@ -403,10 +437,10 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  temppStakeholders:Stakeholder[]=[];
+  // temppStakeholders:Stakeholder[]=[];
   addStakeholder(){
     this.stakeholders=[];
-    this.temppStakeholders
+    // this.temppStakeholders
     const dialogRef = this.dialog.open(ReleaseStakeholderComponent, {
       height: '50%',
       width: '30%',
@@ -415,11 +449,14 @@ export class ReleaseEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      
-      this.newStakeholder = result.data;
-      console.log('The dialog was closed'+this.newStakeholder.name);
-      this.temppStakeholders.push(this.newStakeholder);
-      this.stakeholders = this.temppStakeholders;
+      if(result){
+        // this.stakeholders=[];
+        this.newStakeholder = result.data;
+        console.log("this.newStakeholder  = "+JSON.stringify(this.newStakeholder) );
+        this.projectStakeholders.push(this.newStakeholder);
+        alert(this.projectStakeholders.length);
+        this.stakeholders = this.projectStakeholders;
+      }
     });
   }
 

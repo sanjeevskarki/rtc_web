@@ -23,9 +23,10 @@ export interface ReleaseChecklist {
   status:string|undefined;
   detailedStatus:string[];
   releaseCriteria?:string;
-  evidences:Evidences[];
-  comments:Comments[];
+  evidences:BackendEvidences[];
+  comments:BackendComments[];
   bdbaStatus?:boolean;
+  guidelineId?:number;
 }
 
 // export interface ViewReleaseChecklist {
@@ -40,23 +41,23 @@ export interface ReleaseChecklist {
 //   comments:Comments[];
 // }
 
-export interface Comments {
-  id:string;
-  message:string;
-  file:string;
-  date:number;
-}
+// export interface Comments {
+//   id:number;
+//   comments:string;
+//   content:string;
+//   date:string;
+//   task_id:number;
+// }
 
-export interface Evidences {
-  id:string;
-  title:string;
-  type:string;
-  project_id?:number;
-  guidelines_id?:number;
-  comments:string;
-  evidence:string|undefined;
-  date:number;
-}
+// export interface Evidences {
+//   id:number;
+//   title:string;
+//   type:string;
+//   task_id?:number;
+//   comments:string;
+//   evidence:string|undefined;
+//   date:string;
+// }
 
 export interface Unit {
   /**
@@ -82,19 +83,21 @@ export interface Unit {
 }
 
 export interface ViewComment {
-  id:string;
-  message:string;
-  file:string;
-  date:string | undefined;
+  id:number;
+  comments:string;
+  content:string;
+  date:string;
+  task_id:number;
 }
 
 export interface ViewEvidence {
-  id:string;
+  id:number;
   seq:number;
   evidence:string|undefined;
   title:string;
   comments:string;
   date:string | undefined;
+  type:string;
 }
 
 export interface Details {
@@ -137,7 +140,7 @@ export interface Login {
  */
 
 export interface Project {
-  project_id?: number;
+  project_id: number;
   project_name: string;
   project_release_date:string;
   project_description:string;
@@ -172,8 +175,26 @@ export interface BackendTask {
   project_id_id:string;
   status_id:string;
   backend_guideline?:BackendGuideline;
-  evidences?:string[];
-  comments?:string[];
+  backend_evidences?:BackendEvidences[];
+  backend_comments?:BackendComments[];
+}
+
+export interface BackendComments {
+  id: number;
+  content: string;
+  task_id:number;
+  comments:string;
+  date:string;
+}
+
+export interface BackendEvidences {
+  id: number;
+  title: string;
+  task_id:number;
+  comments:string;
+  evidence:string;
+  type:string;
+  date:string;
 }
 
 export interface BackendGuideline {
@@ -190,4 +211,13 @@ export interface Success {
 
 export interface Response {
   message:string;
+}
+
+export interface Stakeholder {
+  id?:number;
+  name:string;
+  email:string;
+  wwid:string;
+  role:string;
+  project_id?:number;
 }

@@ -1,19 +1,20 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackendTask, Checklist, Comments, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
+import { BackendComments, BackendTask, Checklist, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NumberValueAccessor, Validators } from '@angular/forms';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
 import { CommentAddComponent } from '../comment.add/commentadd.component';
 import { Bdba, Checkmarx, DATA_COLLECTION, Kw, Project as ProtexProject } from './checklist.models';
-import { COMPOSITION_ANALYSIS_ISSUES, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
+import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ChecklistConfirmDialogComponent } from '../checklistconfirmdialog/checklist.confirm.dialog.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DATE_FORMAT } from 'src/app/release/release.constants';
 
 export class Group {
   level = 0;
@@ -39,23 +40,9 @@ export class ChecklistComponent implements OnInit {
    * For storing selected Release Checklist
    */
   oldChecklist: ReleaseChecklist[] = [];
-
-  // public target: string = '#modalTarget';
-  // public target1: string = '#commentDialog';
-  // public evidenceDialogWidth: string = '850px';
-  // public width: string = '750px';
-  // public width1: string = '630px';
-  // public height: string = '250px';
   public commentsHeader!: string;
   public evidenceHeader!: string;
 
-  //public addEvidenceHeader!: string;
-  // public isModal: Boolean = true;
-  // public showCloseIcon: Boolean = true;
-  // public hidden: Boolean = false;
-
-  // initialPage!:Object;
-  // evidencePage: Object = {pageSize:5};
   public filter!: Object;
   selectedProject!: Project;
   selectedReleaseId!: number;
@@ -69,41 +56,23 @@ export class ChecklistComponent implements OnInit {
   viewEvidence!: ViewEvidence;
   viewEvidences: ViewEvidence[] = [];
   displayEvidences: ViewEvidence[] = [];
-  // public cssClass: string = 'e-list-template';
 
   selectedRelease!: ReleaseChecklist;
 
   @Output() childEvent = new EventEmitter();
   @Output() childEvent2 = new EventEmitter();
 
-  // public textArea!: HTMLElement;
-  // public confirmCloseIcon: Boolean = true;
   public confirmHeader: string = 'Delete Evidence';
-  // public confirmWidth: string = '400px';
-  // releaseShortChecklist!:ReleaseShortChecklist;
-  // public groupOptions!: Object;
-
-  // @ViewChild('dropdownbutton') element:any;
 
   @ViewChild(EvidenceAddComponent, { static: false }) evidenceAddComponent!: EvidenceAddComponent;
   @ViewChild(CommentAddComponent, { static: false }) commentAddComponent!: CommentAddComponent;
 
-  // public evidenceToolbar: Object[] =[];
-  // public evidenceEditSettings!: Object;
-  // selectOptions!:Object;
   selectedEvidence!: ViewEvidence;
-  // public uploadInput1: string = '';
-  // public multiple: boolean = false;
   viewReleaseChecklist: ReleaseChecklist[] = [];
-  // public refresh!: Boolean;
-  // @ViewChild('grid')
-  // public grid!: GridComponent;
   details: ReleaseDetails[] = [];
-  // public toolbar!: string[];
-  // newComment!:Comments;
+
   scanDate!: string;
   checkMarxIssue!: Checkmarx;
-  // severity!:Severity;
   highCount: number = 0;
   lowCount: number = 0;
   mediumCount: number = 0;
@@ -114,7 +83,7 @@ export class ChecklistComponent implements OnInit {
   backendTasks: BackendTask[] = [];
 
   isExit: boolean = true;
-  // public editSettings!: EditSettingsModel;
+
   isAddCommentOpen: boolean = false;
   showSpinner: boolean = false;
   data_collection!: DATA_COLLECTION;
@@ -134,14 +103,15 @@ export class ChecklistComponent implements OnInit {
   level = 0;
   selected!: string;
   isLoading = true;
+  evidenceDialogRef: any;
+  templateRef: any
+  addCommentTemplateRef: any;
   public dataSource = new MatTableDataSource<any | Group>([]);
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
     public domSanitizer: DomSanitizer) {
     this.groupByColumns = ['vector'];
   }
-
-  // public dropElement: HTMLElement = document.getElementsByClassName('control-fluid')[0] as HTMLElement;
 
   statusList: any[] = [
     { value: 'Done', viewValue: 'Done' },
@@ -151,7 +121,7 @@ export class ChecklistComponent implements OnInit {
   ];
 
   displayedColumns = ['vector', 'details', 'owner', 'detailedStatus', 'status', 'releaseCriteria', 'evidence', 'comments'];
-  evidenceDisplayedColumns = ['seq', 'title', 'evidenceChild', 'evidenceDate', 'comments'];
+  evidenceDisplayedColumns = ['seq', 'actions','title', 'evidenceChild', 'evidenceDate', 'comments'];
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
   ngOnInit(): void {
@@ -164,23 +134,20 @@ export class ChecklistComponent implements OnInit {
 
     this.showSpinner = true;
     this.isAddCommentOpen = false;
-    // this.editSettings = { allowEditing: true, mode: 'Normal' };
 
-    // this.groupOptions = { showDropArea: false, showGroupedColumn: false, columns: ['vector'] };
-    // this.selectOptions = {persistSelection: true, type: "Multiple" };
-    // this.evidenceToolbar = [{ text: 'Add Evidence', tooltipText: 'Add Evidence', prefixIcon: 'e-plus1', id: 'Add' }];
-    // this.evidenceEditSettings = { allowAdding: true, allowDeleting: true, mode: 'Dialog' };
     this.addCommentForm = this.formBuilder.group({
       comment: [null, Validators.required],
       upload: [null, []],
     });
-    // this.lines='Both';
-    // this.initialPage = {pageSize:5};
+
+    this.addOwnerForm = this.formBuilder.group({
+      name: [null, Validators.required],
+      email: [null, []],
+    });
+
     this.filter = { type: "CheckBox" };
     this.checkList = JSON.parse(localStorage.getItem("checkList")!);
-    // this.commands = [
-    //     { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } }
-    // ];
+
     this.getSelectedTask();
 
   }
@@ -189,7 +156,8 @@ export class ChecklistComponent implements OnInit {
     this.setTitle();
     this.service.getSelectedProject(this.selectedReleaseId!).subscribe(
       (response) => {
-        this.getDataCollections();
+        // this.getDataCollections(); temparory commented due to time taken
+        this.getDetails(); // Remove it before deployment
         this.backendTasks = response;
       },
       (err) => {
@@ -206,6 +174,43 @@ export class ChecklistComponent implements OnInit {
     this.milestone = this.selectedProject.project_milestone_id;
     this.workWeek = this.selectedProject.project_release_date;
     // this.oldChecklist = this.releaseChecklist!;
+
+  }
+
+  /**
+   * Retrieve the data collection file from SMB server
+   */
+   getDataCollections() {
+    // alert('get data collection');
+    this.highCount = 0;
+    this.lowCount = 0;
+    this.mediumCount = 0;
+    this.infoCount = 0;
+    let res1 = this.service.checkmarxScan(this.data_collection);
+    let res2 = this.service.kwScan(this.data_collection);
+    let res3 = this.service.protexScan(this.data_collection);
+    let res4 = this.service.bdbaScan(this.data_collection);
+    forkJoin([res1, res2, res3, res4]).subscribe(([data1, data2, data3, data4]) => {
+      // forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
+      this.checkMarxIssue = data1;
+      // alert("this.checkMarxIssue = "+this.checkMarxIssue);
+      this.tempText = data2;
+      // alert("this.tempText = "+this.tempText);
+      this.protexProj = data3;
+      // alert("this.protexProj = "+this.protexProj);
+      this.bdba = data4;
+      // alert("this.bdba = "+this.bdba);
+      if (this.checkMarxIssue)
+        this.runCheckMarxScan();
+      if (this.tempText)
+        this.getKwScan();
+      if (this.protexProj)
+        this.geProtexFile();
+      if (this.bdba)
+        this.geBdbaFile();
+
+      this.getDetails();
+    });
 
   }
 
@@ -227,7 +232,6 @@ export class ChecklistComponent implements OnInit {
     this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
-
       },
       (err) => {
         console.log(err.name);
@@ -236,11 +240,11 @@ export class ChecklistComponent implements OnInit {
   }
 
   testData!: string[];
+
   createTasks() {
     this.testData = [];
     var taskList: ReleaseChecklist[] = [];
     for (var task of this.backendTasks!) {
-
       var checkList: ReleaseChecklist = <ReleaseChecklist>{};
       checkList.bdbaStatus = false;
       checkList.id = task.guidelines_ptr_id;
@@ -248,6 +252,7 @@ export class ChecklistComponent implements OnInit {
       checkList.details = task.backend_guideline?.task_name!;
       checkList.owner = task.owner;
       checkList.status = task.status_id;
+      checkList.guidelineId = task.backend_guideline?.id;
       checkList.detailedStatus = [];
       // alert(checkList.details.toLowerCase().replace(/\s/g, ""));
       if (checkList.details.toLowerCase().replace(/\s/g, "") === STATIC_ANALYSIS_ISSUE) {
@@ -275,13 +280,33 @@ export class ChecklistComponent implements OnInit {
       // alert(selectedDetail?.vector);
 
       checkList.releaseCriteria = selectedDetail?.details.find(x => x.detail === task.backend_guideline?.task_name)?.releaseCriteria!;
+      checkList.comments = task.backend_comments!.sort((a, b) => {
+        if(b.date > a.date) {
+          return 1;
+        } else if(b.date < a.date) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      checkList.evidences = task.backend_evidences!.sort((a, b) => {
+        if(b.date > a.date) {
+          return 1;
+        } else if(b.date < a.date) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
       taskList.push(checkList);
     }
     this.showSpinner = false;
     this.viewReleaseChecklist = taskList;
     // this.dataSource.data = this.getGroups(this.viewReleaseChecklist, this.groupByColumns);
     this.releaseChecklist = this.viewReleaseChecklist;
+   
     localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+    
     this.isLoading = false;
   }
 
@@ -305,7 +330,37 @@ export class ChecklistComponent implements OnInit {
         console.log('getPDF error: ', error);
       }
     );
+  }
 
+  openCommentFile(fileName:string,type:string) {
+    // alert(fileName)
+    this.data_collection.file_type= type;
+    var fileext = fileName.split(".").pop();
+    let fileMIMEType=this.getMIMEtype(fileext!);
+    this.service.commentFile(this.data_collection,fileName).subscribe((data) => {
+
+      var file = new Blob([data], { type: fileMIMEType })
+      var fileURL = URL.createObjectURL(file);
+
+      window.open(fileURL);
+      var a = document.createElement('a');
+      a.href = fileURL;
+      a.target = '_blank';
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+
+      // alert('Hi = '+ this.dataLocalUrl);
+    },
+      (error) => {
+        console.log('getPDF error: ', error);
+      }
+    );
+  }
+
+  getMIMEtype(extn:string){
+    let ext=extn.toLowerCase();
+    return MIMETypes[ext as keyof typeof MIMETypes];
   }
 
 
@@ -333,6 +388,20 @@ export class ChecklistComponent implements OnInit {
     // this.toastObj.show(this.toasts[1]);
   }
 
+  getComments(){
+    var selectedTask:BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == this.selectedRelease.guidelineId)!;
+    this.viewComments = [];
+    this.displayComments = [];
+   
+    for (var comment of selectedTask.backend_comments!) {
+      this.viewComment = <ViewComment>{};
+      this.viewComment.comments = comment.comments;
+      this.viewComment.date = moment(comment.date).format('LLL');
+      this.viewComment.content = comment.content;
+      this.viewComments.push(this.viewComment);
+    }
+    this.displayComments = this.viewComments;
+  }
 
   commentDialogRef: any;
   commentTemplateRef: any
@@ -340,14 +409,13 @@ export class ChecklistComponent implements OnInit {
    * Call when user click on View/Add Comment
    * @param id Unique Release Id
    */
-  onCommentClicked(_templateRef: any, id: string) {
+  onCommentClicked(_templateRef: any, taskId: number) {
     this.commentLoaded = true;
     this.commentTemplateRef = _templateRef;
     this.selectedRelease = <ReleaseChecklist>{}
-    this.selectedRelease = this.getCurrentRelease(id)!;
-
+    this.selectedRelease = this.getCurrentRelease(taskId)!;
     this.commentsHeader = this.selectedRelease.vector + " Comments";
-
+    this.selectedReleaseGuideline = taskId;
     this.createCommentList(this.selectedRelease, true);
 
   }
@@ -357,14 +425,17 @@ export class ChecklistComponent implements OnInit {
    * @param _selectedRelease Update Release Checklist
    */
   createCommentList(_selectedRelease: ReleaseChecklist, state: boolean) {
+    
+    var selectedTask:BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == _selectedRelease.guidelineId)!;
     this.viewComments = [];
     this.displayComments = [];
+   
     // if(_selectedRelease.comments.length > 0){
-    for (var comment of _selectedRelease.comments) {
+    for (var comment of selectedTask.backend_comments!) {
       this.viewComment = <ViewComment>{};
-      this.viewComment.message = comment.message;
+      this.viewComment.comments = comment.comments;
       this.viewComment.date = moment(comment.date).format('LLL');
-      this.viewComment.file = comment.file;
+      this.viewComment.content = comment.content;
       this.viewComments.push(this.viewComment);
     }
     this.displayComments = this.viewComments;
@@ -380,91 +451,36 @@ export class ChecklistComponent implements OnInit {
 
     this.updateReleaseCheckList(this.selectedRelease);
   }
-  evidenceDialogRef: any;
-  templateRef: any
+  selectedReleaseGuideline!:number;
+
   /**
-   * Call when user click on View/Add Evidence
-   * @param selectedReleaseChecklist Existing Release ChecklIst
+   * 
+   * @param _templateRef 
+   * @param id 
+   * @param guidelineId 
    */
-  onEvidenceClicked(_templateRef: any, id: string) {
+  onEvidenceClicked(_templateRef: any, taskId: number) {
     this.evidenceLoaded = true;
     this.templateRef = _templateRef;
     this.selectedRelease = <ReleaseChecklist>{};
-    this.selectedRelease = this.getCurrentRelease(id)!;
+    this.selectedRelease = this.getCurrentRelease(taskId)!;
     this.evidenceHeader = this.selectedRelease.vector + " Evidences";
-
+    this.selectedReleaseGuideline = taskId;
     this.createEvidenceList(this.selectedRelease, true);
 
-  }
-
-  openEvidenceListDialog() {
-    this.evidenceDialogRef = this.dialog.open(this.templateRef, {
-      height: '60%',
-      width: '70%'
-    });
-
-    this.evidenceDialogRef.afterClosed().subscribe(() => {
-
-      // this.animal = result;
-    });
-  }
-
-  addCommentTemplateRef: any
-  openAddCommentDialog() {
-    this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
-      height: '60%',
-      width: '70%'
-    });
-
-    this.commentDialogRef.afterClosed().subscribe(() => {
-
-      // this.animal = result;
-    });
-  }
-
-  openCommentListDialog() {
-    this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
-      height: '60%',
-      width: '70%'
-    });
-
-    this.commentDialogRef.afterClosed().subscribe(() => {
-
-      // this.animal = result;
-    });
-  }
-
-  closeEvidenceListDialog() {
-    this.evidenceLoaded = false;
-    this.evidenceDialogRef.close();
-    // this.evidenceDialog.hide();
-  }
-
-  getCurrentRelease(releaseId: string) {
-    var selectedRelease = this.releaseChecklist!.find(t => t.id.toString() === releaseId)!;
-    return selectedRelease;
-  }
-
-  /**
-   * Create a new Comment
-   * @param newComment New Comment
-   */
-  addComment(newComment: Comments) {
-    this.selectedRelease.comments.unshift(newComment);
-    this.createCommentList(this.selectedRelease, false);
   }
 
   /**
    * Create Evidence List to show on View Evidence link
    * @param _selectedRelease Release Checklist
    */
-  createEvidenceList(_selectedRelease: ReleaseChecklist, state: boolean) {
+   createEvidenceList(_selectedRelease: ReleaseChecklist, state: boolean) {
     let num: number = 0;
     this.displayEvidences = [];
     this.viewEvidences = [];
-
+    var selectedTask:BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == _selectedRelease.guidelineId)!;
     // if(_selectedRelease.evidences.length > 0){
-    for (var evidence of _selectedRelease.evidences) {
+    for (var evidence of selectedTask.backend_evidences!) {
       num++;
       this.viewEvidence = <ViewEvidence>{};
       this.viewEvidence.seq = num;
@@ -473,6 +489,7 @@ export class ChecklistComponent implements OnInit {
       this.viewEvidence.id = evidence.id;
       this.viewEvidence.title = evidence.title;
       this.viewEvidence.comments = evidence.comments;
+      this.viewEvidence.type = evidence.type;
       // this.viewComment.date = this.service.getNiceTime(duration);
       this.viewEvidences.push(this.viewEvidence);
     }
@@ -490,6 +507,80 @@ export class ChecklistComponent implements OnInit {
     this.updateReleaseCheckList(_selectedRelease);
   }
 
+
+   /**
+   * Get Current Release
+   * @param releaseId Selected Release Id
+   * @returns Current Release
+   */
+    getCurrentRelease(releaseId: number) {
+      var selectedRelease = this.releaseChecklist!.find(t => t.id.toString() === releaseId.toString())!;
+      return selectedRelease;
+    }
+
+  /**
+   * Open Evidence List Dialog
+   */
+  openEvidenceListDialog() {
+    this.evidenceDialogRef = this.dialog.open(this.templateRef, {
+      height: '60%',
+      width: '70%'
+    });
+
+    this.evidenceDialogRef.afterClosed().subscribe(() => {
+      localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+    });
+  }
+
+  /**
+   * Open Add New Comment Dialog
+   */  
+  openAddCommentDialog() {
+    this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
+      height: '60%',
+      width: '70%'
+    });
+
+    this.commentDialogRef.afterClosed().subscribe(() => {
+
+    });
+  }
+
+  /**
+   * Open Comment List Dialog
+   */
+  openCommentListDialog() {
+    this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
+      height: '60%',
+      width: '70%'
+    });
+
+    this.commentDialogRef.afterClosed().subscribe(() => {
+
+    });
+  }
+
+  /**
+   * Close Evience List Dialog
+   */
+  closeEvidenceListDialog() {
+    this.evidenceLoaded = false;
+    this.evidenceDialogRef.close();
+    // this.evidenceDialog.hide();
+  }
+
+ 
+
+  /**
+   * Create a new Comment
+   * @param newComment New Comment
+   */
+  addComment(newComment: BackendComments) {
+    this.selectedRelease.comments.unshift(newComment);
+    this.createCommentList(this.selectedRelease, false);
+  }
+
+  
   /**
    * Update Existing release checklist
    * @param _selectedRelease ReleaseCheckList
@@ -503,9 +594,6 @@ export class ChecklistComponent implements OnInit {
    * Create Updated Task List and Save 
    */
   saveRelease() {
-    console.log(JSON.stringify(this.releaseChecklist));
-    // var newBackendGuideline:BackendGuideline;
-    // var newBackendGuidelineArray:BackendGuideline[]=[];
     var newBackendTask: ReleaseTask;
 
     var newBackendTaskArray: ReleaseTask[] = [];
@@ -528,7 +616,7 @@ export class ChecklistComponent implements OnInit {
     // console.log(JSON.stringify(newBackendTaskArray));
     // this.service.updateGuidelines(newBackendGuidelineArray).subscribe(data => {
     this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
-      localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+    localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
       // this.toastObj.show(this.toasts[0]);
     });
     // });
@@ -565,6 +653,7 @@ export class ChecklistComponent implements OnInit {
     // });
   }
   addCommentForm!: FormGroup;
+  addOwnerForm!: FormGroup;
   /**
    * Call when evidence delete
    * @param _selectedEvidence Selected Evidence to delete
@@ -590,13 +679,15 @@ export class ChecklistComponent implements OnInit {
 
   }
 
-  createEvidence() {
+  addEvidence() {
     const addEvidenceDialogRef = this.dialog.open(EvidenceAddComponent, {
       height: '50%',
-      width: '40%'
+      width: '40%',
+      data:{task_id:this.selectedReleaseGuideline}
     });
 
     addEvidenceDialogRef.afterClosed().subscribe((result) => {
+      
       this.evidenceLoaded = false;
       this.selectedRelease.evidences.unshift(result.data);
       this.createEvidenceList(this.selectedRelease, false);
@@ -676,54 +767,7 @@ export class ChecklistComponent implements OnInit {
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
   }
 
-  addOwner(id: string, args: string) {
-    var owner: string | undefined = args;
-    const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
-    this.viewReleaseChecklist![objIndex].owner = owner;
-    this.viewReleaseChecklist = [...this.viewReleaseChecklist];
 
-    const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
-    this.releaseChecklist![objIndex1].owner = owner;
-
-    // this.toastObj.show(this.toasts[6]);
-  }
-
-  /**
-   * Retrieve the data collection file from SMB server
-   */
-  getDataCollections() {
-    // alert('get data collection');
-    this.highCount = 0;
-    this.lowCount = 0;
-    this.mediumCount = 0;
-    this.infoCount = 0;
-    let res1 = this.service.checkmarxScan(this.data_collection);
-    let res2 = this.service.kwScan(this.data_collection);
-    let res3 = this.service.protexScan(this.data_collection);
-    let res4 = this.service.bdbaScan(this.data_collection);
-    forkJoin([res1, res2, res3, res4]).subscribe(([data1, data2, data3, data4]) => {
-      // forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
-      this.checkMarxIssue = data1;
-      // alert("this.checkMarxIssue = "+this.checkMarxIssue);
-      this.tempText = data2;
-      // alert("this.tempText = "+this.tempText);
-      this.protexProj = data3;
-      // alert("this.protexProj = "+this.protexProj);
-      this.bdba = data4;
-      // alert("this.bdba = "+this.bdba);
-      if (this.checkMarxIssue)
-        this.runCheckMarxScan();
-      if (this.tempText)
-        this.getKwScan();
-      if (this.protexProj)
-        this.geProtexFile();
-      if (this.bdba)
-        this.geBdbaFile();
-
-      this.getDetails();
-    });
-
-  }
 
   geBdbaFile() {
     this.bdbaData = [];
@@ -843,35 +887,70 @@ export class ChecklistComponent implements OnInit {
   currentFile?: File;
   public selectedCommentFile!: any;
 
-  commentInputChange(fileInputEvent: any) {
+  selectCommentFile(fileInputEvent: any) {
     this.selectedFiles = fileInputEvent.target.files;
     this.selectedCommentFile = fileInputEvent.target.files[0];
   }
 
-  newComment!: Comments;
+  newComment!: BackendComments;
   public Submit(): void {
     this.createNewComment();
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
-      if (file) {
-        this.currentFile = file;
-        this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
-        });
-      }
-    }
+    this.service.saveComment(this.newComment).subscribe((status) => {
+      this.uploadCommentFile();
+    });
+   
     this.addComment(this.newComment);
     this.addCommentForm.reset();
     this.addCommentDialogRef.close();
   }
 
+  uploadCommentFile(){
+    if (this.selectedFiles) {
+      const file: File | null = this.selectedCommentFile;
+      if (file) {
+        this.currentFile = file;
+        this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
+          localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+        });
+      }
+    }
+  }
+
   createNewComment() {
-    const newComments: Comments = {
-      id: uuidv4(),
-      message: this.addCommentForm.controls['comment'].value,
-      date: new Date().getTime(),
-      file: this.selectedCommentFile?.name
+    const newComments: BackendComments = {
+      id: Math.floor(Math.random() * 90000) + 10000,
+      comments: this.addCommentForm.controls['comment'].value,
+      date:  moment(new Date().getTime()).format(),
+      content: this.selectedCommentFile.name?this.selectedCommentFile.name:'',
+      task_id:this.selectedReleaseGuideline
     };
     this.newComment = newComments;
   }
+
+  ownerDialogRef: any;
+  addOwnerTemplateRef:any;
+  addOwner(_templateRef: any){
+    this.addOwnerTemplateRef = _templateRef;
+    this.ownerDialogRef = this.dialog.open(this.addOwnerTemplateRef, {
+      height: '35%',
+      width: '25%'
+    });
+
+    this.ownerDialogRef.afterClosed().subscribe(() => {
+      localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+    });
+  }
+
+  // addOwner(id: string, args: string) {
+  //   var owner: string | undefined = args;
+  //   const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == id));
+  //   this.viewReleaseChecklist![objIndex].owner = owner;
+  //   this.viewReleaseChecklist = [...this.viewReleaseChecklist];
+
+  //   const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == id));
+  //   this.releaseChecklist![objIndex1].owner = owner;
+
+  //   // this.toastObj.show(this.toasts[6]);
+  // }
 
 }

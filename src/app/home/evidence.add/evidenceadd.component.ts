@@ -6,12 +6,13 @@ import {
   FormControl
 } from '@angular/forms';
 
-import { Evidences, Project } from '../home.models';
+import { BackendEvidences, Project } from '../home.models';
 import { v4 as uuidv4 } from 'uuid';
 import { EvidenceAddService } from './evidenceadd.service';
 import { environment } from 'src/environments/environment';
-import { UPLOAD_LOWER } from 'src/app/release/release.constants';
+import { DATE_FORMAT, UPLOAD_LOWER } from 'src/app/release/release.constants';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-evidenceadd',
@@ -30,7 +31,7 @@ export class EvidenceAddComponent implements OnInit {
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
   public evidenceType!: string;
 
-  @Output() childEvent = new EventEmitter<Evidences>();
+  @Output() childEvent = new EventEmitter<BackendEvidences>();
 
   isFileUploadSelected: boolean = false;
   isLinkSelected: boolean = false;
@@ -48,7 +49,7 @@ export class EvidenceAddComponent implements OnInit {
   public formHeader: string = 'Success';
   public content: string = 'Your details have been updated successfully, Thank you.';
   public reg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-  newEvidence!: Evidences;
+  newEvidence!: BackendEvidences;
   selectedFile!: any;
   selectedProject!: Project;
 
@@ -65,7 +66,10 @@ export class EvidenceAddComponent implements OnInit {
   title = new FormControl('', [Validators.required]);
   comment = new FormControl('', [Validators.required]);
 
-  constructor(private formBuilder: FormBuilder, private service: EvidenceAddService, public dialogRef: MatDialogRef<EvidenceAddComponent>, @Inject(MAT_DIALOG_DATA) public data: Evidences) { }
+  constructor(private formBuilder: FormBuilder, private service: EvidenceAddService, public dialogRef: MatDialogRef<EvidenceAddComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: BackendEvidences) {
+      
+     }
 
   isValueExist(value: string): boolean {
     if (typeof value != 'undefined' && value) {
@@ -96,7 +100,7 @@ export class EvidenceAddComponent implements OnInit {
   selectedFiles?: FileList;
   currentFile?: File;
 
-  csvInputChange(fileInputEvent: any) {
+  selectEvidenceFile(fileInputEvent: any) {
     console.log(fileInputEvent.target.files[0]);
     this.selectedFiles = fileInputEvent.target.files;
     this.selectedFile = fileInputEvent.target.files[0];
@@ -104,22 +108,26 @@ export class EvidenceAddComponent implements OnInit {
 
   public Submit(): void {
     this.createNewEvidence();
+    this.service.saveEvidence(this.newEvidence).subscribe((status) => {
+      this.saveEvidenceFile();
+    });
+
+    this.dialogRef.close({ data: this.newEvidence });
+  }
+
+  saveEvidenceFile(){
     if (this.evidenceType === 'file') {
       if (this.selectedFiles) {
         const file: File | null = this.selectedFiles.item(0);
         if (file) {
           this.currentFile = file;
           this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
-
+            
           });
         }
       }
     }
-    // this.childEvent.emit(this.newEvidence);
-    // this.toastObj.show(this.toasts[2]);
-    // this.addEvidenceDialogRef.close();
-    // this.addEvidenceDialog.hide();
-    this.dialogRef.close({ data: this.newEvidence });
+  
   }
 
   openInput() {
@@ -140,6 +148,13 @@ export class EvidenceAddComponent implements OnInit {
     });
   }
 
+  /**
+   * Close the Add Evidence Dialog
+   */
+  Close(){
+    this.dialogRef.close();
+  }
+
   evidenceDialogClose() {
     this.evidenceForm.reset();
   }
@@ -150,15 +165,14 @@ export class EvidenceAddComponent implements OnInit {
   }
 
   createNewEvidence() {
-    const newEvidence: Evidences = {
-      id: uuidv4(),
-      project_id: this.selectedProject.project_id,
-
+    const newEvidence: BackendEvidences = {
+      id: Math.floor(Math.random() * 90000) + 10000,
+      task_id:this.data.task_id!,
       title: this.evidenceForm.controls['title'].value,
       comments: this.evidenceForm.controls['comment'].value,
       evidence: this.getEvidence(),
       type: this.evidenceType,
-      date: new Date().getTime()
+      date: moment(new Date().getTime()).format()
     };
     this.newEvidence = newEvidence;
   }
@@ -170,7 +184,7 @@ export class EvidenceAddComponent implements OnInit {
       evidence = this.evidenceForm.controls['link'].value;
       return evidence;
     } else if (this.evidenceForm.controls['upload'].value) {
-      evidence = this.selectedFile.name;
+      evidence = this.selectedFile.name?this.selectedFile.name:'';
       return evidence;
     }
     return '';
@@ -180,7 +194,11 @@ export class EvidenceAddComponent implements OnInit {
     return !this.evidenceForm.get(field)!.valid && (this.evidenceForm.get(field)!.dirty || this.evidenceForm.get(field)!.touched);
   }
 
-  onTypeSelect(args: any): void {
+  /**
+   * Select the evidence type (File or Link)
+   * @param args type of evidnece
+   */
+  onEvidenceTypeSelect(args: any): void {
     this.evidenceType = args.value;
     this.isFileUploadSelected = false;
     this.isLinkSelected = false;

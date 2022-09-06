@@ -27,14 +27,19 @@
     </mat-form-field>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Role</mat-label>
-        <input type="text" matInput formControlName="role">
+        <!-- <input type="text" matInput formControlName="role"> -->
+        <mat-select formControlName="role">
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+                {{role.viewValue}}
+            </mat-option>
+        </mat-select>
         <mat-error *ngIf="addStakeholderForm.controls.role.hasError('required') && addStakeholderForm.controls.role.touched">
             Role is required
         </mat-error>
     </mat-form-field>
 
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
-        [mat-dialog-close]="true">Close</button>
+        (click)="Close()">Close</button>
     <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"
         [disabled]="!addStakeholderForm.valid">Save</button>
 

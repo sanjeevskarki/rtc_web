@@ -1,9 +1,9 @@
 <div class="container" class="container mat-elevation-z9">
     <h1 mat-dialog-title></h1>
     <form [formGroup]="releaseForm" style="align-self: center;
-            width: 70%;">
+            width: 92%;">
 
-        <mat-form-field appearance="outline" style="width: 50%;">
+        <mat-form-field appearance="outline" style="width: 30%;">
             <mat-label>Business Unit</mat-label>
             <mat-select formControlName="businessunit">
                 <mat-option *ngFor="let businessunit of businessUnits" [value]="businessunit.value">
@@ -15,23 +15,26 @@
                 Business unit is required
             </mat-error>
         </mat-form-field>&nbsp;
-        <mat-form-field appearance="outline" style="width: 49%;">
+        <mat-form-field appearance="outline" style="width: 30%;">
             <mat-label>Product Name</mat-label>
             <input type="text" matInput formControlName="name">
             <mat-error *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched">
                 Product Name is required
             </mat-error>
+        </mat-form-field>&nbsp;
+        <mat-form-field appearance="outline" style="width: 30%;">
+            <mat-label>Status</mat-label>
+            <input type="text" matInput formControlName="status">
+            <mat-error *ngIf="releaseForm.controls.status.hasError('required') && releaseForm.controls.status.touched">
+                Status Unit is required
+            </mat-error>
         </mat-form-field>
         <br>
-        <mat-form-field appearance="outline" style="width: 39%;">
+        <mat-form-field appearance="outline" style="width: 30%;">
             <mat-label>Release Date</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="date" (dateChange)="onChange($event)">
-
-            
-
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-
         </mat-form-field>
         &nbsp;
         <mat-form-field  appearance="outline" style="width: 10%;">
@@ -42,7 +45,7 @@
         </mat-form-field>
         
         &nbsp;
-        <mat-form-field appearance="outline" style="width: 49%;">
+        <mat-form-field appearance="outline" style="width: 24%;">
             <mat-label>Release Type</mat-label>
             <mat-select formControlName="type">
                 <mat-option *ngFor="let release of releaseTypes" [value]="release.value">
@@ -52,9 +55,8 @@
             <mat-error *ngIf="releaseForm.controls.type.hasError('required') && releaseForm.controls.type.touched">
                 Release Type is required
             </mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="outline" style="width: 50%;">
+        </mat-form-field>&nbsp;
+        <mat-form-field appearance="outline" style="width: 25%;">
             <mat-label>Select Milestone</mat-label>
             <mat-select formControlName="milestone">
                 <mat-option *ngFor="let milestone of milestones" [value]="milestone.value">
@@ -65,24 +67,24 @@
                 *ngIf="releaseForm.controls.milestone.hasError('required') && releaseForm.controls.milestone.touched">
                 Milestone is required
             </mat-error>
-        </mat-form-field>&nbsp;
-        <mat-form-field appearance="outline" style="width: 49%;">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" style="width: 30%;">
             <mat-label>Qual Owner</mat-label>
             <input type="text" matInput formControlName="qualowner">
             <mat-error
                 *ngIf="releaseForm.controls.qualowner.hasError('required') && releaseForm.controls.qualowner.touched">
                 Owner is required
             </mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="outline" style="width: 50%;">
-            <mat-label>Status</mat-label>
-            <input type="text" matInput formControlName="status">
-            <mat-error *ngIf="releaseForm.controls.status.hasError('required') && releaseForm.controls.status.touched">
-                Status Unit is required
+        </mat-form-field>&nbsp;
+        <mat-form-field appearance="outline" style="width: 30%;">
+            <mat-label>Email</mat-label>
+            <input type="text" matInput formControlName="email">
+            <mat-error *ngIf="releaseForm.controls.status.hasError('email') && releaseForm.controls.email.touched">
+                Email is required
             </mat-error>
         </mat-form-field>&nbsp;
-        <mat-form-field appearance="outline" style="width: 49%;">
+        <mat-form-field appearance="outline" style="width: 30%;">
             <mat-label>Attorney</mat-label>
             <input type="text" matInput formControlName="attorney">
             <mat-error
@@ -91,7 +93,7 @@
             </mat-error>
         </mat-form-field>
         <br>
-        <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-form-field appearance="outline" style="width: 91%;">
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description"></textarea>
             <mat-error
@@ -100,8 +102,8 @@
             </mat-error>
         </mat-form-field>
     </form>
-        <br>
-        <div style="align-self: center;width: 70%;">
+        
+        <div style="align-self: center;width: 91%;">
             <!-- <button mat-flat-button matTooltip="Add Stakeholder" color="primary" (click)="addContact()">
                 <mat-icon>add</mat-icon>Add Stakeholder
             </button> -->
@@ -109,7 +111,7 @@
                 style="margin-bottom: 10px;">
                 <mat-icon style="margin-bottom: 3px">add</mat-icon>Add Stakeholder
             </button>
-            <div id="modalTarget" #targetModal style="width: 100%;">
+            <div id="modalTarget" #targetModal style="width: 92%;">
                 <mat-table #stakeholdertable [dataSource]="stakeholders">
                     <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>

@@ -1,12 +1,12 @@
 import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
+import { ATTACHMENTS_LOWER, EVIDENCES_LOWER, FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
-import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, FILE_PATH, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
+import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTIONS, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
-import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseShortChecklist, ReleaseTask, Unit, Success } from '../home.models';
-import { Bdba, Checkmarx, DATA_COLLECTION, Kw, Project } from './checklist.models';
+import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, Success, BackendComments } from '../home.models';
+import { Bdba, Checkmarx, DATA_COLLECTION, Project } from './checklist.models';
 import { switchMap } from "rxjs/operators";
 
 declare var require: any;
@@ -82,19 +82,6 @@ export class ChecklistService {
     ];
   }
 
-
-  // public checkList(): Observable<Checklist[]> { 
-  //   return this.httpClient.get<Checklist[]>("assets/data/checklist.json");
-  //   // this.apiUrl = API_URL(system);
-  //   // return this.httpClient.get<Data>(this.apiUrl);
-  // }
-
-  // public updateCheckList(id:string): Observable<Checklist[]> { 
-  //   return this.httpClient.put<Checklist[]>("assets/data/checklist.json",id);
-  //   // this.apiUrl = API_URL(system);
-  //   // return this.httpClient.get<Data>(this.apiUrl);
-  // }
-
   public details(fileName: string): Observable<ReleaseDetails[]> {
     return this.httpClient.get<ReleaseDetails[]>("assets/data/" + fileName + ".json");
     // this.apiUrl = API_URL(system);
@@ -105,9 +92,9 @@ export class ChecklistService {
     return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
   }
 
-  public getEvidences(projectId: number): Observable<BackendTask[]> {
-    return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
-  }
+  // public getEvidences(projectId: number): Observable<BackendTask[]> {
+  //   return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
+  // }
 
   public updateGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
     // const body=JSON.stringify(guideline);
@@ -123,6 +110,7 @@ export class ChecklistService {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
+      .set('file_type', DATA_COLLECTIONS)
       .set('file_name', CHECKMARX_SCAN_FILE);
     return this.httpClient.get<Checkmarx>(this.endpoint_url + this.file, { params: params });
   }
@@ -131,6 +119,7 @@ export class ChecklistService {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
+      .set('file_type', DATA_COLLECTIONS)
       .set('file_name', BDBA_SCAN_FILE);
     return this.httpClient.get<Bdba>(this.endpoint_url + this.file, { params: params });
   }
@@ -139,6 +128,7 @@ export class ChecklistService {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
+      .set('file_type', DATA_COLLECTIONS)
       .set('file_name', BDBA_SCAN_PDF_FILE);
     const requestOptions: Object = {
       headers: this.headers,
@@ -153,6 +143,7 @@ export class ChecklistService {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
+      .set('file_type', DATA_COLLECTIONS)
       .set('file_name', KW_SCAN_FILE);
     const requestOptions: Object = {
       headers: this.headers,
@@ -167,6 +158,7 @@ export class ChecklistService {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
+      .set('file_type', DATA_COLLECTIONS)
       .set('file_name', PROTEX_SCAN_FILE);
     const requestOptions: Object = {
       headers: this.headers,
@@ -281,7 +273,7 @@ export class ChecklistService {
     let params = new HttpParams().set('businessUnit', businessUnit.toLowerCase().replace(/\s/g, ""))
       .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
       .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
-      .set('dataCollection', 'attachments');
+      .set('dataCollection', ATTACHMENTS_LOWER);
 
     const requestOptions: Object = {
       reportProgress: true,
@@ -294,5 +286,25 @@ export class ChecklistService {
     return this.httpClient.request(req);
   }
 
+  public saveComment(comment: BackendComments): Observable<boolean> {
+    const body = JSON.stringify(comment);
+    return this.httpClient.post<boolean>(`${this.endpoint_url}comments` , body, { headers: this.headers });
+  }
+
+  public commentFile(data_collection: DATA_COLLECTION,fileName:string): Observable<any> {
+    let params = new HttpParams().set('business_unit', data_collection.business_unit)
+      .set('milestone_id', data_collection.milestone_id)
+      .set('project_id', data_collection.project_id)
+      .set('file_type', data_collection.file_type)
+      .set('file_name', fileName);
+    const requestOptions: Object = {
+      headers: this.headers,
+      responseType: 'text',
+      params: params,
+    }
+
+    return this.httpClient.get<any>(this.endpoint_url + this.file, requestOptions);
+  }
 
 }
+

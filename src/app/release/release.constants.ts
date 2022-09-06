@@ -5,6 +5,7 @@ export const FILE_LOWER = 'file';
 export const UPLOAD_LOWER = 'upload';
 export const IS_FOLDER_EXIST = 'isExist';
 export const GUIDELINE_LOWER = 'guideline';
+export const STAKEHOLDER_LOWER = 'stakeholder';
 export const BUSINESS_UNIT = 'businessunit';
 export const PROJECT = 'project';
 export const POC_UPPER = 'POC';

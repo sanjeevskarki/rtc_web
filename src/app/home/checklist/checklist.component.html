@@ -10,7 +10,14 @@
         </ng-container>
         <ng-container matColumnDef="owner">
             <mat-header-cell *matHeaderCellDef>Owner</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.owner}}</mat-cell>
+            <mat-cell *matCellDef="let row">{{row.owner}}
+                <div>
+                    <button mat-icon-button matTooltip="View Owner" color="primary"
+                        (click)="addOwner(addOwnerDialog)">
+                        <mat-icon>person_outline</mat-icon>
+                    </button>
+                </div>
+            </mat-cell>
         </ng-container>
         <ng-container matColumnDef="detailedStatus">
             <mat-header-cell *matHeaderCellDef>Detailed Status</mat-header-cell>
@@ -22,7 +29,7 @@
                 </div>
                 <div *ngIf="row.bdbaStatus && row.detailedStatus">
                     <button mat-icon-button matTooltip="View Report" color="accent"
-                        aria-label="Example icon button with a menu icon" (click)="openBdbaReport()">
+                        (click)="openBdbaReport()">
                         <mat-icon>file_copy</mat-icon>
                     </button>
                 </div>
@@ -94,22 +101,19 @@
             <mat-cell *matCellDef="let row">
                 <div *ngIf="row.comments.length > 0; else noComments" class="firstline cell-line comment-div">
                     <div class="firstline cell-line">
-                        <div>{{row.comments[0].message}}</div>
-                        <div>
-                            {{ row.comments[0].file }}
+                        <div>{{row.comments[0].comments}}</div>
+                        <div (click)="openCommentFile(row.comments[0].content,'attachments')" style="cursor: pointer;">
+                            <u>{{ row.comments[0].content }}</u>
                         </div>
                         <div style="font-size: 11px;"> {{row.comments[0].date | date:'medium'}} </div>
                     </div>
                     <div class="secondline cell-line">
-
                         <button mat-flat-button matTooltip="View / Add Comments" color="primary" style="line-height: 20px !important;
                             font-size: 12px !important" (click)="onCommentClicked(commentDialog,row.id)">
                             <mat-icon>add</mat-icon>View / Add
                         </button>
-
                     </div>
                 </div>
-
                 <ng-template #noComments>
                     <div>
                         <div class="firstline cell-line">No Comment Found</div>
@@ -161,8 +165,9 @@
             <div style="width:100%">
                 <div style="float: right;margin-right: 10px;font-size: 11px;" class="detailsAnswer">{{comment.date}}
                 </div>
-                <div class="posting">{{comment.message}}</div>
-                <div class="posting"> {{ comment.file }}</div>
+                <div class="posting">{{comment.comments}}</div>
+                <div class="posting" (click)="openCommentFile(comment.content,'attachments')" style="cursor: pointer;">
+                <u>{{ comment.content }}</u></div>
             </div>
         </mat-list-item>
     </mat-list>
@@ -195,18 +200,15 @@
         </mat-form-field>
         <div class="form-group">
             <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
-            <input id="commentFileInput" hidden type="file" (change)="commentInputChange($event)"
+            <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)"
                 formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
-            <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
+            <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>            
         </div>
         <br>
-
-
         <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
             (click)="closeAddCommentDialog()">Close</button>
         <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
             (click)="Submit()" [disabled]="!addCommentForm.valid">Save</button>
-
     </form>
 </ng-template>
 <!-- <app-commentadd *ngIf="commentLoaded" ></app-commentadd> -->
@@ -235,6 +237,18 @@
             <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.seq}}</mat-cell>
         </ng-container>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <div *ngIf="row.type === 'file'">
+                    <button mat-icon-button matTooltip="View File" color="primary"
+                        (click)="openCommentFile(row.evidence,'evidences')">
+                        <mat-icon>file_copy</mat-icon>
+                    </button>
+                </div>
+            </mat-cell>
+        </ng-container>
+        
         <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.title}}</mat-cell>
@@ -268,7 +282,7 @@
         Close
     </button>
     <button mat-flat-button matTooltip="Add Evidence" color="primary" style="float: right;margin: 8px 8px 0;"
-        (click)="createEvidence()">
+        (click)="addEvidence()">
         Add Evidence
     </button>
 
@@ -283,16 +297,34 @@ header='Delete Evidence' width='450px' [buttons]='buttons' ></ejs-dialog>   -->
     Add a new evidence
 -->
 <app-evidenceadd *ngIf="evidenceLoaded"></app-evidenceadd>
-<!--
-    Toast Message
--->
-<!-- <ejs-toast #toasttype id='toasttype' [position]="toastPosition" (created)="onCreate()" [target]="target"></ejs-toast> -->
-<!--
-    Confirmation Dialog Before Leaving the Release PAge without saving
--->
-<!-- <ejs-dialog id='saveReleaseConfirmDialog' #saveReleaseConfirmDialog [visible]='hidden' [allowDragging]='true' [animationSettings]='animationSettings' content='This page contains some changes that were not been saved yet and will be lost if you navigate away. You can either discard them and navigate to the selected page or go back and review these changes.' [target]='target'
-header='Leave Page?' width='450px' [buttons]='saveChecklistButtons' [position]="position"></ejs-dialog>   -->
 
-<!-- <pdf-viewer [src]="pdfSource"
-              [original-size]="false"
-  ></pdf-viewer> -->
+
+<!--
+    Dialog for adding a new comment
+-->
+<ng-template #addOwnerDialog>
+    <h1 mat-dialog-title>Add Owner</h1>
+    <form class="example-form" [formGroup]="addOwnerForm">
+        <mat-form-field appearance="outline" style="display: inline;">
+            <mat-label>Name</mat-label>
+            <input type="text" matInput formControlName="name">
+            <mat-error
+                *ngIf="addOwnerForm.controls.name.hasError('required') && addOwnerForm.controls.name.touched">
+                Name is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="display: inline;">
+            <mat-label>Email</mat-label>
+            <input type="text" matInput formControlName="email">
+            <mat-error
+                *ngIf="addOwnerForm.controls.email.hasError('required') && addOwnerForm.controls.email.touched">
+                Email is required
+            </mat-error>       
+        </mat-form-field>
+        <br>
+        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+            (click)="closeAddCommentDialog()">Close</button>
+        <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
+            (click)="Submit()" [disabled]="!addCommentForm.valid">Save</button>
+    </form>
+</ng-template>

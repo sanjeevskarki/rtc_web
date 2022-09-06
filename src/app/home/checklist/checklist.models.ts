@@ -71,6 +71,7 @@ export interface DATA_COLLECTION {
 	business_unit: string;
 	project_id:string;
 	milestone_id:string;
+	file_type:string;
 	file_name:string;
 }
 

@@ -36,6 +36,8 @@ export const PROJECT = 'project';
 export const PROTEX_SCAN_FILE = 'protex_scanresults_c_idiwellnesspcathena_46683.xml';
 export const KW_SCAN_FILE = 'Perc_hw_wos_kw.json';
 export const CHECKMARX_SCAN_FILE = 'checkmarx_issues.json';
+export const DATA_COLLECTIONS = 'data_collections';
+
 export const BDBA_SCAN_FILE = 'd457_bdba.json';
 export const BDBA_SCAN_PDF_FILE = 'd457_bdba.pdf';
 export const FILE_PATH = 'assets/data/';
@@ -45,3 +47,17 @@ export const PROTEX_MATCHES_LICENSE_CONFLICTS = 'protexmatches&licenseconflicts'
 // export const STATIC_ANALYSIS_ISSUE = 'staticanalysisissues';
 export const COMPOSITION_ANALYSIS_ISSUES = 'compositionanalysisissues';
 
+export const MIMETypes={
+  txt :'text/plain',
+  docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  doc : 'application/msword',
+  pdf : 'application/pdf',
+  jpg : 'image/jpeg',
+  bmp : 'image/bmp',
+  png : 'image/png',
+  xls : 'application/vnd.ms-excel',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  rtf : 'application/rtf',
+  ppt : 'application/vnd.ms-powerpoint',
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+};

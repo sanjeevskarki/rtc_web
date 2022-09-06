@@ -2,10 +2,12 @@ import { Component, EventEmitter, Inject, OnInit, Output, ViewChild } from '@ang
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { v4 as uuidv4 } from 'uuid';
-import { Comments, Files, Project, ReleaseChecklist } from '../home.models';
+import { BackendComments, Files, Project, ReleaseChecklist } from '../home.models';
 
 import { CommentAddService } from './commentadd.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'src/app/release/release.constants';
 
 
 @Component({
@@ -44,7 +46,7 @@ export class CommentAddComponent implements OnInit {
   public selectedCommentFile!: any;
 
 
-  newComment!: Comments;
+  newComment!: BackendComments;
   selectedRelease!: ReleaseChecklist;
   @Output() childEvent1 = new EventEmitter<any>();
 
@@ -52,7 +54,7 @@ export class CommentAddComponent implements OnInit {
   selectedProject!: Project;
   fileName!: string;
 
-  constructor(private formBuilder: FormBuilder, private service: CommentAddService, public dialogRef: MatDialogRef<CommentAddComponent>, @Inject(MAT_DIALOG_DATA) public data: Comments) { }
+  constructor(private formBuilder: FormBuilder, private service: CommentAddService, public dialogRef: MatDialogRef<CommentAddComponent>, @Inject(MAT_DIALOG_DATA) public data: BackendComments) { }
 
   ngOnInit(): void {
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
@@ -88,6 +90,7 @@ export class CommentAddComponent implements OnInit {
       if (file) {
         this.currentFile = file;
         this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
+          
         });
       }
     }
@@ -95,12 +98,15 @@ export class CommentAddComponent implements OnInit {
     this.dialogRef.close({ data: this.newComment });
   }
 
+ 
+
   createNewComment() {
-    const newComments: Comments = {
-      id: uuidv4(),
-      message: this.commentForm.controls['comment'].value,
-      date: new Date().getTime(),
-      file: this.selectedCommentFile.name
+    const newComments: BackendComments = {
+      id: Math.floor(Math.random() * 90000) + 10000,
+      comments: this.commentForm.controls['comment'].value,
+      date: moment(new Date().getTime()).format(),
+      content: this.selectedCommentFile.name,
+      task_id:0
     };
     this.newComment = newComments;
   }
