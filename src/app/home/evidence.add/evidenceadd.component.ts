@@ -101,7 +101,6 @@ export class EvidenceAddComponent implements OnInit {
   currentFile?: File;
 
   selectEvidenceFile(fileInputEvent: any) {
-    console.log(fileInputEvent.target.files[0]);
     this.selectedFiles = fileInputEvent.target.files;
     this.selectedFile = fileInputEvent.target.files[0];
   }
@@ -143,9 +142,27 @@ export class EvidenceAddComponent implements OnInit {
       title: [null, Validators.required],
       type: [null, Validators.required],
       link: [null, [Validators.pattern(this.reg)]],
-      upload: [null, []],
+      upload: [null, [this.requiredFileType('png')]],
       comment: [null, Validators.required],
     });
+  }
+
+  requiredFileType( type: string ) {
+    return function (control: FormControl) {
+      const file = control.value;
+      if ( file ) {
+        const extension = file.name.split('.')[1].toLowerCase();
+        if ( type.toLowerCase() !== extension.toLowerCase() ) {
+          return {
+            requiredFileType: true
+          };
+        }
+        
+        return null;
+      }
+  
+      return null;
+    };
   }
 
   /**

@@ -110,3 +110,11 @@ export interface Result {
 export interface Meta{
 	code:number;
 }
+
+export interface OwnerEmail{
+	name:string;
+	email:string;
+	project_name:string;
+	milestone:string;
+	task_name:string;
+}

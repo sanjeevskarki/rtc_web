@@ -14,9 +14,9 @@
         <mat-error *ngIf="addStakeholderForm.controls.email.hasError('required') && addStakeholderForm.controls.email.touched">
             Email is required
         </mat-error>
-        <mat-error *ngIf="addStakeholderForm.controls.email.hasError('email')"
-        >Please enter a valid email address
-      </mat-error>
+        <mat-error *ngIf="addStakeholderForm.controls.email.hasError('email')">
+            Please enter a valid email address
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>WWID</mat-label>

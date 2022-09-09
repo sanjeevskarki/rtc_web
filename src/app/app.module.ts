@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EvidenceAddComponent } from './home/evidence.add/evidenceadd.component';
 import { ReleaseComponent } from './release/release.component';
 
-import { CommentAddComponent } from './home/comment.add/commentadd.component';
+
 import { ChecklistMenuComponent } from './home/checklist.menu/checklist.menu.component';
 import { ReleaseEditComponent } from './release/release.edit/release.edit.component';
 import { BkcComponent } from './home/bkc/bkc.component';
@@ -57,7 +57,6 @@ import { ReleaseStakeholderComponent } from './release/release.stakeholder/relea
     HelpComponent,
     EvidenceAddComponent,
     ReleaseComponent,
-    CommentAddComponent,
     ChecklistMenuComponent,
     ReleaseEditComponent,
     BkcComponent,

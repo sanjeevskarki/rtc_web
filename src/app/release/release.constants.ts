@@ -20,6 +20,8 @@ export const MILESTONE_LOWER = 'milestone';
 export const TYPE_LOWER = 'type';
 export const HANDOVER_LOWER = 'handover';
 export const NAME_LOWER = 'name';
+export const EMAIL_LOWER = 'email';
+export const COMMENT_LOWER = 'comment';
 
 export const BUSINESS_UNIT_LOWER = 'businessunit';
 export const DATE_LOWER = 'date';

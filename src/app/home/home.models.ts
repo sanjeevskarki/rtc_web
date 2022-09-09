@@ -20,6 +20,7 @@ export interface ReleaseChecklist {
   vector: string;
   details:string;
   owner:string;
+  owner_email:string;
   status:string|undefined;
   detailedStatus:string[];
   releaseCriteria?:string;
@@ -157,6 +158,7 @@ export interface Notes {
 export interface ReleaseTask {
   guidelines_ptr_id:number;
   owner:string;
+  owner_email:string;
   project_id_id:Number;
   status_id:string;
 }
@@ -172,6 +174,7 @@ export interface ReleaseTask {
 export interface BackendTask {
   guidelines_ptr_id: number;
   owner: string;
+  owner_email:string;
   project_id_id:string;
   status_id:string;
   backend_guideline?:BackendGuideline;

@@ -165,7 +165,6 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   onChange(args: any) {
-    // alert("select date");
     this.workWeek = args.value;
     // this.workWeek = "ww"+moment(new Date(args.value), "MM-DD-YYYY").week()+"'"+new Date(args.value).getFullYear();
     this.isWorkWeekVisible = true;
@@ -301,21 +300,17 @@ export class ReleaseEditComponent implements OnInit {
 
 
   updateRelease() {
-    // alert(this.releaseForm.controls['notes'].value);
     this.newProject = <Project>{};
 
-    // alert(this.selectedProject);
     this.newProject.project_name = this.releaseForm.controls[NAME_LOWER].value;
     this.newProject.project_business_unit_id = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
     this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWER].value;
     this.newProject.project_release_date = moment(this.releaseForm.controls[DATE_LOWER].value).format(DATE_FORMAT);
     this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
     if (this.selectedProject) {
-      // alert(this.selectedProject.project_id);
       this.newProject.project_id = this.selectedProject.project_id;
       this.updateProject();
     } else {
-      // alert('adding new release');
       this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
       this.getDetails();
     }
@@ -420,9 +415,7 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   updateProject() {
-    // alert(this.newProject.project_name);
     this.service.updateProject(this.newProject).subscribe(data => {
-      // alert(data);
       this.createStakehoders(this.newProject.project_id);
       // this.releaseForm.reset();
       this.clear(this.releaseForm);
@@ -454,7 +447,6 @@ export class ReleaseEditComponent implements OnInit {
         this.newStakeholder = result.data;
         console.log("this.newStakeholder  = "+JSON.stringify(this.newStakeholder) );
         this.projectStakeholders.push(this.newStakeholder);
-        alert(this.projectStakeholders.length);
         this.stakeholders = this.projectStakeholders;
       }
     });

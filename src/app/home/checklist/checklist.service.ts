@@ -1,12 +1,12 @@
 import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ATTACHMENTS_LOWER, EVIDENCES_LOWER, FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
+import { ATTACHMENTS_LOWER, EMAIL_LOWER, FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
 import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTIONS, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
 import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, Success, BackendComments } from '../home.models';
-import { Bdba, Checkmarx, DATA_COLLECTION, Project } from './checklist.models';
+import { Bdba, Checkmarx, DATA_COLLECTION, OwnerEmail, Project } from './checklist.models';
 import { switchMap } from "rxjs/operators";
 
 declare var require: any;
@@ -21,6 +21,7 @@ const xml2js = require("xml2js");
 export class ChecklistService {
   endpoint_url: string = environment.ENDPOINT;
   task: string = TASK_LOWER;
+  email: string = EMAIL_LOWER
   file: string = FILE_LOWER;
   guideline: string = GUIDELINE_LOWER;
   unit!: Unit;
@@ -82,13 +83,23 @@ export class ChecklistService {
     ];
   }
 
-  public details(fileName: string): Observable<ReleaseDetails[]> {
+  /**
+   * Read the Static data file of a given miletone
+   * @param fileName Name of the File
+   * @returns File
+   */
+  public getStaticData(fileName: string): Observable<ReleaseDetails[]> {
     return this.httpClient.get<ReleaseDetails[]>("assets/data/" + fileName + ".json");
     // this.apiUrl = API_URL(system);
     // return this.httpClient.get<Data>(this.apiUrl);
   }
 
-  public getSelectedProject(projectId: number): Observable<BackendTask[]> {
+  /**
+   * Get the given Project Task list
+   * @param projectId Project ID
+   * @returns List of task associated with the Project
+   */
+  public getSelectedProjectTask(projectId: number): Observable<BackendTask[]> {
     return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
   }
 
@@ -266,6 +277,14 @@ export class ChecklistService {
     }
   }
 
+  /**
+   * Upload the Evidence and Comment files
+   * @param file File to upload
+   * @param businessUnit Business Unit of the Project
+   * @param projectName Name of the Project
+   * @param milestone Milestone of Project
+   * @returns Status of Upload
+   */
   public uploadFile(file: File, businessUnit: string, projectName: string, milestone: string): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     formData.append('file', file);
@@ -286,12 +305,23 @@ export class ChecklistService {
     return this.httpClient.request(req);
   }
 
+  /**
+   * Save comment in DB
+   * @param comment Comments
+   * @returns Status of API
+   */
   public saveComment(comment: BackendComments): Observable<boolean> {
     const body = JSON.stringify(comment);
-    return this.httpClient.post<boolean>(`${this.endpoint_url}comments` , body, { headers: this.headers });
+    return this.httpClient.post<boolean>(`${this.endpoint_url}comments`, body, { headers: this.headers });
   }
 
-  public commentFile(data_collection: DATA_COLLECTION,fileName:string): Observable<any> {
+  /**
+   * Get the comments related file
+   * @param data_collection Folder Heirarchy where file saved
+   * @param fileName Name of the file
+   * @returns file
+   */
+  public getFile(data_collection: DATA_COLLECTION, fileName: string): Observable<any> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
@@ -299,11 +329,24 @@ export class ChecklistService {
       .set('file_name', fileName);
     const requestOptions: Object = {
       headers: this.headers,
-      responseType: 'text',
+      responseType: 'blob',
       params: params,
     }
 
     return this.httpClient.get<any>(this.endpoint_url + this.file, requestOptions);
+  }
+
+  /**
+   * Send Email to task owner
+   */
+  public sendEmail(ownerEmails: OwnerEmail[]): Observable<Success> {
+    return this.httpClient.post<Success>(this.endpoint_url + this.task + '/' + this.email, ownerEmails, { headers: this.headers });
+  }
+
+  download(url: string): Observable<Blob> {
+    return this.httpClient.get(url, {
+      responseType: 'blob'
+    })
   }
 
 }
