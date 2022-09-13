@@ -142,7 +142,7 @@ export class EvidenceAddComponent implements OnInit {
       title: [null, Validators.required],
       type: [null, Validators.required],
       link: [null, [Validators.pattern(this.reg)]],
-      upload: [null, [this.requiredFileType('png')]],
+      upload: [null, []],
       comment: [null, Validators.required],
     });
   }

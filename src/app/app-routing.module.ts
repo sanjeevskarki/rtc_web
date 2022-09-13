@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'release', component: ReleaseComponent,canDeactivate: [ReleaseGuard]  },
   { path: 'admin', component: AdminComponent },
+  { path: 'notification', component: NotificationComponent },
   { path: 'report', component: ReportComponent },
   { path: 'help', component: HelpComponent },
   { path: 'checklist',        
@@ -26,7 +27,7 @@ const routes: Routes = [
           {
             path: 'releasecompliance',        
             component: ChecklistComponent,
-            canDeactivate: [ChecklistGuard],
+            // canDeactivate: [ChecklistGuard],
           },
           {
             path: 'releaseinfo',        

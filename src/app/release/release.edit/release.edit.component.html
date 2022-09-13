@@ -23,29 +23,29 @@
             </mat-error>
         </mat-form-field>&nbsp;
         <mat-form-field appearance="outline" style="width: 30%;">
-            <mat-label>Status</mat-label>
+            <mat-label>Release Status</mat-label>
             <input type="text" matInput formControlName="status">
             <mat-error *ngIf="releaseForm.controls.status.hasError('required') && releaseForm.controls.status.touched">
                 Status Unit is required
             </mat-error>
         </mat-form-field>
         <br>
-        <mat-form-field appearance="outline" style="width: 30%;">
+        <mat-form-field appearance="outline" style="width: 20%;">
             <mat-label>Release Date</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="date" (dateChange)="onChange($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         &nbsp;
-        <mat-form-field  appearance="outline" style="width: 10%;">
+        <mat-form-field appearance="outline" style="width: 9%;">
             <mat-label>Work Week</mat-label>
-            <input  type="text" matInput value="{{(workWeek) ? (workWeek | workWeekPipe) : ''}}">
+            <input disabled="true"  type="text" matInput value="{{(workWeek) ? (workWeek | workWeekPipe) : ''}}">
            
             <!-- <div *ngIf="isWorkWeekVisible">{{workWeek | workWeekPipe}}</div> -->
         </mat-form-field>
         
         &nbsp;
-        <mat-form-field appearance="outline" style="width: 24%;">
+        <mat-form-field appearance="outline" style="width: 30%;">
             <mat-label>Release Type</mat-label>
             <mat-select formControlName="type">
                 <mat-option *ngFor="let release of releaseTypes" [value]="release.value">
@@ -56,7 +56,7 @@
                 Release Type is required
             </mat-error>
         </mat-form-field>&nbsp;
-        <mat-form-field appearance="outline" style="width: 25%;">
+        <mat-form-field appearance="outline" style="width: 30%;">
             <mat-label>Select Milestone</mat-label>
             <mat-select formControlName="milestone">
                 <mat-option *ngFor="let milestone of milestones" [value]="milestone.value">
@@ -78,14 +78,14 @@
             </mat-error>
         </mat-form-field>&nbsp;
         <mat-form-field appearance="outline" style="width: 30%;">
-            <mat-label>Email</mat-label>
+            <mat-label>Qual Owner Email</mat-label>
             <input type="text" matInput formControlName="email">
             <mat-error *ngIf="releaseForm.controls.status.hasError('email') && releaseForm.controls.email.touched">
                 Email is required
             </mat-error>
         </mat-form-field>&nbsp;
         <mat-form-field appearance="outline" style="width: 30%;">
-            <mat-label>Attorney</mat-label>
+            <mat-label>Attorney Name</mat-label>
             <input type="text" matInput formControlName="attorney">
             <mat-error
                 *ngIf="releaseForm.controls.attorney.hasError('required') && releaseForm.controls.attorney.touched">

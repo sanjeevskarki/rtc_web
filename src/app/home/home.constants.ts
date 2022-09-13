@@ -36,10 +36,10 @@ export const PROJECT = 'project';
 export const PROTEX_SCAN_FILE = 'protex_scanresults_c_idiwellnesspcathena_46683.xml';
 export const KW_SCAN_FILE = 'Perc_hw_wos_kw.json';
 export const CHECKMARX_SCAN_FILE = 'checkmarx_issues.json';
-export const DATA_COLLECTIONS = 'data_collections';
+export const DATA_COLLECTION = 'data_collection';
 
-export const BDBA_SCAN_FILE = 'd457_bdba.json';
-export const BDBA_SCAN_PDF_FILE = 'd457_bdba.pdf';
+export const BDBA_SCAN_FILE = '_bdba.json';
+export const BDBA_SCAN_PDF_FILE = '_bdba.pdf';
 export const FILE_PATH = 'assets/data/';
 
 export const STATIC_ANALYSIS_ISSUE = 'staticanalysisissues';

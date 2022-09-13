@@ -17,7 +17,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad02",
                 "detail":"Code completion",
-                "releaseCriteria":" Feature Completeof Alpha committed requirements. Code review complete"
+                "releaseCriteria":"Development complete for all PV/PRQ requirements; SW is production ready.Code review & LTR checklist verified"
             }
         ]
     },
@@ -28,7 +28,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad03",
                 "detail":"Customer Documentation Readiness ",
-                "releaseCriteria":"All customer collateral for Alpha ready for release including known SW limitations & defects"
+                "releaseCriteria":"All customer collateral ready for release including known SW limitations & defects"
             }
         ]
     },
@@ -39,7 +39,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad04",
                 "detail":"Impact assessment of defects. Assess # of open defects, for both severity/exposure and priority.",
-                "releaseCriteria":"All milestone must-fix/P1 defects from all sources resolved and verified. No more than 3 critical severity open bugs"
+                "releaseCriteria":"All must-fix (Priority=P1) defects and all critical severity defects resolved and verified."
             }
         ]
     },
@@ -50,12 +50,12 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad05",
                 "detail":"Functional Validation Plan",
-                "releaseCriteria":"Plan Approved & coverage is 100% of the functional requirements"
+                "releaseCriteria":"Plan Approved & coverage is 95% of the functional requirements"
             },
             {
                 "id": "kimnd5a66f5735b084075f81af70ad06",
                 "detail":"Functional validation  Execution",
-                "releaseCriteria":"Execution rate > 95%, Pass rate > 80%"
+                "releaseCriteria":"Execution rate > 100%, Pass rate > 95%"
             },
             {
                 "id": "kimnd5a66f5735b084075f81af70ad07",
@@ -65,7 +65,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad08",
                 "detail":"KPI measurement",
-                "releaseCriteria":"All KPIs tested with each at < 15% deviation from target with >QS"
+                "releaseCriteria":"All KPIs tested with each at < 5% deviation"
             },
             {
                 "id": "kimnd5a66f5735b084075f81af70ad09",
@@ -75,7 +75,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad10",
                 "detail":"Stability validation execution",
-                "releaseCriteria":"DPMO < 300"
+                "releaseCriteria":"DPMO < 200"
             }
         ]
     },
@@ -86,7 +86,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad11",
                 "detail":"OS Cert completeness, Standards compliance (FUSA), Accessibility & Waiver Status",
-                "releaseCriteria":"80% Passing and issues recorded as defects."
+                "releaseCriteria":"Certification tests are completed & 100% passed, No issues gate final certification."
             }
         ]
     },
@@ -162,8 +162,8 @@
         "details": [
             {
                 "id": "kimnd5a66f5735b084075f81af70ad24",
-                            "detail":"PIA (Privacy Impact Assesment)",
-                            "releaseCriteria":"Approved"
+                "detail":"PIA (Privacy Impact Assesment)",
+                "releaseCriteria":"Approved"
             }
         ]
     },
@@ -194,7 +194,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad29",
                 "detail":"Static Analysis issues",
-                "releaseCriteria":"Dispositioned"
+                "releaseCriteria":"Issues Resolved"
             },
             {
                 "id": "kimnd5a66f5735b084075f81af70ad30",
@@ -204,7 +204,7 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad31",
                 "detail":"Composition Analysis issues",
-                "releaseCriteria":"Dispositioned"
+                "releaseCriteria":"Issues Resolved"
             },
             {
                 "id": "kimnd5a66f5735b084075f81af70ad32",
@@ -219,12 +219,12 @@
             {
                 "id": "kimnd5a66f5735b084075f81af70ad34",
                 "detail":"A/V Scan",
-                "releaseCriteria":"Scan is clean for the released SW "
+                "releaseCriteria":"Scan is clean for the released SW"
             },
             {
                 "id": "kimnd5a66f5735b084075f81af70ad35",
                 "detail":"SDLe tasks",
-                "releaseCriteria":"All required pre-production tasks meet creteria"
+                "releaseCriteria":"All tasks completed and evidence verified."
             }
         ]
     }

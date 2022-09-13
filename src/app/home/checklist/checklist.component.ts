@@ -1,12 +1,12 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackendComments, BackendTask, Checklist, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
+import { BackendComments, BackendTask, Checklist, OwnerEmail, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
-import { Bdba, Checkmarx, DATA_COLLECTION, Kw, OwnerEmail, Project as ProtexProject } from './checklist.models';
+import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject } from './checklist.models';
 import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,7 +29,7 @@ export class Group {
   encapsulation: ViewEncapsulation.None
 })
 
-export class ChecklistComponent implements OnInit {
+export class ChecklistComponent implements OnInit,OnDestroy {
 
   checkList: Checklist[] = [];
   releaseChecklist: ReleaseChecklist[] | undefined = [];
@@ -84,7 +84,7 @@ export class ChecklistComponent implements OnInit {
 
   isAddCommentOpen: boolean = false;
   showSpinner: boolean = false;
-  data_collection!: DATA_COLLECTION;
+  data_collection!: DataCollection;
   protexData!: string[];
   checkmarxData!: string[];
   bdbaData!: string[];
@@ -124,9 +124,10 @@ export class ChecklistComponent implements OnInit {
   evidenceDisplayedColumns = ['seq', 'actions', 'title', 'evidenceChild', 'evidenceDate', 'comments'];
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
+  
   ngOnInit(): void {
     // this.evidenceLoaded=false;
-    this.data_collection = <DATA_COLLECTION>{};
+    this.data_collection = <DataCollection>{};
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.data_collection.business_unit = this.selectedProject.project_business_unit_id.toLowerCase().replace(/\s/g, "");
     this.data_collection.milestone_id = this.selectedProject.project_milestone_id.toLowerCase().replace(/\s/g, "");
@@ -155,6 +156,11 @@ export class ChecklistComponent implements OnInit {
 
     this.getSelectedTask();
 
+  }
+
+  ngOnDestroy(){
+    // alert("data save");
+    this.saveAndContinue();
   }
 
   /**
@@ -605,7 +611,7 @@ export class ChecklistComponent implements OnInit {
   /**
    * Create Updated Task List and Save 
    */
-  saveRelease() {
+  saveRelease(navigate:boolean) {
     this.isSaved = true;
     var newBackendTask: ReleaseTask;
 
@@ -634,6 +640,10 @@ export class ChecklistComponent implements OnInit {
     this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
       localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
       this.isSaved = false;
+
+      if(navigate){
+        this.onSelection(true);
+      }
       // this.toastObj.show(this.toasts[0]);
     });
     // });
@@ -715,8 +725,8 @@ export class ChecklistComponent implements OnInit {
   }
 
   saveAndContinue() {
-    this.saveRelease();
-    this.continueNavigation();
+    this.saveRelease(true);
+    // this.continueNavigation();
   }
 
   /**
@@ -744,21 +754,21 @@ export class ChecklistComponent implements OnInit {
 
   openConfirmation() {
     // this.saveReleaseConfirmDialog.show();
+    this.saveAndContinue();
+    // const dialogRef = this.dialog.open(ChecklistConfirmDialogComponent, {
+    //   height: '20%',
+    //   width: '30%'
 
-    const dialogRef = this.dialog.open(ChecklistConfirmDialogComponent, {
-      height: '20%',
-      width: '30%'
+    // });
 
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.data == "save") {
+    //     this.saveAndContinue();
+    //   } else if (result.data == "continue") {
+    //     this.continueNavigation();
+    //   }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.data == "save") {
-        this.saveAndContinue();
-      } else if (result.data == "continue") {
-        this.continueNavigation();
-      }
-
-    });
+    // });
 
   }
 

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTIONS_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER,
+  ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTION_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER,
   EVIDENCES_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER,
   NAME_LOWER, TYPE_LOWER
 } from '../release.constants';
@@ -65,17 +65,18 @@ export class ReleaseEditComponent implements OnInit {
   newStakeholder!:Stakeholder;
   stakeholders!:Stakeholder[];
   projectStakeholders!:Stakeholder[];
+  tempProjectStakeholders!:Stakeholder[];
   constructor(private formBuilder: FormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.stakeholders=[];
     this.isWorkWeekVisible = false;
-    this.tempRelease = <NewRelease>{};
+    // this.tempRelease = <NewRelease>{};
     this.getBusinessUnits();
     this.getMilestones();
     
     this.projectStakeholders =[];
-    this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
+    // this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     if(this.selectedProject){
       this.getProjectStakeholders();
@@ -91,8 +92,8 @@ export class ReleaseEditComponent implements OnInit {
       // email: [null, [Validators.required,Validators.email]],
       email: [null, []],
       businessunit: [null, Validators.required],
-      description: [null, Validators.required],
-      qualowner: [null, []],
+      description: [null, []],
+      qualowner: [null, Validators.required],
       status: [null, []],
       attorney: [null, []],
       notes: [null, []],
@@ -113,6 +114,8 @@ export class ReleaseEditComponent implements OnInit {
     this.service.getProjectStakeholders(this.selectedProject.project_id).subscribe(
       (response) => {
         this.projectStakeholders = response;
+        this.tempProjectStakeholders = response;
+        // alert(this.tempProjectStakeholders);
         this.stakeholders = this.projectStakeholders;
       },
       (err) => {
@@ -143,13 +146,13 @@ export class ReleaseEditComponent implements OnInit {
   }
 
 
-  saveAsDraft() {
-    this.createNewRelease();
-    localStorage.setItem("tempCheckList", JSON.stringify(this.newRelease));
-    // this.toastObj.show(this.toasts[1]);
-    this.releaseForm.reset();
-    this.isWorkWeekVisible = false;
-  }
+  // saveAsDraft() {
+  //   this.createNewRelease();
+  //   localStorage.setItem("tempCheckList", JSON.stringify(this.newRelease));
+  //   // this.toastObj.show(this.toasts[1]);
+  //   this.releaseForm.reset();
+  //   this.isWorkWeekVisible = false;
+  // }
 
   public newRowPosition: { [key: string]: Object }[] = [
     { id: 'Top', newRowPosition: 'Top' },
@@ -195,16 +198,16 @@ export class ReleaseEditComponent implements OnInit {
     );
   }
 
-  tempRelease!: NewRelease;
+  // tempRelease!: NewRelease;
   createBusinessUnitDropdown() {
     if (this.businessUnitList != null) {
       for (var i = 0; i < this.businessUnitList.length; i++) {
         this.businessUnits.push({ value: this.businessUnitList[i].name, viewValue: this.businessUnitList[i].name });
       }
     }
-    if (this.tempRelease) {
-      this.setDraftForm();
-    }
+    // if (this.tempRelease) {
+    //   this.setDraftForm();
+    // }
   }
 
   createMilestoneDropdown() {
@@ -216,22 +219,22 @@ export class ReleaseEditComponent implements OnInit {
     this.editForm();
   }
 
-  setDraftForm() {
-    this.releaseForm.patchValue({
-      name: this.tempRelease.name,
-      type: this.tempRelease.type,
-      milestone: this.tempRelease.milestone,
-      handover: this.tempRelease.handover,
-      date: this.tempRelease.date,
-      // contact: this.tempRelease.contact,
-      email: this.tempRelease.email,
-      businessunit: this.tempRelease.businessunit,
-      description: this.tempRelease.description
-    });
-    this.workWeek = this.tempRelease.date!.toString();
-    // this.workWeek = "ww"+moment(new Date(tempRelease.date), "MM-DD-YYYY").week()+"'"+new Date(tempRelease.date).getFullYear();
-    this.isWorkWeekVisible = true;
-  }
+  // setDraftForm() {
+  //   this.releaseForm.patchValue({
+  //     name: this.tempRelease.name,
+  //     type: this.tempRelease.type,
+  //     milestone: this.tempRelease.milestone,
+  //     handover: this.tempRelease.handover,
+  //     date: this.tempRelease.date,
+  //     // contact: this.tempRelease.contact,
+  //     email: this.tempRelease.email,
+  //     businessunit: this.tempRelease.businessunit,
+  //     description: this.tempRelease.description
+  //   });
+  //   this.workWeek = this.tempRelease.date!.toString();
+  //   // this.workWeek = "ww"+moment(new Date(tempRelease.date), "MM-DD-YYYY").week()+"'"+new Date(tempRelease.date).getFullYear();
+  //   this.isWorkWeekVisible = true;
+  // }
 
   actionBegin(args: any): void {
     let gridInstance: any = (<any>document.getElementById('Normalgrid')).ej2_instances[0];
@@ -289,7 +292,8 @@ export class ReleaseEditComponent implements OnInit {
         status: '',
         email:'',
         attorney: '',
-        notes: ''
+        notes: '',
+        description:this.selectedProject.project_description
       });
       this.workWeek = this.selectedProject.project_release_date!.toString();
       this.isWorkWeekVisible = true;
@@ -323,7 +327,7 @@ export class ReleaseEditComponent implements OnInit {
       project = data;
       this.createGuideLine();
       this.createBuFolder();
-      this.createStakehoders(project.project_id!);
+      this.createStakehoders(project);
     });
   }
 
@@ -353,7 +357,7 @@ export class ReleaseEditComponent implements OnInit {
   createBuFolder() {
     let folders: string[] = [];
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + EVIDENCES_LOWER);
-    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + DATA_COLLECTIONS_LOWER);
+    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + DATA_COLLECTION_LOWER);
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + ATTACHMENTS_LOWER);
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim());
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase());
@@ -403,20 +407,29 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  createStakehoders(projectId:number){
+  stakeholderEmails:Stakeholder[] =[];
+  createStakehoders(project:Project){
     let tempStakeHolders:Stakeholder[]=[];
     for(var stakeholder of this.stakeholders){
-      stakeholder.project_id = projectId;
+      stakeholder.project_id = project.project_id;
       tempStakeHolders.push(stakeholder);
+      
     }
     this.service.addStakeholders(tempStakeHolders).subscribe(data => {
+      this.sendEmail();
+    });
+  }
+
+  sendEmail(){
+    // alert('sending email = '+this.stakeholderEmails);
+    this.service.sendEmail(this.stakeholderEmails).subscribe(data => {
       this.stakeholders=[];
     });
   }
 
   updateProject() {
     this.service.updateProject(this.newProject).subscribe(data => {
-      this.createStakehoders(this.newProject.project_id);
+      this.createStakehoders(this.newProject);
       // this.releaseForm.reset();
       this.clear(this.releaseForm);
     })
@@ -430,7 +443,6 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  // temppStakeholders:Stakeholder[]=[];
   addStakeholder(){
     this.stakeholders=[];
     // this.temppStakeholders
@@ -444,9 +456,19 @@ export class ReleaseEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         // this.stakeholders=[];
+        this.newStakeholder = <Stakeholder>{};
+        if(this.tempProjectStakeholders.indexOf(this.newStakeholder) == -1){
+          // alert('new stakehoder added');
+          // this.newStakeholder.project_name = project.project_name;
+          // this.newStakeholder.project_milestone = project.project_milestone_id;
+          this.stakeholderEmails.push(this.newStakeholder);
+        }
+        // alert("create Stakeholder"+this.tempProjectStakeholders);
+    
         this.newStakeholder = result.data;
-        console.log("this.newStakeholder  = "+JSON.stringify(this.newStakeholder) );
         this.projectStakeholders.push(this.newStakeholder);
+        // alert(this.tempProjectStakeholders.indexOf(this.newStakeholder));
+       
         this.stakeholders = this.projectStakeholders;
       }
     });

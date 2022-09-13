@@ -30,5 +30,5 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 export const RTC_VERSION = 'RTC V0.1';
 export const REPORTS_LOWER = 'reports';
 export const ATTACHMENTS_LOWER = 'attachments';
-export const DATA_COLLECTIONS_LOWER = 'data_collections';
+export const DATA_COLLECTION_LOWER = 'data_collection';
 export const EVIDENCES_LOWER = 'evidences';

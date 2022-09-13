@@ -208,7 +208,7 @@ export interface BackendGuideline {
   vector_id:string;
 }
 
-export interface Success {
+export interface ApiResponse {
   message:string;
 }
 
@@ -223,4 +223,20 @@ export interface Stakeholder {
   wwid:string;
   role:string;
   project_id?:number;
+  project_name?:string;
+  project_milestone?:string;
+}
+
+export interface OwnerEmail{
+	name:string;
+	email:string;
+	project_name:string;
+	milestone:string;
+	task_name:string;
+}
+
+export interface OwnerNotificationStatus {
+  name: string;
+  checked: boolean;
+  id: string;
 }

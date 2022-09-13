@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import { Subject } from 'rxjs';
 
 import { BusinessUnit, Milestone } from './release.models';
-import { ALPHA, ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTIONS_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EVIDENCES_LOWER, EXTERNAL_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, REPORTS_LOWER, TYPE_LOWER } from './release.constants';
+import { ALPHA, ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTION_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER, EVIDENCES_LOWER, EXTERNAL_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER, NAME_LOWER, POC_LOWER, POC_UPPER, PRE_ALPHA, REPORTS_LOWER, TYPE_LOWER } from './release.constants';
 import { ReleaseConfirmDialogComponent } from './releaseconfirmdialog/release.confirm.dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -272,7 +272,7 @@ export class ReleaseComponent implements OnInit {
   createBuFolder() {
     let folders: string[] = [];
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + EVIDENCES_LOWER);
-    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + DATA_COLLECTIONS_LOWER);
+    folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + DATA_COLLECTION_LOWER);
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim() + "\\" + ATTACHMENTS_LOWER);
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase().trim() + "\\" + this.newProject.project_milestone_id.toLocaleLowerCase().trim());
     folders.push(this.newProject.project_business_unit_id.toLocaleLowerCase().trim() + "\\" + this.newProject.project_name.toLocaleLowerCase());

@@ -67,7 +67,7 @@ export type KwStatus = 'Ignore' | 'Analyze';
 export type Severity = 'High' | 'Medium'| 'Low' | 'Information';
 export type KwSeverity = 'Critical' | 'Error';
 
-export interface DATA_COLLECTION {
+export interface DataCollection{
 	business_unit: string;
 	project_id:string;
 	milestone_id:string;
@@ -111,10 +111,3 @@ export interface Meta{
 	code:number;
 }
 
-export interface OwnerEmail{
-	name:string;
-	email:string;
-	project_name:string;
-	milestone:string;
-	task_name:string;
-}

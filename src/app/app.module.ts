@@ -21,29 +21,35 @@ import { ReleaseComponent } from './release/release.component';
 
 import { ChecklistMenuComponent } from './home/checklist.menu/checklist.menu.component';
 import { ReleaseEditComponent } from './release/release.edit/release.edit.component';
+import { NotificationComponent } from './home/notification/notification.component';
 import { BkcComponent } from './home/bkc/bkc.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatToolbarModule} from '@angular/material/toolbar'; 
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list'; 
-import {MatButtonModule} from '@angular/material/button'; 
-import {MatTableModule} from '@angular/material/table';
-import { MatDialogModule, MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatSelectModule} from '@angular/material/select';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ChecklistConfirmDialogComponent } from './home/checklistconfirmdialog/checklist.confirm.dialog.component';
 import { ReleaseConfirmDialogComponent } from './release/releaseconfirmdialog/release.confirm.dialog.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ReleaseStakeholderComponent } from './release/release.stakeholder/release.stakeholder.component';
+
 
 @NgModule({
   declarations: [
@@ -62,14 +68,17 @@ import { ReleaseStakeholderComponent } from './release/release.stakeholder/relea
     BkcComponent,
     ChecklistConfirmDialogComponent,
     ReleaseConfirmDialogComponent,
-    ReleaseStakeholderComponent
-    
+    ReleaseStakeholderComponent,
+    NotificationComponent
   ],
   imports: [
     HttpClientModule, BrowserModule, AppRoutingModule,
     FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
-    MatToolbarModule,MatIconModule,MatSidenavModule,MatListModule,MatButtonModule,MatTableModule,MatDialogModule,MatInputModule,MatPaginatorModule,MatSortModule,MatTooltipModule,
-    MatSelectModule,MatGridListModule,MatDatepickerModule,MatNativeDateModule, MatRippleModule, MatProgressSpinnerModule, PdfViewerModule 
+    MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule,
+    MatButtonModule, MatTableModule, MatDialogModule, MatInputModule,
+    MatPaginatorModule, MatSortModule, MatTooltipModule,
+    MatSelectModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule,
+    MatRippleModule, MatProgressSpinnerModule, PdfViewerModule, MatMenuModule, MatCheckboxModule, MatChipsModule
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

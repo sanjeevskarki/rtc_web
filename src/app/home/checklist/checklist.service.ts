@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ATTACHMENTS_LOWER, EMAIL_LOWER, FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
-import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTIONS, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
+import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTION, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
-import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, Success, BackendComments } from '../home.models';
-import { Bdba, Checkmarx, DATA_COLLECTION, OwnerEmail, Project } from './checklist.models';
+import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, ApiResponse, BackendComments, OwnerEmail } from '../home.models';
+import { Bdba, Checkmarx, DataCollection, Project } from './checklist.models';
 import { switchMap } from "rxjs/operators";
 
 declare var require: any;
@@ -21,7 +21,7 @@ const xml2js = require("xml2js");
 export class ChecklistService {
   endpoint_url: string = environment.ENDPOINT;
   task: string = TASK_LOWER;
-  email: string = EMAIL_LOWER
+  email: string = EMAIL_LOWER;
   file: string = FILE_LOWER;
   guideline: string = GUIDELINE_LOWER;
   unit!: Unit;
@@ -112,35 +112,35 @@ export class ChecklistService {
     return this.httpClient.put<BackendGuideline[]>(this.endpoint_url + this.guideline, guideline, { headers: this.headers });
   }
 
-  public updateTasks(task: ReleaseTask[]): Observable<Success> {
+  public updateTasks(task: ReleaseTask[]): Observable<ApiResponse> {
     // const body=JSON.stringify(task);
-    return this.httpClient.put<Success>(this.endpoint_url + this.task, task, { headers: this.headers });
+    return this.httpClient.put<ApiResponse>(this.endpoint_url + this.task, task, { headers: this.headers });
   }
 
-  public checkmarxScan(data_collection: DATA_COLLECTION): Observable<Checkmarx> {
+  public checkmarxScan(data_collection: DataCollection): Observable<Checkmarx> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
-      .set('file_type', DATA_COLLECTIONS)
+      .set('file_type', DATA_COLLECTION)
       .set('file_name', CHECKMARX_SCAN_FILE);
     return this.httpClient.get<Checkmarx>(this.endpoint_url + this.file, { params: params });
   }
 
-  public bdbaScan(data_collection: DATA_COLLECTION): Observable<Bdba> {
+  public bdbaScan(data_collection: DataCollection): Observable<Bdba> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
-      .set('file_type', DATA_COLLECTIONS)
-      .set('file_name', BDBA_SCAN_FILE);
+      .set('file_type', DATA_COLLECTION)
+      .set('file_name', data_collection.project_id.toLowerCase()+BDBA_SCAN_FILE);
     return this.httpClient.get<Bdba>(this.endpoint_url + this.file, { params: params });
   }
 
-  public bdbaPdf(data_collection: DATA_COLLECTION): Observable<any> {
+  public bdbaPdf(data_collection: DataCollection): Observable<any> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
-      .set('file_type', DATA_COLLECTIONS)
-      .set('file_name', BDBA_SCAN_PDF_FILE);
+      .set('file_type', DATA_COLLECTION)
+      .set('file_name', data_collection.project_id.toLowerCase()+BDBA_SCAN_PDF_FILE);
     const requestOptions: Object = {
       headers: this.headers,
       responseType: 'text',
@@ -150,11 +150,11 @@ export class ChecklistService {
     return this.httpClient.get<any>(this.endpoint_url + this.file, requestOptions);
   }
 
-  public kwScan(data_collection: DATA_COLLECTION): Observable<any> {
+  public kwScan(data_collection: DataCollection): Observable<any> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
-      .set('file_type', DATA_COLLECTIONS)
+      .set('file_type', DATA_COLLECTION)
       .set('file_name', KW_SCAN_FILE);
     const requestOptions: Object = {
       headers: this.headers,
@@ -165,11 +165,11 @@ export class ChecklistService {
     return this.httpClient.get<any>(this.endpoint_url + this.file, requestOptions);
   }
 
-  public protexScan(data_collection: DATA_COLLECTION): Observable<Project> {
+  public protexScan(data_collection: DataCollection): Observable<Project> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
-      .set('file_type', DATA_COLLECTIONS)
+      .set('file_type', DATA_COLLECTION)
       .set('file_name', PROTEX_SCAN_FILE);
     const requestOptions: Object = {
       headers: this.headers,
@@ -321,7 +321,7 @@ export class ChecklistService {
    * @param fileName Name of the file
    * @returns file
    */
-  public getFile(data_collection: DATA_COLLECTION, fileName: string): Observable<any> {
+  public getFile(data_collection: DataCollection, fileName: string): Observable<any> {
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
@@ -339,8 +339,8 @@ export class ChecklistService {
   /**
    * Send Email to task owner
    */
-  public sendEmail(ownerEmails: OwnerEmail[]): Observable<Success> {
-    return this.httpClient.post<Success>(this.endpoint_url + this.task + '/' + this.email, ownerEmails, { headers: this.headers });
+  public sendEmail(ownerEmails: OwnerEmail[]): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>(this.endpoint_url + this.task + '/' + this.email, ownerEmails, { headers: this.headers });
   }
 
   download(url: string): Observable<Blob> {
