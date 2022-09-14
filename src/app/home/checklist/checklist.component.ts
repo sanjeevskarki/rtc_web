@@ -873,8 +873,8 @@ export class ChecklistComponent implements OnInit,OnDestroy {
     this.protexData = [];
     this.protexData.push("Protex Scan Data".bold());
     this.protexData.push("Scan Date: " + moment(this.protexProj.LastAnalyzed).format('ll'));
-    this.protexData.push("Code Matches :" + this.protexProj.ScanFileInfo.Analyzed);
-    this.protexData.push("License Conflicts :" + this.protexProj.BOM.LicenseViolations);
+    this.protexData.push("Code Matches :" + this.protexProj.ScanFileInfo.AnalyzedFiles);
+    this.protexData.push("License Conflicts :" + this.protexProj.BOM.BOMComponentLicenseConflicts);
     this.protexData.push("<br>");
   }
 
@@ -1003,7 +1003,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   }
 
   sendEmails() {
-    if (this.ownerEmails) {
+    if (this.ownerEmails.length > 0) {
       this.service.sendEmail(this.ownerEmails).subscribe(() => {
         this.ownerEmails = [];
       });

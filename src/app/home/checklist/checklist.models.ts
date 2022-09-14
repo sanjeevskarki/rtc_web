@@ -28,12 +28,13 @@ export interface Kw {
 }
 
 export interface ScanFileInfo {
-	Analyzed: number; 
-	Skipped: number; 
+	AnalyzedFiles: number; 
+	SkippedFiles: number; 
 	PendingID: number; 
+	PendingReviews: number; 
 	NoDiscoveries: number; 
-	Declared: number; 
-	Disapproved: number;
+	// Declared: number; 
+	// Disapproved: number;
 }
 
 export interface Components {
@@ -43,9 +44,11 @@ export interface Components {
 export interface BOM {
 	TotalComponents: number; 
 	TotalLicenses: number;
-	LicenseList: LicenseList;
-	PendingReview: number;
-	LicenseViolations: number;
+	BOMComponentLicenseConflicts: number;
+	FileLicenseConflicts: number;
+	// LicenseList: LicenseList;
+	// PendingReview: number;
+	// LicenseViolations: number;
 }
 
 export interface LicenseList {

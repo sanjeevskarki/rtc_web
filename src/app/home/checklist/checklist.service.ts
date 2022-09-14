@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ATTACHMENTS_LOWER, EMAIL_LOWER, FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
-import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTION, FUTURE, KW_SCAN_FILE, PAST, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
+import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTION, FUTURE, KW_SCAN_FILE, PAST, PROTEX_D457_SCAN_FILE1, PROTEX_META_SCAN_FILE1, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
 import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, ApiResponse, BackendComments, OwnerEmail } from '../home.models';
 import { Bdba, Checkmarx, DataCollection, Project } from './checklist.models';
@@ -166,11 +166,20 @@ export class ChecklistService {
   }
 
   public protexScan(data_collection: DataCollection): Observable<Project> {
+    let fileName!:string;
+    if(data_collection.project_id === "d457"){
+      fileName=PROTEX_D457_SCAN_FILE1;
+    }
+    else if(data_collection.project_id === "meta"){
+      fileName=PROTEX_META_SCAN_FILE1;
+    }else{
+      fileName=PROTEX_SCAN_FILE;
+    }
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
       .set('file_type', DATA_COLLECTION)
-      .set('file_name', PROTEX_SCAN_FILE);
+      .set('file_name', fileName);
     const requestOptions: Object = {
       headers: this.headers,
       responseType: 'text',

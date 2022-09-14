@@ -14,7 +14,7 @@
         <mat-toolbar-row>
             <div>
                 <a mat-button [routerLink]="'/home'" routerLinkActive="active-list-item"> Home </a>
-                <a mat-button [matMenuTriggerFor]="admin" #adminMenu="matMenuTrigger" (mouseover)="adminMenu.openMenu()">Admin</a>
+                <a mat-button [matMenuTriggerFor]="admin" #adminMenu="matMenuTrigger" >Admin</a>
                     <mat-menu #admin="matMenu" [overlapTrigger]="false">
                         <button mat-menu-item [routerLink]="'/notification'">
                           <mat-icon>settings</mat-icon>

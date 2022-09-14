@@ -34,7 +34,11 @@ export const TIMEINTERVAL = {
 export const PROJECT = 'project';
 
 export const PROTEX_SCAN_FILE = 'protex_scanresults_c_idiwellnesspcathena_46683.xml';
-export const KW_SCAN_FILE = 'Perc_hw_wos_kw.json';
+export const PROTEX_META_SCAN_FILE1 = 'ds5_meta_driver.xml';
+export const PROTEX_META_SCAN_FILE2 = 'ds5_meta_release.xml';
+export const PROTEX_D457_SCAN_FILE1 = 'd457_fw.xml';
+export const PROTEX_D457_SCAN_FILE2 = 'd457_kernal.xml';
+export const KW_SCAN_FILE = 'Perc_HW_DS5_B0_Dev_fw_kw.json';
 export const CHECKMARX_SCAN_FILE = 'checkmarx_issues.json';
 export const DATA_COLLECTION = 'data_collection';
 

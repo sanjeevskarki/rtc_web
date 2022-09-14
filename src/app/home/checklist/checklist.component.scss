@@ -26,12 +26,22 @@
     flex: 0 0 6%;
 }
 
+.mat-column-details {
+    flex: 0 0 10%;
+}
+
+.mat-column-owner {
+    flex: 0 0 10%;
+}
+.mat-column-detailedStatus {
+    flex: 0 0 12%;
+}
 .mat-column-status {
     flex: 0 0 6%;
 }
 
 .mat-column-releaseCriteria {
-    flex: 0 0 17%;
+    flex: 0 0 18%;
 }
 
 .mat-column-evidence {
@@ -39,7 +49,7 @@
 }
 
 .mat-column-comments {
-    flex: 0 0 15%;
+    flex: 0 0 25%;
 }
 
 .mat-column-seq {
@@ -272,12 +282,12 @@ td.e-rowcell .statustxt.e-nacolor {
   .mat-elevation-z8 {
     display: flex;
     flex-direction: column;
-    max-height: 730px;
+    max-height: 745px;
     margin: 1% 1% 1% 1%;
     overflow: auto;
   }
   .tableStyle{
-    max-height: 670px;
+    max-height: 745px;
     overflow: auto;
    }
 

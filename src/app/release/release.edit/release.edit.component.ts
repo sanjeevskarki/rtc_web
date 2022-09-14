@@ -57,7 +57,7 @@ export class ReleaseEditComponent implements OnInit {
   newGuidlines: BackendGuideline[] = [];
   task!: ReleaseTask;
   taskList: ReleaseTask[] = [];
-  contactDisplayedColumns = ['name', 'email', 'wwid', 'role'];
+  contactDisplayedColumns = ['name', 'email', 'wwid', 'role', ];
   color = '#f1f3f4';
   public commentRule: { [name: string]: { [rule: string]: Object } } = {
     rte: { required: [true, 'Enter valid notes'] }
@@ -93,7 +93,7 @@ export class ReleaseEditComponent implements OnInit {
       email: [null, []],
       businessunit: [null, Validators.required],
       description: [null, []],
-      qualowner: [null, Validators.required],
+      qualowner: [null, []],
       status: [null, []],
       attorney: [null, []],
       notes: [null, []],
@@ -423,7 +423,7 @@ export class ReleaseEditComponent implements OnInit {
   sendEmail(){
     // alert('sending email = '+this.stakeholderEmails);
     this.service.sendEmail(this.stakeholderEmails).subscribe(data => {
-      this.stakeholders=[];
+      // this.stakeholders=[];
     });
   }
 
@@ -431,17 +431,17 @@ export class ReleaseEditComponent implements OnInit {
     this.service.updateProject(this.newProject).subscribe(data => {
       this.createStakehoders(this.newProject);
       // this.releaseForm.reset();
-      this.clear(this.releaseForm);
+      // this.clear(this.releaseForm);
     })
 
   }
 
-  clear(form: FormGroup): void {
-    form.reset();
-    Object.keys(form.controls).forEach(key => {
-      form.controls[key].setErrors(null)
-    });
-  }
+  // clear(form: FormGroup): void {
+  //   form.reset();
+  //   Object.keys(form.controls).forEach(key => {
+  //     form.controls[key].setErrors(null)
+  //   });
+  // }
 
   addStakeholder(){
     this.stakeholders=[];
@@ -457,15 +457,16 @@ export class ReleaseEditComponent implements OnInit {
       if(result){
         // this.stakeholders=[];
         this.newStakeholder = <Stakeholder>{};
+        this.newStakeholder = result.data;
         if(this.tempProjectStakeholders.indexOf(this.newStakeholder) == -1){
           // alert('new stakehoder added');
           // this.newStakeholder.project_name = project.project_name;
           // this.newStakeholder.project_milestone = project.project_milestone_id;
           this.stakeholderEmails.push(this.newStakeholder);
         }
-        // alert("create Stakeholder"+this.tempProjectStakeholders);
+        // alert("create Stakeholder"+this.stakeholderEmails.length);
     
-        this.newStakeholder = result.data;
+       
         this.projectStakeholders.push(this.newStakeholder);
         // alert(this.tempProjectStakeholders.indexOf(this.newStakeholder));
        
@@ -486,5 +487,8 @@ export class ReleaseEditComponent implements OnInit {
 
   }
 
+  deleteStakeholder(selectedStakeholder: Stakeholder){
+
+  }
 
 }
