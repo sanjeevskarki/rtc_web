@@ -127,6 +127,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   
   ngOnInit(): void {
     // this.evidenceLoaded=false;
+    
     this.data_collection = <DataCollection>{};
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.data_collection.business_unit = this.selectedProject.project_business_unit_id.toLowerCase().replace(/\s/g, "");

@@ -304,3 +304,13 @@ td.e-rowcell .statustxt.e-nacolor {
   .posting{
     font-size: small;
   }
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+    // display: block !important;
+    // -webkit-tap-highlight-color: transparent !important;
+    // width: 100% !important;
+    // padding: 0 !important;
+    height: auto !important;
+}
+
+

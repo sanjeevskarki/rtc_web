@@ -175,15 +175,15 @@
 <ng-template #commentDialog>
     <h1 mat-dialog-title>{{commentsHeader}}</h1>
     <mat-list>
-        <mat-list-item *ngFor="let comment of displayComments">
-            <div style="width:100%">
-                <div style="float: right;margin-right: 10px;font-size: 11px;" class="detailsAnswer">{{comment.date}}
+        <mat-list-item *ngFor="let comment of displayComments" >
+            <div style="width:100%" >
+                <div style="font-size: 12px;" class="detailsAnswer"><b>{{comment.date}}</b>
                 </div>
                 <div class="posting">{{comment.comments}}</div>
                 <div class="posting" (click)="openFile(comment.content,'attachments')" style="cursor: pointer;
                 font-size: 11px;
                 color: blue;">
-                <u>{{ comment.content }}</u></div>
+                <u>{{ comment.content }}</u></div><br>
             </div>
         </mat-list-item>
     </mat-list>
@@ -191,7 +191,7 @@
     <div class="no-results" [style.display]="displayComments.length == 0 ? '' : 'none'">
         No Comments Found, Click <b> &nbsp;Add Another Comment&nbsp; </b> for adding New Comment
     </div>
-    <div class="form-group" style="float: right;">
+    <div class="form-group" style="float: right;padding-bottom: 5px;">
         <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 8px 0;"
             (click)="closeCommentDialog()">Close</button>
         <button mat-flat-button matTooltip="Add Comment" color="primary" style="float: right;margin: 8px 0 0;"
@@ -217,7 +217,7 @@
         <div class="form-group">
             <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
             <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)"
-                formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf">&nbsp;&nbsp;
+                formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf,.msg,.ppt,.doc,.rtf">&nbsp;&nbsp;
             <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>            
         </div>
         <br>

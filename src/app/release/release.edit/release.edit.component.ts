@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTION_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER,
@@ -21,7 +21,7 @@ import { ReleaseStakeholderComponent } from '../release.stakeholder/release.stak
   styleUrls: ['./release.edit.component.scss'],
   providers: []
 })
-export class ReleaseEditComponent implements OnInit {
+export class ReleaseEditComponent implements OnInit,OnDestroy {
 
   public businessUnit: string = 'Select a Business Unit';
   public milestonePlaceholder: string = 'Select a Milestone';
@@ -301,7 +301,22 @@ export class ReleaseEditComponent implements OnInit {
   }
 
 
+  ngOnDestroy(){
+    this.newProject = <Project>{};
 
+    this.newProject.project_name = this.releaseForm.controls[NAME_LOWER].value;
+    this.newProject.project_business_unit_id = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
+    this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWER].value;
+    this.newProject.project_release_date = moment(this.releaseForm.controls[DATE_LOWER].value).format(DATE_FORMAT);
+    this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
+    if (this.selectedProject) {
+      this.newProject.project_id = this.selectedProject.project_id;
+      this.updateProject();
+    } else {
+      this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
+      this.getDetails();
+    }
+  }
 
   updateRelease() {
     this.newProject = <Project>{};
@@ -444,7 +459,7 @@ export class ReleaseEditComponent implements OnInit {
   // }
 
   addStakeholder(){
-    this.stakeholders=[];
+    // this.stakeholders=[];
     // this.temppStakeholders
     const dialogRef = this.dialog.open(ReleaseStakeholderComponent, {
       height: '50%',
@@ -466,13 +481,21 @@ export class ReleaseEditComponent implements OnInit {
         }
         // alert("create Stakeholder"+this.stakeholderEmails.length);
     
-       
-        this.projectStakeholders.push(this.newStakeholder);
+        this.projectStakeholders.unshift(this.newStakeholder);
+        // this.projectStakeholders.push(this.newStakeholder);
         // alert(this.tempProjectStakeholders.indexOf(this.newStakeholder));
-       
-        this.stakeholders = this.projectStakeholders;
+        this.createStakeholderList(this.projectStakeholders);
+        // this.stakeholders = this.projectStakeholders;
       }
     });
+  }
+
+  createStakeholderList(stakeholders:Stakeholder[]){
+    this.stakeholders=[];
+    for (var stakeholder of stakeholders) {
+    
+      this.stakeholders.push(stakeholder);
+    }
   }
 
   addContactForm!: FormGroup;
