@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'release', component: ReleaseComponent,canDeactivate: [ReleaseGuard]  },
   { path: 'admin', component: AdminComponent },
-  { path: 'notification', component: NotificationComponent },
+  // { path: 'notification', component: NotificationComponent },
   { path: 'report', component: ReportComponent },
   { path: 'help', component: HelpComponent },
   { path: 'checklist',        

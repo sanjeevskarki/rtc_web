@@ -437,9 +437,12 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
 
   sendEmail(){
     // alert('sending email = '+this.stakeholderEmails);
-    this.service.sendEmail(this.stakeholderEmails).subscribe(data => {
-      // this.stakeholders=[];
-    });
+    if(this.stakeholderEmails.length >0){
+      this.service.sendEmail(this.stakeholderEmails).subscribe(data => {
+        // this.stakeholders=[];
+      });
+    }
+  
   }
 
   updateProject() {

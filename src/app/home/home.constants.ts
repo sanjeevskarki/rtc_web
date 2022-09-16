@@ -63,5 +63,6 @@ export const MIMETypes={
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   rtf : 'application/rtf',
   ppt : 'application/vnd.ms-powerpoint',
-  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  msg : 'application/vnd. ms-outlook'
 };

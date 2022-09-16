@@ -1,0 +1,154 @@
+[
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad31",
+        "vector": "Requirements",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad78",
+                "detail": "Requirements and Change Control",
+                "releaseCriteria": "CCB approved changes added to requirements. All platform visible changes approved by Platform CCB (includes acceptance by producer-consumer stakeholders).PRT and PSIRT feedback formally dispositioned and test plan requirements updated."
+            }
+        ]
+    },
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad32",
+        "vector": "Development",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad79",
+                "detail": "Code completion, coverage and verification vs requirements",
+                "releaseCriteria": "Planned SW > VSV Planned VS models > VSV"
+            }
+        ]
+    },
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad33",
+        "vector": "Collateral",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad80",
+                "detail": "Customer Documentation Readiness",
+                "releaseCriteria": "All customer milestone collateral updated for release, including known limitations & defects."
+            }
+        ]
+    },
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad34",
+        "vector": "Defects/Bugs",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad81",
+                "detail": "Defect count and associated customer impact assessment",
+                "releaseCriteria": "All must-fix (P1) defects resolved and verified"
+            }
+        ]
+    },
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad35",
+        "vector": "Validation",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad82",
+                "detail": "Functional Validation Plan",
+                "releaseCriteria": ""
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad83",
+                "detail": "Minimum model quality level, % Attempted and % Pass vs. Planned and PV, BKC Coverage.",
+                "releaseCriteria": "All milestone UCIS/FRs integrated 100% VSV test cases attempted; Pass > 95% of VSV test cases"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad84",
+                "detail": "KPIs targets Defnition",
+                "releaseCriteria": ""
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad85",
+                "detail": "KPI measurement",
+                "releaseCriteria": "All KPIs within 10% VSV of target with implmented fixes to support post-Si IFWI"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad86",
+                "detail": "Stability Plan",
+                "releaseCriteria": "All stability tests meet VSV target including all OSs and any planned customer specific configurations."
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad87",
+                "detail": "Stability validation execution",
+                "releaseCriteria": ""
+            }
+        ]
+    },
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad36",
+        "vector": "Compliance",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad88",
+                "detail": "OS Cert completeness, Standards compliance (FUSA), Accessibility & Waiver Status",
+                "releaseCriteria": "50% Passing and issues recorded as defects. "
+            }
+        ]
+    },
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad39",
+        "vector": "Security",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad03",
+                "detail": "SDLe project creation",
+                "releaseCriteria": "SDLe Project survey completed & tasks dispositioned"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad04",
+                "detail": "Crypto review",
+                "releaseCriteria": "Approved"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad05",
+                "detail": "SAFE Review & Threat Model",
+                "releaseCriteria": "Approved"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad06",
+                "detail": "Static Analysis setup",
+                "releaseCriteria": "Running"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad07",
+                "detail": "Static Analysis issues",
+                "releaseCriteria": "Dispositioned"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad08",
+                "detail": "Composition Analysis setup (SNYK / BDBA)",
+                "releaseCriteria": "Running"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad09",
+                "detail": "Composition Analysis issues",
+                "releaseCriteria": "Dispositioned"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad10",
+                "detail": "NetSparker deployment on the pre-production environment",
+                "releaseCriteria": "Deployed & running and all issues resolved"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad11",
+                "detail": "NetSparker deployment on the production environment",
+                "releaseCriteria": "Deployed & Running "
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad12",
+                "detail": "A/V Scan",
+                "releaseCriteria": "Scan is clean for the released SW"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad13",
+                "detail": "SDLe tasks",
+                "releaseCriteria": "All required pre-production tasks meet creteria"
+            }
+        ]
+    }
+]

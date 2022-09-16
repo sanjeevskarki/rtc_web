@@ -10,8 +10,26 @@
             <a mat-button [routerLink]="'releaseinfo'" routerLinkActive="active-list-item" *ngIf="isReleaseInfoVisible">
                 {{releaseInfoLabel}} </a>
             <a mat-button [routerLink]="'bkc'" routerLinkActive="active-list-item" *ngIf="isBkcVisble"> BKC </a>
-            <a mat-button [routerLink]="'notification'" routerLinkActive="active-list-item"
-                *ngIf="isNotificationVisble"> Notification </a>
+            <a mat-button [matMenuTriggerFor]="admin" #adminMenu="matMenuTrigger"
+                *ngIf="isNotificationVisble"> Admin </a>
+                <mat-menu #admin="matMenu" [overlapTrigger]="false">
+                    <button mat-menu-item [routerLink]="'notification'">
+                      <mat-icon>settings</mat-icon>
+                      <span>Notifications</span>
+                    </button>
+                    <!-- <button mat-menu-item>
+                      <mat-icon>people_outline</mat-icon>
+                      <span>Connecting</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>videocam</mat-icon>
+                      <span>Let's talk</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>exit_to_app</mat-icon>
+                      <span>Logout</span>
+                    </button> -->
+                  </mat-menu>    
         </div>
     </mat-toolbar-row>
 </mat-toolbar>
