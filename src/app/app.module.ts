@@ -45,7 +45,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ChecklistConfirmDialogComponent } from './home/checklistconfirmdialog/checklist.confirm.dialog.component';
+import { ConfirmDeleteStakeholderDialogComponent } from './release/confirmdeletestakeholderdialog/confirm.delete.stakeholder.dialog.component';
 import { ReleaseConfirmDialogComponent } from './release/releaseconfirmdialog/release.confirm.dialog.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ReleaseStakeholderComponent } from './release/release.stakeholder/release.stakeholder.component';
@@ -66,7 +66,7 @@ import { ReleaseStakeholderComponent } from './release/release.stakeholder/relea
     ChecklistMenuComponent,
     ReleaseEditComponent,
     BkcComponent,
-    ChecklistConfirmDialogComponent,
+    ConfirmDeleteStakeholderDialogComponent,
     ReleaseConfirmDialogComponent,
     ReleaseStakeholderComponent,
     NotificationComponent

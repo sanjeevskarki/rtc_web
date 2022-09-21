@@ -1,6 +1,6 @@
 
 export interface Milestone {
-  milestone:string;
+  milestone:string|any;
 }
 
 export interface BusinessUnit {

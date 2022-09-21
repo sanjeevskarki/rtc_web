@@ -1,4 +1,4 @@
-<div id="modalTarget" #targetModal >
+<div id="modalTarget" #targetModal>
     <mat-table #table [dataSource]="viewReleaseChecklist" class="tableStyle">
         <ng-container matColumnDef="vector">
             <mat-header-cell *matHeaderCellDef>Vector</mat-header-cell>
@@ -13,7 +13,7 @@
             <mat-cell *matCellDef="let row">
                 <div>
                     <div>{{row.owner}}</div>
-                    <div style="font-size: 11px">{{row.owner_email}}</div> 
+                    <div style="font-size: 11px">{{row.owner_email}}</div>
                 </div>
                 <div>
                     <div>
@@ -42,8 +42,7 @@
                     </div>
                 </div>
                 <div *ngIf="row.bdbaStatus && row.detailedStatus">
-                    <button mat-icon-button matTooltip="View Report" color="accent"
-                        (click)="openBdbaReport()">
+                    <button mat-icon-button matTooltip="View Report" color="accent" (click)="openBdbaReport()">
                         <mat-icon>file_copy</mat-icon>
                     </button>
                 </div>
@@ -113,7 +112,8 @@
         <ng-container matColumnDef="comments">
             <mat-header-cell *matHeaderCellDef>Comments</mat-header-cell>
             <mat-cell *matCellDef="let row">
-                <div style="width: 30rem;" *ngIf="row.comments.length > 0; else noComments" class="firstline cell-line comment-div">
+                <div style="width: 30rem;" *ngIf="row.comments.length > 0; else noComments"
+                    class="firstline cell-line comment-div">
                     <div class="firstline cell-line">
                         <div>{{row.comments[0].comments}}</div>
                         <div (click)="openFile(row.comments[0].content,'attachments')" style="cursor: pointer;font-size: 11px;
@@ -163,7 +163,7 @@
         <mat-progress-spinner strokeWidth="3" [diameter]="50" color="primary" mode="indeterminate">
         </mat-progress-spinner>
     </div>
-     <!-- <button mat-flat-button matTooltip="Save Release" disabled={{isSaved}} color="primary" (click)="saveRelease(false)" style="width: 10%;
+    <!-- <button mat-flat-button matTooltip="Save Release" disabled={{isSaved}} color="primary" (click)="saveRelease(false)" style="width: 10%;
         margin-top: 5px;
         margin-inline: auto;">Save Release</button>
     <br> -->
@@ -175,15 +175,16 @@
 <ng-template #commentDialog>
     <h1 mat-dialog-title>{{commentsHeader}}</h1>
     <mat-list>
-        <mat-list-item *ngFor="let comment of displayComments" >
-            <div style="width:100%" >
+        <mat-list-item *ngFor="let comment of displayComments">
+            <div style="width:100%">
                 <div style="font-size: 12px;" class="detailsAnswer"><b>{{comment.date}}</b>
                 </div>
                 <div class="posting">{{comment.comments}}</div>
                 <div class="posting" (click)="openFile(comment.content,'attachments')" style="cursor: pointer;
                 font-size: 11px;
                 color: blue;">
-                <u>{{ comment.content }}</u></div><br>
+                    <u>{{ comment.content }}</u>
+                </div><br>
             </div>
         </mat-list-item>
     </mat-list>
@@ -217,8 +218,8 @@
         <div class="form-group">
             <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
             <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)"
-                formControlName="upload" name="upload" accept=".csv,.xlsv,.doc,.pdf,.msg,.ppt,.doc,.rtf">&nbsp;&nbsp;
-            <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>            
+                formControlName="upload" name="upload" accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.ptx,.xls">&nbsp;&nbsp;
+            <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
         </div>
         <br>
         <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
@@ -264,7 +265,7 @@
                 </div>
             </mat-cell>
         </ng-container>
-        
+
         <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.title}}</mat-cell>
@@ -319,21 +320,19 @@
         <mat-form-field appearance="outline" style="display: inline;">
             <mat-label>Name</mat-label>
             <input type="text" matInput formControlName="name">
-            <mat-error
-                *ngIf="addOwnerForm.controls.name.hasError('required') && addOwnerForm.controls.name.touched">
+            <mat-error *ngIf="addOwnerForm.controls.name.hasError('required') && addOwnerForm.controls.name.touched">
                 Name is required
             </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" style="display: inline;">
             <mat-label>Email</mat-label>
             <input type="text" matInput formControlName="email">
-            <mat-error
-                *ngIf="addOwnerForm.controls.email.hasError('required') && addOwnerForm.controls.email.touched">
+            <mat-error *ngIf="addOwnerForm.controls.email.hasError('required') && addOwnerForm.controls.email.touched">
                 Email is required
-            </mat-error> 
+            </mat-error>
             <mat-error *ngIf="addOwnerForm.controls.email.hasError('email')">
                 Please enter a valid email address
-            </mat-error>      
+            </mat-error>
         </mat-form-field>
         <br>
         <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"

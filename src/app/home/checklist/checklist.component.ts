@@ -8,9 +8,7 @@ import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
 import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject } from './checklist.models';
 import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { ChecklistConfirmDialogComponent } from '../checklistconfirmdialog/checklist.confirm.dialog.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { COMMENT_LOWER, EMAIL_LOWER, NAME_LOWER } from 'src/app/release/release.constants';
 
@@ -29,7 +27,7 @@ export class Group {
   encapsulation: ViewEncapsulation.None
 })
 
-export class ChecklistComponent implements OnInit,OnDestroy {
+export class ChecklistComponent implements OnInit, OnDestroy {
 
   checkList: Checklist[] = [];
   releaseChecklist: ReleaseChecklist[] | undefined = [];
@@ -75,7 +73,8 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   lowCount: number = 0;
   mediumCount: number = 0;
   infoCount: number = 0;
-  protexProj!: ProtexProject;
+  protexProj1!: ProtexProject;
+  protexProj2!: ProtexProject;
   bdba!: Bdba;
   newLine = "\r\n";
   backendTasks: BackendTask[] = [];
@@ -124,10 +123,10 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   evidenceDisplayedColumns = ['seq', 'actions', 'title', 'evidenceChild', 'evidenceDate', 'comments'];
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
-  
+
   ngOnInit(): void {
     // this.evidenceLoaded=false;
-    
+
     this.data_collection = <DataCollection>{};
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.data_collection.business_unit = this.selectedProject.project_business_unit_id.toLowerCase().replace(/\s/g, "");
@@ -159,7 +158,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     // alert("data save");
     this.saveAndContinue();
   }
@@ -202,24 +201,30 @@ export class ChecklistComponent implements OnInit,OnDestroy {
     this.lowCount = 0;
     this.mediumCount = 0;
     this.infoCount = 0;
+    this.protexData = [];
     let res1 = this.service.checkmarxScan(this.data_collection);
     let res2 = this.service.kwScan(this.data_collection);
-    let res3 = this.service.protexScan(this.data_collection);
+    let res3 = this.service.protexScanFile1(this.data_collection);
+    let res6 = this.service.protexScanFile2(this.data_collection);
     let res4 = this.service.bdbaScan(this.data_collection);
     // Get the static data for associated with each task, currently we are geting this data from local stored files
     let res5 = this.service.getStaticData(this.milestone?.toLocaleLowerCase()!);
-    forkJoin([res1, res2, res3, res4, res5]).subscribe(([data1, data2, data3, data4, data5]) => {
+    forkJoin([res1, res2, res3, res4, res5, res6]).subscribe(([data1, data2, data3, data4, data5, data6]) => {
       this.checkMarxIssue = data1;
       this.tempText = data2;
-      this.protexProj = data3;
+      this.protexProj1 = data3;
+      this.protexProj2 = data6;
       this.bdba = data4;
       this.details = data5;
       if (this.checkMarxIssue)
         this.runCheckMarxScan();
       if (this.tempText)
         this.getKwScan();
-      if (this.protexProj)
-        this.geProtexFile();
+      if (this.protexProj1)
+        this.protexProj1
+      this.geProtexFile(this.protexProj1);
+      if (this.protexProj2)
+        this.geProtexFile(this.protexProj2);
       if (this.bdba)
         this.geBdbaFile();
 
@@ -612,7 +617,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   /**
    * Create Updated Task List and Save 
    */
-  saveRelease(navigate:boolean) {
+  saveRelease(navigate: boolean) {
     this.isSaved = true;
     var newBackendTask: ReleaseTask;
 
@@ -642,7 +647,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
       localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
       this.isSaved = false;
 
-      if(navigate){
+      if (navigate) {
         this.onSelection(true);
       }
       // this.toastObj.show(this.toasts[0]);
@@ -713,7 +718,7 @@ export class ChecklistComponent implements OnInit,OnDestroy {
     });
 
     addEvidenceDialogRef.afterClosed().subscribe((result) => {
-      if(result){
+      if (result) {
         this.evidenceLoaded = false;
         this.selectedRelease.evidences.unshift(result.data);
         this.createEvidenceList(this.selectedRelease, false);
@@ -870,13 +875,15 @@ export class ChecklistComponent implements OnInit,OnDestroy {
   }
 
 
-  async geProtexFile() {
-    this.protexData = [];
-    this.protexData.push("Protex Scan Data".bold());
-    this.protexData.push("Scan Date: " + moment(this.protexProj.LastAnalyzed).format('ll'));
-    this.protexData.push("Code Matches :" + this.protexProj.ScanFileInfo.AnalyzedFiles);
-    this.protexData.push("License Conflicts :" + this.protexProj.BOM.BOMComponentLicenseConflicts);
-    this.protexData.push("<br>");
+  async geProtexFile(protexProject: ProtexProject) {
+    // this.protexData = [];
+    if (protexProject) {
+      this.protexData.push(protexProject.FileName!.bold());
+      this.protexData.push("Scan Date: " + moment(protexProject.LastAnalyzed).format('ll'));
+      this.protexData.push("Code Matches :" + protexProject.ScanFileInfo.AnalyzedFiles);
+      this.protexData.push("License Conflicts :" + protexProject.BOM.BOMComponentLicenseConflicts);
+      this.protexData.push("<br>");
+    }
   }
 
 

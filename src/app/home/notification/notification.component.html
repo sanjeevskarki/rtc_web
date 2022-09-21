@@ -24,7 +24,7 @@
     <div>
         <div mat-dialog-title>Send to Qual Owner?</div><br>
         <section *ngFor="let item of qualOwnerNotificationList" style="padding-left: 5rem;margin-bottom: 4px;">
-            <div *ngIf="item.value == 'addrelease'" style="margin-bottom: 76px;"></div>
+            <div *ngIf="item.value == 'addrelease_qualowner'" style="margin-bottom: 76px;"></div>
             <mat-checkbox color="primary" [checked]="item.checked"  (change)="checkQualOwner($event,item)"></mat-checkbox>
         </section>
         </div>

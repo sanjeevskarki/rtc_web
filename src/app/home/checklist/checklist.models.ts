@@ -1,48 +1,48 @@
 export interface Checkmarx {
-  scan_id:string;
-  issues:Issue[];
+	scan_id: string;
+	issues: Issue[];
 }
 
 export interface Issue {
-	message:string;
-	severity:Severity;
-	file:string;
-	line:string;
-	state:string;
-	url:string;
+	message: string;
+	severity: Severity;
+	file: string;
+	line: string;
+	state: string;
+	url: string;
 }
 
 export interface Kw {
-	id: string; 
-	message: string; 
-	file: string; 
-	method: string; 
-	code: string; 
-	severity: KwSeverity; 
-	severityCode: KwSeverityCode; 
-	state: string; 
-	status: KwStatus; 
-	taxonomyName: string; 
-	url: string; 
+	id: string;
+	message: string;
+	file: string;
+	method: string;
+	code: string;
+	severity: KwSeverity;
+	severityCode: KwSeverityCode;
+	state: string;
+	status: KwStatus;
+	taxonomyName: string;
+	url: string;
 	created: string;
 }
 
 export interface ScanFileInfo {
-	AnalyzedFiles: number; 
-	SkippedFiles: number; 
-	PendingID: number; 
-	PendingReviews: number; 
-	NoDiscoveries: number; 
+	AnalyzedFiles: number;
+	SkippedFiles: number;
+	PendingID: number;
+	PendingReviews: number;
+	NoDiscoveries: number;
 	// Declared: number; 
 	// Disapproved: number;
 }
 
 export interface Components {
-	DiscoveredComponents: number; 
+	DiscoveredComponents: number;
 }
 
 export interface BOM {
-	TotalComponents: number; 
+	TotalComponents: number;
 	TotalLicenses: number;
 	BOMComponentLicenseConflicts: number;
 	FileLicenseConflicts: number;
@@ -56,31 +56,32 @@ export interface LicenseList {
 }
 
 export interface Project {
+	FileName?: string;
 	ServerUrl: string;
-	LastAnalyzed:string;
-	ScanFileInfo:ScanFileInfo;
-	Components:Components;
-	BOM:BOM;
+	LastAnalyzed: string;
+	ScanFileInfo: ScanFileInfo;
+	Components: Components;
+	BOM: BOM;
 }
 
 
 
 export type KwSeverityCode = 1 | 2;
 export type KwStatus = 'Ignore' | 'Analyze';
-export type Severity = 'High' | 'Medium'| 'Low' | 'Information';
+export type Severity = 'High' | 'Medium' | 'Low' | 'Information';
 export type KwSeverity = 'Critical' | 'Error';
 
-export interface DataCollection{
+export interface DataCollection {
 	business_unit: string;
-	project_id:string;
-	milestone_id:string;
-	file_type:string;
-	file_name:string;
+	project_id: string;
+	milestone_id: string;
+	file_type: string;
+	file_name: string;
 }
 
 export interface Bdba {
-	results:Result;
-	meta:Meta;
+	results: Result;
+	meta: Meta;
 }
 
 export interface Result {
@@ -99,18 +100,21 @@ export interface Result {
 	binary_bytes: number;
 	created: Date;
 	scanned_bytes: number;
-	components:any[];
+	components: any[];
 	details: any;
 	version: string;
 	stale: boolean;
 	report_url: string;
 	summary: any;
 	filename: string;
-	// "rescan-possible": false,
+	// "rescan-possible": boolean
 	// "fail-reason": ""
 }
 
-export interface Meta{
-	code:number;
+export interface Meta {
+	code: number;
 }
+
+
+
 

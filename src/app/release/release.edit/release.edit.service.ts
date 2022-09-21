@@ -101,15 +101,26 @@ export class ReleaseEditService {
     return this.httpClient.post<Stakeholder[]>(this.endpoint_url + this.stakeholder, stakeholders, { headers: this.headers });
   }
 
+  public updateStakeholder(stakeholder: Stakeholder): Observable<Stakeholder> {
+    // const body=JSON.stringify(guideline);
+    return this.httpClient.put<Stakeholder>(this.endpoint_url + this.stakeholder, stakeholder, { headers: this.headers });
+  }
+
+  public deleteStakeholder(stakeholder: Stakeholder): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.stakeholder+ "/" + stakeholder.id, { headers: this.headers });
+  }
+
   public getProjectStakeholders(projectId:number): Observable<Stakeholder[]> {
     return this.httpClient.get<Stakeholder[]>(this.endpoint_url + this.stakeholder+ "/" + projectId);
   }
 
-    /**
-   * Send Email to task owner
+  /**
+   * Send Email toStakeholders
+   * @param stakeholders List of stakeholders to whom we need to send email
+   * @returns Api Response
    */
-     public sendEmail(stakeholders: Stakeholder[]): Observable<ApiResponse> {
-      return this.httpClient.post<ApiResponse>(this.endpoint_url + this.stakeholder + '/' + this.email, stakeholders, { headers: this.headers });
-    }
+  public sendEmail(stakeholders: Stakeholder[]): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>(this.endpoint_url + this.stakeholder + '/' + this.email, stakeholders, { headers: this.headers });
+  }
 
 }

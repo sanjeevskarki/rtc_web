@@ -148,6 +148,10 @@ export interface Project {
   project_business_unit_id:string;
   project_milestone_id:string;
   project_notes?:string;
+  project_owner_name:string;
+  project_owner_email:string;
+  project_attorney_name:string;
+  project_attorney_email:string;
 }
 
 export interface Notes {
@@ -239,4 +243,26 @@ export interface OwnerNotificationStatus {
   name: string;
   checked: boolean;
   id: string;
+}
+
+export interface NotificationSetting {
+  qual_owner_id:number;
+  setting: any;
+	// taskupdate: boolean
+	// commentupdate: boolean
+	// taskreleasestatusupdate: boolean
+	// taskreleaseschduleupdate: boolean
+	// addrelease: boolean
+	// removerelease: boolean
+	// releasestatusupdate: boolean
+	// releaseschduleupdate: boolean
+	// assigntask_qualowner: boolean
+	// taskupdate_qualowner: boolean
+	// commentupdate_qualowner: boolean
+	// taskreleasestatusupdate_qualowner: boolean
+	// taskreleaseschduleupdate_qualowner: boolean
+	// addrelease_qualowner: boolean
+	// removerelease_qualowner: boolean
+	// releasestatusupdate_qualowner: boolean;
+  // releasescheduleupdate_qualowner: boolean;
 }

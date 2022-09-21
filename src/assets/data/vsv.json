@@ -91,63 +91,140 @@
         ]
     },
     {
+        "id": "qwerd5a66f5735b084075f81af70ad37",
+        "vector": "Legal",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad89",
+                "detail":"Export",
+                "releaseCriteria":"Approved"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad90",
+                "detail":"TM&B",
+                "releaseCriteria":"Approved"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad91",
+                "detail":"Protex Scan",
+                "releaseCriteria":"Running"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad92",
+                "detail":"Protex BOM",
+                "releaseCriteria":"fully & accurately populated including the correct usage per component"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad93",
+                "detail":"Protex Matches & License conflicts",
+                "releaseCriteria":"All Protex Matches & License conflicts resolved"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad94",
+                "detail":"Protex Obligations",
+                "releaseCriteria":"All Protex Obligations fulfilled and checked in Protex"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad95",
+                "detail":"OBL",
+                "releaseCriteria":"Defined and approved by BU attorney"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad96",
+                "detail":"OS PDT",
+                "releaseCriteria":"Approved"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad97",
+                "detail":"Copyright readme file",
+                "releaseCriteria":"Ready"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad98",
+                "detail":"TPP/Attributions file",
+                "releaseCriteria":"Ready"
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad99",
+                "detail":"Legal text file ",
+                "releaseCriteria":"Integrate as part of the released SW package "
+            },
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad01",
+                "detail":"Record Center ",
+                "releaseCriteria":"Release SWLC evidence archived in the Record Center"
+            }
+        ]
+    },
+    {
+        "id": "qwerd5a66f5735b084075f81af70ad38",
+        "vector": "Privacy",
+        "details": [
+            {
+                "id": "gthyd5a66f5735b084075f81af70ad02",
+                "detail":"PIA (Privacy Impact Assesment)",
+                "releaseCriteria":"Approved"
+            }
+        ]
+    },
+    {
         "id": "qwerd5a66f5735b084075f81af70ad39",
         "vector": "Security",
         "details": [
             {
                 "id": "gthyd5a66f5735b084075f81af70ad03",
-                "detail": "SDLe project creation",
-                "releaseCriteria": "SDLe Project survey completed & tasks dispositioned"
+                "detail":"SDLe project creation",
+                "releaseCriteria":"SDLe Project survey completed & tasks dispositioned"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad04",
-                "detail": "Crypto review",
-                "releaseCriteria": "Approved"
+                "detail":"Crypto review",
+                "releaseCriteria":"Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad05",
-                "detail": "SAFE Review & Threat Model",
-                "releaseCriteria": "Approved"
+                "detail":"SAFE Review & Threat Model",
+                "releaseCriteria":"Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad06",
-                "detail": "Static Analysis setup",
-                "releaseCriteria": "Running"
+                "detail":"Static Analysis setup",
+                "releaseCriteria":"Running"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad07",
-                "detail": "Static Analysis issues",
-                "releaseCriteria": "Dispositioned"
+                "detail":"Static Analysis issues",
+                "releaseCriteria":"Dispositioned"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad08",
-                "detail": "Composition Analysis setup (SNYK / BDBA)",
-                "releaseCriteria": "Running"
+                "detail":"Composition Analysis setup (SNYK / BDBA)",
+                "releaseCriteria":"Running"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad09",
-                "detail": "Composition Analysis issues",
-                "releaseCriteria": "Dispositioned"
+                "detail":"Composition Analysis issues",
+                "releaseCriteria":"Dispositioned"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad10",
-                "detail": "NetSparker deployment on the pre-production environment",
-                "releaseCriteria": "Deployed & running and all issues resolved"
+                "detail":"NetSparker deployment on the pre-production environment",
+                "releaseCriteria":"Deployed & running and all issues resolved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad11",
-                "detail": "NetSparker deployment on the production environment",
-                "releaseCriteria": "Deployed & Running "
+                "detail":"NetSparker deployment on the production environment",
+                "releaseCriteria":"Deployed & Running "
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad12",
-                "detail": "A/V Scan",
-                "releaseCriteria": "Scan is clean for the released SW"
+                "detail":"A/V Scan",
+                "releaseCriteria":"Scan is clean for the released SW"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad13",
-                "detail": "SDLe tasks",
-                "releaseCriteria": "All required pre-production tasks meet creteria"
+                "detail":"SDLe tasks",
+                "releaseCriteria":"All required pre-production tasks meet creteria"
             }
         ]
     }

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChecklistConfirmDialogComponent } from './checklist.confirm.dialog.component';
+import { ConfirmDeleteStakeholderDialogComponent } from './confirm.delete.stakeholder.dialog.component';
 
 describe('ChecklistConfirmDialogComponent', () => {
-  let component: ChecklistConfirmDialogComponent;
-  let fixture: ComponentFixture<ChecklistConfirmDialogComponent>;
+  let component: ConfirmDeleteStakeholderDialogComponent;
+  let fixture: ComponentFixture<ConfirmDeleteStakeholderDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChecklistConfirmDialogComponent ]
+      declarations: [ ConfirmDeleteStakeholderDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChecklistConfirmDialogComponent);
+    fixture = TestBed.createComponent(ConfirmDeleteStakeholderDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

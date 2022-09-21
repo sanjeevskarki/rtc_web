@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  ATTACHMENTS_LOWER, BUSINESS_UNIT_LOWER, DATA_COLLECTION_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER,
+  ATTACHMENTS_LOWER, ATTORNEY_EMAIL, ATTORNEY_NAME, BUSINESS_UNIT_LOWER, DATA_COLLECTION_LOWER, DATE_FORMAT, DATE_LOWER, DESCRIPTION_LOWER,
   EVIDENCES_LOWER, EXTERNAL_WITHOUT_HANDOVER_LOWER, EXTERNAL_WITH_HANDOVER_LOWER, HANDOVER_LOWER, INTERNAL_LOWER, MILESTONE_LOWER,
-  NAME_LOWER, TYPE_LOWER
+  NAME_LOWER, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, TYPE_LOWER
 } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { Stakeholder } from 'src/app/home/home.models';
@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { ReleaseEditService } from './release.edit.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ReleaseStakeholderComponent } from '../release.stakeholder/release.stakeholder.component';
+import { ConfirmDeleteStakeholderDialogComponent } from '../confirmdeletestakeholderdialog/confirm.delete.stakeholder.dialog.component';
 
 @Component({
   selector: 'app-release.edit',
@@ -21,7 +22,7 @@ import { ReleaseStakeholderComponent } from '../release.stakeholder/release.stak
   styleUrls: ['./release.edit.component.scss'],
   providers: []
 })
-export class ReleaseEditComponent implements OnInit,OnDestroy {
+export class ReleaseEditComponent implements OnInit {
 
   public businessUnit: string = 'Select a Business Unit';
   public milestonePlaceholder: string = 'Select a Milestone';
@@ -57,7 +58,7 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
   newGuidlines: BackendGuideline[] = [];
   task!: ReleaseTask;
   taskList: ReleaseTask[] = [];
-  contactDisplayedColumns = ['name', 'email', 'wwid', 'role', ];
+  stakeholderDisplayedColumns = ['name', 'email', 'wwid', 'role', 'actions'];
   color = '#f1f3f4';
   public commentRule: { [name: string]: { [rule: string]: Object } } = {
     rte: { required: [true, 'Enter valid notes'] }
@@ -66,6 +67,7 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
   stakeholders!:Stakeholder[];
   projectStakeholders!:Stakeholder[];
   tempProjectStakeholders!:Stakeholder[];
+  milestoneOrderCategory:any = { 'VS0': 1, 'VS1': 2 , 'VSV': 3, 'POC': 4, 'Pre-Alpha': 5, 'Alpha': 6, 'Beta': 7, 'PC': 8, 'Gold': 9};
   constructor(private formBuilder: FormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -90,12 +92,13 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
       date: [null, Validators.required],
       // contact: [null, Validators.required],
       // email: [null, [Validators.required,Validators.email]],
-      email: [null, []],
+      qualowneremail: [null, [Validators.required,Validators.email]],
       businessunit: [null, Validators.required],
       description: [null, []],
-      qualowner: [null, []],
+      qualowner: [null, Validators.required],
       status: [null, []],
-      attorney: [null, []],
+      attorneyname: [null, []],
+      attorneyemail: [null, [Validators.email]],
       notes: [null, []],
     });
 
@@ -173,11 +176,13 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
     this.isWorkWeekVisible = true;
   }
 
+  
+
   getMilestones() {
     this.service.getMilestones().subscribe(
       (response) => {
         this.milestoneList = response;
-        this.createMilestoneDropdown();
+        this.createSortOrder();
       },
       (err) => {
         console.log(err.name);
@@ -210,9 +215,21 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
     // }
   }
 
+  createSortOrder(){
+    this.milestoneList.sort((carA, carB) => {
+      if (carA.milestone !== carB.milestone) {
+        return this.milestoneOrderCategory[carA.milestone] - this.milestoneOrderCategory[carB.milestone];
+      } else {
+        return carA.milestone - carB.milestone;
+      }
+    });
+    this.createMilestoneDropdown();
+  }
+
   createMilestoneDropdown() {
     if (this.milestoneList != null) {
       for (var i = 0; i < this.milestoneList.length; i++) {
+
         this.milestones.push({ value: this.milestoneList[i].milestone, viewValue: this.milestoneList[i].milestone });
       }
     }
@@ -288,10 +305,11 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
         // email: this.tempRelease.email,
         businessunit: this.selectedProject.project_business_unit_id,
         // description:this.selectedProject.description,
-        qualowner: '',
+        qualowner: this.selectedProject.project_owner_name,
         status: '',
-        email:'',
-        attorney: '',
+        qualowneremail:this.selectedProject.project_owner_email,
+        attorneyname: this.selectedProject.project_attorney_name,
+        attorneyemail: this.selectedProject.project_attorney_email,
         notes: '',
         description:this.selectedProject.project_description
       });
@@ -301,22 +319,22 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
   }
 
 
-  ngOnDestroy(){
-    this.newProject = <Project>{};
+  // ngOnDestroy(){
+  //   this.newProject = <Project>{};
 
-    this.newProject.project_name = this.releaseForm.controls[NAME_LOWER].value;
-    this.newProject.project_business_unit_id = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
-    this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWER].value;
-    this.newProject.project_release_date = moment(this.releaseForm.controls[DATE_LOWER].value).format(DATE_FORMAT);
-    this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
-    if (this.selectedProject) {
-      this.newProject.project_id = this.selectedProject.project_id;
-      this.updateProject();
-    } else {
-      this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
-      this.getDetails();
-    }
-  }
+  //   this.newProject.project_name = this.releaseForm.controls[NAME_LOWER].value;
+  //   this.newProject.project_business_unit_id = this.releaseForm.controls[BUSINESS_UNIT_LOWER].value;
+  //   this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWER].value;
+  //   this.newProject.project_release_date = moment(this.releaseForm.controls[DATE_LOWER].value).format(DATE_FORMAT);
+  //   this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
+  //   if (this.selectedProject) {
+  //     this.newProject.project_id = this.selectedProject.project_id;
+  //     this.updateProject();
+  //   } else {
+  //     this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
+  //     this.getDetails();
+  //   }
+  // }
 
   updateRelease() {
     this.newProject = <Project>{};
@@ -326,14 +344,18 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
     this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWER].value;
     this.newProject.project_release_date = moment(this.releaseForm.controls[DATE_LOWER].value).format(DATE_FORMAT);
     this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWER].value;
+    this.newProject.project_owner_name = this.releaseForm.controls[QUAL_OWNER_NAME].value;
+    this.newProject.project_owner_email = this.releaseForm.controls[QUAL_OWNER_EMAIL].value;
+    this.newProject.project_attorney_name = this.releaseForm.controls[ATTORNEY_NAME].value;
+    this.newProject.project_attorney_email = this.releaseForm.controls[ATTORNEY_EMAIL].value;
     if (this.selectedProject) {
       this.newProject.project_id = this.selectedProject.project_id;
       this.updateProject();
     } else {
       this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
-      this.getDetails();
+      this.getStaticData();
     }
-    
+    localStorage.setItem('selectedProject', JSON.stringify(this.newProject));
   }
 
   saveProject() {
@@ -350,7 +372,7 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
    * Get Details for Guidelines file, Getting the file based on the Project Data.
    * (Currently we are picking those file from asset folder)
    */
-  getDetails() {
+  getStaticData() {
     this.selectedMilestone = this.releaseForm.controls[MILESTONE_LOWER].value;
     this.selectedType = this.releaseForm.controls[TYPE_LOWER].value;
     this.selectedHandoverType = this.releaseForm.controls[HANDOVER_LOWER].value;
@@ -425,14 +447,17 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
   stakeholderEmails:Stakeholder[] =[];
   createStakehoders(project:Project){
     let tempStakeHolders:Stakeholder[]=[];
-    for(var stakeholder of this.stakeholders){
-      stakeholder.project_id = project.project_id;
-      tempStakeHolders.push(stakeholder);
-      
+    if(this.stakeholders.length > 0){
+      for(var stakeholder of this.stakeholders){
+        stakeholder.project_id = project.project_id;
+        tempStakeHolders.push(stakeholder);
+        
+      }
+    
+      this.service.addStakeholders(tempStakeHolders).subscribe(data => {
+        this.sendEmail();
+      });
     }
-    this.service.addStakeholders(tempStakeHolders).subscribe(data => {
-      this.sendEmail();
-    });
   }
 
   sendEmail(){
@@ -467,8 +492,7 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
     const dialogRef = this.dialog.open(ReleaseStakeholderComponent, {
       height: '50%',
       width: '30%',
-      backdropClass: 'backdropBackground',
-      panelClass:'bg-blue'
+      
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -476,7 +500,7 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
         // this.stakeholders=[];
         this.newStakeholder = <Stakeholder>{};
         this.newStakeholder = result.data;
-        if(this.tempProjectStakeholders.indexOf(this.newStakeholder) == -1){
+        if(this.tempProjectStakeholders?.indexOf(this.newStakeholder) == -1){
           // alert('new stakehoder added');
           // this.newStakeholder.project_name = project.project_name;
           // this.newStakeholder.project_milestone = project.project_milestone_id;
@@ -496,7 +520,6 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
   createStakeholderList(stakeholders:Stakeholder[]){
     this.stakeholders=[];
     for (var stakeholder of stakeholders) {
-    
       this.stakeholders.push(stakeholder);
     }
   }
@@ -513,8 +536,64 @@ export class ReleaseEditComponent implements OnInit,OnDestroy {
 
   }
 
+  /**
+   * Delete the selected stakeholder
+   * @param selectedStakeholder selected stakeholder to delete
+   */
   deleteStakeholder(selectedStakeholder: Stakeholder){
+    const deleteStakeholderDialogRef = this.dialog.open(ConfirmDeleteStakeholderDialogComponent, {
+      height: '18%',
+      width: '23%',
+      data: { name: selectedStakeholder.name }
+    });
 
+    deleteStakeholderDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if(result.data === 'delete'){
+          this.service.deleteStakeholder(selectedStakeholder).subscribe(data => {
+            if(data.message === 'success'){
+              const index = this.projectStakeholders.indexOf(selectedStakeholder, 0);
+              // alert(index)
+              if (index > -1) {
+                this.projectStakeholders.splice(index, 1);
+                this.createStakeholderList(this.projectStakeholders);
+              }
+            }
+          });
+        }
+      }
+    });
+
+  }
+
+  existingStakeholder!:Stakeholder
+  updateStakeholder(selectedStakeholder: Stakeholder){
+    const dialogRef = this.dialog.open(ReleaseStakeholderComponent, {
+      height: '50%',
+      width: '30%',
+      data: {
+        data: selectedStakeholder
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.stakeholderEmails =[];
+        // this.stakeholders=[];
+        this.newStakeholder = <Stakeholder>{};
+        this.newStakeholder = result.data;
+        this.existingStakeholder = this.tempProjectStakeholders.find(x => x.id == this.newStakeholder.id)!;
+        // if(JSON.stringify(this.existingStakeholder) !== JSON.stringify(this.newStakeholder)){
+          const index = this.projectStakeholders.indexOf(this.existingStakeholder, 0);
+          if (index > -1) {
+            this.service.updateStakeholder(this.newStakeholder).subscribe(data => {
+              this.projectStakeholders.splice(index, 1);
+              this.projectStakeholders.unshift(this.newStakeholder);
+              this.createStakeholderList(this.projectStakeholders);
+            })
+          }
+      }
+    });
   }
 
 }

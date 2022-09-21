@@ -1,230 +1,230 @@
 [
     {
-        "id": "qwerd5a66f5735b084075f81af70ad31",
+        "id": "yuiod5a66f5735b084075f81af70ad31",
         "vector": "Requirements",
         "details": [
             {
-            "id": "gthyd5a66f5735b084075f81af70ad78",
-            "detail":"Requirements and Change Control",
-            "releaseCriteria":"All ratified requirements put under Platform change control;Overall pre-Si platform model plan approved"
+                "id": "kimnd5a66f5735b084075f81af70ad01",
+                "detail":"Requirements and Change Control",
+                "releaseCriteria":"Requirements under Change Control, reviewed and approved"
             }
         ]   
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad32",
+        "id": "yuiod5a66f5735b084075f81af70ad32",
         "vector": "Development",
         "details": [
             {
-            "id": "gthyd5a66f5735b084075f81af70ad79",
-            "detail":"Code completion, coverage and verification vs requirements",
-            "releaseCriteria":"FW booot to UEFI shell (U boot); Primary OS boot through splash screen"
+                "id": "kimnd5a66f5735b084075f81af70ad02",
+                "detail":"Code completion",
+                "releaseCriteria":"Development complete for all PV/PRQ requirements; SW is production ready.Code review & LTR checklist verified"
             }
         ]
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad33",
+        "id": "yuiod5a66f5735b084075f81af70ad33",
         "vector": "Collateral",
         "details": [
             {
-                "id": "gthyd5a66f5735b084075f81af70ad80",
-                "detail":"Customer Documentation Readiness",
-                "releaseCriteria":"All customer documents identified and planned.Al cusomer milestone collateral ready for release including known limitations & defects"
+                "id": "kimnd5a66f5735b084075f81af70ad03",
+                "detail":"Customer Documentation Readiness ",
+                "releaseCriteria":"All customer collateral ready for release including known SW limitations & defects"
             }
         ]
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad34",
+        "id": "yuiod5a66f5735b084075f81af70ad34",
         "vector": "Defects/Bugs",
         "details": [
             {
-                "id": "gthyd5a66f5735b084075f81af70ad81",
-                "detail":"Defect count and associated customer impact assessment",
-                "releaseCriteria":"All must-fix(P1) defects resolved and verified."
+                "id": "kimnd5a66f5735b084075f81af70ad04",
+                "detail":"Impact assessment of defects. Assess # of open defects, for both severity/exposure and priority.",
+                "releaseCriteria":"All must-fix (Priority=P1) defects and all critical severity defects resolved and verified."
             }
         ]
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad35",
+        "id": "yuiod5a66f5735b084075f81af70ad35",
         "vector": "Validation",
         "details": [
             {
-                "id": "gthyd5a66f5735b084075f81af70ad82",
+                "id": "kimnd5a66f5735b084075f81af70ad05",
                 "detail":"Functional Validation Plan",
-                "releaseCriteria":"Plan Approved & coverage is 100% of the functional requirements"
+                "releaseCriteria":"Plan Approved & coverage is 95% of the functional requirements"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad83",
-                "detail":"Minimum model quality level, % Attempted and % Pass vs. Planned and PV, BKC Coverage.",
-                "releaseCriteria":"Test cases defined. All milestone UCIS/FRs integrated 100% VS0 test cases attempted. OS boot flow test passed."
+                "id": "kimnd5a66f5735b084075f81af70ad06",
+                "detail":"Functional validation  Execution",
+                "releaseCriteria":"Execution rate > 100%, Pass rate > 95%"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad84",
+                "id": "kimnd5a66f5735b084075f81af70ad07",
                 "detail":"KPIs targets Defnition",
-                "releaseCriteria":"Define andratify targets for boot time and other customer requested metrics"
+                "releaseCriteria":"All KPIs & targets defined & approved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad85",
+                "id": "kimnd5a66f5735b084075f81af70ad08",
                 "detail":"KPI measurement",
-                "releaseCriteria":""
+                "releaseCriteria":"All KPIs tested with each at < 5% deviation"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad86",
+                "id": "kimnd5a66f5735b084075f81af70ad09",
                 "detail":"Stability Plan",
-                "releaseCriteria":"Define stability criteria with targets for future milestones."
+                "releaseCriteria":"Plan reviewed & Approved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad87",
+                "id": "kimnd5a66f5735b084075f81af70ad10",
                 "detail":"Stability validation execution",
-                "releaseCriteria":"Deterministic and repeatable primary OS boot;Minimum 3 repeats."
+                "releaseCriteria":"DPMO < 200"
             }
         ]
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad36",
+        "id": "yuiod5a66f5735b084075f81af70ad36",
         "vector": "Compliance",
         "details": [
             {
-                "id": "gthyd5a66f5735b084075f81af70ad88",
+                "id": "kimnd5a66f5735b084075f81af70ad11",
                 "detail":"OS Cert completeness, Standards compliance (FUSA), Accessibility & Waiver Status",
-                "releaseCriteria":"50% Passing and issues recorded as defects. "
+                "releaseCriteria":"Certification tests are completed & 100% passed, No issues gate final certification."
             }
         ]
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad37",
+        "id": "yuiod5a66f5735b084075f81af70ad37",
         "vector": "Legal",
         "details": [
             {
-                "id": "gthyd5a66f5735b084075f81af70ad89",
+                "id": "kimnd5a66f5735b084075f81af70ad12",
                 "detail":"Export",
                 "releaseCriteria":"Approved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad90",
+                "id": "kimnd5a66f5735b084075f81af70ad13",
                 "detail":"TM&B",
                 "releaseCriteria":"Approved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad91",
+                "id": "kimnd5a66f5735b084075f81af70ad14",
                 "detail":"Protex Scan",
                 "releaseCriteria":"Running"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad92",
+                "id": "kimnd5a66f5735b084075f81af70ad15",
                 "detail":"Protex BOM",
                 "releaseCriteria":"fully & accurately populated including the correct usage per component"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad93",
+                "id": "kimnd5a66f5735b084075f81af70ad16",
                 "detail":"Protex Matches & License conflicts",
                 "releaseCriteria":"All Protex Matches & License conflicts resolved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad94",
+                "id": "kimnd5a66f5735b084075f81af70ad17",
                 "detail":"Protex Obligations",
                 "releaseCriteria":"All Protex Obligations fulfilled and checked in Protex"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad95",
+                "id": "kimnd5a66f5735b084075f81af70ad18",
                 "detail":"OBL",
                 "releaseCriteria":"Defined and approved by BU attorney"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad96",
+                "id": "kimnd5a66f5735b084075f81af70ad19",
                 "detail":"OS PDT",
                 "releaseCriteria":"Approved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad97",
+                "id": "kimnd5a66f5735b084075f81af70ad20",
                 "detail":"Copyright readme file",
                 "releaseCriteria":"Ready"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad98",
+                "id": "kimnd5a66f5735b084075f81af70ad21",
                 "detail":"TPP/Attributions file",
                 "releaseCriteria":"Ready"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad99",
+                "id": "kimnd5a66f5735b084075f81af70ad22",
                 "detail":"Legal text file ",
                 "releaseCriteria":"Integrate as part of the released SW package "
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad01",
+                "id": "kimnd5a66f5735b084075f81af70ad23",
                 "detail":"Record Center ",
                 "releaseCriteria":"Release SWLC evidence archived in the Record Center"
             }
         ]
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad38",
+        "id": "yuiod5a66f5735b084075f81af70ad38",
         "vector": "Privacy",
         "details": [
             {
-                "id": "gthyd5a66f5735b084075f81af70ad02",
+                "id": "kimnd5a66f5735b084075f81af70ad24",
                 "detail":"PIA (Privacy Impact Assesment)",
                 "releaseCriteria":"Approved"
             }
         ]
     },
     {
-        "id": "qwerd5a66f5735b084075f81af70ad39",
+        "id": "yuiod5a66f5735b084075f81af70ad39",
         "vector": "Security",
         "details": [
             {
-                "id": "gthyd5a66f5735b084075f81af70ad03",
+                "id": "kimnd5a66f5735b084075f81af70ad25",
                 "detail":"SDLe project creation",
                 "releaseCriteria":"SDLe Project survey completed & tasks dispositioned"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad04",
+                "id": "kimnd5a66f5735b084075f81af70ad26",
                 "detail":"Crypto review",
                 "releaseCriteria":"Approved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad05",
+                "id": "kimnd5a66f5735b084075f81af70ad27",
                 "detail":"SAFE Review & Threat Model",
                 "releaseCriteria":"Approved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad06",
+                "id": "kimnd5a66f5735b084075f81af70ad28",
                 "detail":"Static Analysis setup",
                 "releaseCriteria":"Running"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad07",
+                "id": "kimnd5a66f5735b084075f81af70ad29",
                 "detail":"Static Analysis issues",
-                "releaseCriteria":"Dispositioned"
+                "releaseCriteria":"Issues Resolved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad08",
+                "id": "kimnd5a66f5735b084075f81af70ad30",
                 "detail":"Composition Analysis setup (SNYK / BDBA)",
                 "releaseCriteria":"Running"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad09",
+                "id": "kimnd5a66f5735b084075f81af70ad31",
                 "detail":"Composition Analysis issues",
-                "releaseCriteria":"Dispositioned"
+                "releaseCriteria":"Issues Resolved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad10",
+                "id": "kimnd5a66f5735b084075f81af70ad32",
                 "detail":"NetSparker deployment on the pre-production environment",
                 "releaseCriteria":"Deployed & running and all issues resolved"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad11",
+                "id": "kimnd5a66f5735b084075f81af70ad33",
                 "detail":"NetSparker deployment on the production environment",
                 "releaseCriteria":"Deployed & Running "
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad12",
+                "id": "kimnd5a66f5735b084075f81af70ad34",
                 "detail":"A/V Scan",
                 "releaseCriteria":"Scan is clean for the released SW"
             },
             {
-                "id": "gthyd5a66f5735b084075f81af70ad13",
+                "id": "kimnd5a66f5735b084075f81af70ad35",
                 "detail":"SDLe tasks",
-                "releaseCriteria":"All required pre-production tasks meet creteria"
+                "releaseCriteria":"All tasks completed and evidence verified."
             }
         ]
     }
