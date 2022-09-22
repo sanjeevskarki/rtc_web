@@ -23,8 +23,8 @@ export class ReleaseStakeholderComponent implements OnInit {
     { value: 'Validation Lead', viewValue: 'Validation Lead' },
     { value: 'Marketing', viewValue: 'Marketing' },
     { value: 'Security Champion', viewValue: 'Security Champion' },
-    { value: 'Product Security Expert', viewValue: 'Product Security Expert' },
-    { value: 'Security & Privacy Lead', viewValue: 'Security & Privacy Lead' },
+    { value: 'Product Security Expert', viewValue: 'Product Security Expert (PSE)' },
+    { value: 'Security & Privacy Lead', viewValue: 'Security & Privacy Lead (SPL)' },
     { value: 'Other', viewValue: 'Other' },
   ];
   constructor(private formBuilder: FormBuilder,public dialogRef: MatDialogRef<ReleaseStakeholderComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }

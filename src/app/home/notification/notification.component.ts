@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { NotificationSetting, OwnerNotificationStatus } from '../home.models';
+import { NotificationSetting, OwnerNotificationStatus, Project } from '../home.models';
 import { NotificationService } from './notification.service';
 
 @Component({
@@ -17,6 +17,8 @@ export class NotificationComponent implements OnInit,OnDestroy {
   ownerNotificationStatus!:OwnerNotificationStatus;
   notificationSetting!:NotificationSetting;
   notification!:any;
+  selectedProject!: Project;
+  existingNotificationSetting!:NotificationSetting;
 
   ownerNotificationList: any[] = [
     { value: 'assigntask', viewValue: 'Notify owner upon assignment to a task.', checked: false},
@@ -51,13 +53,22 @@ export class NotificationComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
+    this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    this.service.getNotifications(this.selectedProject.project_owner_email).subscribe((response) => {
+      
+      this.existingNotificationSetting = response;
+      if(this.existingNotificationSetting){
+
+      }
+      console.log(JSON.stringify(this.existingNotificationSetting));
+    });
     
   }
 
   ngOnDestroy(): void {
     this.notification=<any>{};
     this.notificationSetting=<NotificationSetting>{};
-    this.notificationSetting.qual_owner_id=3;
+    this.notificationSetting.qual_owner_id=this.selectedProject.project_owner_email;
     for(let ownerCheck of this.ownerNotificationList){
       this.notification[ownerCheck.value] = this.ownerNotificationList.find(x => x.value == ownerCheck.value).checked;
     }
@@ -68,10 +79,21 @@ export class NotificationComponent implements OnInit,OnDestroy {
       this.notification[qualOwner.value] = this.qualOwnerNotificationList.find(x => x.value == qualOwner.value).checked;
     }
     this.notificationSetting.setting = this.notification;
-
-    this.service.addNotification(this.notificationSetting).subscribe(data => {
+    if(this.existingNotificationSetting.id){
+      this.notificationSetting.id=this.existingNotificationSetting.id;
+      this.service.updateNotification(this.notificationSetting).subscribe(data => {
       
-    });
+      });
+    }else{
+      this.notificationSetting.id=Math.floor(Math.random()*90000) + 10000;
+      this.service.addNotification(this.notificationSetting).subscribe(data => {
+      
+      });
+    }
+   
+    
+
+    
   }
 
   setDefaultChecks(ownerDefaultChecklist:string[],stakeholderDefaultChecklist:string[],qualOwnerDefaultChecklist:string[]){

@@ -45,7 +45,7 @@
             Upload</button>
            
         <input id="fileInput" hidden type="file" (change)="selectEvidenceFile($event)" formControlName="upload"
-            name="upload" accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.ptx,.xls">&nbsp;&nbsp;
+            name="upload" accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
         <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
         <!-- <mat-hint>Hint</mat-hint> -->
         <!-- <input class="ng-hide" id="input-file-id" multiple ormControlName="upload" type="file" (change)="csvInputChange($event)"/>

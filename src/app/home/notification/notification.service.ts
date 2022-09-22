@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -47,8 +47,14 @@ export class NotificationService {
     return this.httpClient.put<string>(this.endpoint_url + this.notification, body, { headers: this.headers });
   }
 
-  public getNotifications(qualOwnerId:number): Observable<Stakeholder[]> {
-    return this.httpClient.get<Stakeholder[]>(this.endpoint_url + this.notification+ "/" + qualOwnerId);
+  public getNotifications(qualOwnerId:string): Observable<NotificationSetting> {
+    let params = new HttpParams().set('id',qualOwnerId);
+    const requestOptions: Object = {
+      reportProgress: true,
+      responseType: 'json',
+      params: params,
+    }
+    return this.httpClient.get<NotificationSetting>(this.endpoint_url + this.notification,requestOptions);
   }
 
 

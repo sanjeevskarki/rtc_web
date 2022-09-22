@@ -246,7 +246,8 @@ export interface OwnerNotificationStatus {
 }
 
 export interface NotificationSetting {
-  qual_owner_id:number;
+  id:number;
+  qual_owner_id:string;
   setting: any;
 	// taskupdate: boolean
 	// commentupdate: boolean

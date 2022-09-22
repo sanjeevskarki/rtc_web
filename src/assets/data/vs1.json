@@ -50,7 +50,7 @@
             {
                 "id": "gthyd5a66f5735b084075f81af70ad82",
                 "detail":"Functional Validation Plan",
-                "releaseCriteria":""
+                "releaseCriteria":"Planned Reviewed and Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad83",
@@ -60,7 +60,7 @@
             {
                 "id": "gthyd5a66f5735b084075f81af70ad84",
                 "detail":"KPIs targets Defnition",
-                "releaseCriteria":""
+                "releaseCriteria":"Defnition Reviewed and Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad85",
@@ -70,12 +70,12 @@
             {
                 "id": "gthyd5a66f5735b084075f81af70ad86",
                 "detail":"Stability Plan",
-                "releaseCriteria":"All milestone stability tests meet VS1 targets including OS Boot for all planned OSs and target workloads run for min. duration. (recommend 48 hours)"
+                "releaseCriteria":"Planned Reviewed and Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad87",
                 "detail":"Stability validation execution",
-                "releaseCriteria":""
+                "releaseCriteria":"All milestone stability tests meet VS1 targets including OS Boot for all planned OSs and target workloads run for min. duration. (recommend 48 hours)"
             }
         ]
     },

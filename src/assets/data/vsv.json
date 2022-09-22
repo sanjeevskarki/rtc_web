@@ -50,7 +50,7 @@
             {
                 "id": "gthyd5a66f5735b084075f81af70ad82",
                 "detail": "Functional Validation Plan",
-                "releaseCriteria": ""
+                "releaseCriteria": "Planned Reviewed and Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad83",
@@ -60,7 +60,7 @@
             {
                 "id": "gthyd5a66f5735b084075f81af70ad84",
                 "detail": "KPIs targets Defnition",
-                "releaseCriteria": ""
+                "releaseCriteria": "Defnition Reviewed and Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad85",
@@ -70,12 +70,12 @@
             {
                 "id": "gthyd5a66f5735b084075f81af70ad86",
                 "detail": "Stability Plan",
-                "releaseCriteria": "All stability tests meet VSV target including all OSs and any planned customer specific configurations."
+                "releaseCriteria": "Planned Reviewed and Approved"
             },
             {
                 "id": "gthyd5a66f5735b084075f81af70ad87",
                 "detail": "Stability validation execution",
-                "releaseCriteria": ""
+                "releaseCriteria": "All stability tests meet VSV target including all OSs and any planned customer specific configurations."
             }
         ]
     },

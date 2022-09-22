@@ -68,6 +68,8 @@ export class ReleaseEditComponent implements OnInit {
   projectStakeholders!:Stakeholder[];
   tempProjectStakeholders!:Stakeholder[];
   milestoneOrderCategory:any = { 'VS0': 1, 'VS1': 2 , 'VSV': 3, 'POC': 4, 'Pre-Alpha': 5, 'Alpha': 6, 'Beta': 7, 'PC': 8, 'Gold': 9};
+  formVaueChanged:boolean=false;
+
   constructor(private formBuilder: FormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -102,15 +104,17 @@ export class ReleaseEditComponent implements OnInit {
       notes: [null, []],
     });
 
+    
     this.addContactForm = this.formBuilder.group({
       name: [null, Validators.required],
       email: [null, Validators.required],
       wwid: [null, Validators.required],
       role: [null, Validators.required],
     });
-
+    
   }
 
+  public initalValues:any;
  
   getProjectStakeholders(){
     this.projectStakeholders =[];
@@ -316,6 +320,7 @@ export class ReleaseEditComponent implements OnInit {
       this.workWeek = this.selectedProject.project_release_date!.toString();
       this.isWorkWeekVisible = true;
     }
+    this.initalValues = this.releaseForm.value;
   }
 
 
@@ -336,7 +341,16 @@ export class ReleaseEditComponent implements OnInit {
   //   }
   // }
 
+  isReallyDifferent(){
+    if (JSON.stringify(this.initalValues) !== JSON.stringify(this.releaseForm.value)) {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   updateRelease() {
+   
     this.newProject = <Project>{};
 
     this.newProject.project_name = this.releaseForm.controls[NAME_LOWER].value;
@@ -355,6 +369,7 @@ export class ReleaseEditComponent implements OnInit {
       this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
       this.getStaticData();
     }
+    this.initalValues = this.releaseForm.value;
     localStorage.setItem('selectedProject', JSON.stringify(this.newProject));
   }
 
@@ -439,7 +454,7 @@ export class ReleaseEditComponent implements OnInit {
       this.taskList.push(this.task);
     }
     this.service.addTasks(this.taskList).subscribe(data => {
-      this.releaseForm.reset();
+      // this.releaseForm.reset();
       this.showSpinner = false;
     });
   }
@@ -472,7 +487,7 @@ export class ReleaseEditComponent implements OnInit {
 
   updateProject() {
     this.service.updateProject(this.newProject).subscribe(data => {
-      this.createStakehoders(this.newProject);
+      // this.createStakehoders(this.newProject);
       // this.releaseForm.reset();
       // this.clear(this.releaseForm);
     })
@@ -512,6 +527,10 @@ export class ReleaseEditComponent implements OnInit {
         // this.projectStakeholders.push(this.newStakeholder);
         // alert(this.tempProjectStakeholders.indexOf(this.newStakeholder));
         this.createStakeholderList(this.projectStakeholders);
+        this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+        if(this.selectedProject){
+          this.createStakehoders(this.selectedProject);
+        }
         // this.stakeholders = this.projectStakeholders;
       }
     });

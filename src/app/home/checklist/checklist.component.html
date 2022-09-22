@@ -218,7 +218,7 @@
         <div class="form-group">
             <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
             <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)"
-                formControlName="upload" name="upload" accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.ptx,.xls">&nbsp;&nbsp;
+                formControlName="upload" name="upload" accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
             <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
         </div>
         <br>
