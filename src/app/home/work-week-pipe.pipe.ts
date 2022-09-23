@@ -11,3 +11,12 @@ export class WorkWeekPipePipe implements PipeTransform {
   }
 
 }
+@Pipe({
+  name: 'dateTimePipe'
+})
+export class DateTimeFormatPipe implements PipeTransform {
+  transform(value: any): unknown {
+    return moment(value).format('lll');
+  }
+
+}

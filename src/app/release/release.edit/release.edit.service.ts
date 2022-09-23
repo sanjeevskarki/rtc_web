@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask, ApiResponse } from '../../home/home.models';
-import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST, STAKEHOLDER_LOWER, EMAIL_LOWER } from '../release.constants';
+import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST, STAKEHOLDER_LOWER, EMAIL_LOWER, KW_LOWER, PROTEX_LOWER, BDBA_LOWER } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { Stakeholder } from 'src/app/home/home.models';
+import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
 /**
  * Dependecy Injection.
  */
@@ -26,6 +27,9 @@ export class ReleaseEditService {
   remaining!: number;
   headers!: HttpHeaders;
   email: string = EMAIL_LOWER;
+  kw: string = KW_LOWER;
+  bdba: string = BDBA_LOWER;
+  protex: string = PROTEX_LOWER;
   /**
    *
    * @param httpClient Http Client.
@@ -122,5 +126,18 @@ export class ReleaseEditService {
   public sendEmail(stakeholders: Stakeholder[]): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>(this.endpoint_url + this.stakeholder + '/' + this.email, stakeholders, { headers: this.headers });
   }
+
+  public getProtexConfig(projectId:number): Observable<Protex_Config[]> {
+    return this.httpClient.get<Protex_Config[]>(this.endpoint_url + this.protex+"/"+projectId);
+  }
+
+  public getKwConfig(projectId:number): Observable<Kw_Config[]> {
+    return this.httpClient.get<Kw_Config[]>(this.endpoint_url + this.kw+"/"+projectId);
+  }
+
+  public getBdbaConfig(projectId:number): Observable<Bdba_Config[]> {
+    return this.httpClient.get<Bdba_Config[]>(this.endpoint_url + this.bdba+"/"+projectId);
+  }
+
 
 }

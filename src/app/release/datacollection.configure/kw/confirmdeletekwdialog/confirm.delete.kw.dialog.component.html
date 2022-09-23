@@ -1,0 +1,7 @@
+<div mat-dialog-content>
+    <p>Do you want to Remove <b>{{projectName}} </b> ?</p>
+</div>
+<div mat-dialog-actions style="float:right;">
+    <button mat-flat-button color="primary" (click)="delete()">Delete</button>
+    <button mat-flat-button color="primary" [mat-dialog-close] cdkFocusInitial>Cancel</button>
+</div>

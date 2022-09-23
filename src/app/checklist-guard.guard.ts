@@ -21,20 +21,20 @@ export class ChecklistGuard implements CanDeactivate<ChecklistComponent> {
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ReleaseGuard implements CanDeactivate<ReleaseComponent> {
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class ReleaseGuard implements CanDeactivate<ReleaseComponent> {
 
-  @HostListener('window:beforeunload')
-  canDeactivate(component: ReleaseComponent, currentRoute: ActivatedRouteSnapshot): boolean | Observable<boolean> {
-    if (component.checkData()) {
-      let subject = new Subject<boolean>();
-      component.openConfirmation();
-      subject = component.subject;
-      return subject.asObservable();
-    }
-    return true;
-  }
+//   @HostListener('window:beforeunload')
+//   canDeactivate(component: ReleaseComponent, currentRoute: ActivatedRouteSnapshot): boolean | Observable<boolean> {
+//     if (component.checkData()) {
+//       let subject = new Subject<boolean>();
+//       component.openConfirmation();
+//       subject = component.subject;
+//       return subject.asObservable();
+//     }
+//     return true;
+//   }
 
-}
+// }

@@ -55,7 +55,7 @@
                 Release Type is required
             </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 30rem;">
+        <mat-form-field appearance="outline" style="width: 15rem;margin-right: 1rem;">
             <mat-label>Select Milestone</mat-label>
             <mat-select formControlName="milestone">
                 <mat-option *ngFor="let milestone of milestones" [value]="milestone.value">
@@ -67,6 +67,14 @@
                 Milestone is required
             </mat-error>
         </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 12rem;">
+            <mat-label>Data Collection Status</mat-label>
+            <input type="text" matInput formControlName="status" value={{dataCollectionStatus}}>
+            
+        </mat-form-field>
+        <button mat-icon-button color="primary" matTooltip="Configure DataCollection" (click)="openDataCollectionDialog()">
+            <mat-icon aria-label="Edit">edit</mat-icon>
+        </button>
         <br>
         <mat-form-field appearance="outline" style="width: 22rem;margin-right: 1rem;">
             <mat-label>Qual Owner Name</mat-label>
@@ -116,7 +124,7 @@
         </mat-form-field>
     </form>
         
-        <div style="align-self: center;">
+        <div style="align-self: center;width: 92rem;margin-right: 1rem;">
             <!-- <button mat-flat-button matTooltip="Add Stakeholder" color="primary" (click)="addContact()">
                 <mat-icon>add</mat-icon>Add Stakeholder
             </button> -->
@@ -124,8 +132,8 @@
                 style="margin-bottom: 10px;">
                 <mat-icon style="margin-bottom: 3px">add</mat-icon>Add Stakeholder
             </button>
-            <div id="modalTarget" #targetModal >
-                <mat-table #stakeholdertable [dataSource]="stakeholders" style="width: 92rem;margin-right: 1rem;">
+            <div id="modalTarget" #targetModal *ngIf="stakeholders!.length > 0">
+                <mat-table #stakeholdertable [dataSource]="stakeholders" >
                     <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
                         <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>

@@ -1,0 +1,29 @@
+
+<h1 mat-dialog-title>Add BKC</h1>
+<form class="example-form" [formGroup]="addBkcForm">
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Title</mat-label>
+        <input type="text" matInput formControlName="title">
+        <mat-error *ngIf="addBkcForm.controls.title.hasError('required') && addBkcForm.controls.title.touched">
+            Title is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Version</mat-label>
+        <input type="text" matInput formControlName="version">
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Comment</mat-label>
+        <textarea matInput formControlName="comment"></textarea>
+        <!-- <mat-error *ngIf="addBkcForm.controls.wwid.hasError('required') && addBkcForm.controls.wwid.touched">
+            WWID is required
+        </mat-error> -->
+    </mat-form-field>
+  
+
+    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+        (click)="Close()">Close</button>
+    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"
+        [disabled]="!addBkcForm.valid">Save</button>
+
+</form>

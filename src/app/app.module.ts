@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { HomeComponent } from './home/home.component';
-import { WorkWeekPipePipe } from './home/work-week-pipe.pipe';
+import { WorkWeekPipePipe, DateTimeFormatPipe } from './home/work-week-pipe.pipe';
 
 import { ReportComponent } from './report/report.component';
 import { ChecklistComponent } from './home/checklist/checklist.component';
@@ -49,6 +49,18 @@ import { ConfirmDeleteStakeholderDialogComponent } from './release/confirmdelete
 import { ReleaseConfirmDialogComponent } from './release/releaseconfirmdialog/release.confirm.dialog.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ReleaseStakeholderComponent } from './release/release.stakeholder/release.stakeholder.component';
+import { BkcAddComponent } from './home/bkc/bkc.add/bkc.add.component';
+import { ConfirmDeleteBkcDialogComponent } from './home/bkc/confirmdeletebkcdialog/confirm.delete.bkc.dialog.component';
+import { DatacollectionConfigureComponent } from './release/datacollection.configure/datacollection.configure.component';
+import { ProtexComponent } from './release/datacollection.configure/protex/protex.component';
+import { BdbaComponent } from './release/datacollection.configure/bdba/bdba.component';
+import { KwComponent } from './release/datacollection.configure/kw/kw.component';
+import { ProtexAddComponent } from './release/datacollection.configure/protex/protex.add/protex.add.component';
+import { KwAddComponent } from './release/datacollection.configure/kw/kw.add/kw.add.component';
+import { BdbaAddComponent } from './release/datacollection.configure/bdba/bdba.add/bdba.add.component';
+import { ConfirmDeleteProtexDialogComponent } from './release/datacollection.configure/protex/confirmdeleteprotexdialog/confirm.delete.protex.dialog.component';
+import { ConfirmDeleteBdbaDialogComponent } from './release/datacollection.configure/bdba/confirmdeletebdbadialog/confirm.delete.bdba.dialog.component';
+import { ConfirmDeleteKwDialogComponent } from './release/datacollection.configure/kw/confirmdeletekwdialog/confirm.delete.kw.dialog.component';
 
 
 @NgModule({
@@ -57,6 +69,7 @@ import { ReleaseStakeholderComponent } from './release/release.stakeholder/relea
     MenuComponent,
     HomeComponent,
     WorkWeekPipePipe,
+    DateTimeFormatPipe,
     ReportComponent,
     ChecklistComponent,
     AdminComponent,
@@ -69,7 +82,19 @@ import { ReleaseStakeholderComponent } from './release/release.stakeholder/relea
     ConfirmDeleteStakeholderDialogComponent,
     ReleaseConfirmDialogComponent,
     ReleaseStakeholderComponent,
-    NotificationComponent
+    NotificationComponent,
+    BkcAddComponent,
+    ConfirmDeleteBkcDialogComponent,
+    DatacollectionConfigureComponent,
+    ProtexComponent,
+    BdbaComponent,
+    KwComponent,
+    ProtexAddComponent,
+    KwAddComponent,
+    BdbaAddComponent,
+    ConfirmDeleteProtexDialogComponent,
+    ConfirmDeleteBdbaDialogComponent,
+    ConfirmDeleteKwDialogComponent
   ],
   imports: [
     HttpClientModule, BrowserModule, AppRoutingModule,

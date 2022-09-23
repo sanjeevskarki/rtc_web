@@ -1,1 +1,54 @@
-<p>Bkc coming soon!</p>
+BKC coming soon
+<!-- <div class="container" class="container mat-elevation-z9">
+    <h1 mat-dialog-title></h1>
+        <div style="align-self: center;">
+            <button mat-flat-button matTooltip="Add Stakeholder" color="primary" (click)="openBkc()"
+                style="margin-bottom: 10px;">
+                <mat-icon style="margin-bottom: 3px">add</mat-icon>Add BKC Item
+            </button>
+            <div id="modalTarget" #targetModal >
+                <mat-table #stakeholdertable [dataSource]="bkcList" style="width: 92rem;margin-right: 1rem;">
+                    <ng-container matColumnDef="seq">
+                        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.seq}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.title}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="version">
+                        <mat-header-cell *matHeaderCellDef>Version</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.version}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="last_updated">
+                        <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.last_updated | dateTimePipe}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comment">
+                        <mat-header-cell *matHeaderCellDef>Comment</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.comment}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>
+                        </mat-header-cell>
+                  
+                        <mat-cell *matCellDef="let row; let i=index;">
+                            <button mat-icon-button color="primary" matTooltip="Update BKC" (click)="editBkc(row)">
+                                <mat-icon aria-label="Edit">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary" matTooltip="Delete BKC" (click)="deleteBkc(row)">
+                                <mat-icon aria-label="Delete">delete_outline</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="stakeholderDisplayedColumns;sticky: true"
+                        [style.background-color]="color">
+                    </mat-header-row>
+                    <mat-row *matRowDef="let row; columns: stakeholderDisplayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+</div> -->

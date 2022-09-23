@@ -15,6 +15,9 @@ import { ReleaseEditService } from './release.edit.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ReleaseStakeholderComponent } from '../release.stakeholder/release.stakeholder.component';
 import { ConfirmDeleteStakeholderDialogComponent } from '../confirmdeletestakeholderdialog/confirm.delete.stakeholder.dialog.component';
+import { DatacollectionConfigureComponent } from '../datacollection.configure/datacollection.configure.component';
+import { forkJoin, Subject } from 'rxjs';
+import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
 
 @Component({
   selector: 'app-release.edit',
@@ -69,6 +72,10 @@ export class ReleaseEditComponent implements OnInit {
   tempProjectStakeholders!:Stakeholder[];
   milestoneOrderCategory:any = { 'VS0': 1, 'VS1': 2 , 'VSV': 3, 'POC': 4, 'Pre-Alpha': 5, 'Alpha': 6, 'Beta': 7, 'PC': 8, 'Gold': 9};
   formVaueChanged:boolean=false;
+  protexConfigList:Protex_Config[]=[];
+  kwConfigList:Kw_Config[]=[];
+  bdbaConfigList:Bdba_Config[]=[];
+  dataCollectionStatus!:string;
 
   constructor(private formBuilder: FormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
@@ -79,11 +86,13 @@ export class ReleaseEditComponent implements OnInit {
     this.getBusinessUnits();
     this.getMilestones();
     
+    
     this.projectStakeholders =[];
     // this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     if(this.selectedProject){
       this.getProjectStakeholders();
+      this.checkDataCollectionStatus();
     }
 
     this.releaseForm = this.formBuilder.group({
@@ -613,6 +622,36 @@ export class ReleaseEditComponent implements OnInit {
           }
       }
     });
+  }
+
+  openDataCollectionDialog(){
+    const dialogRef = this.dialog.open(DatacollectionConfigureComponent, {
+      height: '70%',
+      width: '90%',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.checkDataCollectionStatus();
+    });
+
+  }
+
+
+  checkDataCollectionStatus(){
+    
+    let res1 = this.service.getProtexConfig(this.selectedProject.project_id);
+    let res2 = this.service.getKwConfig(this.selectedProject.project_id);
+    let res3 = this.service.getBdbaConfig(this.selectedProject.project_id);
+    forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
+      this.protexConfigList = data1;
+      this.kwConfigList = data2;
+      this.bdbaConfigList = data3;   
+      if(this.protexConfigList!.length >0 ||this.kwConfigList!.length >0 ||this.bdbaConfigList!.length >0  ){
+        this.dataCollectionStatus="Active";
+      } else{
+        this.dataCollectionStatus="Not Configured";
+      }
+    });
+   
   }
 
 }

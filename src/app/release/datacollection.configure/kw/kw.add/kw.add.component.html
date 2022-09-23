@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Config KW</h1>
+<form class="example-form" [formGroup]="addKwConfigForm">
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>KW Server</mat-label>
+        <input type="text" matInput formControlName="kw_server">
+        <mat-error *ngIf="addKwConfigForm.controls.kw_server.hasError('required') && addKwConfigForm.controls.kw_server.touched">
+            KW Server is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Project Name</mat-label>
+        <input type="text" matInput formControlName="kw_project_name">
+        <mat-error *ngIf="addKwConfigForm.controls.kw_project_name.hasError('required') && addKwConfigForm.controls.kw_project_name.touched">
+            Project Name is required
+        </mat-error>
+    </mat-form-field>
+    
+    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+        (click)="Close()">Close</button>
+    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"
+        [disabled]="!addKwConfigForm.valid">Save</button>
+
+</form>

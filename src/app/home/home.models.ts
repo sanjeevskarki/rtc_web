@@ -267,3 +267,13 @@ export interface NotificationSetting {
 	// releasestatusupdate_qualowner: boolean;
   // releasescheduleupdate_qualowner: boolean;
 }
+
+export interface Bkc {
+  seq?:number;
+  id?: number;
+  title: string;
+  version: string;
+  last_updated: string;
+  comment: string;
+  project_id?:number;
+}
