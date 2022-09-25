@@ -6,7 +6,7 @@ import {
   NAME_LOWER, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, TYPE_LOWER
 } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
-import { Stakeholder } from 'src/app/home/home.models';
+import { NotificationSetting, Stakeholder } from 'src/app/home/home.models';
 import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -76,6 +76,34 @@ export class ReleaseEditComponent implements OnInit {
   kwConfigList:Kw_Config[]=[];
   bdbaConfigList:Bdba_Config[]=[];
   dataCollectionStatus!:string;
+  notification!:any;
+  notificationSetting!:NotificationSetting;
+  ownerNotificationList: any[] = [
+    { value: 'assigntask', viewValue: 'Notify owner upon assignment to a task.', checked: false},
+    { value: 'taskupdate', viewValue: 'Notify owner upon task status update.', checked: false },
+    { value: 'commentupdate', viewValue: 'Notify owner upon task comments update.', checked: false },
+    { value: 'taskreleasestatusupdate', viewValue: 'Notify all task owners when release status was updated.', checked: false },
+    { value: 'taskreleaseschduleupdate', viewValue: 'Notify all task owners when release schedule was updated.' , checked: false},
+  ];
+
+  stakeholderNotificationList: any[] = [
+    { value: 'addrelease', viewValue: 'Notify stakeholder when added to a release.' , checked: false},
+    { value: 'removerelease', viewValue: 'Notify stakeholder when removed from a release.', checked: false },
+    { value: 'releasestatusupdate', viewValue: 'Notify all stakeholders when release status was updated.' , checked: false},
+    { value: 'releaseschduleupdate', viewValue: 'Notify all stakeholders when release schedule was updated.' , checked: false}
+  ];
+
+  qualOwnerNotificationList: any[] = [
+    { value: 'assigntask_qualowner', viewValue: 'Notify owner upon assignment to a task.', checked: false},
+    { value: 'taskupdate_qualowner', viewValue: 'Notify owner upon task status update.', checked: false },
+    { value: 'commentupdate_qualowner', viewValue: 'Notify owner upon task comments update.', checked: false },
+    { value: 'taskreleasestatusupdate_qualowner', viewValue: 'Notify all task owners when release status was updated.', checked: false },
+    { value: 'taskreleaseschduleupdate_qualowner', viewValue: 'Notify all task owners when release schedule was updated.' , checked: false},
+    { value: 'addrelease_qualowner', viewValue: 'Notify stakeholder when added to a release.' , checked: false},
+    { value: 'removerelease_qualowner', viewValue: 'Notify stakeholder when removed from a release.', checked: false },
+    { value: 'releasestatusupdate_qualowner', viewValue: 'Notify all stakeholders when release status was updated.' , checked: false},
+    { value: 'releasescheduleupdate_qualowner', viewValue: 'Notify all stakeholders when release schedule was updated.' , checked: false}
+  ];
 
   constructor(private formBuilder: FormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
@@ -389,6 +417,7 @@ export class ReleaseEditComponent implements OnInit {
       this.createGuideLine();
       this.createBuFolder();
       this.createStakehoders(project);
+      this.createNotificationSetting(project);
     });
   }
 
@@ -482,6 +511,28 @@ export class ReleaseEditComponent implements OnInit {
         this.sendEmail();
       });
     }
+  }
+  
+  createNotificationSetting(project:Project){
+    this.notification=<any>{};
+    this.notificationSetting=<NotificationSetting>{};
+    this.notificationSetting.qual_owner_id=project.project_owner_email;
+    for(let ownerCheck of this.ownerNotificationList){
+      this.notification[ownerCheck.value] = this.ownerNotificationList.find(x => x.value == ownerCheck.value).checked;
+    }
+    for(let stakeholder of this.stakeholderNotificationList){
+      this.notification[stakeholder.value] = this.stakeholderNotificationList.find(x => x.value == stakeholder.value).checked;
+    }
+    for(let qualOwner of this.qualOwnerNotificationList){
+      this.notification[qualOwner.value] = this.qualOwnerNotificationList.find(x => x.value == qualOwner.value).checked;
+    }
+    this.notificationSetting.setting = this.notification;
+    
+    this.notificationSetting.id=Math.floor(Math.random()*90000) + 10000;
+    this.service.addNotification(this.notificationSetting).subscribe(data => {
+    
+    });
+    
   }
 
   sendEmail(){

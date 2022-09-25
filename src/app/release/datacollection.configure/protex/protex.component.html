@@ -1,36 +1,37 @@
 <button mat-flat-button matTooltip="Add Protex Scan" color="primary" (click)="openProtexConfig()"
-        style="margin-bottom: 10px;">
-        <mat-icon style="margin-bottom: 3px">add</mat-icon>Add Protex Scan
-        </button>
-        <div>
-            <mat-table #stakeholdertable [dataSource]="protexConfigList" >
-                <ng-container matColumnDef="protex_server">
-                    <mat-header-cell *matHeaderCellDef>Protex Server</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.protex_server}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="protex_project_id">
-                    <mat-header-cell *matHeaderCellDef>Project Id</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.protex_project_id}}</mat-cell>
-                </ng-container>
+    style="margin-bottom: 10px;">
+    <mat-icon style="margin-bottom: 3px">add</mat-icon>Add Protex Scan
+</button>
+<div>
+    <mat-table #stakeholdertable [dataSource]="protexConfigList">
+        <ng-container matColumnDef="protex_server">
+            <mat-header-cell *matHeaderCellDef>Protex Server</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.protex_server}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="protex_project_id">
+            <mat-header-cell *matHeaderCellDef>Project Id</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.protex_project_id}}</mat-cell>
+        </ng-container>
 
-                
-                <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef>
-                    </mat-header-cell>
-            
-                    <mat-cell *matCellDef="let row; let i=index;">
-                        <button mat-icon-button color="primary" matTooltip="Update Protex Scan" (click)="updateProtexConfig(row)">
-                            <mat-icon aria-label="Edit">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="primary" matTooltip="Delete Protex Scan" (click)="deleteProtexConfig(row)">
-                            <mat-icon aria-label="Delete">delete_outline</mat-icon>
-                        </button>
-                    </mat-cell>
-                </ng-container>
 
-                <mat-header-row *matHeaderRowDef="protexDisplayedColumns;sticky: true"
-                    [style.background-color]="color">
-                </mat-header-row>
-                <mat-row *matRowDef="let row; columns: protexDisplayedColumns;"></mat-row>
-            </mat-table>
-        </div>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>
+            </mat-header-cell>
+
+            <mat-cell *matCellDef="let row; let i=index;">
+                <button mat-icon-button color="primary" matTooltip="Update Protex Scan"
+                    (click)="updateProtexConfig(row)">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Delete Protex Scan"
+                    (click)="deleteProtexConfig(row)">
+                    <mat-icon aria-label="Delete">delete_outline</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="protexDisplayedColumns;sticky: true" [style.background-color]="color">
+        </mat-header-row>
+        <mat-row *matRowDef="let row; columns: protexDisplayedColumns;"></mat-row>
+    </mat-table>
+</div>

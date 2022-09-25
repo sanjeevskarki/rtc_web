@@ -177,7 +177,7 @@
     <mat-list>
         <mat-list-item *ngFor="let comment of displayComments">
             <div style="width:100%">
-                <div style="font-size: 12px;" class="detailsAnswer"><b>{{comment.date}}</b>
+                <div style="font-size: 12px;" class="detailsAnswer"><b>{{comment.date | dateTimePipe}}</b>
                 </div>
                 <div class="posting">{{comment.comments}}</div>
                 <div class="posting" (click)="openFile(comment.content,'attachments')" style="cursor: pointer;
@@ -278,7 +278,7 @@
 
         <ng-container matColumnDef="evidenceDate">
             <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.date}}</mat-cell>
+            <mat-cell *matCellDef="let row">{{row.date | dateTimePipe}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="comments">

@@ -11,18 +11,18 @@ import { Kw_Config } from '../../datacollection.models';
 })
 export class KwAddComponent implements OnInit {
 
-  addKwConfigForm!:FormGroup;
-  selectedKwConfig!:Kw_Config;
-  updatedKwCofig!:Kw_Config;
-  selectedProject!:Project;
-  newKwConfig!:Kw_Config;
-  constructor(private formBuilder: FormBuilder,public dialogRef: MatDialogRef<KwAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  addKwConfigForm!: FormGroup;
+  selectedKwConfig!: Kw_Config;
+  updatedKwCofig!: Kw_Config;
+  selectedProject!: Project;
+  newKwConfig!: Kw_Config;
+  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<KwAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.addKwConfigForm = this.formBuilder.group({
       kw_server: [null, []],
-      kw_project_name: [null, []],      
+      kw_project_name: [null, []],
     });
     if (this.data) {
       this.selectedKwConfig = this.data.data;
@@ -33,21 +33,21 @@ export class KwAddComponent implements OnInit {
     }
   }
 
-  Close(){
+  Close() {
     this.dialogRef.close();
   }
 
-  Submit(){
+  Submit() {
     this.createNewKw();
     this.dialogRef.close({ data: this.updatedKwCofig });
   }
 
   createNewKw() {
-    if(this.selectedKwConfig){
+    if (this.selectedKwConfig) {
       this.selectedKwConfig.kw_server = this.addKwConfigForm.controls['kw_server'].value;
       this.selectedKwConfig.kw_project_name = this.addKwConfigForm.controls['kw_project_name'].value;
       this.updatedKwCofig = this.selectedKwConfig;
-    }else{
+    } else {
       this.newKwConfig = <Kw_Config>{};
       this.newKwConfig.kw_server = this.addKwConfigForm.controls['kw_server'].value;
       this.newKwConfig.kw_project_name = this.addKwConfigForm.controls['kw_project_name'].value;

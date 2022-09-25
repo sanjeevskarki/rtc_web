@@ -9,7 +9,7 @@ import { Stakeholder } from 'src/app/home/home.models';
 })
 export class ConfirmDeleteStakeholderDialogComponent implements OnInit {
 
-  stakeholderName!:string;
+  stakeholderName!: string;
   constructor(public dialogRef: MatDialogRef<ConfirmDeleteStakeholderDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Stakeholder) { }
 
   ngOnInit(): void {

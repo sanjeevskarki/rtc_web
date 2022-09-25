@@ -1,36 +1,34 @@
-<button mat-flat-button matTooltip="Add KW Scan" color="primary" (click)="openKwConfig()"
-        style="margin-bottom: 10px;">
-        <mat-icon style="margin-bottom: 3px">add</mat-icon>Add KW Scan
-        </button>
-        <div>
-            <mat-table #stakeholdertable [dataSource]="kwConfigList" >
-                <ng-container matColumnDef="kw_server">
-                    <mat-header-cell *matHeaderCellDef>KW Server</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.kw_server}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="kw_project_name">
-                    <mat-header-cell *matHeaderCellDef>Project Name</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.kw_project_name}}</mat-cell>
-                </ng-container>
+<button mat-flat-button matTooltip="Add KW Scan" color="primary" (click)="openKwConfig()" style="margin-bottom: 10px;">
+    <mat-icon style="margin-bottom: 3px">add</mat-icon>Add KW Scan
+</button>
+<div>
+    <mat-table #stakeholdertable [dataSource]="kwConfigList">
+        <ng-container matColumnDef="kw_server">
+            <mat-header-cell *matHeaderCellDef>KW Server</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.kw_server}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="kw_project_name">
+            <mat-header-cell *matHeaderCellDef>Project Name</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.kw_project_name}}</mat-cell>
+        </ng-container>
 
-                
-                <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef>
-                    </mat-header-cell>
-            
-                    <mat-cell *matCellDef="let row; let i=index;">
-                        <button mat-icon-button color="primary" matTooltip="Update KW Scan" (click)="updateKwConfig(row)">
-                            <mat-icon aria-label="Edit">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="primary" matTooltip="Delete KW Scan" (click)="deleteKwConfig(row)">
-                            <mat-icon aria-label="Delete">delete_outline</mat-icon>
-                        </button>
-                    </mat-cell>
-                </ng-container>
 
-                <mat-header-row *matHeaderRowDef="kwDisplayedColumns;sticky: true"
-                    [style.background-color]="color">
-                </mat-header-row>
-                <mat-row *matRowDef="let row; columns: kwDisplayedColumns;"></mat-row>
-            </mat-table>
-        </div>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>
+            </mat-header-cell>
+
+            <mat-cell *matCellDef="let row; let i=index;">
+                <button mat-icon-button color="primary" matTooltip="Update KW Scan" (click)="updateKwConfig(row)">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Delete KW Scan" (click)="deleteKwConfig(row)">
+                    <mat-icon aria-label="Delete">delete_outline</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="kwDisplayedColumns;sticky: true" [style.background-color]="color">
+        </mat-header-row>
+        <mat-row *matRowDef="let row; columns: kwDisplayedColumns;"></mat-row>
+    </mat-table>
+</div>

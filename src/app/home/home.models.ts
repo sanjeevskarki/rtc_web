@@ -249,23 +249,27 @@ export interface NotificationSetting {
   id:number;
   qual_owner_id:string;
   setting: any;
-	// taskupdate: boolean
-	// commentupdate: boolean
-	// taskreleasestatusupdate: boolean
-	// taskreleaseschduleupdate: boolean
-	// addrelease: boolean
-	// removerelease: boolean
-	// releasestatusupdate: boolean
-	// releaseschduleupdate: boolean
-	// assigntask_qualowner: boolean
-	// taskupdate_qualowner: boolean
-	// commentupdate_qualowner: boolean
-	// taskreleasestatusupdate_qualowner: boolean
-	// taskreleaseschduleupdate_qualowner: boolean
-	// addrelease_qualowner: boolean
-	// removerelease_qualowner: boolean
-	// releasestatusupdate_qualowner: boolean;
-  // releasescheduleupdate_qualowner: boolean;
+}
+
+export interface NotificationSettingAttributes{
+  addrelease:boolean;
+  assigntask:boolean;
+  taskupdate:boolean;
+  commentupdate:boolean;
+  removerelease:boolean;
+  releasestatusupdate:boolean;
+  addrelease_qualowner:boolean;
+  assigntask_qualowner:boolean;
+  releaseschduleupdate:boolean;
+  taskupdate_qualowner:boolean;
+  commentupdate_qualowner:boolean;
+  removerelease_qualowner:boolean;
+  taskreleasestatusupdate:boolean;
+  taskreleaseschduleupdate:boolean;
+  releasestatusupdate_qualowner:boolean;
+  releasescheduleupdate_qualowner:boolean;
+  taskreleasestatusupdate_qualowner:boolean;
+  taskreleaseschduleupdate_qualowner:false
 }
 
 export interface Bkc {

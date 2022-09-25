@@ -3,18 +3,20 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Protex Server</mat-label>
         <input type="text" matInput formControlName="protex_server">
-        <mat-error *ngIf="addProtexConfigForm.controls.protex_server.hasError('required') && addProtexConfigForm.controls.protex_server.touched">
+        <mat-error
+            *ngIf="addProtexConfigForm.controls.protex_server.hasError('required') && addProtexConfigForm.controls.protex_server.touched">
             Name is required
         </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Protex Project Id</mat-label>
         <input type="text" matInput formControlName="protex_project_id">
-        <mat-error *ngIf="addProtexConfigForm.controls.protex_project_id.hasError('required') && addProtexConfigForm.controls.protex_project_id.touched">
+        <mat-error
+            *ngIf="addProtexConfigForm.controls.protex_project_id.hasError('required') && addProtexConfigForm.controls.protex_project_id.touched">
             Email is required
         </mat-error>
     </mat-form-field>
-    
+
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
         (click)="Close()">Close</button>
     <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"

@@ -1,35 +1,34 @@
 <button mat-flat-button matTooltip="Add BDBA Scan" color="primary" (click)="openBdbaConfig()"
-        style="margin-bottom: 10px;">
-        <mat-icon style="margin-bottom: 3px">add</mat-icon>Add BDBA Scan
-        </button>
-        <div>
-            <mat-table #bdbaConfigtable [dataSource]="bdbaConfigList" >
-                <ng-container matColumnDef="product_id">
-                    <mat-header-cell *matHeaderCellDef>Product Id</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.product_id}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="product_name">
-                    <mat-header-cell *matHeaderCellDef>Product Name</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.product_name}}</mat-cell>
-                </ng-container>
+    style="margin-bottom: 10px;">
+    <mat-icon style="margin-bottom: 3px">add</mat-icon>Add BDBA Scan
+</button>
+<div>
+    <mat-table #bdbaConfigtable [dataSource]="bdbaConfigList">
+        <ng-container matColumnDef="product_id">
+            <mat-header-cell *matHeaderCellDef>Product Id</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.product_id}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="product_name">
+            <mat-header-cell *matHeaderCellDef>Product Name</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.product_name}}</mat-cell>
+        </ng-container>
 
-                <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef>
-                    </mat-header-cell>
-            
-                    <mat-cell *matCellDef="let row; let i=index;">
-                        <button mat-icon-button color="primary" matTooltip="Update BDBA Scan" (click)="updateBdbaConfig(row)">
-                            <mat-icon aria-label="Edit">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="primary" matTooltip="Delete BDBA Scan" (click)="deleteBdbaConfig(row)">
-                            <mat-icon aria-label="Delete">delete_outline</mat-icon>
-                        </button>
-                    </mat-cell>
-                </ng-container>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>
+            </mat-header-cell>
 
-                <mat-header-row *matHeaderRowDef="bdbaDisplayedColumns;sticky: true"
-                    [style.background-color]="color">
-                </mat-header-row>
-                <mat-row *matRowDef="let row; columns: bdbaDisplayedColumns;"></mat-row>
-            </mat-table>
-        </div>
+            <mat-cell *matCellDef="let row; let i=index;">
+                <button mat-icon-button color="primary" matTooltip="Update BDBA Scan" (click)="updateBdbaConfig(row)">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Delete BDBA Scan" (click)="deleteBdbaConfig(row)">
+                    <mat-icon aria-label="Delete">delete_outline</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="bdbaDisplayedColumns;sticky: true" [style.background-color]="color">
+        </mat-header-row>
+        <mat-row *matRowDef="let row; columns: bdbaDisplayedColumns;"></mat-row>
+    </mat-table>
+</div>

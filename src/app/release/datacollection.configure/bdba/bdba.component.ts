@@ -15,11 +15,11 @@ export class BdbaComponent implements OnInit {
 
   bdbaDisplayedColumns = ['product_id', 'product_name', 'actions'];
   color = '#f1f3f4';
-  newBdbaConfig!:Bdba_Config;
-  tempBdbaConfigList:Bdba_Config[]=[];
-  bdbaConfigList:Bdba_Config[]=[];
-  existingBdbaConfig!:Bdba_Config;
-  selectedProject!:Project;
+  newBdbaConfig!: Bdba_Config;
+  tempBdbaConfigList: Bdba_Config[] = [];
+  bdbaConfigList: Bdba_Config[] = [];
+  existingBdbaConfig!: Bdba_Config;
+  selectedProject!: Project;
   constructor(public dialog: MatDialog, private service: BdbaService) { }
 
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class BdbaComponent implements OnInit {
     this.getBdbaConfig();
   }
 
-  getBdbaConfig(){
+  getBdbaConfig() {
     this.service.getBdbaConfig(this.selectedProject.project_id).subscribe(
       (response) => {
         this.bdbaConfigList = response;
@@ -39,15 +39,15 @@ export class BdbaComponent implements OnInit {
     );
   }
 
-  openBdbaConfig(){
+  openBdbaConfig() {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
       height: '30%',
       width: '30%',
-      
+
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.newBdbaConfig = <Bdba_Config>{};
         this.newBdbaConfig = result.data;
         this.service.addBdbaConfig(this.newBdbaConfig).subscribe(data => {
@@ -56,17 +56,17 @@ export class BdbaComponent implements OnInit {
         })
       }
     });
-  
+
   }
 
-  createBdbaConfigList(bdbaConfigList:Bdba_Config[]){
-    this.bdbaConfigList=[];
+  createBdbaConfigList(bdbaConfigList: Bdba_Config[]) {
+    this.bdbaConfigList = [];
     for (var bdbaConfig of bdbaConfigList) {
       this.bdbaConfigList.push(bdbaConfig);
     }
   }
 
-  updateBdbaConfig(bdbaConfig:Bdba_Config){
+  updateBdbaConfig(bdbaConfig: Bdba_Config) {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
       height: '30%',
       width: '30%',
@@ -76,24 +76,24 @@ export class BdbaComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.newBdbaConfig = <Bdba_Config>{};
         this.newBdbaConfig = result.data;
         this.existingBdbaConfig = this.tempBdbaConfigList.find(x => x.id == this.newBdbaConfig.id)!;
         // if(JSON.stringify(this.existingStakeholder) !== JSON.stringify(this.newStakeholder)){
-          const index = this.tempBdbaConfigList.indexOf(this.existingBdbaConfig, 0);
-          if (index > -1) {
-            this.service.updateBdbaConfig(this.newBdbaConfig).subscribe(data => {
-              this.tempBdbaConfigList.splice(index, 1);
-              this.tempBdbaConfigList.unshift(data);
-              this.createBdbaConfigList(this.tempBdbaConfigList);
-            })
-          }
+        const index = this.tempBdbaConfigList.indexOf(this.existingBdbaConfig, 0);
+        if (index > -1) {
+          this.service.updateBdbaConfig(this.newBdbaConfig).subscribe(data => {
+            this.tempBdbaConfigList.splice(index, 1);
+            this.tempBdbaConfigList.unshift(data);
+            this.createBdbaConfigList(this.tempBdbaConfigList);
+          })
+        }
       }
     });
   }
 
-  deleteBdbaConfig(bdbaConfig:Bdba_Config){
+  deleteBdbaConfig(bdbaConfig: Bdba_Config) {
     const deleteBdbaDialogRef = this.dialog.open(ConfirmDeleteBdbaDialogComponent, {
       height: '18%',
       width: '23%',
@@ -102,9 +102,9 @@ export class BdbaComponent implements OnInit {
 
     deleteBdbaDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if(result.data === 'delete'){
+        if (result.data === 'delete') {
           this.service.deleteBdbaConfig(bdbaConfig).subscribe(data => {
-            if(data.message === 'success'){
+            if (data.message === 'success') {
               const index = this.tempBdbaConfigList.indexOf(bdbaConfig, 0);
               // alert(index)
               if (index > -1) {

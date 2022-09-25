@@ -11,18 +11,18 @@ import { Protex_Config } from '../../datacollection.models';
 })
 export class ProtexAddComponent implements OnInit {
 
-  addProtexConfigForm!:FormGroup;
-  newProtexConfig!:Protex_Config;
-  selectedProject!:Project;
-  selectedProtexConfig!:Protex_Config;
-  updateProtexCofig!:Protex_Config;
-  constructor(private formBuilder: FormBuilder,public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  addProtexConfigForm!: FormGroup;
+  newProtexConfig!: Protex_Config;
+  selectedProject!: Project;
+  selectedProtexConfig!: Protex_Config;
+  updateProtexCofig!: Protex_Config;
+  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.addProtexConfigForm = this.formBuilder.group({
       protex_server: [null, [Validators.required]],
-      protex_project_id: [null, []],      
+      protex_project_id: [null, []],
     });
     if (this.data) {
       this.selectedProtexConfig = this.data.data;
@@ -33,21 +33,21 @@ export class ProtexAddComponent implements OnInit {
     }
   }
 
-  Close(){
+  Close() {
     this.dialogRef.close();
   }
 
-  Submit(){
+  Submit() {
     this.createNewProtex();
     this.dialogRef.close({ data: this.updateProtexCofig });
   }
 
   createNewProtex() {
-    if(this.selectedProtexConfig){
+    if (this.selectedProtexConfig) {
       this.selectedProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
       this.selectedProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;
       this.updateProtexCofig = this.selectedProtexConfig;
-    }else{
+    } else {
       this.newProtexConfig = <Protex_Config>{};
       this.newProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
       this.newProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;

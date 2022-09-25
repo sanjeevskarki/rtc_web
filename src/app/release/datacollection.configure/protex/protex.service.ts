@@ -31,8 +31,8 @@ export class ProtexService {
 
   }
 
-  public getProtexConfig(projectId:number): Observable<Protex_Config[]> {
-    return this.httpClient.get<Protex_Config[]>(this.endpoint_url + this.protex+"/"+projectId);
+  public getProtexConfig(projectId: number): Observable<Protex_Config[]> {
+    return this.httpClient.get<Protex_Config[]>(this.endpoint_url + this.protex + "/" + projectId);
   }
 
   public addProtexConfig(protexConfig: Protex_Config): Observable<Protex_Config> {
@@ -46,7 +46,7 @@ export class ProtexService {
   }
 
   public deleteProtexConfig(protexConfig: Protex_Config): Observable<ApiResponse> {
-    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.protex+ "/" + protexConfig.id, { headers: this.headers });
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.protex + "/" + protexConfig.id, { headers: this.headers });
   }
 
 }

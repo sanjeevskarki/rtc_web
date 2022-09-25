@@ -11,18 +11,18 @@ import { Bdba_Config } from '../../datacollection.models';
 })
 export class BdbaAddComponent implements OnInit {
 
-  addBdbaConfigForm!:FormGroup;
-  selectedProject!:Project;
-  selectedBdbaConfig!:Bdba_Config;
-  updateBdbaConfig!:Bdba_Config;
-  newBdbaConfig!:Bdba_Config;
-  constructor(private formBuilder: FormBuilder,public dialogRef: MatDialogRef<BdbaAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  addBdbaConfigForm!: FormGroup;
+  selectedProject!: Project;
+  selectedBdbaConfig!: Bdba_Config;
+  updateBdbaConfig!: Bdba_Config;
+  newBdbaConfig!: Bdba_Config;
+  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<BdbaAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.addBdbaConfigForm = this.formBuilder.group({
       product_id: [null, [Validators.pattern('^[0-9]{7}$')]],
-      product_name: [null, []],      
+      product_name: [null, []],
     });
     if (this.data) {
       this.selectedBdbaConfig = this.data.data;
@@ -33,21 +33,21 @@ export class BdbaAddComponent implements OnInit {
     }
   }
 
-  Close(){
+  Close() {
     this.dialogRef.close();
   }
 
-  Submit(){
+  Submit() {
     this.createNewBdba();
     this.dialogRef.close({ data: this.updateBdbaConfig });
   }
 
   createNewBdba() {
-    if(this.selectedBdbaConfig){
+    if (this.selectedBdbaConfig) {
       this.selectedBdbaConfig.product_id = this.addBdbaConfigForm.controls['product_id'].value;
       this.selectedBdbaConfig.product_name = this.addBdbaConfigForm.controls['product_name'].value;
       this.updateBdbaConfig = this.selectedBdbaConfig;
-    }else{
+    } else {
       this.newBdbaConfig = <Bdba_Config>{};
       this.newBdbaConfig.product_id = this.addBdbaConfigForm.controls['product_id'].value;
       this.newBdbaConfig.product_name = this.addBdbaConfigForm.controls['product_name'].value;

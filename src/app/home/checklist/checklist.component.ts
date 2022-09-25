@@ -470,7 +470,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     //   this.commentDialog.show(); 
     //   this.openCommentDialog();
     // } 
-    if (state)
+    // if (state)
       this.openCommentListDialog();
 
     this.updateReleaseCheckList(this.selectedRelease);
@@ -518,7 +518,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       this.viewEvidences.push(this.viewEvidence);
     }
     this.displayEvidences = this.viewEvidences;
-    if (state)
+    // if (state)
       this.openEvidenceListDialog();
     // this.evidenceDialog.show();
     // }

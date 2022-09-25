@@ -2,11 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BackendGuideline, Project, ReleaseDetails, ReleaseTask, ApiResponse } from '../../home/home.models';
+import { BackendGuideline, Project, ReleaseDetails, ReleaseTask, ApiResponse, NotificationSetting } from '../../home/home.models';
 import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST, STAKEHOLDER_LOWER, EMAIL_LOWER, KW_LOWER, PROTEX_LOWER, BDBA_LOWER } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { Stakeholder } from 'src/app/home/home.models';
 import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
+import { NOTIFICATION_LOWER } from 'src/app/home/home.constants';
 /**
  * Dependecy Injection.
  */
@@ -30,6 +31,7 @@ export class ReleaseEditService {
   kw: string = KW_LOWER;
   bdba: string = BDBA_LOWER;
   protex: string = PROTEX_LOWER;
+  notification: string = NOTIFICATION_LOWER;
   /**
    *
    * @param httpClient Http Client.
@@ -139,5 +141,8 @@ export class ReleaseEditService {
     return this.httpClient.get<Bdba_Config[]>(this.endpoint_url + this.bdba+"/"+projectId);
   }
 
-
+  public addNotification(notificationSetting: NotificationSetting): Observable<Project> {
+    const body = JSON.stringify(notificationSetting);
+    return this.httpClient.post<Project>(this.endpoint_url + this.notification, body, { headers: this.headers });
+  }
 }

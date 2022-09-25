@@ -14,12 +14,12 @@ import { ProtexService } from './protex.service';
 })
 export class ProtexComponent implements OnInit {
 
-  protexConfigList:Protex_Config[]=[];
-  tempProtexConfigList:Protex_Config[]=[];
+  protexConfigList: Protex_Config[] = [];
+  tempProtexConfigList: Protex_Config[] = [];
   protexDisplayedColumns = ['protex_server', 'protex_project_id', 'actions'];
   color = '#f1f3f4';
-  protexConfig!:Protex_Config;
-  selectedProject!:Project;
+  protexConfig!: Protex_Config;
+  selectedProject!: Project;
 
   constructor(public dialog: MatDialog, private service: ProtexService) { }
 
@@ -28,7 +28,7 @@ export class ProtexComponent implements OnInit {
     this.getProtexConfig();
   }
 
-  getProtexConfig(){
+  getProtexConfig() {
     this.service.getProtexConfig(this.selectedProject.project_id).subscribe(
       (response) => {
         this.protexConfigList = response;
@@ -40,17 +40,17 @@ export class ProtexComponent implements OnInit {
     );
   }
 
-  newProtexConfig!:Protex_Config;
-  existingProtexConfig!:Protex_Config;
-  openProtexConfig(){
+  newProtexConfig!: Protex_Config;
+  existingProtexConfig!: Protex_Config;
+  openProtexConfig() {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
       height: '30%',
       width: '30%',
-      
+
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.newProtexConfig = <Protex_Config>{};
         this.newProtexConfig = result.data;
         this.service.addProtexConfig(this.newProtexConfig).subscribe(data => {
@@ -61,14 +61,14 @@ export class ProtexComponent implements OnInit {
     });
   }
 
-  createProtexConfigList(protexConfigList:Protex_Config[]){
-    this.protexConfigList=[];
+  createProtexConfigList(protexConfigList: Protex_Config[]) {
+    this.protexConfigList = [];
     for (var protexConfig of protexConfigList) {
       this.protexConfigList.push(protexConfig);
     }
   }
 
-  updateProtexConfig(protexConfig:Protex_Config){
+  updateProtexConfig(protexConfig: Protex_Config) {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
       height: '30%',
       width: '30%',
@@ -78,24 +78,24 @@ export class ProtexComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.newProtexConfig = <Protex_Config>{};
         this.newProtexConfig = result.data;
         this.existingProtexConfig = this.tempProtexConfigList.find(x => x.id == this.newProtexConfig.id)!;
         // if(JSON.stringify(this.existingStakeholder) !== JSON.stringify(this.newStakeholder)){
-          const index = this.tempProtexConfigList.indexOf(this.existingProtexConfig, 0);
-          if (index > -1) {
-            this.service.updateProtexConfig(this.newProtexConfig).subscribe(data => {
-              this.tempProtexConfigList.splice(index, 1);
-              this.tempProtexConfigList.unshift(data);
-              this.createProtexConfigList(this.tempProtexConfigList);
-            })
-          }
+        const index = this.tempProtexConfigList.indexOf(this.existingProtexConfig, 0);
+        if (index > -1) {
+          this.service.updateProtexConfig(this.newProtexConfig).subscribe(data => {
+            this.tempProtexConfigList.splice(index, 1);
+            this.tempProtexConfigList.unshift(data);
+            this.createProtexConfigList(this.tempProtexConfigList);
+          })
+        }
       }
     });
   }
 
-  deleteProtexConfig(protexConfig:Protex_Config){
+  deleteProtexConfig(protexConfig: Protex_Config) {
     const deleteProtexDialogRef = this.dialog.open(ConfirmDeleteProtexDialogComponent, {
       height: '18%',
       width: '23%',
@@ -104,11 +104,10 @@ export class ProtexComponent implements OnInit {
 
     deleteProtexDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if(result.data === 'delete'){
+        if (result.data === 'delete') {
           this.service.deleteProtexConfig(protexConfig).subscribe(data => {
-            if(data.message === 'success'){
+            if (data.message === 'success') {
               const index = this.tempProtexConfigList.indexOf(protexConfig, 0);
-              // alert(index)
               if (index > -1) {
                 this.tempProtexConfigList.splice(index, 1);
                 this.createProtexConfigList(this.tempProtexConfigList);

@@ -3,18 +3,20 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Product Id</mat-label>
         <input type="text" matInput formControlName="product_id">
-        <mat-error *ngIf="addBdbaConfigForm.controls.product_id.hasError('required') && addBdbaConfigForm.controls.product_id.touched">
+        <mat-error
+            *ngIf="addBdbaConfigForm.controls.product_id.hasError('required') && addBdbaConfigForm.controls.product_id.touched">
             Product Id is required
         </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Product Name</mat-label>
         <input type="text" matInput formControlName="product_name">
-        <mat-error *ngIf="addBdbaConfigForm.controls.product_name.hasError('required') && addBdbaConfigForm.controls.product_name.touched">
+        <mat-error
+            *ngIf="addBdbaConfigForm.controls.product_name.hasError('required') && addBdbaConfigForm.controls.product_name.touched">
             Product Name is required
         </mat-error>
     </mat-form-field>
-    
+
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
         (click)="Close()">Close</button>
     <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"
