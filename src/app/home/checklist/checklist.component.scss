@@ -163,6 +163,28 @@ td.e-rowcell .statustxt.e-opencolor {
 
 }
 
+td.e-rowcell .statustxt.e-approvedcolor {
+    color: #fff;
+    position: relative;
+    float: center;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    padding: 2px 12px 3px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.statustemp.e-approvedcolor {
+    border-radius: 3px;
+    background-color: #00bf10;
+    width: 70px;
+    height: 25PX;
+
+}
+
 td.e-rowcell .statustxt.e-wipcolor {
     color: #fff;
     position: relative;
@@ -335,10 +357,5 @@ mat-header-row {
 
 .mat-list-base .mat-list-item,
 .mat-list-base .mat-list-option {
-    // display: block !important;
-    // -webkit-tap-highlight-color: transparent !important;
-    // width: 100% !important;
-    // padding: 0 !important;
     height: auto !important;
 }
-

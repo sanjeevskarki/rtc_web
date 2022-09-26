@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Project, Stakeholder } from 'src/app/home/home.models';
+import { Project } from 'src/app/home/home.models';
+import { DELETE_LOWERCASE, SUCCESS_LOWERCASE, TABLE_HEADER_COLOR } from '../../release.constants';
 import { Kw_Config } from '../datacollection.models';
 import { ConfirmDeleteKwDialogComponent } from './confirmdeletekwdialog/confirm.delete.kw.dialog.component';
 import { KwAddComponent } from './kw.add/kw.add.component';
@@ -14,7 +15,7 @@ import { KwService } from './kw.service';
 export class KwComponent implements OnInit {
 
   kwDisplayedColumns = ['kw_server', 'kw_project_name', 'actions'];
-  color = '#f1f3f4';
+  color = TABLE_HEADER_COLOR;
   newKwConfig!: Kw_Config;
   tempKwConfigList: Kw_Config[] = [];
   kwConfigList: Kw_Config[] = [];
@@ -28,6 +29,9 @@ export class KwComponent implements OnInit {
     this.getProtexConfig();
   }
 
+  /**
+   * Call API for Getting Protex Config
+   */
   getProtexConfig() {
     this.service.getKwConfig(this.selectedProject.project_id).subscribe(
       (response) => {
@@ -40,6 +44,9 @@ export class KwComponent implements OnInit {
     );
   }
 
+  /**
+   * Oooopen Add KW Config Dialog
+   */
   openKwConfig() {
     const dialogRef = this.dialog.open(KwAddComponent, {
       height: '30%',
@@ -59,6 +66,10 @@ export class KwComponent implements OnInit {
 
   }
 
+  /**
+   * Create KW Config Object List
+   * @param kwConfigList KW Config Object Lilst
+   */
   createKwConfigList(kwConfigList: Kw_Config[]) {
     this.kwConfigList = [];
     for (var protexConfig of kwConfigList) {
@@ -66,6 +77,10 @@ export class KwComponent implements OnInit {
     }
   }
 
+  /**
+   * Open Update KW Config Dialog
+   * @param kwConfig Selected KW Config Object
+   */
   updateKwConfig(kwConfig: Kw_Config) {
     const dialogRef = this.dialog.open(KwAddComponent, {
       height: '30%',
@@ -92,6 +107,10 @@ export class KwComponent implements OnInit {
     });
   }
 
+  /**
+   * Delete Selected KW Config Object
+   * @param kwConfig Selected KW  config Object
+   */
   deleteKwConfig(kwConfig: Kw_Config) {
     const deleteProtexDialogRef = this.dialog.open(ConfirmDeleteKwDialogComponent, {
       height: '18%',
@@ -101,9 +120,9 @@ export class KwComponent implements OnInit {
 
     deleteProtexDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if (result.data === 'delete') {
+        if (result.data === DELETE_LOWERCASE) {
           this.service.deleteKwConfig(kwConfig).subscribe(data => {
-            if (data.message === 'success') {
+            if (data.message === SUCCESS_LOWERCASE) {
               const index = this.tempKwConfigList.indexOf(kwConfig, 0);
               // alert(index)
               if (index > -1) {

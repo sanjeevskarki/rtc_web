@@ -1,23 +1,22 @@
 <div class="checklist-div" *ngIf="isReleaseComplianceVisible">
-    <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek|
-        workWeekPipe}}</span>
+  <span class="checklist-label">{{releaseName}} &nbsp;-&nbsp;{{milestone | uppercase}}&nbsp;-&nbsp;{{workWeek|
+    workWeekPipe}}</span>
 </div>
 <mat-toolbar style="background-color: #3f51b5 ;color: #fff;">
-    <mat-toolbar-row>
-        <div>
-            <a mat-button [routerLink]="'releasecompliance'" routerLinkActive="active-list-item"
-                *ngIf="isReleaseComplianceVisible"> Release Compliance </a>
-            <a mat-button [routerLink]="'releaseinfo'" routerLinkActive="active-list-item" *ngIf="isReleaseInfoVisible">
-                {{releaseInfoLabel}} </a>
-            <a mat-button [routerLink]="'bkc'" routerLinkActive="active-list-item" *ngIf="isBkcVisble"> BKC </a>
-            <a mat-button [matMenuTriggerFor]="admin" #adminMenu="matMenuTrigger"
-                *ngIf="isNotificationVisble"> Admin </a>
-                <mat-menu #admin="matMenu" [overlapTrigger]="false">
-                    <button mat-menu-item [routerLink]="'notification'">
-                      <mat-icon>settings</mat-icon>
-                      <span>Notifications</span>
-                    </button>
-                    <!-- <button mat-menu-item>
+  <mat-toolbar-row>
+    <div>
+      <a mat-button [routerLink]="'releasecompliance'" routerLinkActive="active-list-item"
+        *ngIf="isReleaseComplianceVisible"> Release Compliance </a>
+      <a mat-button [routerLink]="'releaseinfo'" routerLinkActive="active-list-item" *ngIf="isReleaseInfoVisible">
+        {{releaseInfoLabel}} </a>
+      <a mat-button [routerLink]="'bkc'" routerLinkActive="active-list-item" *ngIf="isBkcVisble"> BKC </a>
+      <a mat-button [matMenuTriggerFor]="admin" #adminMenu="matMenuTrigger" *ngIf="isNotificationVisble"> Admin </a>
+      <mat-menu #admin="matMenu" [overlapTrigger]="false">
+        <button mat-menu-item [routerLink]="'notification'">
+          <mat-icon>settings</mat-icon>
+          <span>Notifications</span>
+        </button>
+        <!-- <button mat-menu-item>
                       <mat-icon>people_outline</mat-icon>
                       <span>Connecting</span>
                     </button>
@@ -29,8 +28,8 @@
                       <mat-icon>exit_to_app</mat-icon>
                       <span>Logout</span>
                     </button> -->
-                  </mat-menu>    
-        </div>
-    </mat-toolbar-row>
+      </mat-menu>
+    </div>
+  </mat-toolbar-row>
 </mat-toolbar>
 <router-outlet></router-outlet>

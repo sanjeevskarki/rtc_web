@@ -73,31 +73,31 @@ export const ASSIGNED_TASK_TO_TASK_OWNER_SUBJECT = 'RTC notification for Task Ow
 export const ASSIGNED_TASK_TO_TASK_OWNER_BODY = (vector: string, product: string, milestone: string, releaseDate: string) => `Please notice that you have been assigned to a  ${vector} task for product ${product},${milestone} release, which is targeting (specify the ${releaseDate}).`;
 
 export const ASSIGNED_TASK_TO_QUAL_OWNER_SUBJECT = 'RTC notification for Qual Owner assignment';
-export const ASSIGNED_TASK_TO_QUAL_OWNER_BODY = (vector: string, product: string, milestone: string, taskOwner:string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that ${taskOwner} has been assigned to a ${vector} task`;
+export const ASSIGNED_TASK_TO_QUAL_OWNER_BODY = (vector: string, product: string, milestone: string, taskOwner: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that ${taskOwner} has been assigned to a ${vector} task`;
 
 export const TASK_STATUS_UPDATE_TO_TASK_OWNER_SUBJECT = 'RTC notification for Task Status update';
 export const TASK_STATUS_UPDATE_TO_TASK_OWNER_BODY = (vector: string, product: string, milestone: string, newStatus: string) => `As a  ${vector} task owner of product ${product},${milestone} release, please notice that the task status was updated to status ${newStatus}.`;
 
 export const TASK_STATUS_UPDATE_TO_QUAL_OWNER_SUBJECT = 'RTC notification for Task Status update';
-export const TASK_STATUS_UPDATE_TO_QUAL_OWNER_BODY = (vector: string, product: string, milestone: string, newStatus:string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that a ${vector} task was updated to status ${newStatus}`;
+export const TASK_STATUS_UPDATE_TO_QUAL_OWNER_BODY = (vector: string, product: string, milestone: string, newStatus: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that a ${vector} task was updated to status ${newStatus}`;
 
 export const TASK_COMMENTS_ADDED_TO_TASK_OWNER_SUBJECT = 'RTC notification for added Task Comments';
-export const TASK_COMMENTS_ADDED_TO_TASK_OWNER_BODY = (vector: string, product: string, milestone: string, date: string, comment:string) => `As a  ${vector} task owner of product ${product},${milestone} release, please notice that the following comment has been added to the task: ${date}${comment}`;
+export const TASK_COMMENTS_ADDED_TO_TASK_OWNER_BODY = (vector: string, product: string, milestone: string, date: string, comment: string) => `As a  ${vector} task owner of product ${product},${milestone} release, please notice that the following comment has been added to the task: ${date}${comment}`;
 
 export const TASK_COMMENTS_ADDED_TO_QUAL_OWNER_SUBJECT = 'RTC notification for added Task Comments';
-export const TASK_COMMENTS_ADDED_TO_QUAL_OWNER_BODY = (vector: string, product: string, milestone: string, date:string, comment:string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that the following comments have been added to a ${vector} task ${date}${comment}`;
+export const TASK_COMMENTS_ADDED_TO_QUAL_OWNER_BODY = (vector: string, product: string, milestone: string, date: string, comment: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that the following comments have been added to a ${vector} task ${date}${comment}`;
 
 export const RELEASE_STATUS_UPDATED_TO_TASK_OWNER_SUBJECT = 'RTC notification for Release Status update';
 export const RELEASE_STATUS_UPDATED_TO_TASK_OWNER_BODY = (vector: string, product: string, milestone: string, newStatus: string) => `As a  ${vector} task owner of product ${product},${milestone} release, please notice that the release status has been updated to ${newStatus}`;
 
 export const RELEASE_STATUS_UPDATED_TO_QUAL_OWNER_SUBJECT = 'RTC notification for Release Status update';
-export const RELEASE_STATUS_UPDATED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, newStatus:string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that the release status has been updated to ${newStatus}`;
+export const RELEASE_STATUS_UPDATED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, newStatus: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that the release status has been updated to ${newStatus}`;
 
 export const RELEASE_SCHEDULE_UPDATED_TO_TASK_OWNER_SUBJECT = 'RTC notification for Release schedule update';
-export const RELEASE_SCHEDULE_UPDATED_TO_TASK_OWNER_BODY = (vector: string, product: string, milestone: string, newReleaseDate: string,workWeek: string) => `As a  ${vector} task owner of product ${product},${milestone} release, please notice that the release target date has been updated to ${newReleaseDate}${workWeek}`;
+export const RELEASE_SCHEDULE_UPDATED_TO_TASK_OWNER_BODY = (vector: string, product: string, milestone: string, newReleaseDate: string, workWeek: string) => `As a  ${vector} task owner of product ${product},${milestone} release, please notice that the release target date has been updated to ${newReleaseDate}${workWeek}`;
 
 export const RELEASE_SCHEDULE_UPDATED_TO_QUAL_OWNER_SUBJECT = 'RTC notification for Release schedule update';
-export const RELEASE_SCHEDULE_UPDATED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, newReleaseDate: string,workWeek: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that the release target date has been updated to ${newReleaseDate}${workWeek}`;
+export const RELEASE_SCHEDULE_UPDATED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, newReleaseDate: string, workWeek: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that the release target date has been updated to ${newReleaseDate}${workWeek}`;
 
 // Stakeholder
 
@@ -105,13 +105,13 @@ export const STAKEHOLDER_ADDED_TO_STAKEHOLDER_SUBJECT = 'RTC notification for St
 export const STAKEHOLDER_ADDED_TO_TASK_OWNER_BODY = (role: string, product: string, milestone: string, workWeek: string) => `Please notice that you have been added as a  ${role} stakeholder, for product  ${product},${milestone} release, which is targeting ${workWeek}`;
 
 export const STAKEHOLDER_ADDED_TO_QUAL_OWNER_SUBJECT = 'RTC notification for Stakeholder assignment';
-export const STAKEHOLDER_ADDED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, stakeholder: string,role: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that  ${stakeholder} has been added as a ${role} stakeholder for the release.`;
+export const STAKEHOLDER_ADDED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, stakeholder: string, role: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that  ${stakeholder} has been added as a ${role} stakeholder for the release.`;
 
 export const STAKEHOLDER_REMOVED_TO_STAKEHOLDER = 'RTC notification for Task Status update';
 export const STAKEHOLDER_REMOVED_TO_TASK_OWNER_BODY = (role: string, product: string, milestone: string, vector: string) => `As a ${vector} task owner of product ${product},${milestone} release, please notice that the stakeholder has been removed from the release stakeholder list`;
 
 export const STAKEHOLDER_REMOVED_TO_QUAL_OWNER_SUBJECT = 'RTC notification for Task Status update';
-export const STAKEHOLDER_REMOVED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, stakeholder: string,role: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that  ${stakeholder} has been removed from the release stakeholder list`;
+export const STAKEHOLDER_REMOVED_TO_QUAL_OWNER_BODY = (product: string, milestone: string, stakeholder: string, role: string) => `As the Qualification Owner of product ${product} ,${milestone} release, please notice that  ${stakeholder} has been removed from the release stakeholder list`;
 
 export const RELEASE_STATUS_UPDATED_TO_STAKEHOLDER_SUBJECT = 'RTC notification for Task Status update';
 export const RELEASE_STATUS_UPDATED_TO_STAKEHOLDER_BODY = (role: string, product: string, milestone: string, vector: string) => `As a ${vector} task owner of product ${product},${milestone} release, please notice that the stakeholder has been removed from the release stakeholder list`;

@@ -115,6 +115,27 @@ export interface Meta {
 	code: number;
 }
 
+export interface TaskStatus {
+	status: string;
+}
+
+export interface BdbaResults {
+	project_id: string;
+	results: any;
+	file_name: string;
+	collection_status: boolean;
+}
+
+export interface KwResults {
+	project_id: string;
+	results: any;
+	collection_status: boolean;
+}
 
 
-
+export interface ProtexResults {
+	project_id: string;
+	results: any;
+	id: number;
+	collection_status: boolean;
+}

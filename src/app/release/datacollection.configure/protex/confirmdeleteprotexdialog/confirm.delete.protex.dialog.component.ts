@@ -9,12 +9,11 @@ import { Stakeholder } from 'src/app/home/home.models';
 })
 export class ConfirmDeleteProtexDialogComponent implements OnInit {
 
-  protexServer!:string;
+  protexServer!: string;
   constructor(public dialogRef: MatDialogRef<ConfirmDeleteProtexDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Stakeholder) { }
 
   ngOnInit(): void {
     this.protexServer = this.data.name;
-    // alert(this.data.name);
   }
 
   delete() {

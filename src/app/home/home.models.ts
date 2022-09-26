@@ -1,33 +1,33 @@
 export interface ReleaseShortChecklist {
   id: string;
   releaseName: string;
-  milestone:string;
-  workWeek:string;
+  milestone: string;
+  workWeek: string;
 }
 
 export interface Checklist {
   id: string;
   releaseName: string;
-  milestone:string;
-  workWeek:string;
-  releaseChecklist:ReleaseChecklist[];
+  milestone: string;
+  workWeek: string;
+  releaseChecklist: ReleaseChecklist[];
 }
 
 
 
 export interface ReleaseChecklist {
-  id:number;
+  id: number;
   vector: string;
-  details:string;
-  owner:string;
-  owner_email:string;
-  status:string|undefined;
-  detailedStatus:string[];
-  releaseCriteria?:string;
-  evidences:BackendEvidences[];
-  comments:BackendComments[];
-  bdbaStatus?:boolean;
-  guidelineId?:number;
+  details: string;
+  owner: string;
+  owner_email: string;
+  status: string | undefined;
+  detailedStatus: string[];
+  releaseCriteria?: string;
+  evidences: BackendEvidences[];
+  comments: BackendComments[];
+  bdbaStatus?: boolean;
+  guidelineId?: number;
 }
 
 // export interface ViewReleaseChecklist {
@@ -84,56 +84,56 @@ export interface Unit {
 }
 
 export interface ViewComment {
-  id:number;
-  comments:string;
-  content:string;
-  date:string;
-  task_id:number;
+  id: number;
+  comments: string;
+  content: string;
+  date: string;
+  task_id: number;
 }
 
 export interface ViewEvidence {
-  id:number;
-  seq:number;
-  evidence:string|undefined;
-  title:string;
-  comments:string;
-  date:string | undefined;
-  type:string;
+  id: number;
+  seq: number;
+  evidence: string | undefined;
+  title: string;
+  comments: string;
+  date: string | undefined;
+  type: string;
 }
 
 export interface Details {
-  id:string;
-  detail:string;
-  releaseCriteria:string;
+  id: string;
+  detail: string;
+  releaseCriteria: string;
 }
 
 export interface ReleaseDetails {
-  id:string;
-  vector:string;
-  details:Details[];
+  id: string;
+  vector: string;
+  details: Details[];
 }
 
 export interface NewRelease {
-  id:string;
-  name:string;
-  type:string;
-  handover:string|null;
-  milestone:string;
-  date:Date;
-  contact:string;
-  email:string;
-  businessunit:string;
-  description:string;
+  id: string;
+  name: string;
+  type: string;
+  handover: string | null;
+  milestone: string;
+  date: Date;
+  contact: string;
+  email: string;
+  businessunit: string;
+  description: string;
 }
 
 export interface Files {
-  id:string;
-  name:string;
+  id: string;
+  name: string;
 }
 
 export interface Login {
-  userId:string;
-  password:string;
+  userId: string;
+  password: string;
 }
 
 /**
@@ -143,28 +143,28 @@ export interface Login {
 export interface Project {
   project_id: number;
   project_name: string;
-  project_release_date:string;
-  project_description:string;
-  project_business_unit_id:string;
-  project_milestone_id:string;
-  project_notes?:string;
-  project_owner_name:string;
-  project_owner_email:string;
-  project_attorney_name:string;
-  project_attorney_email:string;
+  project_release_date: string;
+  project_description: string;
+  project_business_unit_id: string;
+  project_milestone_id: string;
+  project_notes?: string;
+  project_owner_name: string;
+  project_owner_email: string;
+  project_attorney_name: string;
+  project_attorney_email: string;
 }
 
 export interface Notes {
-  id:string;
-  note:string;
+  id: string;
+  note: string;
 }
 
 export interface ReleaseTask {
-  guidelines_ptr_id:number;
-  owner:string;
-  owner_email:string;
-  project_id_id:Number;
-  status_id:string;
+  guidelines_ptr_id: number;
+  owner: string;
+  owner_email: string;
+  project_id_id: Number;
+  status_id: string;
 }
 
 // export interface Guideline {
@@ -178,65 +178,65 @@ export interface ReleaseTask {
 export interface BackendTask {
   guidelines_ptr_id: number;
   owner: string;
-  owner_email:string;
-  project_id_id:string;
-  status_id:string;
-  backend_guideline?:BackendGuideline;
-  backend_evidences?:BackendEvidences[];
-  backend_comments?:BackendComments[];
+  owner_email: string;
+  project_id_id: string;
+  status_id: string;
+  backend_guideline?: BackendGuideline;
+  backend_evidences?: BackendEvidences[];
+  backend_comments?: BackendComments[];
 }
 
 export interface BackendComments {
   id: number;
   content: string;
-  task_id:number;
-  comments:string;
-  date:string;
+  task_id: number;
+  comments: string;
+  date: string;
 }
 
 export interface BackendEvidences {
   id: number;
   title: string;
-  task_id:number;
-  comments:string;
-  evidence:string;
-  type:string;
-  date:string;
+  task_id: number;
+  comments: string;
+  evidence: string;
+  type: string;
+  date: string;
 }
 
 export interface BackendGuideline {
   id: number;
   task_name: string;
-  task_description:string;
-  required_evidence:string;
-  vector_id:string;
+  task_description: string;
+  required_evidence: string;
+  vector_id: string;
 }
 
 export interface ApiResponse {
-  message:string;
+  message: string;
 }
 
 export interface Response {
-  message:string;
+  message: string;
 }
 
 export interface Stakeholder {
-  id?:number;
-  name:string;
-  email:string;
-  wwid:string;
-  role:string;
-  project_id?:number;
-  project_name?:string;
-  project_milestone?:string;
+  id?: number;
+  name: string;
+  email: string;
+  wwid: string;
+  role: string;
+  project_id?: number;
+  project_name?: string;
+  project_milestone?: string;
 }
 
-export interface OwnerEmail{
-	name:string;
-	email:string;
-	project_name:string;
-	milestone:string;
-	task_name:string;
+export interface OwnerEmail {
+  name: string;
+  email: string;
+  project_name: string;
+  milestone: string;
+  task_name: string;
 }
 
 export interface OwnerNotificationStatus {
@@ -246,38 +246,38 @@ export interface OwnerNotificationStatus {
 }
 
 export interface NotificationSetting {
-  id:number;
-  qual_owner_id:string;
+  id: number;
+  qual_owner_id: string;
   setting: any;
 }
 
-export interface NotificationSettingAttributes{
-  addrelease:boolean;
-  assigntask:boolean;
-  taskupdate:boolean;
-  commentupdate:boolean;
-  removerelease:boolean;
-  releasestatusupdate:boolean;
-  addrelease_qualowner:boolean;
-  assigntask_qualowner:boolean;
-  releaseschduleupdate:boolean;
-  taskupdate_qualowner:boolean;
-  commentupdate_qualowner:boolean;
-  removerelease_qualowner:boolean;
-  taskreleasestatusupdate:boolean;
-  taskreleaseschduleupdate:boolean;
-  releasestatusupdate_qualowner:boolean;
-  releasescheduleupdate_qualowner:boolean;
-  taskreleasestatusupdate_qualowner:boolean;
-  taskreleaseschduleupdate_qualowner:false
+export interface NotificationSettingAttributes {
+  addrelease: boolean;
+  assigntask: boolean;
+  taskupdate: boolean;
+  commentupdate: boolean;
+  removerelease: boolean;
+  releasestatusupdate: boolean;
+  addrelease_qualowner: boolean;
+  assigntask_qualowner: boolean;
+  releaseschduleupdate: boolean;
+  taskupdate_qualowner: boolean;
+  commentupdate_qualowner: boolean;
+  removerelease_qualowner: boolean;
+  taskreleasestatusupdate: boolean;
+  taskreleaseschduleupdate: boolean;
+  releasestatusupdate_qualowner: boolean;
+  releasescheduleupdate_qualowner: boolean;
+  taskreleasestatusupdate_qualowner: boolean;
+  taskreleaseschduleupdate_qualowner: false
 }
 
 export interface Bkc {
-  seq?:number;
+  seq?: number;
   id?: number;
   title: string;
   version: string;
   last_updated: string;
   comment: string;
-  project_id?:number;
+  project_id?: number;
 }

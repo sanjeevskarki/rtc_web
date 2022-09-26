@@ -1,4 +1,5 @@
-.mat-toolbar-row, .mat-toolbar-single-row {
+.mat-toolbar-row,
+.mat-toolbar-single-row {
     height: 48px !important;
 }
 
@@ -7,7 +8,8 @@
 }
 
 .active-list-item {
-    background-color: #324191 !important; /* Note: You could also use a custom theme */
+    background-color: #324191 !important;
+    /* Note: You could also use a custom theme */
 }
 
 /* Specifies sample level styles for sidebar*/
@@ -91,8 +93,7 @@
 
 .e-bigger.fabric #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
 .e-bigger.fabric-dark #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
-.e-bigger.highcontrast #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child
-{
+.e-bigger.highcontrast #sidebar-wrapper .e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child {
     margin-left: 10px;
     padding: 0px;
 }
@@ -185,13 +186,15 @@
     display: inline-block;
     line-height: 0;
 }
-.e-menu-wrapper, .e-menu-container{
+
+.e-menu-wrapper,
+.e-menu-container {
     background: rgb(0, 113, 197);
     width: -webkit-fill-available;
 }
 
 .checklist-label {
-    font-family: "Roboto","Segoe UI","GeezaPro","DejaVu Serif","sans-serif","-apple-system","BlinkMacSystemFont";
+    font-family: "Roboto", "Segoe UI", "GeezaPro", "DejaVu Serif", "sans-serif", "-apple-system", "BlinkMacSystemFont";
     font-size: 15px;
     font-weight: 500;
 }

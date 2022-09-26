@@ -28,6 +28,9 @@ export class ChecklistMenuComponent implements OnInit {
         this.setTitle();
     }
 
+    /**
+     * Prepare the Title Variable displayed on UI
+     */
     setTitle() {
         if (this.selectedProject) {
             this.releaseInfoLabel = 'Release Info';
@@ -44,4 +47,3 @@ export class ChecklistMenuComponent implements OnInit {
 
     }
 }
-

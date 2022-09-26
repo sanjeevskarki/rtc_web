@@ -19,17 +19,9 @@
                     <div>
                         <button mat-icon-button matTooltip="Add / Edit Owner" color="primary"
                             (click)="addOwner(addOwnerDialog,row.id,row.owner,row.owner_email)">
-
                             <mat-icon>person_outline</mat-icon>
                         </button>
                     </div>
-                    <!-- <div>
-                        <button mat-icon-button matTooltip="View Owner" color="accent"
-                        (click)="addOwner(addOwnerDialog)">
-                        
-                        <mat-icon>delete_outline</mat-icon>
-                        </button>
-                    </div> -->
                 </div>
             </mat-cell>
         </ng-container>
@@ -54,29 +46,57 @@
 
             <mat-cell *matCellDef="let row">
                 <div *ngIf="row.status === 'Done'" class="statustemp e-donecolor">
-                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
-                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Done"
+                        [(value)]="row.status">
+                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
                             {{status.viewValue}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'WIP'" class="statustemp e-wipcolor">
-                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
-                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="WIP"
+                        [(value)]="row.status">
+                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
                             {{status.viewValue}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'Open'" class="statustemp e-opencolor">
-                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
-                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Open"
+                        [(value)]="row.status">
+                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
                             {{status.viewValue}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'N/A'" class="statustemp e-nacolor">
-                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" [(value)]="row.status">
-                        <mat-option *ngFor="let status of statusList" [value]="status.value">
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="N/A"
+                        [(value)]="row.status">
+                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
+                            {{status.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div *ngIf="row.status === 'Pending Exception'" class="statustemp e-opencolor">
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Pending Exception"
+                        [(value)]="row.status">
+                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
+                            {{status.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div *ngIf="row.status === 'Formal Exception Approved'" class="statustemp e-donecolor">
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)"
+                        matTooltip="Formal Exception Approved" [(value)]="row.status">
+                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
+                            {{status.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div *ngIf="row.status === 'Deviation Approved'" class="statustemp e-donecolor">
+                    <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Deviation Approved"
+                        [(value)]="row.status">
+                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
                             {{status.viewValue}}
                         </mat-option>
                     </mat-select>
@@ -163,10 +183,6 @@
         <mat-progress-spinner strokeWidth="3" [diameter]="50" color="primary" mode="indeterminate">
         </mat-progress-spinner>
     </div>
-    <!-- <button mat-flat-button matTooltip="Save Release" disabled={{isSaved}} color="primary" (click)="saveRelease(false)" style="width: 10%;
-        margin-top: 5px;
-        margin-inline: auto;">Save Release</button>
-    <br> -->
 
 </div>
 <!--
@@ -200,7 +216,6 @@
 
     </div>
 </ng-template>
-
 <!--
     Dialog for adding a new comment
 -->
@@ -218,26 +233,22 @@
         <div class="form-group">
             <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
             <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)"
-                formControlName="upload" name="upload" accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
+                formControlName="upload" name="upload"
+                accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
             <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
         </div>
         <br>
         <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
             (click)="closeAddCommentDialog()">Close</button>
         <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
-            (click)="Submit()" [disabled]="!addCommentForm.valid">Save</button>
+            (click)="saveComment()" [disabled]="!addCommentForm.valid">Save</button>
     </form>
 </ng-template>
-<!-- <app-commentadd *ngIf="commentLoaded" ></app-commentadd> -->
 <!--
     Dialog shows the evidence list
 -->
 <ng-template #evidenceDialog>
     <h1 mat-dialog-title>{{evidenceHeader}}</h1>
-    <!-- <button mat-stroked-button matTooltip="Add Evidence" color="primary" style="margin: 0 0 8px" (click)="createEvidence()">
-        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>Add Evidence
-    </button>
-    <br> -->
     <mat-table #evidencetable [dataSource]="displayEvidences">
         <ng-container matColumnDef="evidenceActions">
             <mat-header-cell *matHeaderCellDef>

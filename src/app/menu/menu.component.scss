@@ -6,19 +6,21 @@
     min-height: 48px !important;
 }
 
-.mat-toolbar-row, .mat-toolbar-single-row {
+.mat-toolbar-row,
+.mat-toolbar-single-row {
     height: 48px !important;
 }
 
-.img-div{
+.img-div {
     height: 30px;
     display: flex;
 }
 
 .active-list-item {
-    background-color: #324191 !important; /* Note: You could also use a custom theme */
+    background-color: #324191 !important;
+    /* Note: You could also use a custom theme */
 }
 
-.mat-header-row{
+.mat-header-row {
     min-height: 45px !important;
 }

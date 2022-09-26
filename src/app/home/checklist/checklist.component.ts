@@ -1,16 +1,16 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackendComments, BackendTask, Checklist, OwnerEmail, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
+import { BackendComments, BackendTask, Checklist, NotificationSetting, OwnerEmail, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
-import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject } from './checklist.models';
+import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject, TaskStatus } from './checklist.models';
 import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { COMMENT_LOWER, EMAIL_LOWER, NAME_LOWER } from 'src/app/release/release.constants';
+import { COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
 
 export class Group {
   level = 0;
@@ -31,21 +31,15 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   checkList: Checklist[] = [];
   releaseChecklist: ReleaseChecklist[] | undefined = [];
-  // release!: Checklist;
-  /**
-   * For storing selected Release Checklist
-   */
-  // oldChecklist: ReleaseChecklist[] = [];
+
   public commentsHeader!: string;
   public evidenceHeader!: string;
 
-  // public filter!: Object;
   selectedProject!: Project;
   selectedReleaseId!: number;
-  releaseName!: string | null;
-  milestone!: string | null;
-  workWeek!: string | null;
-  // comments:Comments[]=[];
+  releaseName!: string;
+  milestone!: string;
+  workWeek!: string;
   viewComments: ViewComment[] = [];
   displayComments: ViewComment[] = [];
   viewComment!: ViewComment;
@@ -61,7 +55,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   public confirmHeader: string = 'Delete Evidence';
 
   @ViewChild(EvidenceAddComponent, { static: false }) evidenceAddComponent!: EvidenceAddComponent;
-  // @ViewChild(CommentAddComponent, { static: false }) commentAddComponent!: CommentAddComponent;
 
   selectedEvidence!: ViewEvidence;
   viewReleaseChecklist: ReleaseChecklist[] = [];
@@ -78,8 +71,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   bdba!: Bdba;
   newLine = "\r\n";
   backendTasks: BackendTask[] = [];
-
-  // isExit: boolean = true;
 
   isAddCommentOpen: boolean = false;
   showSpinner: boolean = false;
@@ -105,19 +96,33 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   addCommentTemplateRef: any;
   evidenceLoaded: boolean = false;
   commentLoaded: boolean = false;
-  // public dataSource = new MatTableDataSource<any | Group>([]);
+  existingNotificationSetting!: NotificationSetting;
+  taskStatusList: TaskStatus[] = [];
+  testData!: string[];
+  commentDialogRef: any;
+  commentTemplateRef: any;
+  addCommentDialogRef!: any;
+  addCommentForm!: FormGroup;
+  addOwnerForm!: FormGroup;
+  isBdba!: boolean;
+  isLoaded!: boolean;
+  ownerEmails: OwnerEmail[] = [];
+  selectedFiles?: FileList;
+  currentFile?: File;
+  public selectedCommentFile!: any;
+  newComment!: BackendComments;
+  ownerDialogRef: any;
+  addOwnerTemplateRef: any;
+  ownerTaskId!: number;
+  isSaved = false;
+  tempOwnerName!: string;
+  tempOwnerEmail!: string;
+  public taskStatus: any[] = [];
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
     public domSanitizer: DomSanitizer) {
     this.groupByColumns = ['vector'];
   }
-
-  statusList: any[] = [
-    { value: 'Done', viewValue: 'Done' },
-    { value: 'N/A', viewValue: 'N/A' },
-    { value: 'Open', viewValue: 'Open' },
-    { value: 'WIP', viewValue: 'WIP' },
-  ];
 
   displayedColumns = ['vector', 'details', 'owner', 'detailedStatus', 'status', 'releaseCriteria', 'evidence', 'comments'];
   evidenceDisplayedColumns = ['seq', 'actions', 'title', 'evidenceChild', 'evidenceDate', 'comments'];
@@ -126,6 +131,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // this.evidenceLoaded=false;
+    this.getTaskStatus();
 
     this.data_collection = <DataCollection>{};
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
@@ -153,14 +159,50 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     // this.filter = { type: "CheckBox" };
     this.checkList = JSON.parse(localStorage.getItem("checkList")!);
-
+    this.getNotificationSettings();
     this.getSelectedTask();
 
+  }
+
+  /**
+   * Get notification from DB based on email notification will be send
+   */
+  getNotificationSettings() {
+    this.service.getNotifications(this.selectedProject.project_owner_email).subscribe((response) => {
+      this.existingNotificationSetting = response;
+      localStorage.setItem('notificationSettings', JSON.stringify(this.existingNotificationSetting));
+    });
   }
 
   ngOnDestroy() {
     // alert("data save");
     this.saveAndContinue();
+  }
+
+  /**
+   * Get all the availbale task status from DB
+   */
+  getTaskStatus() {
+    this.service.getTaskStatus().subscribe(
+      (response) => {
+        this.taskStatusList = response;
+        this.createTaskStatusDropdown();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+
+  /**
+   * Create dropdowm for Task Status
+   */
+  createTaskStatusDropdown() {
+    if (this.taskStatusList != null) {
+      for (var i = 0; i < this.taskStatusList.length; i++) {
+        this.taskStatus.push({ value: this.taskStatusList[i].status, viewValue: this.taskStatusList[i].status });
+      }
+    }
   }
 
   /**
@@ -178,20 +220,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  /**
-   * Get the selected Project data and set the value for 
-   */
-  // setTitle() {
-  //   // this.release = this.checkList.find(x => x.id === this.selectedReleaseId)!;
-  //   // this.releaseChecklist = this.release.releaseChecklist;
-  //   this.selectedReleaseId = this.selectedProject.project_id!;
-  //   this.releaseName = this.selectedProject.project_name;
-  //   this.milestone = this.selectedProject.project_milestone_id;
-  //   this.workWeek = this.selectedProject.project_release_date;
-  //   // this.oldChecklist = this.releaseChecklist!;
-
-  // }
 
   /**
    * Retrieve the data collection file from SMB server
@@ -232,34 +260,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     });
 
   }
-
-  /**
-   * Get the static data for assiciated with each task, currently we are geting this data from local stored files
-   */
-  // getStaticData() {
-  //   this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
-  //     (response) => {
-  //       this.details = response;
-  //       this.createTasks();
-  //     },
-  //     (err) => {
-  //       console.log(err.name);
-  //     }
-  //   );
-  // }
-
-  // getEvidence() {
-  //   this.service.details(this.milestone?.toLocaleLowerCase()!).subscribe(
-  //     (response) => {
-  //       this.details = response;
-  //     },
-  //     (err) => {
-  //       console.log(err.name);
-  //     }
-  //   );
-  // }
-
-  testData!: string[];
 
   /**
    * Create task list which displays on Release Compliance UI
@@ -331,7 +331,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * View BDBA report
+   * Open BDBA report
    */
   openBdbaReport() {
     this.service.bdbaPdf(this.data_collection).subscribe((data) => {
@@ -355,7 +355,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Open
+   * Open selected Comment or Evidence file
    * @param fileName Name of the file
    * @param type type (Evidence or Comments)
    */
@@ -384,17 +384,22 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Get MIME type for provided file extension
+   * @param extn file extension
+   * @returns MIME Type
+   */
   getMIMEtype(extn: string) {
     let ext = extn.toLowerCase();
     return MIMETypes[ext as keyof typeof MIMETypes];
   }
 
 
-  public onUploadSuccess(args: any): void {
-    if (args.operation === 'upload') {
-      // console.log('File uploaded successfully'+ JSON.stringify(args));
-    }
-  }
+  // public onUploadSuccess(args: any): void {
+  //   if (args.operation === 'upload') {
+  //     // console.log('File uploaded successfully'+ JSON.stringify(args));
+  //   }
+  // }
 
   /**
    * Change Status of Checklist
@@ -414,6 +419,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     // this.toastObj.show(this.toasts[1]);
   }
 
+  /**
+   * Get list of comments
+   */
   getComments() {
     var selectedTask: BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == this.selectedRelease.guidelineId)!;
     this.viewComments = [];
@@ -429,11 +437,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.displayComments = this.viewComments;
   }
 
-  commentDialogRef: any;
-  commentTemplateRef: any
   /**
    * Call when user click on View/Add Comment
-   * @param id Unique Release Id
+   * @param _templateRef Dialog Reference
+   * @param taskId Selected Task Id
    */
   onCommentClicked(_templateRef: any, taskId: number) {
     this.commentLoaded = true;
@@ -470,7 +477,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     //   this.commentDialog.show(); 
     //   this.openCommentDialog();
     // } 
-    // if (state)
+    if (state)
       this.openCommentListDialog();
 
     this.updateReleaseCheckList(this.selectedRelease);
@@ -478,13 +485,12 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   selectedReleaseGuideline!: number;
 
   /**
-   * 
-   * @param _templateRef 
-   * @param id 
-   * @param guidelineId 
+   * Open Evidence List for Selected Task Id
+   * @param _templateRef Dialog Reference
+   * @param taskId Selected Task Id
    */
   onEvidenceClicked(_templateRef: any, taskId: number) {
-    this.evidenceLoaded = true;
+    this.evidenceLoaded = false;
     this.templateRef = _templateRef;
     this.selectedRelease = <ReleaseChecklist>{};
     this.selectedRelease = this.getCurrentRelease(taskId)!;
@@ -518,7 +524,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       this.viewEvidences.push(this.viewEvidence);
     }
     this.displayEvidences = this.viewEvidences;
-    // if (state)
+    if (state)
       this.openEvidenceListDialog();
     // this.evidenceDialog.show();
     // }
@@ -593,8 +599,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     // this.evidenceDialog.hide();
   }
 
-
-
   /**
    * Create a new Comment
    * @param newComment New Comment
@@ -663,7 +667,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     //this.addEvidenceHeader = "Add Evidence";
     this.evidenceAddComponent.addEvidence();
   }
-  addCommentDialogRef!: any;
+
   /**
    * Open Add Evidence Dialog
    */
@@ -683,8 +687,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     //   // this.animal = result;
     // });
   }
-  addCommentForm!: FormGroup;
-  addOwnerForm!: FormGroup;
+
   /**
    * Call when evidence delete
    * @param _selectedEvidence Selected Evidence to delete
@@ -697,7 +700,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   /**
    * Delete the selected Evidence
    */
-
   deleteEvidence() {
     let evidence = this.releaseChecklist!.find(item => item.evidences.find(x => x.id === this.selectedEvidence.id));
     let deletedItemIndex = evidence!.evidences.findIndex(x => x.id === this.selectedEvidence.id);
@@ -710,6 +712,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   }
 
+  /**
+   * Open Add Evidence Dialog
+   */
   addEvidence() {
     const addEvidenceDialogRef = this.dialog.open(EvidenceAddComponent, {
       height: '50%',
@@ -758,26 +763,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     }
   }
 
-  openConfirmation() {
-    // this.saveReleaseConfirmDialog.show();
-    this.saveAndContinue();
-    // const dialogRef = this.dialog.open(ChecklistConfirmDialogComponent, {
-    //   height: '20%',
-    //   width: '30%'
-
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result.data == "save") {
-    //     this.saveAndContinue();
-    //   } else if (result.data == "continue") {
-    //     this.continueNavigation();
-    //   }
-
-    // });
-
-  }
-
   /**
    * Set Toast timeout
    */
@@ -786,11 +771,17 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     }.bind(this), 200);
   }
 
+  /**
+   * Close Comments List Dialog
+   */
   closeCommentDialog() {
     this.commentDialogRef.close();
     // this.commentDialog.hide();
   }
 
+  /**
+   * Close Add Comments Dialog
+   */
   closeAddCommentDialog() {
     this.addCommentDialogRef.close();
     this.addCommentForm.reset();
@@ -799,8 +790,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
   }
 
-
-
+  /**
+   * Prepare BDBA Scan data
+   */
   geBdbaFile() {
     this.bdbaData = [];
     const summary = this.bdba.results.summary;
@@ -811,7 +803,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.bdbaData.push("Total Vulnerability: " + totalVun);
   }
 
-  isBdba!: boolean;
+
+  /**
+   * Prepare CheckMarx Scan Data
+   */
   runCheckMarxScan() {
     this.checkmarxData = [];
     for (var issue of this.checkMarxIssue!.issues) {
@@ -842,6 +837,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * Prepare KW scan data
+   */
   getKwScan() {
     this.errorCount = 0;
     this.criticalCount = 0;
@@ -887,7 +885,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
 
-  isLoaded!: boolean;
+
   onLoad(args: any) {
     let proxy: ChecklistComponent = this;
     setTimeout(() => {
@@ -908,6 +906,15 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     if (proj.status === 'N/A') {
       return '#F4F5F7';
     }
+    if (proj.status === 'Pending Exception') {
+      return '#FFEBE6';
+    }
+    if (proj.status === 'Formal Exception Approved') {
+      return '#E3FCEF';
+    }
+    if (proj.status === 'Deviation Approved') {
+      return '#E3FCEF';
+    }
     // else{
     //   return 'green';
     // }
@@ -917,17 +924,14 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     document!.getElementById("commentFileInput")!.click();
   }
 
-  selectedFiles?: FileList;
-  currentFile?: File;
-  public selectedCommentFile!: any;
 
   selectCommentFile(fileInputEvent: any) {
     this.selectedFiles = fileInputEvent.target.files;
     this.selectedCommentFile = fileInputEvent.target.files[0];
   }
 
-  newComment!: BackendComments;
-  public Submit(): void {
+
+  public saveComment(): void {
     this.createNewComment();
     this.service.saveComment(this.newComment).subscribe((status) => {
       this.uploadCommentFile();
@@ -938,6 +942,20 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.addCommentDialogRef.close();
   }
 
+  createNewComment() {
+    const newComments: BackendComments = {
+      id: Math.floor(Math.random() * 90000) + 10000,
+      comments: this.addCommentForm.controls[COMMENT_LOWERCASE].value,
+      date: moment(new Date().getTime()).format(),
+      content: this.selectedCommentFile.name ? this.selectedCommentFile.name : '',
+      task_id: this.selectedReleaseGuideline
+    };
+    this.newComment = newComments;
+  }
+
+  /**
+   * Upload comment file to server
+   */
   uploadCommentFile() {
     if (this.selectedFiles) {
       const file: File | null = this.selectedCommentFile;
@@ -950,23 +968,14 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     }
   }
 
-  createNewComment() {
-    const newComments: BackendComments = {
-      id: Math.floor(Math.random() * 90000) + 10000,
-      comments: this.addCommentForm.controls[COMMENT_LOWER].value,
-      date: moment(new Date().getTime()).format(),
-      content: this.selectedCommentFile.name ? this.selectedCommentFile.name : '',
-      task_id: this.selectedReleaseGuideline
-    };
-    this.newComment = newComments;
-  }
 
-  ownerDialogRef: any;
-  addOwnerTemplateRef: any;
-  ownerTaskId!: number;
-  isSaved = false;
-  tempOwnerName!: string;
-  tempOwnerEmail!: string;
+  /**
+   * 
+   * @param _templateRef Dialog Reference
+   * @param taskId Selected Task Id
+   * @param ownerName Owner Name
+   * @param ownerEmail Owner Email
+   */
   addOwner(_templateRef: any, taskId: number, ownerName: string, ownerEmail: string) {
     this.tempOwnerName = ownerName;
     this.tempOwnerEmail = ownerEmail;
@@ -987,20 +996,23 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     });
   }
 
-  ownerEmails: OwnerEmail[] = [];
+
+  /**
+   * Save Owner
+   */
   saveOwner() {
     const objIndex = this.viewReleaseChecklist!.findIndex((obj => obj.id.toString() == this.ownerTaskId.toString()));
-    this.viewReleaseChecklist![objIndex].owner = this.addOwnerForm.controls[NAME_LOWER].value;
-    this.viewReleaseChecklist![objIndex].owner_email = this.addOwnerForm.controls[EMAIL_LOWER].value;
+    this.viewReleaseChecklist![objIndex].owner = this.addOwnerForm.controls[NAME_LOWERCASE].value;
+    this.viewReleaseChecklist![objIndex].owner_email = this.addOwnerForm.controls[EMAIL_LOWERCASE].value;
     this.viewReleaseChecklist = [...this.viewReleaseChecklist];
 
     const objIndex1 = this.releaseChecklist!.findIndex((obj => obj.id.toString() == this.ownerTaskId.toString()));
-    this.releaseChecklist![objIndex1].owner = this.addOwnerForm.controls[NAME_LOWER].value;
-    this.releaseChecklist![objIndex1].owner_email = this.addOwnerForm.controls[EMAIL_LOWER].value;
-    if (this.tempOwnerEmail !== this.addOwnerForm.controls[EMAIL_LOWER].value) {
+    this.releaseChecklist![objIndex1].owner = this.addOwnerForm.controls[NAME_LOWERCASE].value;
+    this.releaseChecklist![objIndex1].owner_email = this.addOwnerForm.controls[EMAIL_LOWERCASE].value;
+    if (this.tempOwnerEmail !== this.addOwnerForm.controls[EMAIL_LOWERCASE].value) {
       let ownerEmail: OwnerEmail = <OwnerEmail>{};
-      ownerEmail.email = this.addOwnerForm.controls[EMAIL_LOWER].value;
-      ownerEmail.name = this.addOwnerForm.controls[NAME_LOWER].value;
+      ownerEmail.email = this.addOwnerForm.controls[EMAIL_LOWERCASE].value;
+      ownerEmail.name = this.addOwnerForm.controls[NAME_LOWERCASE].value;
       ownerEmail.task_name = this.viewReleaseChecklist![objIndex].details;
       ownerEmail.milestone = this.selectedProject.project_milestone_id;
       ownerEmail.project_name = this.selectedProject.project_name
@@ -1010,6 +1022,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.ownerDialogRef.close();
   }
 
+  /**
+   * Send Email
+   */
   sendEmails() {
     if (this.ownerEmails.length > 0) {
       this.service.sendEmail(this.ownerEmails).subscribe(() => {
@@ -1018,6 +1033,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Close Owner Dialog
+   */
   closeAddOwnerDialog() {
     this.ownerDialogRef.close();
   }

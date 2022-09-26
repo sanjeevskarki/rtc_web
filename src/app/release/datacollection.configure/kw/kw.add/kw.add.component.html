@@ -18,8 +18,8 @@
     </mat-form-field>
 
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
-        (click)="Close()">Close</button>
-    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="Submit()"
+        (click)="close()">Close</button>
+    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveKwConfig()"
         [disabled]="!addKwConfigForm.valid">Save</button>
 
 </form>

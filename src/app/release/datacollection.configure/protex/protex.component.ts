@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Project, Stakeholder } from 'src/app/home/home.models';
+import { DELETE_LOWERCASE, SUCCESS_LOWERCASE, TABLE_HEADER_COLOR } from '../../release.constants';
 import { Protex_Config } from '../datacollection.models';
 import { ConfirmDeleteProtexDialogComponent } from './confirmdeleteprotexdialog/confirm.delete.protex.dialog.component';
 import { ProtexAddComponent } from './protex.add/protex.add.component';
@@ -17,9 +18,11 @@ export class ProtexComponent implements OnInit {
   protexConfigList: Protex_Config[] = [];
   tempProtexConfigList: Protex_Config[] = [];
   protexDisplayedColumns = ['protex_server', 'protex_project_id', 'actions'];
-  color = '#f1f3f4';
+  color = TABLE_HEADER_COLOR;
   protexConfig!: Protex_Config;
   selectedProject!: Project;
+  newProtexConfig!: Protex_Config;
+  existingProtexConfig!: Protex_Config;
 
   constructor(public dialog: MatDialog, private service: ProtexService) { }
 
@@ -28,6 +31,9 @@ export class ProtexComponent implements OnInit {
     this.getProtexConfig();
   }
 
+  /**
+   * Call Get API for getting Protex Config for provided ProjectId
+   */
   getProtexConfig() {
     this.service.getProtexConfig(this.selectedProject.project_id).subscribe(
       (response) => {
@@ -40,8 +46,9 @@ export class ProtexComponent implements OnInit {
     );
   }
 
-  newProtexConfig!: Protex_Config;
-  existingProtexConfig!: Protex_Config;
+  /**
+   * Open Add new Protex Config Dialog
+   */
   openProtexConfig() {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
       height: '30%',
@@ -61,6 +68,10 @@ export class ProtexComponent implements OnInit {
     });
   }
 
+  /**
+   * Create Protex Config List
+   * @param protexConfigList Protex Config List
+   */
   createProtexConfigList(protexConfigList: Protex_Config[]) {
     this.protexConfigList = [];
     for (var protexConfig of protexConfigList) {
@@ -68,6 +79,10 @@ export class ProtexComponent implements OnInit {
     }
   }
 
+  /**
+   * Open Updated Protex Config Dialog
+   * @param protexConfig Selected Protex Config
+   */
   updateProtexConfig(protexConfig: Protex_Config) {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
       height: '30%',
@@ -95,6 +110,10 @@ export class ProtexComponent implements OnInit {
     });
   }
 
+  /**
+   * Delete Selected Protex Config object
+   * @param protexConfig Selected Protex Config
+   */
   deleteProtexConfig(protexConfig: Protex_Config) {
     const deleteProtexDialogRef = this.dialog.open(ConfirmDeleteProtexDialogComponent, {
       height: '18%',
@@ -104,9 +123,9 @@ export class ProtexComponent implements OnInit {
 
     deleteProtexDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if (result.data === 'delete') {
+        if (result.data === DELETE_LOWERCASE) {
           this.service.deleteProtexConfig(protexConfig).subscribe(data => {
-            if (data.message === 'success') {
+            if (data.message === SUCCESS_LOWERCASE) {
               const index = this.tempProtexConfigList.indexOf(protexConfig, 0);
               if (index > -1) {
                 this.tempProtexConfigList.splice(index, 1);

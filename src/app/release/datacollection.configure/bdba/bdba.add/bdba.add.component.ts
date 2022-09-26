@@ -33,15 +33,24 @@ export class BdbaAddComponent implements OnInit {
     }
   }
 
-  Close() {
+  /**
+   * Close BDBA config dialog
+   */
+  close() {
     this.dialogRef.close();
   }
 
-  Submit() {
+  /**
+   * Save BDBA config object
+   */
+  saveBdbaConfig() {
     this.createNewBdba();
     this.dialogRef.close({ data: this.updateBdbaConfig });
   }
 
+  /**
+   * Create BDBA Config object
+   */
   createNewBdba() {
     if (this.selectedBdbaConfig) {
       this.selectedBdbaConfig.product_id = this.addBdbaConfigForm.controls['product_id'].value;

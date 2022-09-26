@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Project, Stakeholder } from 'src/app/home/home.models';
+import { Project } from 'src/app/home/home.models';
+import { DELETE_LOWERCASE, SUCCESS_LOWERCASE, TABLE_HEADER_COLOR } from '../../release.constants';
 import { Bdba_Config } from '../datacollection.models';
 import { BdbaAddComponent } from './bdba.add/bdba.add.component';
 import { BdbaService } from './bdba.service';
@@ -14,7 +15,7 @@ import { ConfirmDeleteBdbaDialogComponent } from './confirmdeletebdbadialog/conf
 export class BdbaComponent implements OnInit {
 
   bdbaDisplayedColumns = ['product_id', 'product_name', 'actions'];
-  color = '#f1f3f4';
+  color = TABLE_HEADER_COLOR;
   newBdbaConfig!: Bdba_Config;
   tempBdbaConfigList: Bdba_Config[] = [];
   bdbaConfigList: Bdba_Config[] = [];
@@ -27,6 +28,9 @@ export class BdbaComponent implements OnInit {
     this.getBdbaConfig();
   }
 
+  /**
+   * Call API for getting BDBA config for selected Project Id
+   */
   getBdbaConfig() {
     this.service.getBdbaConfig(this.selectedProject.project_id).subscribe(
       (response) => {
@@ -39,6 +43,9 @@ export class BdbaComponent implements OnInit {
     );
   }
 
+  /**
+   * Open Add BDBA config Dialog
+   */
   openBdbaConfig() {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
       height: '30%',
@@ -59,6 +66,10 @@ export class BdbaComponent implements OnInit {
 
   }
 
+  /**
+   * Create BDBA config
+   * @param bdbaConfigList BDBA config object
+   */
   createBdbaConfigList(bdbaConfigList: Bdba_Config[]) {
     this.bdbaConfigList = [];
     for (var bdbaConfig of bdbaConfigList) {
@@ -66,6 +77,10 @@ export class BdbaComponent implements OnInit {
     }
   }
 
+  /**
+   * Open UOdate BDBA Config Dialog
+   * @param bdbaConfig Selected BDBA Config
+   */
   updateBdbaConfig(bdbaConfig: Bdba_Config) {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
       height: '30%',
@@ -93,6 +108,10 @@ export class BdbaComponent implements OnInit {
     });
   }
 
+  /**
+   * Open Delete Confirmation Dialog and Call Delete API base on the Confirm delete action
+   * @param bdbaConfig Selected BDBA Config
+   */
   deleteBdbaConfig(bdbaConfig: Bdba_Config) {
     const deleteBdbaDialogRef = this.dialog.open(ConfirmDeleteBdbaDialogComponent, {
       height: '18%',
@@ -102,9 +121,9 @@ export class BdbaComponent implements OnInit {
 
     deleteBdbaDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if (result.data === 'delete') {
+        if (result.data === DELETE_LOWERCASE) {
           this.service.deleteBdbaConfig(bdbaConfig).subscribe(data => {
-            if (data.message === 'success') {
+            if (data.message === SUCCESS_LOWERCASE) {
               const index = this.tempBdbaConfigList.indexOf(bdbaConfig, 0);
               // alert(index)
               if (index > -1) {
@@ -119,3 +138,4 @@ export class BdbaComponent implements OnInit {
   }
 
 }
+

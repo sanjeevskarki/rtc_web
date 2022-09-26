@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.removeItem('selectedProject');
+    localStorage.removeItem('notificationSettings');
     this.getShortList();
 
   }

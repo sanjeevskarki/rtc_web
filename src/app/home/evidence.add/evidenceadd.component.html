@@ -43,7 +43,7 @@
         <!-- <mat-label>File</mat-label> -->
         <button mat-flat-button (click)="openInput()" color="primary" style="margin-bottom: 10px;">Select File to
             Upload</button>
-           
+
         <input id="fileInput" hidden type="file" (change)="selectEvidenceFile($event)" formControlName="upload"
             name="upload" accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
         <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
@@ -51,9 +51,9 @@
         <!-- <input class="ng-hide" id="input-file-id" multiple ormControlName="upload" type="file" (change)="csvInputChange($event)"/>
         <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label> -->
         <!-- </mat-form-field> -->
-        
+
     </div>
-    
+
 
     <mat-form-field appearance="outline">
         <mat-label>Comments</mat-label>
@@ -67,8 +67,8 @@
     </mat-form-field>
 
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
-        (click)="Close()">Close</button>
+        (click)="close()">Close</button>
     <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
-        [disabled]="!evidenceForm.valid" (click)="Submit()">Save</button>
+        [disabled]="!evidenceForm.valid" (click)="saveEvidence()">Save</button>
 
 </form>

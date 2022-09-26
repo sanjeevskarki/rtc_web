@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Bdba.AddComponent } from './bdba.add.component';
+import { BdbaAddComponent } from './bdba.add.component';
 
-describe('Bdba.AddComponent', () => {
-  let component: Bdba.AddComponent;
-  let fixture: ComponentFixture<Bdba.AddComponent>;
+describe('BdbaAddComponent', () => {
+  let component: BdbaAddComponent;
+  let fixture: ComponentFixture<BdbaAddComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ Bdba.AddComponent ]
+      declarations: [ BdbaAddComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Bdba.AddComponent);
+    fixture = TestBed.createComponent(BdbaAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

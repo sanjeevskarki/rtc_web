@@ -7,10 +7,9 @@ import {
 } from '@angular/forms';
 
 import { BackendEvidences, Project } from '../home.models';
-import { v4 as uuidv4 } from 'uuid';
 import { EvidenceAddService } from './evidenceadd.service';
 import { environment } from 'src/environments/environment';
-import { DATE_FORMAT, UPLOAD_LOWER } from 'src/app/release/release.constants';
+import { UPLOAD_LOWERCASE } from 'src/app/release/release.constants';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 
@@ -22,7 +21,7 @@ import * as moment from 'moment';
 export class EvidenceAddComponent implements OnInit {
 
   baseUrl: string = environment.ENDPOINT;
-  upload: string = UPLOAD_LOWER;
+  upload: string = UPLOAD_LOWERCASE;
 
 
   public width: string = '30%';
@@ -66,10 +65,10 @@ export class EvidenceAddComponent implements OnInit {
   title = new FormControl('', [Validators.required]);
   comment = new FormControl('', [Validators.required]);
 
-  constructor(private formBuilder: FormBuilder, private service: EvidenceAddService, public dialogRef: MatDialogRef<EvidenceAddComponent>, 
+  constructor(private formBuilder: FormBuilder, private service: EvidenceAddService, public dialogRef: MatDialogRef<EvidenceAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BackendEvidences) {
-      
-     }
+
+  }
 
   isValueExist(value: string): boolean {
     if (typeof value != 'undefined' && value) {
@@ -105,28 +104,34 @@ export class EvidenceAddComponent implements OnInit {
     this.selectedFile = fileInputEvent.target.files[0];
   }
 
-  public Submit(): void {
+  /**
+   * Save Evidence
+   */
+  public saveEvidence(): void {
     this.createNewEvidence();
     this.service.saveEvidence(this.newEvidence).subscribe((status) => {
-      this.saveEvidenceFile();
+      this.uploadEvidenceFile();
     });
 
     this.dialogRef.close({ data: this.newEvidence });
   }
 
-  saveEvidenceFile(){
+  /**
+   * Upload Evidence File to server
+   */
+  uploadEvidenceFile() {
     if (this.evidenceType === 'file') {
       if (this.selectedFiles) {
         const file: File | null = this.selectedFiles.item(0);
         if (file) {
           this.currentFile = file;
           this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
-            
+
           });
         }
       }
     }
-  
+
   }
 
   openInput() {
@@ -147,20 +152,20 @@ export class EvidenceAddComponent implements OnInit {
     });
   }
 
-  requiredFileType( type: string ) {
+  requiredFileType(type: string) {
     return function (control: FormControl) {
       const file = control.value;
-      if ( file ) {
+      if (file) {
         const extension = file.name.split('.')[1].toLowerCase();
-        if ( type.toLowerCase() !== extension.toLowerCase() ) {
+        if (type.toLowerCase() !== extension.toLowerCase()) {
           return {
             requiredFileType: true
           };
         }
-        
+
         return null;
       }
-  
+
       return null;
     };
   }
@@ -168,7 +173,7 @@ export class EvidenceAddComponent implements OnInit {
   /**
    * Close the Add Evidence Dialog
    */
-  Close(){
+  close() {
     this.dialogRef.close();
   }
 
@@ -181,10 +186,13 @@ export class EvidenceAddComponent implements OnInit {
     }.bind(this), 200);
   }
 
+  /**
+   * Create Evidence object
+   */
   createNewEvidence() {
     const newEvidence: BackendEvidences = {
       id: Math.floor(Math.random() * 90000) + 10000,
-      task_id:this.data.task_id!,
+      task_id: this.data.task_id!,
       title: this.evidenceForm.controls['title'].value,
       comments: this.evidenceForm.controls['comment'].value,
       evidence: this.getEvidence(),
@@ -194,6 +202,10 @@ export class EvidenceAddComponent implements OnInit {
     this.newEvidence = newEvidence;
   }
 
+  /**
+   * Get Evidence based on selected type
+   * @returns Evidence Value
+   */
   getEvidence() {
     let evidence: string;
     if ((this.evidenceForm.controls['link'].value)) {
@@ -201,7 +213,7 @@ export class EvidenceAddComponent implements OnInit {
       evidence = this.evidenceForm.controls['link'].value;
       return evidence;
     } else if (this.evidenceForm.controls['upload'].value) {
-      evidence = this.selectedFile.name?this.selectedFile.name:'';
+      evidence = this.selectedFile.name ? this.selectedFile.name : '';
       return evidence;
     }
     return '';

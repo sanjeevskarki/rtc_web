@@ -51,16 +51,21 @@ export class ReleaseStakeholderComponent implements OnInit {
   /**
    * Close the Add Stakeholder Dialog
    */
-  Close(){
+  close(){
     this.dialogRef.close();
   }
   
-
-  Submit() {
+  /**
+   * Save Stakeholder
+   */
+  saveStakeholder() {
     this.createNewStakeholder();
     this.dialogRef.close({ data: this.newStakeholder });
   }
 
+  /**
+   * Create New Stakeholder object
+   */
   createNewStakeholder(){
     let tempid;
     if(this.selectedStakeholder) {

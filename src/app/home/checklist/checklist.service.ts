@@ -1,12 +1,12 @@
 import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ATTACHMENTS_LOWER, EMAIL_LOWER, FILE_LOWER, GUIDELINE_LOWER, TASK_LOWER } from 'src/app/release/release.constants';
+import { ATTACHMENTS_LOWERCASE, BDBA_RESULTS_LOWERCASE, EMAIL_LOWERCASE, FILE_LOWERCASE, GUIDELINE_LOWERCASE, KW_RESULTS_LOWERCASE, PROTEX_RESULTS_LOWERCASE, TASK_LOWERCASE, TASK_STATUS_LOWERCASE } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
-import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTION, FUTURE, KW_SCAN_FILE, PAST, PROTEX_D457_SCAN_FILE1, PROTEX_D457_SCAN_FILE2, PROTEX_META_SCAN_FILE1, PROTEX_META_SCAN_FILE2, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
+import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTION, FUTURE, KW_SCAN_FILE, NOTIFICATION_LOWER, PAST, PROTEX_D457_SCAN_FILE1, PROTEX_D457_SCAN_FILE2, PROTEX_META_SCAN_FILE1, PROTEX_META_SCAN_FILE2, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
-import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, ApiResponse, BackendComments, OwnerEmail } from '../home.models';
-import { Bdba, Checkmarx, DataCollection, Project } from './checklist.models';
+import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, ApiResponse, BackendComments, OwnerEmail, NotificationSetting } from '../home.models';
+import { Bdba, BdbaResults, Checkmarx, DataCollection, KwResults, Project, ProtexResults, TaskStatus } from './checklist.models';
 import { switchMap } from "rxjs/operators";
 
 declare var require: any;
@@ -20,16 +20,21 @@ const xml2js = require("xml2js");
 })
 export class ChecklistService {
   endpoint_url: string = environment.ENDPOINT;
-  task: string = TASK_LOWER;
-  email: string = EMAIL_LOWER;
-  file: string = FILE_LOWER;
-  guideline: string = GUIDELINE_LOWER;
+  task: string = TASK_LOWERCASE;
+  email: string = EMAIL_LOWERCASE;
+  file: string = FILE_LOWERCASE;
+  guideline: string = GUIDELINE_LOWERCASE;
+  taskStatus: string = TASK_STATUS_LOWERCASE;
+  bdbaResults: string = BDBA_RESULTS_LOWERCASE;
+  kwResults: string = KW_RESULTS_LOWERCASE;
+  protexResults: string = PROTEX_RESULTS_LOWERCASE;
   unit!: Unit;
   UNITS: Unit[];
   amount!: number;
   displayTime!: string;
   remaining!: number;
   headers!: HttpHeaders;
+  notification: string = NOTIFICATION_LOWER;
   /**
    *
    * @param httpClient Http Client.
@@ -131,7 +136,7 @@ export class ChecklistService {
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
       .set('file_type', DATA_COLLECTION)
-      .set('file_name', data_collection.project_id.toLowerCase()+BDBA_SCAN_FILE);
+      .set('file_name', data_collection.project_id.toLowerCase() + BDBA_SCAN_FILE);
     return this.httpClient.get<Bdba>(this.endpoint_url + this.file, { params: params });
   }
 
@@ -140,7 +145,7 @@ export class ChecklistService {
       .set('milestone_id', data_collection.milestone_id)
       .set('project_id', data_collection.project_id)
       .set('file_type', DATA_COLLECTION)
-      .set('file_name', data_collection.project_id.toLowerCase()+BDBA_SCAN_PDF_FILE);
+      .set('file_name', data_collection.project_id.toLowerCase() + BDBA_SCAN_PDF_FILE);
     const requestOptions: Object = {
       headers: this.headers,
       responseType: 'text',
@@ -166,14 +171,14 @@ export class ChecklistService {
   }
 
   public protexScanFile1(data_collection: DataCollection): Observable<Project> {
-    let fileName!:string;
-    if(data_collection.project_id === "d457"){
-      fileName=PROTEX_D457_SCAN_FILE1;
+    let fileName!: string;
+    if (data_collection.project_id === "d457") {
+      fileName = PROTEX_D457_SCAN_FILE1;
     }
-    else if(data_collection.project_id === "meta"){
-      fileName=PROTEX_META_SCAN_FILE1;
-    }else{
-      fileName=PROTEX_SCAN_FILE;
+    else if (data_collection.project_id === "meta") {
+      fileName = PROTEX_META_SCAN_FILE1;
+    } else {
+      fileName = PROTEX_SCAN_FILE;
     }
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
@@ -188,20 +193,20 @@ export class ChecklistService {
     return this.httpClient
       .get(this.endpoint_url + this.file, requestOptions)
       .pipe(
-        switchMap(async xml => await this.parseXmlToJson(xml,fileName))
+        switchMap(async xml => await this.parseXmlToJson(xml, fileName))
       );
     // return this.httpClient.get<Project>(FILE_PATH+PROTEX_SCAN_FILE, requestOptions);
   }
 
   public protexScanFile2(data_collection: DataCollection): Observable<Project> {
-    let fileName!:string;
-    if(data_collection.project_id === "d457"){
-      fileName=PROTEX_D457_SCAN_FILE2;
+    let fileName!: string;
+    if (data_collection.project_id === "d457") {
+      fileName = PROTEX_D457_SCAN_FILE2;
     }
-    else if(data_collection.project_id === "meta"){
-      fileName=PROTEX_META_SCAN_FILE2;
-    }else{
-      fileName=PROTEX_SCAN_FILE;
+    else if (data_collection.project_id === "meta") {
+      fileName = PROTEX_META_SCAN_FILE2;
+    } else {
+      fileName = PROTEX_SCAN_FILE;
     }
     let params = new HttpParams().set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
@@ -216,18 +221,18 @@ export class ChecklistService {
     return this.httpClient
       .get(this.endpoint_url + this.file, requestOptions)
       .pipe(
-        switchMap(async xml => await this.parseXmlToJson(xml,fileName))
+        switchMap(async xml => await this.parseXmlToJson(xml, fileName))
       );
     // return this.httpClient.get<Project>(FILE_PATH+PROTEX_SCAN_FILE, requestOptions);
   }
 
-  async parseXmlToJson(xml: any, fileName:string) {
+  async parseXmlToJson(xml: any, fileName: string) {
     if (xml) {
-      let protextProj:any;
+      let protextProj: any;
       protextProj = await xml2js
-      .parseStringPromise(xml, { explicitArray: false })
-      .then((response: { Project: Project; }) => response.Project);
-      protextProj.FileName=fileName;
+        .parseStringPromise(xml, { explicitArray: false })
+        .then((response: { Project: Project; }) => response.Project);
+      protextProj.FileName = fileName;
       return protextProj
     } else {
       return '';
@@ -319,7 +324,7 @@ export class ChecklistService {
     let params = new HttpParams().set('businessUnit', businessUnit.toLowerCase().replace(/\s/g, ""))
       .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
       .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
-      .set('dataCollection', ATTACHMENTS_LOWER);
+      .set('dataCollection', ATTACHMENTS_LOWERCASE);
 
     const requestOptions: Object = {
       reportProgress: true,
@@ -376,5 +381,30 @@ export class ChecklistService {
     })
   }
 
-}
+  public getTaskStatus(): Observable<TaskStatus[]> {
+    return this.httpClient.get<TaskStatus[]>(this.endpoint_url + this.taskStatus);
+  }
 
+  public getNotifications(qualOwnerId: string): Observable<NotificationSetting> {
+    let params = new HttpParams().set('id', qualOwnerId);
+    const requestOptions: Object = {
+      reportProgress: true,
+      responseType: 'json',
+      params: params,
+    }
+    return this.httpClient.get<NotificationSetting>(this.endpoint_url + this.notification, requestOptions);
+  }
+
+  public getBdbaResults(projectId: string): Observable<BdbaResults> {
+    return this.httpClient.get<BdbaResults>(this.endpoint_url + this.bdbaResults + "/" + projectId);
+  }
+
+  public getKwResults(projectId: string): Observable<KwResults> {
+    return this.httpClient.get<KwResults>(this.endpoint_url + this.kwResults + "/" + projectId);
+  }
+
+  public getProtexResults(projectId: string): Observable<ProtexResults> {
+    return this.httpClient.get<ProtexResults>(this.endpoint_url + this.protexResults + "/" + projectId);
+  }
+
+}

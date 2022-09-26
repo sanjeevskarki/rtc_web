@@ -33,15 +33,24 @@ export class ProtexAddComponent implements OnInit {
     }
   }
 
-  Close() {
+  /**
+   * Close Add Protex Dialog
+   */
+  close() {
     this.dialogRef.close();
   }
 
-  Submit() {
+  /**
+   * Save Protec Config Object
+   */
+  saveProtexConfig() {
     this.createNewProtex();
     this.dialogRef.close({ data: this.updateProtexCofig });
   }
 
+  /**
+   * Create Protex Config Object
+   */
   createNewProtex() {
     if (this.selectedProtexConfig) {
       this.selectedProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;

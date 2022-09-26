@@ -12,16 +12,4 @@ export class DatacollectionConfigureComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addProtexScan() {
-
-  }
-
-  updateProtexScan(data: any) {
-
-  }
-
-  deleteStakeholder(data: any) {
-
-  }
-
 }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EVIDENCES_LOWER, UPLOAD_LOWER } from 'src/app/release/release.constants';
+import { EVIDENCES_LOWERCASE, UPLOAD_LOWERCASE } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
 import { BackendEvidences } from '../home.models';
 
@@ -14,7 +14,7 @@ import { BackendEvidences } from '../home.models';
 })
 export class EvidenceAddService {
   baseUrl: string = environment.ENDPOINT;
-  upload: string = UPLOAD_LOWER;
+  upload: string = UPLOAD_LOWERCASE;
 
   headers!: HttpHeaders;
   /**
@@ -39,7 +39,7 @@ export class EvidenceAddService {
     let params = new HttpParams().set('businessUnit', businessUnit.toLowerCase().replace(/\s/g, ""))
       .set('projectName', projectName.toLowerCase().replace(/\s/g, ""))
       .set('milestone', milestone.toLowerCase().replace(/\s/g, ""))
-      .set('dataCollection', EVIDENCES_LOWER);
+      .set('dataCollection', EVIDENCES_LOWERCASE);
 
     const requestOptions: Object = {
       reportProgress: true,
@@ -54,8 +54,7 @@ export class EvidenceAddService {
 
   public saveEvidence(evidence: BackendEvidences): Observable<boolean> {
     const body = JSON.stringify(evidence);
-    return this.httpClient.post<boolean>(`${this.baseUrl}evidences` , body, { headers: this.headers });
+    return this.httpClient.post<boolean>(`${this.baseUrl}evidences`, body, { headers: this.headers });
   }
-
-
+  
 }

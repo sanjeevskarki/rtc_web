@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask, ApiResponse, NotificationSetting } from '../../home/home.models';
-import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST, STAKEHOLDER_LOWER, EMAIL_LOWER, KW_LOWER, PROTEX_LOWER, BDBA_LOWER } from '../release.constants';
+import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST, STAKEHOLDER_LOWERCASE, EMAIL_LOWERCASE, KW_LOWERCASE, PROTEX_LOWERCASE, BDBA_LOWERCASE } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { Stakeholder } from 'src/app/home/home.models';
 import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
@@ -18,19 +18,19 @@ export class ReleaseEditService {
   endpoint_url: string = environment.ENDPOINT;
   milestone: string = MILESTONE;
   businessUnit: string = BUSINESS_UNIT;
-  task: string = TASK_LOWER;
+  task: string = TASK_LOWERCASE;
   isFolderExist: string = IS_FOLDER_EXIST;
   project: string = PROJECT;
-  guideline: string = GUIDELINE_LOWER;
-  stakeholder: string = STAKEHOLDER_LOWER;
+  guideline: string = GUIDELINE_LOWERCASE;
+  stakeholder: string = STAKEHOLDER_LOWERCASE;
   amount!: number;
   displayTime!: string;
   remaining!: number;
   headers!: HttpHeaders;
-  email: string = EMAIL_LOWER;
-  kw: string = KW_LOWER;
-  bdba: string = BDBA_LOWER;
-  protex: string = PROTEX_LOWER;
+  email: string = EMAIL_LOWERCASE;
+  kw: string = KW_LOWERCASE;
+  bdba: string = BDBA_LOWERCASE;
+  protex: string = PROTEX_LOWERCASE;
   notification: string = NOTIFICATION_LOWER;
   /**
    *
@@ -113,11 +113,11 @@ export class ReleaseEditService {
   }
 
   public deleteStakeholder(stakeholder: Stakeholder): Observable<ApiResponse> {
-    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.stakeholder+ "/" + stakeholder.id, { headers: this.headers });
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.stakeholder + "/" + stakeholder.id, { headers: this.headers });
   }
 
-  public getProjectStakeholders(projectId:number): Observable<Stakeholder[]> {
-    return this.httpClient.get<Stakeholder[]>(this.endpoint_url + this.stakeholder+ "/" + projectId);
+  public getProjectStakeholders(projectId: number): Observable<Stakeholder[]> {
+    return this.httpClient.get<Stakeholder[]>(this.endpoint_url + this.stakeholder + "/" + projectId);
   }
 
   /**
@@ -129,18 +129,38 @@ export class ReleaseEditService {
     return this.httpClient.post<ApiResponse>(this.endpoint_url + this.stakeholder + '/' + this.email, stakeholders, { headers: this.headers });
   }
 
-  public getProtexConfig(projectId:number): Observable<Protex_Config[]> {
-    return this.httpClient.get<Protex_Config[]>(this.endpoint_url + this.protex+"/"+projectId);
+  /**
+   * GGGet Protex Config List for provided Project
+   * @param projectId Selected Project Id
+   * @returns Protex Config List
+   */
+  public getProtexConfig(projectId: number): Observable<Protex_Config[]> {
+    return this.httpClient.get<Protex_Config[]>(this.endpoint_url + this.protex + "/" + projectId);
   }
 
-  public getKwConfig(projectId:number): Observable<Kw_Config[]> {
-    return this.httpClient.get<Kw_Config[]>(this.endpoint_url + this.kw+"/"+projectId);
+  /**
+   * Get KW Config List for provided Project
+   * @param projectId Selected Project Id
+   * @returns Protex Config List
+   */
+  public getKwConfig(projectId: number): Observable<Kw_Config[]> {
+    return this.httpClient.get<Kw_Config[]>(this.endpoint_url + this.kw + "/" + projectId);
   }
 
-  public getBdbaConfig(projectId:number): Observable<Bdba_Config[]> {
-    return this.httpClient.get<Bdba_Config[]>(this.endpoint_url + this.bdba+"/"+projectId);
+  /**
+   * Get BDBA Config List for provided Project
+   * @param projectId Selected Project Id
+   * @returns BDBA Config List
+   */
+  public getBdbaConfig(projectId: number): Observable<Bdba_Config[]> {
+    return this.httpClient.get<Bdba_Config[]>(this.endpoint_url + this.bdba + "/" + projectId);
   }
 
+  /**
+   * Add Notification
+   * @param notificationSetting Selected Notification Setting
+   * @returns Project
+   */
   public addNotification(notificationSetting: NotificationSetting): Observable<Project> {
     const body = JSON.stringify(notificationSetting);
     return this.httpClient.post<Project>(this.endpoint_url + this.notification, body, { headers: this.headers });

@@ -9,15 +9,17 @@ import { Stakeholder } from 'src/app/home/home.models';
 })
 export class ConfirmDeleteBkcDialogComponent implements OnInit {
 
-  bkcTitle!:string;
+  bkcTitle!: string;
   constructor(public dialogRef: MatDialogRef<ConfirmDeleteBkcDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Stakeholder) { }
 
   ngOnInit(): void {
     this.bkcTitle = this.data.name;
-    // alert(this.data.name);
   }
 
-  delete() {
+  /**
+   * Pass the delete command to BKC component
+   */
+  deleteBkc() {
     this.dialogRef.close({ data: "delete" });
   }
 

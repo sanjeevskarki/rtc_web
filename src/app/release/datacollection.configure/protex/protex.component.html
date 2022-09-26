@@ -12,8 +12,6 @@
             <mat-header-cell *matHeaderCellDef>Project Id</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.protex_project_id}}</mat-cell>
         </ng-container>
-
-
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef>
             </mat-header-cell>
@@ -29,7 +27,6 @@
                 </button>
             </mat-cell>
         </ng-container>
-
         <mat-header-row *matHeaderRowDef="protexDisplayedColumns;sticky: true" [style.background-color]="color">
         </mat-header-row>
         <mat-row *matRowDef="let row; columns: protexDisplayedColumns;"></mat-row>

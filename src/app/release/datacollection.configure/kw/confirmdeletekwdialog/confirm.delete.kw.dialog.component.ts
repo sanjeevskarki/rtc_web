@@ -14,7 +14,6 @@ export class ConfirmDeleteKwDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectName = this.data.name;
-    // alert(this.data.name);
   }
 
   delete() {

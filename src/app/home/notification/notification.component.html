@@ -1,32 +1,33 @@
-
-
 <div class="container" class="container mat-elevation-z9">
     <h1 style="margin: 2rem;" mat-dialog-title>Notifications Settings</h1>
     <div style="display: flex;">
-    <div>
         <div>
-            <div style="margin: 0 2rem">
-                <div mat-dialog-title>Task owner Notifications </div><br>
-                <section *ngFor="let item of ownerNotificationList">
-                    <mat-checkbox color="primary" [checked]="item.checked"  (change)="checkOwner($event,item)">{{item.viewValue}}</mat-checkbox> 
-                </section>
-            </div>
-        </div><br>
-        <div >
-            <div style="margin: 0 2rem">
-                <div mat-dialog-title>Stakeholder Notifications</div><br>
-                <section *ngFor="let stakeholder of stakeholderNotificationList">
-                    <mat-checkbox color="primary" [checked]="stakeholder.checked" (change)="checkStakeholder($event,stakeholder)">{{stakeholder.viewValue}}</mat-checkbox>
-                </section>
+            <div>
+                <div style="margin: 0 2rem">
+                    <div mat-dialog-title>Task owner Notifications </div><br>
+                    <section *ngFor="let item of ownerNotificationList">
+                        <mat-checkbox color="primary" [checked]="item.checked" (change)="checkOwner($event,item)">
+                            {{item.viewValue}}</mat-checkbox>
+                    </section>
+                </div>
+            </div><br>
+            <div>
+                <div style="margin: 0 2rem">
+                    <div mat-dialog-title>Stakeholder Notifications</div><br>
+                    <section *ngFor="let stakeholder of stakeholderNotificationList">
+                        <mat-checkbox color="primary" [checked]="stakeholder.checked"
+                            (change)="checkStakeholder($event,stakeholder)">{{stakeholder.viewValue}}</mat-checkbox>
+                    </section>
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <div mat-dialog-title>Send to Qual Owner?</div><br>
-        <section *ngFor="let item of qualOwnerNotificationList" style="padding-left: 5rem;margin-bottom: 4px;">
-            <div *ngIf="item.value == 'addrelease_qualowner'" style="margin-bottom: 76px;"></div>
-            <mat-checkbox color="primary" [checked]="item.checked"  (change)="checkQualOwner($event,item)"></mat-checkbox>
-        </section>
+        <div>
+            <div mat-dialog-title>Send to Qual Owner?</div><br>
+            <section *ngFor="let item of qualOwnerNotificationList" style="padding-left: 5rem;margin-bottom: 4px;">
+                <div *ngIf="item.value == 'addrelease_qualowner'" style="margin-bottom: 76px;"></div>
+                <mat-checkbox color="primary" [checked]="item.checked" (change)="checkQualOwner($event,item)">
+                </mat-checkbox>
+            </section>
         </div>
     </div>
     <div style="margin: 2rem;">

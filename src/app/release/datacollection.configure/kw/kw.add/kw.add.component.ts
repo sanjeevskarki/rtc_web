@@ -33,15 +33,25 @@ export class KwAddComponent implements OnInit {
     }
   }
 
-  Close() {
+  /***
+   * Close Add KE config Dialog
+   */
+  close() {
     this.dialogRef.close();
   }
 
-  Submit() {
+  /**
+   * Save new KW Config 
+   */
+   saveKwConfig() {
     this.createNewKw();
     this.dialogRef.close({ data: this.updatedKwCofig });
   }
 
+
+  /**
+   * Create New KW Config object
+   */
   createNewKw() {
     if (this.selectedKwConfig) {
       this.selectedKwConfig.kw_server = this.addKwConfigForm.controls['kw_server'].value;

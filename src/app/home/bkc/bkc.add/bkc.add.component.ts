@@ -13,46 +13,55 @@ import { Bkc } from '../../home.models';
 export class BkcAddComponent implements OnInit {
 
   addBkcForm!: FormGroup;
-  selectedBkc!:Bkc;
-  newBkc!:Bkc;
-  constructor(private formBuilder: FormBuilder,public dialogRef: MatDialogRef<BkcAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  selectedBkc!: Bkc;
+  newBkc!: Bkc;
+  formHeader!: string;
+  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<BkcAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
+    this.formHeader = 'Add BKC';
     this.addBkcForm = this.formBuilder.group({
       title: [null, Validators.required],
       version: [null, []],
       comment: [null, []],
-      
+
     });
     if (this.data) {
+      this.formHeader = 'Update BKC';
       this.selectedBkc = this.data.data;
       this.addBkcForm.patchValue({
         title: this.selectedBkc.title,
         version: this.selectedBkc.version,
-        comment: this.selectedBkc.comment,  
+        comment: this.selectedBkc.comment,
       });
     }
-  
+
   }
 
   /**
    * Close the Add/Update BKC Dialog
    */
-  Close(){
+  closeBkc() {
     this.dialogRef.close();
   }
 
-  Submit() {
+  /**
+   * Save BKC form
+   */
+  saveBkc() {
     this.createNewBkc();
     this.dialogRef.close({ data: this.newBkc });
   }
 
-  createNewBkc(){
+  /**
+   * Create BKC object for saving,it can be a new object or an existing one based on the selected opeartion
+   */
+  createNewBkc() {
     let tempid;
-    if(this.selectedBkc) {
-      tempid= this.selectedBkc.id;
-    }else{
-      tempid= Math.floor(Math.random() * 90000) + 10000;
+    if (this.selectedBkc) {
+      tempid = this.selectedBkc.id;
+    } else {
+      tempid = Math.floor(Math.random() * 90000) + 10000;
     }
     const newBkc: Bkc = {
       id: tempid,
@@ -63,5 +72,4 @@ export class BkcAddComponent implements OnInit {
     };
     this.newBkc = newBkc;
   }
-
 }

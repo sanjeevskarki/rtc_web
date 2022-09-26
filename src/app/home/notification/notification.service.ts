@@ -13,7 +13,7 @@ import { NOTIFICATION_LOWER } from '../home.constants';
 })
 export class NotificationService {
   endpoint_url: string = environment.ENDPOINT;
-  
+
   notification: string = NOTIFICATION_LOWER;
 
   amount!: number;
@@ -21,11 +21,7 @@ export class NotificationService {
   remaining!: number;
   headers!: HttpHeaders;
 
-  /**
-   *
-   * @param httpClient Http Client.
-   * @param sharedService Shared Service.
-   */
+
   constructor(public httpClient: HttpClient) {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -47,15 +43,14 @@ export class NotificationService {
     return this.httpClient.put<string>(this.endpoint_url + this.notification, body, { headers: this.headers });
   }
 
-  public getNotifications(qualOwnerId:string): Observable<NotificationSetting> {
-    let params = new HttpParams().set('id',qualOwnerId);
+  public getNotifications(qualOwnerId: string): Observable<NotificationSetting> {
+    let params = new HttpParams().set('id', qualOwnerId);
     const requestOptions: Object = {
       reportProgress: true,
       responseType: 'json',
       params: params,
     }
-    return this.httpClient.get<NotificationSetting>(this.endpoint_url + this.notification,requestOptions);
+    return this.httpClient.get<NotificationSetting>(this.endpoint_url + this.notification, requestOptions);
   }
-
 
 }

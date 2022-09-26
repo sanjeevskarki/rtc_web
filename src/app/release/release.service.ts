@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
-import { TASK_LOWER, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWER, IS_FOLDER_EXIST } from './release.constants';
+import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST } from './release.constants';
 import { BusinessUnit, Milestone } from './release.models';
 
 /**
@@ -16,18 +16,19 @@ export class ReleaseService {
   endpoint_url: string = environment.ENDPOINT;
   milestone: string = MILESTONE;
   businessUnit: string = BUSINESS_UNIT;
-  task: string = TASK_LOWER;
+  task: string = TASK_LOWERCASE;
   isFolderExist: string = IS_FOLDER_EXIST;
   project: string = PROJECT;
-  guideline: string = GUIDELINE_LOWER;
+  guideline: string = GUIDELINE_LOWERCASE;
   amount!: number;
   displayTime!: string;
   remaining!: number;
   headers!: HttpHeaders;
+
+
   /**
    *
    * @param httpClient Http Client.
-   * @param sharedService Shared Service.
    */
   constructor(public httpClient: HttpClient) {
     this.headers = new HttpHeaders({
@@ -39,7 +40,13 @@ export class ReleaseService {
 
   }
 
-
+  /**
+   * Get Details
+   * @param milestone Selected Milestone
+   * @param handoverType Selected Handover type
+   * @param type type
+   * @returns 
+   */
   public details(milestone: string, handoverType: string, type: string): Observable<ReleaseDetails[]> {
     var fileName;
     if (milestone === 'poc' && type === 'external') {
@@ -60,27 +67,49 @@ export class ReleaseService {
     return this.httpClient.get<Milestone[]>(this.endpoint_url + this.milestone);
   }
 
+  /**
+   * Get Business Unit list
+   * @returns Get Business Unit List
+   */
   public getBusinessUnit(): Observable<BusinessUnit[]> {
     return this.httpClient.get<BusinessUnit[]>(this.endpoint_url + this.businessUnit);
   }
 
+  /**
+   * Add new Project
+   * @param project Selected Project
+   * @returns Saved Project
+   */
   public addProject(project: Project): Observable<Project> {
     const body = JSON.stringify(project);
     return this.httpClient.post<Project>(this.endpoint_url + this.project, body, { headers: this.headers });
   }
 
+  /**
+   * Update Project
+   * @param project Selected Project
+   * @returns message
+   */
   public updateProject(project: Project): Observable<string> {
     const body = JSON.stringify(project);
     return this.httpClient.put<string>(this.endpoint_url + this.project, body, { headers: this.headers });
   }
 
+  /**
+   * Add Guideline
+   * @param guideline Backend Guideline List
+   * @returns Backend Guideline List
+   */
   public addGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
-    // const body=JSON.stringify(guideline);
     return this.httpClient.post<BackendGuideline[]>(this.endpoint_url + this.guideline, guideline, { headers: this.headers });
   }
 
+  /**
+   * Add Task
+   * @param task Release Task List
+   * @returns Release Task List
+   */
   public addTasks(task: ReleaseTask[]): Observable<ReleaseTask[]> {
-    // const body=JSON.stringify(task);
     return this.httpClient.post<ReleaseTask[]>(this.endpoint_url + this.task, task, { headers: this.headers });
   }
 
