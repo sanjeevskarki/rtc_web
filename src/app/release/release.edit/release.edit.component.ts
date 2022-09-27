@@ -2,13 +2,12 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ATTACHMENTS_LOWERCASE, ATTORNEY_EMAIL, ATTORNEY_NAME, BUSINESS_UNIT_LOWERCASE, DATA_COLLECTION_LOWERCASE, DATE_FORMAT, DATE_LOWERCASE, DELETE_LOWERCASE, DESCRIPTION_LOWERCASE,
-  EVIDENCES_LOWERCASE, EXTERNAL_WITHOUT_HANDOVER_LOWERCASE, EXTERNAL_WITH_HANDOVER_LOWERCASE, HANDOVER_LOWERCASE, INTERNAL_LOWERCASE, MILESTONE_LOWERCASE,
-  NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, stakeholderNotificationList, SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, TYPE_LOWERCASE
+  EVIDENCES_LOWERCASE, EXTERNAL_WITHOUT_HANDOVER, EXTERNAL_WITH_HANDOVER, HANDOVER_LOWERCASE, INTERNAL, MILESTONE_LOWERCASE,
+  NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, RELEASE_STATUS, RELEASE_TYPE, stakeholderNotificationList, SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE
 } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { NotificationSetting, Stakeholder } from 'src/app/home/home.models';
-import { BackendGuideline, NewRelease, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
-import { v4 as uuidv4 } from 'uuid';
+import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
 
 import * as moment from 'moment';
 import { ReleaseEditService } from './release.edit.service';
@@ -39,9 +38,16 @@ export class ReleaseEditComponent implements OnInit {
   public milestonefields: Object = { text: 'Milestone', value: 'Id' };
 
   releaseTypes: any[] = [
-    { value: EXTERNAL_WITH_HANDOVER_LOWERCASE, viewValue: 'External With Handover' },
-    { value: EXTERNAL_WITHOUT_HANDOVER_LOWERCASE, viewValue: 'External Without Handover' },
-    { value: INTERNAL_LOWERCASE, viewValue: 'Internal' },
+    { value: EXTERNAL_WITH_HANDOVER, viewValue: EXTERNAL_WITH_HANDOVER },
+    { value: EXTERNAL_WITHOUT_HANDOVER, viewValue: EXTERNAL_WITHOUT_HANDOVER },
+    { value: INTERNAL, viewValue: INTERNAL },
+  ];
+
+  releaseStatus: any[] = [
+    { value: 'Active' , viewValue: 'Active' },
+    { value: 'Released', viewValue: 'Released' },
+    { value: 'Cancelled', viewValue: 'Cancelled' },
+    { value: 'Deferred', viewValue: 'Deferred' },
   ];
 
   public businessUnits: any[] = [];
@@ -107,7 +113,6 @@ export class ReleaseEditComponent implements OnInit {
 
     this.releaseForm = this.formBuilder.group({
       name: [null, Validators.required],
-      type: [null, []],
       handover: [null, []],
       milestone: [null, Validators.required],
       date: [null, Validators.required],
@@ -120,6 +125,8 @@ export class ReleaseEditComponent implements OnInit {
       status: [null, []],
       attorneyname: [null, []],
       attorneyemail: [null, [Validators.email]],
+      releasestatus: [null, []],
+      releasetype: [null, []],
       notes: [null, []],
     });
 
@@ -150,26 +157,26 @@ export class ReleaseEditComponent implements OnInit {
     );
   }
 
-  newRelease!: NewRelease;
-  createNewRelease() {
-    this.newRelease = <NewRelease>{};
-    this.newRelease.id = uuidv4();
-    this.newRelease.name = this.releaseForm.controls[NAME_LOWERCASE].value;
-    this.newRelease.type = this.releaseForm.controls[TYPE_LOWERCASE].value;
-    this.newRelease.handover = this.releaseForm.controls[HANDOVER_LOWERCASE].value;
-    this.newRelease.milestone = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
+  // newRelease!: NewRelease;
+  // createNewRelease() {
+  //   this.newRelease = <NewRelease>{};
+  //   this.newRelease.id = uuidv4();
+  //   this.newRelease.name = this.releaseForm.controls[NAME_LOWERCASE].value;
+  //   this.newRelease.type = this.releaseForm.controls[RELEASE_TYPE_LOWERCASE].value;
+  //   this.newRelease.handover = this.releaseForm.controls[HANDOVER_LOWERCASE].value;
+  //   this.newRelease.milestone = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
+    
+  //   if (this.releaseForm.controls[DATE_LOWERCASE].value !== null) {
+  //     this.newRelease.date = this.releaseForm.controls[DATE_LOWERCASE].value;
+  //   } else {
+  //     this.newRelease.date = new Date();
+  //   }
 
-    if (this.releaseForm.controls[DATE_LOWERCASE].value !== null) {
-      this.newRelease.date = this.releaseForm.controls[DATE_LOWERCASE].value;
-    } else {
-      this.newRelease.date = new Date();
-    }
-
-    this.newRelease.description = this.releaseForm.controls[DESCRIPTION_LOWERCASE].value;
-    this.newRelease.businessunit = this.releaseForm.controls[BUSINESS_UNIT_LOWERCASE].value;
-    // this.newRelease.contact =this.releaseForm.controls['contact'].value;
-    this.newRelease.email = this.releaseForm.controls['email'].value;
-  }
+  //   this.newRelease.description = this.releaseForm.controls[DESCRIPTION_LOWERCASE].value;
+  //   this.newRelease.businessunit = this.releaseForm.controls[BUSINESS_UNIT_LOWERCASE].value;
+  //   // this.newRelease.contact =this.releaseForm.controls['contact'].value;
+  //   this.newRelease.email = this.releaseForm.controls['email'].value;
+  // }
 
   onChange(args: any) {
     this.workWeek = args.value;
@@ -274,7 +281,7 @@ export class ReleaseEditComponent implements OnInit {
     if (this.selectedProject) {
       this.releaseForm.patchValue({
         name: this.selectedProject.project_name,
-        // type: this.selectedProject.,
+        releasetype: this.selectedProject.project_release_type,
         milestone: this.selectedProject.project_milestone_id,
         // handover:this.selectedProject.handover,
         date: this.selectedProject.project_release_date,
@@ -288,7 +295,8 @@ export class ReleaseEditComponent implements OnInit {
         attorneyname: this.selectedProject.project_attorney_name,
         attorneyemail: this.selectedProject.project_attorney_email,
         notes: '',
-        description: this.selectedProject.project_description
+        description: this.selectedProject.project_description,
+        releasestatus: this.selectedProject.project_release_status
       });
       this.workWeek = this.selectedProject.project_release_date!.toString();
       this.isWorkWeekVisible = true;
@@ -318,6 +326,8 @@ export class ReleaseEditComponent implements OnInit {
     this.newProject.project_owner_email = this.releaseForm.controls[QUAL_OWNER_EMAIL].value;
     this.newProject.project_attorney_name = this.releaseForm.controls[ATTORNEY_NAME].value;
     this.newProject.project_attorney_email = this.releaseForm.controls[ATTORNEY_EMAIL].value;
+    this.newProject.project_release_status = this.releaseForm.controls[RELEASE_STATUS].value;
+    this.newProject.project_release_type = this.releaseForm.controls[RELEASE_TYPE].value;
     if (this.selectedProject) {
       this.newProject.project_id = this.selectedProject.project_id;
       this.updateProject();
@@ -335,7 +345,7 @@ export class ReleaseEditComponent implements OnInit {
    */
   getStaticData() {
     this.selectedMilestone = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
-    this.selectedType = this.releaseForm.controls[TYPE_LOWERCASE].value;
+    this.selectedType = this.releaseForm.controls[RELEASE_TYPE_LOWERCASE].value;
     this.selectedHandoverType = this.releaseForm.controls[HANDOVER_LOWERCASE].value;
     this.service.details(this.selectedMilestone.toLocaleLowerCase()!, this.selectedHandoverType?.toLocaleLowerCase()!, this.selectedType?.toLocaleLowerCase()!).subscribe(
       (response) => {

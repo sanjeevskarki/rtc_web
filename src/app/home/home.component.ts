@@ -14,9 +14,10 @@ export class HomeComponent implements OnInit {
   projects: Project[] = [];
 
   @ViewChild("listview") element: any;
-  displayedColumns = ['actions', 'businessunit', 'name', 'milestone', 'date', 'releaseType'];
+  displayedColumns = ['actions', 'businessunit', 'name', 'milestone', 'date', 'releasetype'];
   color = '#f1f3f4';
   isLoading = true;
+  projectList:Project[]=[];
   constructor(private service: HomeService, private router: Router) {
 
   }
@@ -33,12 +34,23 @@ export class HomeComponent implements OnInit {
       (response) => {
         this.projects = response;
         this.isLoading = false;
+        this.checkOverdureProject();
       },
       (err) => {
         console.log(err.name);
         this.isLoading = false;
       }
     );
+  }
+
+  checkOverdureProject(){
+    var ToDate = new Date();
+    for(var project of this.projects){
+      if (new Date(project.project_release_date).getTime() <= ToDate.getTime() && project.project_release_status !== 'Released') {
+        project.isOverdue = true;
+      }
+      
+    }
   }
 
   /**

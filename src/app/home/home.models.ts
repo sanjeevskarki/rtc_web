@@ -113,18 +113,18 @@ export interface ReleaseDetails {
   details: Details[];
 }
 
-export interface NewRelease {
-  id: string;
-  name: string;
-  type: string;
-  handover: string | null;
-  milestone: string;
-  date: Date;
-  contact: string;
-  email: string;
-  businessunit: string;
-  description: string;
-}
+// export interface NewRelease {
+//   id: string;
+//   name: string;
+//   type: string;
+//   handover: string | null;
+//   milestone: string;
+//   date: Date;
+//   contact: string;
+//   email: string;
+//   businessunit: string;
+//   description: string;
+// }
 
 export interface Files {
   id: string;
@@ -152,6 +152,9 @@ export interface Project {
   project_owner_email: string;
   project_attorney_name: string;
   project_attorney_email: string;
+  project_release_status: string;
+  project_release_type:string;
+  isOverdue?:boolean;
 }
 
 export interface Notes {

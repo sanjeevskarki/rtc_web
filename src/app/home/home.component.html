@@ -33,10 +33,15 @@
 
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef>Release Date</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.project_release_date | workWeekPipe}}</mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.project_release_date | workWeekPipe}}
+        <!-- <button *ngIf="row.isOverdue" mat-icon-button color="accent" matTooltip="Release Overdue">
+          <mat-icon aria-label="Edit">flag</mat-icon>
+        </button> -->
+      </mat-cell>
+   
     </ng-container>
-
-    <ng-container matColumnDef="releaseType">
+    
+    <ng-container matColumnDef="releasetype">
       <mat-header-cell *matHeaderCellDef>Release Type</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.project_release_type}}</mat-cell>
     </ng-container>

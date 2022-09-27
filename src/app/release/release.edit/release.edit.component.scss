@@ -69,3 +69,7 @@
 ::ng-deep .custom-dialog>mat-dialog-container {
   background-color: var(--background);
 }
+
+.row {
+  display: flex;
+}

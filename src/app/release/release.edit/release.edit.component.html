@@ -22,10 +22,14 @@
             </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" style="width: 30rem;">
-            <mat-label>Release Status</mat-label>
-            <input type="text" matInput formControlName="status">
-            <mat-error *ngIf="releaseForm.controls.status.hasError('required') && releaseForm.controls.status.touched">
-                Status Unit is required
+            <mat-label>Release Type</mat-label>
+            <mat-select formControlName="releasestatus">
+                <mat-option *ngFor="let status of releaseStatus" [value]="status.value">
+                    {{status.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="releaseForm.controls.releasestatus.hasError('required') && releaseForm.controls.releasestatus.touched">
+                Release Type is required
             </mat-error>
         </mat-form-field>
         <br>
@@ -46,12 +50,12 @@
 
         <mat-form-field appearance="outline" style="width: 30rem;margin-right: 1rem;">
             <mat-label>Release Type</mat-label>
-            <mat-select formControlName="type">
+            <mat-select formControlName="releasetype">
                 <mat-option *ngFor="let release of releaseTypes" [value]="release.value">
                     {{release.viewValue}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="releaseForm.controls.type.hasError('required') && releaseForm.controls.type.touched">
+            <mat-error *ngIf="releaseForm.controls.releasetype.hasError('required') && releaseForm.controls.releasetype.touched">
                 Release Type is required
             </mat-error>
         </mat-form-field>
