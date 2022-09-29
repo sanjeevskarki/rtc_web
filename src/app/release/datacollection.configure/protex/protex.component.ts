@@ -35,15 +35,17 @@ export class ProtexComponent implements OnInit {
    * Call Get API for getting Protex Config for provided ProjectId
    */
   getProtexConfig() {
-    this.service.getProtexConfig(this.selectedProject.project_id).subscribe(
-      (response) => {
-        this.protexConfigList = response;
-        this.tempProtexConfigList = response;
-      },
-      (err) => {
-        console.log(err.name);
-      }
-    );
+    if(this.selectedProject){
+      this.service.getProtexConfig(this.selectedProject.project_id).subscribe(
+        (response) => {
+          this.protexConfigList = response;
+          this.tempProtexConfigList = response;
+        },
+        (err) => {
+          console.log(err.name);
+        }
+      );
+    }
   }
 
   /**
@@ -51,7 +53,7 @@ export class ProtexComponent implements OnInit {
    */
   openProtexConfig() {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
-      height: '30%',
+      height: '40%',
       width: '30%',
 
     });
@@ -85,7 +87,7 @@ export class ProtexComponent implements OnInit {
    */
   updateProtexConfig(protexConfig: Protex_Config) {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
-      height: '30%',
+      height: '40%',
       width: '30%',
       data: {
         data: protexConfig

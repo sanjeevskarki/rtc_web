@@ -33,15 +33,17 @@ export class KwComponent implements OnInit {
    * Call API for Getting Protex Config
    */
   getProtexConfig() {
-    this.service.getKwConfig(this.selectedProject.project_id).subscribe(
-      (response) => {
-        this.kwConfigList = response;
-        this.tempKwConfigList = response;
-      },
-      (err) => {
-        console.log(err.name);
-      }
-    );
+    if(this.selectedProject){
+      this.service.getKwConfig(this.selectedProject.project_id).subscribe(
+        (response) => {
+          this.kwConfigList = response;
+          this.tempKwConfigList = response;
+        },
+        (err) => {
+          console.log(err.name);
+        }
+      );
+    }
   }
 
   /**

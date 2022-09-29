@@ -1,13 +1,25 @@
 <h1 mat-dialog-title>Config Protex</h1>
 <form class="example-form" [formGroup]="addProtexConfigForm">
     <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Select Protex Server</mat-label>
+        <mat-select formControlName="protex_server">
+            <mat-option *ngFor="let milestone of scanServers" [value]="milestone.value">
+                {{milestone.viewValue}}
+            </mat-option>
+        </mat-select>
+        <mat-error
+            *ngIf="addProtexConfigForm.controls.protex_server.hasError('required') && addProtexConfigForm.controls.protex_server.touched">
+            Protex Server is required
+        </mat-error>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Protex Server</mat-label>
         <input type="text" matInput formControlName="protex_server">
         <mat-error
             *ngIf="addProtexConfigForm.controls.protex_server.hasError('required') && addProtexConfigForm.controls.protex_server.touched">
             Name is required
         </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Protex Project Id</mat-label>
         <input type="text" matInput formControlName="protex_project_id">
@@ -16,9 +28,15 @@
             Email is required
         </mat-error>
     </mat-form-field>
+    <div>
+        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">User Added
+        </mat-checkbox>
+    </div>
 
-    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
-        (click)="close()">Close</button>
-    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveProtexConfig()"
-        [disabled]="!addProtexConfigForm.valid">Save</button>
+    <div style="margin-top: 2rem;">
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
+            (click)="close()">Close</button>
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveProtexConfig()"
+            [disabled]="!addProtexConfigForm.valid">Save</button>
+    </div>
 </form>

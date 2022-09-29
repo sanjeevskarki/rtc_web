@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from 'src/app/home/home.models';
-import { Protex_Config } from '../../datacollection.models';
+import { ReleaseService } from 'src/app/release/release.service';
+import { Protex_Config, Scan_Server } from '../../datacollection.models';
 
 @Component({
   selector: 'app-protex.add',
@@ -16,19 +18,26 @@ export class ProtexAddComponent implements OnInit {
   selectedProject!: Project;
   selectedProtexConfig!: Protex_Config;
   updateProtexCofig!: Protex_Config;
-  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  user_added:boolean=false;
+  prefix = 'c_';
+  scanServerList!:Scan_Server[];
+  scanServers!:any[];
+  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private service:ReleaseService) { }
 
   ngOnInit(): void {
+    this.getServer();
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.addProtexConfigForm = this.formBuilder.group({
       protex_server: [null, [Validators.required]],
       protex_project_id: [null, []],
+      user_added: [null, []],
     });
     if (this.data) {
       this.selectedProtexConfig = this.data.data;
       this.addProtexConfigForm.patchValue({
         protex_server: this.selectedProtexConfig.protex_server,
         protex_project_id: this.selectedProtexConfig.protex_project_id,
+        user_added: this.selectedProtexConfig.user_added,
       });
     }
   }
@@ -52,17 +61,63 @@ export class ProtexAddComponent implements OnInit {
    * Create Protex Config Object
    */
   createNewProtex() {
-    if (this.selectedProtexConfig) {
-      this.selectedProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
-      this.selectedProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;
-      this.updateProtexCofig = this.selectedProtexConfig;
-    } else {
-      this.newProtexConfig = <Protex_Config>{};
-      this.newProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
-      this.newProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;
-      this.newProtexConfig.project_id = this.selectedProject.project_id;
-      this.updateProtexCofig = this.newProtexConfig;
+    if(this.selectedProject){
+      if (this.selectedProtexConfig) {
+        this.selectedProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
+        this.selectedProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;
+        this.selectedProtexConfig.user_added = this.user_added;
+        this.updateProtexCofig = this.selectedProtexConfig;
+      } else {
+        this.newProtexConfig = <Protex_Config>{};
+        this.newProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
+        this.newProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;
+        this.newProtexConfig.project_id = this.selectedProject.project_id;
+        this.newProtexConfig.user_added = this.user_added;
+        this.updateProtexCofig = this.newProtexConfig;
+      }
     }
-
   }
+
+  /**
+   * Check if User added marked or not
+   * @param event Checkbox Event True or False
+   */
+   checkUserAdded(event: MatCheckboxChange){
+    this.user_added = event.checked;
+  }
+
+  isValidName() {
+    if (this.addProtexConfigForm.controls['protex_server'].value.startsWith(this.prefix)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+    /**
+   * Get all the availbale Protex Server from DB
+   */
+    getServer() {
+      this.service.getServer("protex").subscribe(
+        (response) => {
+          this.scanServerList = response;
+          this.createProtexServerDropdown();
+        },
+        (err) => {
+          console.log(err.name);
+        }
+      );
+  }
+  
+    /**
+     * Create dropdowm for Protex Server
+     */
+    createProtexServerDropdown() {
+      this.scanServers=[];
+      if (this.scanServerList != null) {
+        for (var i = 0; i < this.scanServerList.length; i++) {
+          this.scanServers.push({ value: this.scanServerList[i].server_name, viewValue: this.scanServerList[i].server_name });
+        }
+      }
+    }
 }

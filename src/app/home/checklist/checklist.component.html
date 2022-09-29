@@ -232,9 +232,13 @@
         </mat-form-field>
         <div class="form-group">
             <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
+            <div style="margin-left: 1rem;
+            font-size: smaller;">
+            <mat-hint >MaxFileSize: 10mb</mat-hint>
+            </div>
             <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)"
                 formControlName="upload" name="upload"
-                accept=".csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
+                accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
             <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
         </div>
         <br>

@@ -3,6 +3,7 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Product Id</mat-label>
         <input type="text" matInput formControlName="product_id">
+        <mat-hint>ProductId should be 7 digit only</mat-hint>
         <mat-error
             *ngIf="addBdbaConfigForm.controls.product_id.hasError('required') && addBdbaConfigForm.controls.product_id.touched">
             Product Id is required
@@ -16,10 +17,17 @@
             Product Name is required
         </mat-error>
     </mat-form-field>
+    <div>
+        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">User Added
+        </mat-checkbox>
+    </div>
 
-    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
-        (click)="close()">Close</button>
-    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveBdbaConfig()"
-        [disabled]="!addBdbaConfigForm.valid">Save</button>
+   
+    <div style="margin-top: 2rem;">
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
+            (click)="close()">Close</button>
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveBdbaConfig()"
+            [disabled]="!addBdbaConfigForm.valid">Save</button>
+    </div>
 
 </form>

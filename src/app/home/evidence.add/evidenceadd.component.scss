@@ -5,3 +5,9 @@
 :host ::ng-deep .mat-select-value-text {
   color: #000000 !important;
 }
+
+.hint-message {
+  margin-left: 1rem;
+  font-size: smaller;
+  margin-top: -10px;
+}

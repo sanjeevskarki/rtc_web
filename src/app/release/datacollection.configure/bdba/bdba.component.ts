@@ -32,15 +32,17 @@ export class BdbaComponent implements OnInit {
    * Call API for getting BDBA config for selected Project Id
    */
   getBdbaConfig() {
-    this.service.getBdbaConfig(this.selectedProject.project_id).subscribe(
-      (response) => {
-        this.bdbaConfigList = response;
-        this.tempBdbaConfigList = response;
-      },
-      (err) => {
-        console.log(err.name);
-      }
-    );
+    if(this.selectedProject){
+      this.service.getBdbaConfig(this.selectedProject.project_id).subscribe(
+        (response) => {
+          this.bdbaConfigList = response;
+          this.tempBdbaConfigList = response;
+        },
+        (err) => {
+          console.log(err.name);
+        }
+      );
+    }
   }
 
   /**
@@ -48,7 +50,7 @@ export class BdbaComponent implements OnInit {
    */
   openBdbaConfig() {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
-      height: '30%',
+      height: '40%',
       width: '30%',
 
     });
@@ -83,7 +85,7 @@ export class BdbaComponent implements OnInit {
    */
   updateBdbaConfig(bdbaConfig: Bdba_Config) {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
-      height: '30%',
+      height: '40%',
       width: '30%',
       data: {
         data: bdbaConfig

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
+import { Scan_Server } from './datacollection.configure/datacollection.models';
 import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST } from './release.constants';
 import { BusinessUnit, Milestone } from './release.models';
 
@@ -123,5 +124,9 @@ export class ReleaseService {
     return this.httpClient.post<boolean>(this.endpoint_url + this.isFolderExist, body, { headers: this.headers });
   }
 
+  scanServer:string='scanserver';
+  public getServer(name: string): Observable<Scan_Server[]> {
+    return this.httpClient.get<Scan_Server[]>(this.endpoint_url + this.scanServer + "/" + name);
+  }
 
 }

@@ -3,7 +3,7 @@
     <mat-icon style="margin-bottom: 3px">add</mat-icon>Add Protex Scan
 </button>
 <div>
-    <mat-table #stakeholdertable [dataSource]="protexConfigList">
+    <mat-table #protexconfigtable [dataSource]="protexConfigList">
         <ng-container matColumnDef="protex_server">
             <mat-header-cell *matHeaderCellDef>Protex Server</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.protex_server}}</mat-cell>
@@ -21,7 +21,7 @@
                     (click)="updateProtexConfig(row)">
                     <mat-icon aria-label="Edit">edit</mat-icon>
                 </button>
-                <button mat-icon-button color="primary" matTooltip="Delete Protex Scan"
+                <button mat-icon-button color="primary" matTooltip="Remove Protex Scan"
                     (click)="deleteProtexConfig(row)">
                     <mat-icon aria-label="Delete">delete_outline</mat-icon>
                 </button>

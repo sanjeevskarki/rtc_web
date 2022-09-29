@@ -1,13 +1,25 @@
 <h1 mat-dialog-title>Config KW</h1>
 <form class="example-form" [formGroup]="addKwConfigForm">
     <mat-form-field appearance="outline" style="display: inline;">
+        <mat-label>Select Protex Server</mat-label>
+        <mat-select formControlName="kw_server">
+            <mat-option *ngFor="let milestone of scanServers" [value]="milestone.value">
+                {{milestone.viewValue}}
+            </mat-option>
+        </mat-select>
+        <mat-error
+            *ngIf="addKwConfigForm.controls.kw_server.hasError('required') && addKwConfigForm.controls.kw_server.touched">
+            Protex Server is required
+        </mat-error>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>KW Server</mat-label>
         <input type="text" matInput formControlName="kw_server">
         <mat-error
             *ngIf="addKwConfigForm.controls.kw_server.hasError('required') && addKwConfigForm.controls.kw_server.touched">
             KW Server is required
         </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Project Name</mat-label>
         <input type="text" matInput formControlName="kw_project_name">
@@ -17,9 +29,9 @@
         </mat-error>
     </mat-form-field>
 
-    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
         (click)="close()">Close</button>
-    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveKwConfig()"
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveKwConfig()"
         [disabled]="!addKwConfigForm.valid">Save</button>
 
 </form>

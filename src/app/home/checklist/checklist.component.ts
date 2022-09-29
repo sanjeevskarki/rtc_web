@@ -361,12 +361,15 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    */
   openFile(fileName: string, type: string) {
     this.data_collection.file_type = type;
+    
     var fileext = fileName.split(".").pop();
+    alert("fileext = "+fileext);
     let fileMIMEType = this.getMIMEtype(fileext!);
     this.service.getFile(this.data_collection, fileName).subscribe((data) => {
 
       var file = new Blob([data], { type: fileMIMEType })
       var fileURL = URL.createObjectURL(file);
+      alert(fileURL);
 
       window.open(fileURL);
       var a = document.createElement('a');

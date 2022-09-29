@@ -608,20 +608,25 @@ export class ReleaseEditComponent implements OnInit {
    * Select Data Collection status based on the result
    */
   checkDataCollectionStatus() {
-    let res1 = this.service.getProtexConfig(this.selectedProject.project_id);
-    let res2 = this.service.getKwConfig(this.selectedProject.project_id);
-    let res3 = this.service.getBdbaConfig(this.selectedProject.project_id);
-    forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
-      this.protexConfigList = data1;
-      this.kwConfigList = data2;
-      this.bdbaConfigList = data3;
-      if (this.protexConfigList!.length > 0 || this.kwConfigList!.length > 0 || this.bdbaConfigList!.length > 0) {
-        this.dataCollectionStatus = "Active";
-      } else {
-        this.dataCollectionStatus = "Not Configured";
-      }
-    });
-
+    if(this.selectedProject){
+      let res1 = this.service.getProtexConfig(this.selectedProject.project_id);
+      let res2 = this.service.getKwConfig(this.selectedProject.project_id);
+      let res3 = this.service.getBdbaConfig(this.selectedProject.project_id);
+      forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
+        this.protexConfigList = data1;
+        this.kwConfigList = data2;
+        this.bdbaConfigList = data3;
+        if (this.protexConfigList!.length > 0 || this.kwConfigList!.length > 0 || this.bdbaConfigList!.length > 0) {
+          if(this.protexConfigList.find(x => x.user_added) || this.bdbaConfigList.find(x => x.user_added)){
+            this.dataCollectionStatus = "Active";
+          }else{
+          this.dataCollectionStatus = "Not Active";
+          }
+        } else {
+          this.dataCollectionStatus = "Not Active";
+        }
+      });
+    }
   }
 
 }

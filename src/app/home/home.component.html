@@ -34,9 +34,12 @@
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef>Release Date</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.project_release_date | workWeekPipe}}
-        <!-- <button *ngIf="row.isOverdue" mat-icon-button color="accent" matTooltip="Release Overdue">
+        <button *ngIf="row.isOverdue" mat-icon-button color="accent" matTooltip="Release Date Overdue">
           <mat-icon aria-label="Edit">flag</mat-icon>
-        </button> -->
+        </button>
+        <button *ngIf="row.isReaching" mat-icon-button matTooltip="Release Date Reaching in {{row.reachingInDays}}  Days">
+          <mat-icon aria-label="Edit" style="color: orange;">flag</mat-icon>
+        </button>
       </mat-cell>
    
     </ng-container>
@@ -44,6 +47,11 @@
     <ng-container matColumnDef="releasetype">
       <mat-header-cell *matHeaderCellDef>Release Type</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.project_release_type}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="releasestatus">
+      <mat-header-cell *matHeaderCellDef>Release Status</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.project_release_status}}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
