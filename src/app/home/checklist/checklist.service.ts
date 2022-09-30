@@ -317,7 +317,7 @@ export class ChecklistService {
    * @param milestone Milestone of Project
    * @returns Status of Upload
    */
-  public uploadFile(file: File, businessUnit: string, projectName: string, milestone: string): Observable<HttpEvent<any>> {
+  public uploadFile(file: File, businessUnit: string, projectName: string, milestone: string): Observable<ApiResponse> {
     const formData: FormData = new FormData();
     formData.append('file', file);
 
@@ -332,9 +332,10 @@ export class ChecklistService {
       params: params,
     }
 
-    const req = new HttpRequest('POST', `${this.endpoint_url}upload`, formData, requestOptions);
+    return this.httpClient.post<ApiResponse>(`${this.endpoint_url}upload`, formData, requestOptions);
+    // const req = new HttpRequest('POST', `${this.endpoint_url}upload`, formData, requestOptions);
 
-    return this.httpClient.request(req);
+    // return this.httpClient.request(req);
   }
 
   /**

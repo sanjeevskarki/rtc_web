@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from 'src/app/home/home.models';
@@ -13,7 +13,7 @@ import { Protex_Config, Scan_Server } from '../../datacollection.models';
 })
 export class ProtexAddComponent implements OnInit {
 
-  addProtexConfigForm!: FormGroup;
+  addProtexConfigForm!: UntypedFormGroup;
   newProtexConfig!: Protex_Config;
   selectedProject!: Project;
   selectedProtexConfig!: Protex_Config;
@@ -22,7 +22,7 @@ export class ProtexAddComponent implements OnInit {
   prefix = 'c_';
   scanServerList!:Scan_Server[];
   scanServers!:any[];
-  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private service:ReleaseService) { }
+  constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private service:ReleaseService) { }
 
   ngOnInit(): void {
     this.getServer();

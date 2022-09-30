@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BackendComments, BackendTask, Checklist, NotificationSetting, OwnerEmail, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import * as moment from 'moment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
 import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject, TaskStatus } from './checklist.models';
@@ -11,6 +11,7 @@ import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, PROTEX_MATCHES_LICENSE_CONFLICT
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
+import { DownloadingstatusComponent } from 'src/app/downloadingstatus/downloadingstatus.component';
 
 export class Group {
   level = 0;
@@ -102,8 +103,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   commentDialogRef: any;
   commentTemplateRef: any;
   addCommentDialogRef!: any;
-  addCommentForm!: FormGroup;
-  addOwnerForm!: FormGroup;
+  addCommentForm!: UntypedFormGroup;
+  addOwnerForm!: UntypedFormGroup;
   isBdba!: boolean;
   isLoaded!: boolean;
   ownerEmails: OwnerEmail[] = [];
@@ -119,7 +120,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   tempOwnerEmail!: string;
   public taskStatus: any[] = [];
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
+  constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
     public domSanitizer: DomSanitizer) {
     this.groupByColumns = ['vector'];
   }
@@ -354,32 +355,37 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     );
   }
 
+  downloadStatusDialogRef!:any;
   /**
    * Open selected Comment or Evidence file
    * @param fileName Name of the file
    * @param type type (Evidence or Comments)
    */
   openFile(fileName: string, type: string) {
+    this.downloadStatusDialogRef = this.dialog.open(DownloadingstatusComponent, {
+      height: '10%',
+      width: '30%',
+      disableClose: true
+    });
+
+    console.log("Downloading starts at ===== "+moment().format('MMMM Do YYYY, h:mm:ss a'));
     this.data_collection.file_type = type;
     
     var fileext = fileName.split(".").pop();
-    alert("fileext = "+fileext);
+    // alert("fileext = "+fileext);
     let fileMIMEType = this.getMIMEtype(fileext!);
     this.service.getFile(this.data_collection, fileName).subscribe((data) => {
 
-      var file = new Blob([data], { type: fileMIMEType })
-      var fileURL = URL.createObjectURL(file);
-      alert(fileURL);
-
-      window.open(fileURL);
       var a = document.createElement('a');
-      a.href = fileURL;
-      a.target = '_blank';
+      a.href = URL.createObjectURL(new Blob([data], { type: fileMIMEType }));
+      // a.target = '_blank';
       a.download = fileName;
       document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(fileURL);
-
+      // URL.revokeObjectURL(fileURL);
+      
+      this.downloadStatusDialogRef.close();
+      console.log("Downloading ends at ===== "+moment().format('MMMM Do YYYY, h:mm:ss a'));
     },
       (error) => {
         console.log('getPDF error: ', error);
@@ -557,7 +563,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   openEvidenceListDialog() {
     this.evidenceDialogRef = this.dialog.open(this.templateRef, {
       height: '60%',
-      width: '70%'
+      width: '70%',
+      disableClose: true
     });
 
     this.evidenceDialogRef.afterClosed().subscribe(() => {
@@ -571,7 +578,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   openAddCommentDialog() {
     this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
       height: '60%',
-      width: '70%'
+      width: '70%',
+      disableClose: true
     });
 
     this.commentDialogRef.afterClosed().subscribe(() => {
@@ -585,7 +593,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   openCommentListDialog() {
     this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
       height: '60%',
-      width: '70%'
+      width: '70%',
+      disableClose: true
     });
 
     this.commentDialogRef.afterClosed().subscribe(() => {
@@ -680,7 +689,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     // this.addCommentHeader = "Add Comment";
     this.addCommentDialogRef = this.dialog.open(this.addCommentTemplateRef, {
       height: '50%',
-      width: '40%'
+      width: '40%',
+      disableClose: true
     });
 
     // addCommentDialogRef.afterClosed().subscribe((result ) => {
@@ -722,6 +732,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     const addEvidenceDialogRef = this.dialog.open(EvidenceAddComponent, {
       height: '50%',
       width: '40%',
+      disableClose: true,
       data: { task_id: this.selectedReleaseGuideline }
     });
 
@@ -933,16 +944,17 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.selectedCommentFile = fileInputEvent.target.files[0];
   }
 
-
+  uploading:boolean=false;
   public saveComment(): void {
+    this.uploading = true;
+    console.log("starts at ===== "+moment().format('MMMM Do YYYY, h:mm:ss a'));
     this.createNewComment();
     this.service.saveComment(this.newComment).subscribe((status) => {
       this.uploadCommentFile();
     });
 
     this.addComment(this.newComment);
-    this.addCommentForm.reset();
-    this.addCommentDialogRef.close();
+    
   }
 
   createNewComment() {
@@ -965,6 +977,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       if (file) {
         this.currentFile = file;
         this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
+          console.log("Ends at ====== "+moment().format('MMMM Do YYYY, h:mm:ss a') +" with status = "+status.message);
+          this.uploading=false;
+          this.addCommentForm.reset();
+          this.addCommentDialogRef.close();
           localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
         });
       }
@@ -991,7 +1007,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     // this.selectedRelease = this.getCurrentRelease(taskId)!;
     this.ownerDialogRef = this.dialog.open(this.addOwnerTemplateRef, {
       height: '35%',
-      width: '25%'
+      width: '25%',
+      disableClose: true
     });
 
     this.ownerDialogRef.afterClosed().subscribe(() => {

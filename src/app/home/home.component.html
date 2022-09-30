@@ -34,10 +34,10 @@
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef>Release Date</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.project_release_date | workWeekPipe}}
-        <button *ngIf="row.isOverdue" mat-icon-button color="accent" matTooltip="Release Date Overdue">
+        <button *ngIf="row.isOverdue" mat-icon-button color="accent" matTooltip="{{row.toolTipMessage}}">
           <mat-icon aria-label="Edit">flag</mat-icon>
         </button>
-        <button *ngIf="row.isReaching" mat-icon-button matTooltip="Release Date Reaching in {{row.reachingInDays}}  Days">
+        <button *ngIf="row.isReaching" mat-icon-button matTooltip="{{row.toolTipMessage}}">
           <mat-icon aria-label="Edit" style="color: orange;">flag</mat-icon>
         </button>
       </mat-cell>

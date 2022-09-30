@@ -34,9 +34,7 @@ export class HomeComponent implements OnInit {
       (response) => {
         this.projects = response;
         this.isLoading = false;
-        this.checkComingReleases();
-        this.checkOverdueProject();
-        
+        this.checkReleaseDateStatus();
       },
       (err) => {
         console.log(err.name);
@@ -45,33 +43,27 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  checkOverdueProject(){
-    var ToDate = new Date();
-    for(var project of this.projects){
-      if (new Date(project.project_release_date).getTime() <= ToDate.getTime() && project.project_release_status !== 'Released') {
-        project.isOverdue = true;
-        project.isReaching=false;
-      }
-    }
-  }
-
   numDaysBetween = function(d1:any, d2:any) {
-    // alert("Date = "+d2);
-    var diff = Math.abs(d1.getTime() - new Date(d2).getTime());
+    var diff = (new Date(d2).getTime() - d1.getTime());
     return diff / (1000 * 60 * 60 * 24);
   };
 
-  checkComingReleases(){
+  checkReleaseDateStatus(){
     var ToDate = new Date();
     for(var project of this.projects){
       var days = this.numDaysBetween(ToDate,project.project_release_date);
-      if(days < 14){
-        project.reachingInDays = Math.round(days);
+      if(days < 14 && days > 1){
+        project.toolTipMessage = "Release Date Due in "+Math.round(days)+" day(s)";
         project.isReaching=true;
       }
-      // if (new Date(project.project_release_date).getTime() <= ToDate.getTime() && project.project_release_status !== 'Released') {
-      //   project.isOverdue = true;
-      // }
+      else if(days >-1 && days < 1){
+        project.isReaching=true;
+        project.toolTipMessage = "Release Date Due Today";
+      }
+      else if(days < -1){
+        project.isOverdue = true;
+        project.toolTipMessage = "Release Date OverdueDue by "+ Math.abs(Math.round(days))+" day(s)";
+      }
     }
   }
 

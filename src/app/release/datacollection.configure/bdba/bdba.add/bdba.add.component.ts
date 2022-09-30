@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from 'src/app/home/home.models';
@@ -12,13 +12,13 @@ import { Bdba_Config } from '../../datacollection.models';
 })
 export class BdbaAddComponent implements OnInit {
 
-  addBdbaConfigForm!: FormGroup;
+  addBdbaConfigForm!: UntypedFormGroup;
   selectedProject!: Project;
   selectedBdbaConfig!: Bdba_Config;
   updateBdbaConfig!: Bdba_Config;
   newBdbaConfig!: Bdba_Config;
   user_added:boolean=false;
-  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<BdbaAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<BdbaAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);

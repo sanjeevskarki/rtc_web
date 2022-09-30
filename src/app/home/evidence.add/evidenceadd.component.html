@@ -41,16 +41,26 @@
     <div class="form-group" *ngIf="isFileUploadSelected">
         <!-- <mat-form-field appearance="fill"> -->
         <!-- <mat-label>File</mat-label> -->
-        <button mat-flat-button (click)="openInput()" color="primary" style="margin-bottom: 10px;">Select File to
-            Upload</button>
-            <div style="margin-left: 1rem;
-            font-size: smaller;
-            margin-top: -10px;">
-            <mat-hint >MaxFileSize: 10mb</mat-hint>
+        <div style="display: flex;">
+            <div>
+                <button mat-flat-button (click)="openInput()" color="primary" style="margin-bottom: 10px;">Select File to
+                Upload</button>
+                <div style="margin-left: 1rem;
+                font-size: smaller;
+                margin-top: -10px;">
+                <mat-hint >MaxFileSize: 10mb</mat-hint>
+                </div>
             </div>
-        <input id="fileInput" hidden type="file" (change)="selectEvidenceFile($event)" formControlName="upload"
-            name="upload" accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
-        <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
+            <div style="font-size: smaller;margin-left: 2px;">
+                <input id="fileInput" hidden type="file" (change)="selectEvidenceFile($event)" formControlName="upload"
+                name="upload" accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">
+                <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
+            </div>
+        </div>
+        <div *ngIf="uploading">Uploading File to Server..
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            <br>
+        </div>
         <!-- <mat-hint>Hint</mat-hint> -->
         <!-- <input class="ng-hide" id="input-file-id" multiple ormControlName="upload" type="file" (change)="csvInputChange($event)"/>
         <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label> -->

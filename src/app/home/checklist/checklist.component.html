@@ -231,15 +231,39 @@
             </mat-error>
         </mat-form-field>
         <div class="form-group">
-            <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
+            <div style="display: flex;">
+                <div>
+                    <button mat-flat-button (click)="openCommentInput()" color="primary" style="margin-bottom: 10px;">Select File to
+                    Upload</button>
+                    <div style="margin-left: 1rem;
+                    font-size: smaller;
+                    margin-top: -10px;">
+                    <mat-hint >MaxFileSize: 10mb</mat-hint>
+                    </div>
+                </div>
+                <div style="font-size: smaller;margin-left: 2px;">
+                    <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)" formControlName="upload"
+                    name="upload" accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">
+                    <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
+                </div>
+            </div>
+            <div *ngIf="uploading">Uploading File to Server..
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                <br>
+            </div>
+            <!-- <button mat-flat-button (click)="openCommentInput()" color="primary">Select File to Upload</button>
             <div style="margin-left: 1rem;
             font-size: smaller;">
             <mat-hint >MaxFileSize: 10mb</mat-hint>
             </div>
+            
             <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)"
                 formControlName="upload" name="upload"
                 accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">&nbsp;&nbsp;
             <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
+            <div *ngIf="uploading">Uploading File to Server..
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div> -->
         </div>
         <br>
         <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"

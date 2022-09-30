@@ -3,12 +3,13 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Product Id</mat-label>
         <input type="text" matInput formControlName="product_id">
-        <mat-hint>ProductId should be 7 digit only</mat-hint>
+        <mat-hint >Product Id should be comprised of 7 digit only</mat-hint>
         <mat-error
             *ngIf="addBdbaConfigForm.controls.product_id.hasError('required') && addBdbaConfigForm.controls.product_id.touched">
             Product Id is required
         </mat-error>
     </mat-form-field>
+    <div style="height: 2px;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Product Name</mat-label>
         <input type="text" matInput formControlName="product_name">

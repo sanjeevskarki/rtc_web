@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import {
-  FormGroup,
-  FormBuilder,
+  UntypedFormGroup,
+  UntypedFormBuilder,
   Validators,
-  FormControl
+  UntypedFormControl
 } from '@angular/forms';
 
 import { BackendEvidences, Project } from '../home.models';
@@ -40,7 +40,7 @@ export class EvidenceAddComponent implements OnInit {
     this.isFileUploadSelected = false;
   }
 
-  evidenceForm!: FormGroup;
+  evidenceForm!: UntypedFormGroup;
 
   public visible: boolean = false;
   public multiple: boolean = false;
@@ -62,10 +62,10 @@ export class EvidenceAddComponent implements OnInit {
 
   public uploadInput: string = '';
 
-  title = new FormControl('', [Validators.required]);
-  comment = new FormControl('', [Validators.required]);
+  title = new UntypedFormControl('', [Validators.required]);
+  comment = new UntypedFormControl('', [Validators.required]);
 
-  constructor(private formBuilder: FormBuilder, private service: EvidenceAddService, public dialogRef: MatDialogRef<EvidenceAddComponent>,
+  constructor(private formBuilder: UntypedFormBuilder, private service: EvidenceAddService, public dialogRef: MatDialogRef<EvidenceAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BackendEvidences) {
 
   }
@@ -103,17 +103,16 @@ export class EvidenceAddComponent implements OnInit {
     this.selectedFiles = fileInputEvent.target.files;
     this.selectedFile = fileInputEvent.target.files[0];
   }
-
+  uploading:boolean=false;
   /**
    * Save Evidence
    */
   public saveEvidence(): void {
+    this.uploading=true;
     this.createNewEvidence();
     this.service.saveEvidence(this.newEvidence).subscribe((status) => {
       this.uploadEvidenceFile();
     });
-
-    this.dialogRef.close({ data: this.newEvidence });
   }
 
   /**
@@ -126,7 +125,8 @@ export class EvidenceAddComponent implements OnInit {
         if (file) {
           this.currentFile = file;
           this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
-
+            this.uploading=false;
+            this.dialogRef.close({ data: this.newEvidence });
           });
         }
       }
@@ -153,7 +153,7 @@ export class EvidenceAddComponent implements OnInit {
   }
 
   requiredFileType(type: string) {
-    return function (control: FormControl) {
+    return function (control: UntypedFormControl) {
       const file = control.value;
       if (file) {
         const extension = file.name.split('.')[1].toLowerCase();

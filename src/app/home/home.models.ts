@@ -156,7 +156,7 @@ export interface Project {
   project_release_type:string;
   isOverdue?:boolean;
   isReaching?:boolean;
-  reachingInDays?:number;
+  toolTipMessage?:string;
 }
 
 export interface Notes {

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Stakeholder } from 'src/app/home/home.models';
 
@@ -10,7 +10,7 @@ import { Stakeholder } from 'src/app/home/home.models';
 })
 export class ReleaseStakeholderComponent implements OnInit {
 
-  addStakeholderForm!: FormGroup;
+  addStakeholderForm!: UntypedFormGroup;
   newStakeholder!:Stakeholder;
   selectedStakeholder!:Stakeholder;
   roles: any[] = [
@@ -27,7 +27,7 @@ export class ReleaseStakeholderComponent implements OnInit {
     { value: 'Security & Privacy Lead', viewValue: 'Security & Privacy Lead (SPL)' },
     { value: 'Other', viewValue: 'Other' },
   ];
-  constructor(private formBuilder: FormBuilder,public dialogRef: MatDialogRef<ReleaseStakeholderComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private formBuilder: UntypedFormBuilder,public dialogRef: MatDialogRef<ReleaseStakeholderComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     

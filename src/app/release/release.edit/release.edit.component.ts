@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   ATTACHMENTS_LOWERCASE, ATTORNEY_EMAIL, ATTORNEY_NAME, BUSINESS_UNIT_LOWERCASE, DATA_COLLECTION_LOWERCASE, DATE_FORMAT, DATE_LOWERCASE, DELETE_LOWERCASE, DESCRIPTION_LOWERCASE,
   EVIDENCES_LOWERCASE, EXTERNAL_WITHOUT_HANDOVER, EXTERNAL_WITH_HANDOVER, HANDOVER_LOWERCASE, INTERNAL, MILESTONE_LOWERCASE,
@@ -29,7 +29,7 @@ export class ReleaseEditComponent implements OnInit {
   public businessUnit: string = 'Select a Business Unit';
   public milestonePlaceholder: string = 'Select a Milestone';
   public type: string = 'Select a Release Type';
-  releaseForm!: FormGroup;
+  releaseForm!: UntypedFormGroup;
   public date: Object = new Date();
   public format: string = 'dd-MMM-yy';
   isWorkWeekVisible: boolean = false;
@@ -92,8 +92,8 @@ export class ReleaseEditComponent implements OnInit {
   ];
   public localFields: Object = { text: 'newRowPosition', value: 'id' };
   businessUnitList: BusinessUnit[] = [];
-
-  constructor(private formBuilder: FormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
+  editMode:boolean=false;
+  constructor(private formBuilder: UntypedFormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.stakeholders = [];
@@ -107,8 +107,11 @@ export class ReleaseEditComponent implements OnInit {
     // this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     if (this.selectedProject) {
+      this.editMode=true;
       this.getProjectStakeholders();
       this.checkDataCollectionStatus();
+    }else{
+      this.editMode=false;
     }
 
     this.releaseForm = this.formBuilder.group({
@@ -519,8 +522,8 @@ export class ReleaseEditComponent implements OnInit {
     }
   }
 
-  addContactForm!: FormGroup;
-  checkFormFields(form: FormGroup): void {
+  addContactForm!: UntypedFormGroup;
+  checkFormFields(form: UntypedFormGroup): void {
     Object.keys(form.controls).forEach(key => {
       if (key !== DESCRIPTION_LOWERCASE)
         form.controls[key].setErrors(null)

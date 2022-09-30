@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from 'src/app/home/home.models';
 import { ReleaseService } from 'src/app/release/release.service';
@@ -13,14 +13,14 @@ import { Kw_Config, Scan_Server } from '../../datacollection.models';
 })
 export class KwAddComponent implements OnInit {
 
-  addKwConfigForm!: FormGroup;
+  addKwConfigForm!: UntypedFormGroup;
   selectedKwConfig!: Kw_Config;
   updatedKwCofig!: Kw_Config;
   selectedProject!: Project;
   newKwConfig!: Kw_Config;
   scanServerList!:Scan_Server[];
   scanServers!:any[];
-  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<KwAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private service:ReleaseService) { }
+  constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<KwAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private service:ReleaseService) { }
 
   ngOnInit(): void {
     this.getKwServer();

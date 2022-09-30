@@ -47,7 +47,7 @@ import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmDeleteStakeholderDialogComponent } from './release/confirmdeletestakeholderdialog/confirm.delete.stakeholder.dialog.component';
 import { ReleaseConfirmDialogComponent } from './release/releaseconfirmdialog/release.confirm.dialog.component';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 import { ReleaseStakeholderComponent } from './release/release.stakeholder/release.stakeholder.component';
 import { BkcAddComponent } from './home/bkc/bkc.add/bkc.add.component';
 import { ConfirmDeleteBkcDialogComponent } from './home/bkc/confirmdeletebkcdialog/confirm.delete.bkc.dialog.component';
@@ -61,6 +61,8 @@ import { BdbaAddComponent } from './release/datacollection.configure/bdba/bdba.a
 import { ConfirmDeleteProtexDialogComponent } from './release/datacollection.configure/protex/confirmdeleteprotexdialog/confirm.delete.protex.dialog.component';
 import { ConfirmDeleteBdbaDialogComponent } from './release/datacollection.configure/bdba/confirmdeletebdbadialog/confirm.delete.bdba.dialog.component';
 import { ConfirmDeleteKwDialogComponent } from './release/datacollection.configure/kw/confirmdeletekwdialog/confirm.delete.kw.dialog.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { DownloadingstatusComponent } from './downloadingstatus/downloadingstatus.component';
 
 
 @NgModule({
@@ -94,7 +96,8 @@ import { ConfirmDeleteKwDialogComponent } from './release/datacollection.configu
     BdbaAddComponent,
     ConfirmDeleteProtexDialogComponent,
     ConfirmDeleteBdbaDialogComponent,
-    ConfirmDeleteKwDialogComponent
+    ConfirmDeleteKwDialogComponent,
+    DownloadingstatusComponent
   ],
   imports: [
     HttpClientModule, BrowserModule, AppRoutingModule,
@@ -103,7 +106,7 @@ import { ConfirmDeleteKwDialogComponent } from './release/datacollection.configu
     MatButtonModule, MatTableModule, MatDialogModule, MatInputModule,
     MatPaginatorModule, MatSortModule, MatTooltipModule,
     MatSelectModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule,
-    MatRippleModule, MatProgressSpinnerModule, PdfViewerModule, MatMenuModule, MatCheckboxModule, MatChipsModule
+    MatRippleModule, MatProgressSpinnerModule, MatMenuModule, MatCheckboxModule, MatChipsModule, MatProgressBarModule
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

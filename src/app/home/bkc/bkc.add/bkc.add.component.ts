@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { Bkc } from '../../home.models';
@@ -12,11 +12,11 @@ import { Bkc } from '../../home.models';
 })
 export class BkcAddComponent implements OnInit {
 
-  addBkcForm!: FormGroup;
+  addBkcForm!: UntypedFormGroup;
   selectedBkc!: Bkc;
   newBkc!: Bkc;
   formHeader!: string;
-  constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<BkcAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<BkcAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.formHeader = 'Add BKC';
