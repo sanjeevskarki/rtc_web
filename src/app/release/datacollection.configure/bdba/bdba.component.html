@@ -12,7 +12,10 @@
             <mat-header-cell *matHeaderCellDef>Product Name</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.product_name}}</mat-cell>
         </ng-container>
-
+        <ng-container matColumnDef="user_added">
+            <mat-header-cell *matHeaderCellDef>FaceLessId Added</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.user_added ? 'Yes' : 'No'}}</mat-cell>
+        </ng-container>
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef>
             </mat-header-cell>

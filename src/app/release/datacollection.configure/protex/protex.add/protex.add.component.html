@@ -3,8 +3,8 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Select Protex Server</mat-label>
         <mat-select formControlName="protex_server">
-            <mat-option *ngFor="let milestone of scanServers" [value]="milestone.value">
-                {{milestone.viewValue}}
+            <mat-option *ngFor="let server of scanServers" [value]="server.value">
+                {{server.viewValue}}
             </mat-option>
         </mat-select>
         <mat-error
@@ -23,11 +23,13 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Protex Project Id</mat-label>
         <input type="text" matInput formControlName="protex_project_id">
+        <mat-hint >Protex ID should be comprised of a prefix 'c_' and suffix '5 digits'</mat-hint>
         <mat-error
             *ngIf="addProtexConfigForm.controls.protex_project_id.hasError('required') && addProtexConfigForm.controls.protex_project_id.touched">
-            Email is required
+            Protex Project Id is required
         </mat-error>
     </mat-form-field>
+    <div style="height: 5px;"></div>
     <div>
         <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">User Added
         </mat-checkbox>
@@ -37,6 +39,6 @@
         <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
             (click)="close()">Close</button>
         <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveProtexConfig()"
-            [disabled]="!addProtexConfigForm.valid">Save</button>
+            [disabled]="!addProtexConfigForm.valid || isValidId()">Save</button>
     </div>
 </form>

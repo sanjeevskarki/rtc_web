@@ -34,7 +34,7 @@ export class KwComponent implements OnInit {
    */
   getProtexConfig() {
     if(this.selectedProject){
-      this.service.getKwConfig(this.selectedProject.project_id).subscribe(
+      this.service.getKwConfig(this.selectedProject.project_id!).subscribe(
         (response) => {
           this.kwConfigList = response;
           this.tempKwConfigList = response;
@@ -53,6 +53,7 @@ export class KwComponent implements OnInit {
     const dialogRef = this.dialog.open(KwAddComponent, {
       height: '30%',
       width: '30%',
+      disableClose: true
 
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -87,6 +88,7 @@ export class KwComponent implements OnInit {
     const dialogRef = this.dialog.open(KwAddComponent, {
       height: '30%',
       width: '30%',
+      disableClose: true,
       data: {
         data: kwConfig
       }
@@ -117,6 +119,7 @@ export class KwComponent implements OnInit {
     const deleteProtexDialogRef = this.dialog.open(ConfirmDeleteKwDialogComponent, {
       height: '18%',
       width: '23%',
+      disableClose: true,
       data: { name: kwConfig.kw_project_name }
     });
 

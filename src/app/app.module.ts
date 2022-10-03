@@ -63,6 +63,7 @@ import { ConfirmDeleteBdbaDialogComponent } from './release/datacollection.confi
 import { ConfirmDeleteKwDialogComponent } from './release/datacollection.configure/kw/confirmdeletekwdialog/confirm.delete.kw.dialog.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DownloadingstatusComponent } from './downloadingstatus/downloadingstatus.component';
+import { ConfirmReleaseStatusComponent } from './release/confirm.release.status/confirm.release.status.component';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { DownloadingstatusComponent } from './downloadingstatus/downloadingstatu
     ConfirmDeleteProtexDialogComponent,
     ConfirmDeleteBdbaDialogComponent,
     ConfirmDeleteKwDialogComponent,
-    DownloadingstatusComponent
+    DownloadingstatusComponent,
+    ConfirmReleaseStatusComponent
   ],
   imports: [
     HttpClientModule, BrowserModule, AppRoutingModule,

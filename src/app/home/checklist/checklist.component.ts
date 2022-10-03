@@ -6,8 +6,8 @@ import * as moment from 'moment';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
-import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject, TaskStatus } from './checklist.models';
-import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
+import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject, ProtexResult, TaskStatus } from './checklist.models';
+import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, openStatusArray, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
@@ -67,8 +67,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   lowCount: number = 0;
   mediumCount: number = 0;
   infoCount: number = 0;
-  protexProj1!: ProtexProject;
-  protexProj2!: ProtexProject;
+  // protexProj1!: ProtexProject;
+  // protexProj2!: ProtexProject;
   bdba!: Bdba;
   newLine = "\r\n";
   backendTasks: BackendTask[] = [];
@@ -119,6 +119,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   tempOwnerName!: string;
   tempOwnerEmail!: string;
   public taskStatus: any[] = [];
+  protexResults:ProtexResult[]=[];
 
   constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
     public domSanitizer: DomSanitizer) {
@@ -177,7 +178,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // alert("data save");
-    this.saveAndContinue();
+    // this.saveAndContinue();
+    this.saveRelease(true);
   }
 
   /**
@@ -233,27 +235,28 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.protexData = [];
     let res1 = this.service.checkmarxScan(this.data_collection);
     let res2 = this.service.kwScan(this.data_collection);
-    let res3 = this.service.protexScanFile1(this.data_collection);
-    let res6 = this.service.protexScanFile2(this.data_collection);
+    let res3 = this.service.getProtexResults(this.selectedProject.project_id!);
+    // let res3 = this.service.protexScanFile1(this.data_collection);
+    // let res6 = this.service.protexScanFile2(this.data_collection);
     let res4 = this.service.bdbaScan(this.data_collection);
     // Get the static data for associated with each task, currently we are geting this data from local stored files
     let res5 = this.service.getStaticData(this.milestone?.toLocaleLowerCase()!);
-    forkJoin([res1, res2, res3, res4, res5, res6]).subscribe(([data1, data2, data3, data4, data5, data6]) => {
+    // forkJoin([res1, res2, res3, res4, res5, res6]).subscribe(([data1, data2, data3, data4, data5, data6]) => {
+    forkJoin([res1, res2, res3, res4, res5]).subscribe(([data1, data2, data3, data4, data5]) => {
       this.checkMarxIssue = data1;
       this.tempText = data2;
-      this.protexProj1 = data3;
-      this.protexProj2 = data6;
+      this.protexResults = data3;
+      // this.protexProj2 = data6;
       this.bdba = data4;
       this.details = data5;
       if (this.checkMarxIssue)
         this.runCheckMarxScan();
       if (this.tempText)
         this.getKwScan();
-      if (this.protexProj1)
-        this.protexProj1
-      this.geProtexFile(this.protexProj1);
-      if (this.protexProj2)
-        this.geProtexFile(this.protexProj2);
+      if (this.protexResults)
+        this.geProtexFile(this.protexResults);
+      // if (this.protexProj2)
+      //   this.geProtexFile(this.protexProj2);
       if (this.bdba)
         this.geBdbaFile();
 
@@ -630,6 +633,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.releaseChecklist![itemIndex] = _selectedRelease;
   }
 
+  isReleaseStatusCheck:boolean=false;
   /**
    * Create Updated Task List and Save 
    */
@@ -639,12 +643,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     var newBackendTaskArray: ReleaseTask[] = [];
     for (var release of this.releaseChecklist!) {
-      // newBackendGuideline = <BackendGuideline>{};
-      // newBackendGuideline.id = release.id;
-      // newBackendGuideline.task_name = release.details;
-      // newBackendGuideline.vector_id = release.vector;
-      // newBackendGuidelineArray.push(newBackendGuideline);
-
       newBackendTask = <ReleaseTask>{};
       newBackendTask.guidelines_ptr_id = release.id;
       newBackendTask.owner = release.owner;
@@ -653,12 +651,18 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       newBackendTask.project_id_id = this.selectedProject.project_id!;
 
       newBackendTaskArray.push(newBackendTask);
+      if(!this.isReleaseStatusCheck && this.selectedProject.project_release_status === 'Released' && openStatusArray.find((str) => str === release.status)){
+          this.isReleaseStatusCheck = true;
+          this.checkReleaseStatus(newBackendTask.project_id_id,false);
+      }
 
+    }
+    if(!this.isReleaseStatusCheck && this.selectedProject.project_release_status === 'Released'){
+      this.checkReleaseStatus(this.selectedProject.project_id!,true);
     }
 
     this.sendEmails();
-    // console.log(JSON.stringify(newBackendTaskArray));
-    // this.service.updateGuidelines(newBackendGuidelineArray).subscribe(data => {
+    
     this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
       localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
       this.isSaved = false;
@@ -666,10 +670,18 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       if (navigate) {
         this.onSelection(true);
       }
-      // this.toastObj.show(this.toasts[0]);
-    });
-    // });
 
+    });
+
+  }
+
+  /**
+   * 
+   * @param projectId 
+   */
+  checkReleaseStatus(projectId:number,status:boolean){
+    this.service.changeTaskStatus(projectId,status).subscribe((status) => {
+    });
   }
 
   /**
@@ -749,10 +761,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.onSelection(true);
   }
 
-  saveAndContinue() {
-    this.saveRelease(true);
-    // this.continueNavigation();
-  }
+  // saveAndContinue() {
+  //   this.saveRelease(true);
+  //   // this.continueNavigation();
+  // }
 
   /**
    * Check whether any data has been changed before routing to other page
@@ -887,14 +899,19 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
 
-  async geProtexFile(protexProject: ProtexProject) {
+  async geProtexFile(protexResults: ProtexResult[]) {
     // this.protexData = [];
-    if (protexProject) {
-      this.protexData.push(protexProject.FileName!.bold());
-      this.protexData.push("Scan Date: " + moment(protexProject.LastAnalyzed).format('ll'));
-      this.protexData.push("Code Matches :" + protexProject.ScanFileInfo.AnalyzedFiles);
-      this.protexData.push("License Conflicts :" + protexProject.BOM.BOMComponentLicenseConflicts);
-      this.protexData.push("<br>");
+    var count =1;
+    if (protexResults) {
+      for(var protexResult of protexResults){
+        this.protexData.push(("Protex File:"+count).bold());
+        this.protexData.push("Scan Date: " + moment(protexResult.results.lastAnalyzed).format('MMMM Do YYYY, h:mm:ss a'));
+        this.protexData.push("Code Matches:" + protexResult.results.pendingID);
+        this.protexData.push("License Conflicts:" + protexResult.results.BOMComponentLicenseConflicts);
+        this.protexData.push("<br>");
+        count++;
+      }
+      
     }
   }
 

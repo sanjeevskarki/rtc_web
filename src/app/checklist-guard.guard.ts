@@ -12,7 +12,7 @@ export class ChecklistGuard implements CanDeactivate<ChecklistComponent> {
   canDeactivate(component: ChecklistComponent, currentRoute: ActivatedRouteSnapshot): boolean | Observable<boolean> {
     if (component.checkData()) {
       let subject = new Subject<boolean>();
-      component.saveAndContinue();
+      component.ngOnDestroy();
       subject = component.subject;
       return subject.asObservable();
     }

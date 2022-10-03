@@ -23,7 +23,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline" style="width: 30rem;">
             <mat-label>Release Status</mat-label>
-            <mat-select formControlName="releasestatus">
+            <mat-select formControlName="releasestatus" (selectionChange)="doSomething()">
                 <mat-option *ngFor="let status of releaseStatus" [value]="status.value">
                     {{status.viewValue}}
                 </mat-option>

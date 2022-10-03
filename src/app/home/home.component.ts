@@ -64,6 +64,10 @@ export class HomeComponent implements OnInit {
         project.isOverdue = true;
         project.toolTipMessage = "Release Date OverdueDue by "+ Math.abs(Math.round(days))+" day(s)";
       }
+      if(!project.project_task_status && project.project_release_status === 'Released'){
+        project.isTaskCompleted=true;
+        project.toolTipMessage = "Task(s) Not Completed";
+      }
     }
   }
 

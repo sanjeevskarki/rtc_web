@@ -14,7 +14,7 @@ import { ConfirmDeleteBdbaDialogComponent } from './confirmdeletebdbadialog/conf
 })
 export class BdbaComponent implements OnInit {
 
-  bdbaDisplayedColumns = ['product_id', 'product_name', 'actions'];
+  bdbaDisplayedColumns = ['product_id', 'product_name', 'user_added', 'actions'];
   color = TABLE_HEADER_COLOR;
   newBdbaConfig!: Bdba_Config;
   tempBdbaConfigList: Bdba_Config[] = [];
@@ -33,7 +33,7 @@ export class BdbaComponent implements OnInit {
    */
   getBdbaConfig() {
     if(this.selectedProject){
-      this.service.getBdbaConfig(this.selectedProject.project_id).subscribe(
+      this.service.getBdbaConfig(this.selectedProject.project_id!).subscribe(
         (response) => {
           this.bdbaConfigList = response;
           this.tempBdbaConfigList = response;
@@ -52,6 +52,7 @@ export class BdbaComponent implements OnInit {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
       height: '40%',
       width: '30%',
+      disableClose: true
 
     });
 
@@ -87,6 +88,7 @@ export class BdbaComponent implements OnInit {
     const dialogRef = this.dialog.open(BdbaAddComponent, {
       height: '40%',
       width: '30%',
+      disableClose: true,
       data: {
         data: bdbaConfig
       }

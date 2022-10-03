@@ -6,7 +6,7 @@ import {
   NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, RELEASE_STATUS, RELEASE_TYPE, stakeholderNotificationList, SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE
 } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
-import { NotificationSetting, Stakeholder } from 'src/app/home/home.models';
+import { Checklist, NotificationSetting, ReleaseChecklist, Stakeholder } from 'src/app/home/home.models';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
 
 import * as moment from 'moment';
@@ -17,6 +17,10 @@ import { ConfirmDeleteStakeholderDialogComponent } from '../confirmdeletestakeho
 import { DatacollectionConfigureComponent } from '../datacollection.configure/datacollection.configure.component';
 import { forkJoin } from 'rxjs';
 import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
+import { MatSelect } from '@angular/material/select';
+
+import { openStatusArray } from 'src/app/home/home.constants';
+import { ConfirmReleaseStatusComponent } from '../confirm.release.status/confirm.release.status.component';
 
 @Component({
   selector: 'app-release.edit',
@@ -93,6 +97,8 @@ export class ReleaseEditComponent implements OnInit {
   public localFields: Object = { text: 'newRowPosition', value: 'id' };
   businessUnitList: BusinessUnit[] = [];
   editMode:boolean=false;
+  taskCompletionStatus:boolean=true;
+  newProtexConfigList : Protex_Config[]=[];
   constructor(private formBuilder: UntypedFormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -106,6 +112,7 @@ export class ReleaseEditComponent implements OnInit {
     this.projectStakeholders = [];
     // this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    // this.newProtexConfigList = JSON.parse(localStorage.getItem('newProtexConfigList')!);
     if (this.selectedProject) {
       this.editMode=true;
       this.getProjectStakeholders();
@@ -147,7 +154,7 @@ export class ReleaseEditComponent implements OnInit {
 
   getProjectStakeholders() {
     this.projectStakeholders = [];
-    this.service.getProjectStakeholders(this.selectedProject.project_id).subscribe(
+    this.service.getProjectStakeholders(this.selectedProject.project_id!).subscribe(
       (response) => {
         this.projectStakeholders = response;
         this.tempProjectStakeholders = response;
@@ -223,11 +230,11 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   createSortOrder() {
-    this.milestoneList.sort((carA, carB) => {
-      if (carA.milestone !== carB.milestone) {
-        return this.milestoneOrderCategory[carA.milestone] - this.milestoneOrderCategory[carB.milestone];
+    this.milestoneList.sort((milestoneA, milestoneB) => {
+      if (milestoneA.milestone !== milestoneB.milestone) {
+        return this.milestoneOrderCategory[milestoneA.milestone] - this.milestoneOrderCategory[milestoneB.milestone];
       } else {
-        return carA.milestone - carB.milestone;
+        return milestoneA.milestone - milestoneB.milestone;
       }
     });
     this.createMilestoneDropdown();
@@ -236,7 +243,6 @@ export class ReleaseEditComponent implements OnInit {
   createMilestoneDropdown() {
     if (this.milestoneList != null) {
       for (var i = 0; i < this.milestoneList.length; i++) {
-
         this.milestones.push({ value: this.milestoneList[i].milestone, viewValue: this.milestoneList[i].milestone });
       }
     }
@@ -279,9 +285,10 @@ export class ReleaseEditComponent implements OnInit {
       return false;
     }
   }
-
+  previousSelectedValue!:string;
   editForm() {
     if (this.selectedProject) {
+      this.previousSelectedValue=this.selectedProject.project_release_status;
       this.releaseForm.patchValue({
         name: this.selectedProject.project_name,
         releasetype: this.selectedProject.project_release_type,
@@ -331,11 +338,12 @@ export class ReleaseEditComponent implements OnInit {
     this.newProject.project_attorney_email = this.releaseForm.controls[ATTORNEY_EMAIL].value;
     this.newProject.project_release_status = this.releaseForm.controls[RELEASE_STATUS].value;
     this.newProject.project_release_type = this.releaseForm.controls[RELEASE_TYPE].value;
+    this.newProject.project_task_status = this.taskCompletionStatus;
     if (this.selectedProject) {
       this.newProject.project_id = this.selectedProject.project_id;
       this.updateProject();
     } else {
-      this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
+      // this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
       this.getStaticData();
     }
     this.initalValues = this.releaseForm.value;
@@ -363,13 +371,16 @@ export class ReleaseEditComponent implements OnInit {
 
   saveProject() {
     let project: Project;
-
     this.service.addProject(this.newProject).subscribe((data) => {
       project = data;
-      this.createGuideLine();
+      this.createGuideLine(project);
       this.createBuFolder();
       this.createStakehoders(project);
       this.createNotificationSetting(project);
+      if(this.newProtexConfigList.length>0){
+        this.saveProtexConfig(project);
+      }
+      
     });
   }
 
@@ -389,12 +400,11 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  createGuideLine() {
+  createGuideLine(project:Project) {
     this.guidlines = [];
     for (var release of this.details!) {
       for (var detail of release.details) {
         this.releaseGuideline = <BackendGuideline>{};
-
         this.releaseGuideline.vector_id = release.vector;
         this.releaseGuideline.task_name = detail.detail;
         this.releaseGuideline.task_description = detail.detail;
@@ -403,23 +413,23 @@ export class ReleaseEditComponent implements OnInit {
         this.guidlines.push(this.releaseGuideline);
       }
     }
-    this.saveGuidelines();
+    this.saveGuidelines(project.project_id!);
   }
 
-  saveGuidelines() {
+  saveGuidelines(id:number) {
     this.service.addGuidelines(this.guidlines).subscribe(data => {
       this.newGuidlines = data;
-      this.saveTask();
+      this.saveTask(id);
     });
   }
 
-  saveTask() {
+  saveTask(id:number) {
     this.taskList = [];
     for (var _guideline of this.newGuidlines!) {
       this.task = <ReleaseTask>{};
       this.task.guidelines_ptr_id = _guideline.id;
       this.task.owner = "";
-      this.task.project_id_id = this.newProject.project_id!;
+      this.task.project_id_id = id;
       this.task.status_id = "Open";
       this.taskList.push(this.task);
     }
@@ -463,6 +473,17 @@ export class ReleaseEditComponent implements OnInit {
 
   }
 
+  saveProtexConfig(project:Project){
+    var protexConfigs:Protex_Config[]=[];
+    for(var protexConfig of this.newProtexConfigList){
+      protexConfig.project_id = project.project_id;
+      protexConfigs.push(protexConfig);
+    }
+    this.service.addProtexConfigs(protexConfigs).subscribe(data => {
+      localStorage.removeItem('newProtexConfig');
+    });
+  }
+
   sendEmail() {
     // alert('sending email = '+this.stakeholderEmails);
     if (this.stakeholderEmails.length > 0) {
@@ -490,6 +511,7 @@ export class ReleaseEditComponent implements OnInit {
     const dialogRef = this.dialog.open(ReleaseStakeholderComponent, {
       height: '50%',
       width: '30%',
+      disableClose: true,
 
     });
 
@@ -538,6 +560,7 @@ export class ReleaseEditComponent implements OnInit {
     const deleteStakeholderDialogRef = this.dialog.open(ConfirmDeleteStakeholderDialogComponent, {
       height: '18%',
       width: '23%',
+      disableClose: true,
       data: { name: selectedStakeholder.name }
     });
 
@@ -568,6 +591,7 @@ export class ReleaseEditComponent implements OnInit {
     const dialogRef = this.dialog.open(ReleaseStakeholderComponent, {
       height: '50%',
       width: '30%',
+      disableClose: true,
       data: {
         data: selectedStakeholder
       }
@@ -600,6 +624,7 @@ export class ReleaseEditComponent implements OnInit {
     const dialogRef = this.dialog.open(DatacollectionConfigureComponent, {
       height: '70%',
       width: '90%',
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.checkDataCollectionStatus();
@@ -612,9 +637,9 @@ export class ReleaseEditComponent implements OnInit {
    */
   checkDataCollectionStatus() {
     if(this.selectedProject){
-      let res1 = this.service.getProtexConfig(this.selectedProject.project_id);
-      let res2 = this.service.getKwConfig(this.selectedProject.project_id);
-      let res3 = this.service.getBdbaConfig(this.selectedProject.project_id);
+      let res1 = this.service.getProtexConfig(this.selectedProject.project_id!);
+      let res2 = this.service.getKwConfig(this.selectedProject.project_id!);
+      let res3 = this.service.getBdbaConfig(this.selectedProject.project_id!);
       forkJoin([res1, res2, res3]).subscribe(([data1, data2, data3]) => {
         this.protexConfigList = data1;
         this.kwConfigList = data2;
@@ -630,6 +655,48 @@ export class ReleaseEditComponent implements OnInit {
         }
       });
     }
+  }
+  
+ 
+  doSomething(){
+    if(this.selectedProject){
+      if(this.releaseForm.controls[RELEASE_STATUS].value ===  'Released'){
+        this.checkAllTaskStatus();
+       }else{
+        this.taskCompletionStatus=true;
+       }
+    }
+  
+  }
+
+  
+  checkAllTaskStatus(){
+    var storedReleaseChecklist: ReleaseChecklist[] = JSON.parse(localStorage.getItem("checkList")!);
+    for(var task of storedReleaseChecklist){
+      if(openStatusArray.find((str) => str === task.status)){
+        const dialogRef = this.dialog.open(ConfirmReleaseStatusComponent, {
+          height: '25%',
+          width: '30%',
+          disableClose: true,
+         
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            if (result.data === 'close') {
+              this.releaseForm.patchValue({
+                releasestatus: this.previousSelectedValue
+              });
+            }
+            if (result.data === 'change') {
+             this.taskCompletionStatus=false;
+            }
+          }
+        });
+        break;
+      }
+    }
+    console.log("**** == "+storedReleaseChecklist[0].status);
   }
 
 }

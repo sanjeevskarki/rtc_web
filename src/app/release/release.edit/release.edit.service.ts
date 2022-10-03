@@ -165,4 +165,14 @@ export class ReleaseEditService {
     const body = JSON.stringify(notificationSetting);
     return this.httpClient.post<Project>(this.endpoint_url + this.notification, body, { headers: this.headers });
   }
+
+  /**
+   * Add new Protex Config Objects
+   * @param protexConfig Selected Project Config
+   * @returns Saved Protex Config Objects
+   */
+   public addProtexConfigs(protexConfigs: Protex_Config[]): Observable<Protex_Config[]> {
+    return this.httpClient.post<Protex_Config[]>(this.endpoint_url + this.protex+"/bulks", protexConfigs, { headers: this.headers });
+  }
+ 
 }

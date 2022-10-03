@@ -141,7 +141,7 @@ export interface Login {
  */
 
 export interface Project {
-  project_id: number;
+  project_id?: number;
   project_name: string;
   project_release_date: string;
   project_description: string;
@@ -157,6 +157,8 @@ export interface Project {
   isOverdue?:boolean;
   isReaching?:boolean;
   toolTipMessage?:string;
+  project_task_status?:boolean,
+  isTaskCompleted?:boolean;
 }
 
 export interface Notes {
@@ -168,7 +170,7 @@ export interface ReleaseTask {
   guidelines_ptr_id: number;
   owner: string;
   owner_email: string;
-  project_id_id: Number;
+  project_id_id: number;
   status_id: string;
 }
 

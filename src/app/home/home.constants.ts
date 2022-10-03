@@ -115,3 +115,6 @@ export const STAKEHOLDER_REMOVED_TO_QUAL_OWNER_BODY = (product: string, mileston
 
 export const RELEASE_STATUS_UPDATED_TO_STAKEHOLDER_SUBJECT = 'RTC notification for Task Status update';
 export const RELEASE_STATUS_UPDATED_TO_STAKEHOLDER_BODY = (role: string, product: string, milestone: string, vector: string) => `As a ${vector} task owner of product ${product},${milestone} release, please notice that the stakeholder has been removed from the release stakeholder list`;
+
+
+export const openStatusArray:string[]=['WIP','Open','Pending Exception'];

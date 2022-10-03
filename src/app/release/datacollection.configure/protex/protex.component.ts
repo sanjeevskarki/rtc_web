@@ -17,7 +17,7 @@ export class ProtexComponent implements OnInit {
 
   protexConfigList: Protex_Config[] = [];
   tempProtexConfigList: Protex_Config[] = [];
-  protexDisplayedColumns = ['protex_server', 'protex_project_id', 'actions'];
+  protexDisplayedColumns = ['protex_server', 'protex_project_id', 'user_added','actions'];
   color = TABLE_HEADER_COLOR;
   protexConfig!: Protex_Config;
   selectedProject!: Project;
@@ -36,7 +36,7 @@ export class ProtexComponent implements OnInit {
    */
   getProtexConfig() {
     if(this.selectedProject){
-      this.service.getProtexConfig(this.selectedProject.project_id).subscribe(
+      this.service.getProtexConfig(this.selectedProject.project_id!).subscribe(
         (response) => {
           this.protexConfigList = response;
           this.tempProtexConfigList = response;
@@ -45,6 +45,8 @@ export class ProtexComponent implements OnInit {
           console.log(err.name);
         }
       );
+    }else{
+      this.protexConfig = JSON.parse(localStorage.getItem('newProtexConfig')!);
     }
   }
 
@@ -55,6 +57,7 @@ export class ProtexComponent implements OnInit {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
       height: '40%',
       width: '30%',
+      disableClose: true,
 
     });
 
@@ -62,10 +65,18 @@ export class ProtexComponent implements OnInit {
       if (result) {
         this.newProtexConfig = <Protex_Config>{};
         this.newProtexConfig = result.data;
-        this.service.addProtexConfig(this.newProtexConfig).subscribe(data => {
-          this.tempProtexConfigList.unshift(data);
+        if (this.selectedProject) {
+          this.newProtexConfig.project_id = this.selectedProject.project_id;
+          this.service.addProtexConfig(this.newProtexConfig).subscribe(data => {
+            this.tempProtexConfigList.unshift(data);
+            this.createProtexConfigList(this.tempProtexConfigList);
+          });
+        }else{
+          this.tempProtexConfigList.unshift(this.newProtexConfig);
           this.createProtexConfigList(this.tempProtexConfigList);
-        })
+          // alert(this.createProtexConfigList);
+          localStorage.setItem('newProtexConfigList', JSON.stringify(this.createProtexConfigList));
+        }
       }
     });
   }
@@ -89,6 +100,7 @@ export class ProtexComponent implements OnInit {
     const dialogRef = this.dialog.open(ProtexAddComponent, {
       height: '40%',
       width: '30%',
+      disableClose: true,
       data: {
         data: protexConfig
       }
@@ -120,6 +132,7 @@ export class ProtexComponent implements OnInit {
     const deleteProtexDialogRef = this.dialog.open(ConfirmDeleteProtexDialogComponent, {
       height: '18%',
       width: '23%',
+      disableClose: true,
       data: { name: protexConfig.protex_server }
     });
 

@@ -133,9 +133,16 @@ export interface KwResults {
 }
 
 
-export interface ProtexResults {
+export interface ProtexResult {
 	project_id: string;
-	results: any;
+	results: {
+		pendingID: string;
+		lastAnalyzed: string;
+		 BOMComponentLicenseConflicts: string;
+	};
 	id: number;
 	collection_status: boolean;
 }
+
+
+

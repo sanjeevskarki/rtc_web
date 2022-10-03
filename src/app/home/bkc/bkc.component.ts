@@ -32,7 +32,7 @@ export class BkcComponent implements OnInit {
    */
   getExistingBkc() {
     this.existingBkcList = [];
-    this.service.getBkcList(this.selectedProject.project_id).subscribe(
+    this.service.getBkcList(this.selectedProject.project_id!).subscribe(
       (response) => {
         this.existingBkcList = response;
         this.tempBkcList = response;

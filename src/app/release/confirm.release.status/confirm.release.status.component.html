@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+    <p>Few tasks are still in <b>Open, WIP, Pending Exception</b> State.</p>
+    <p>Do you still want to continue ?</p>
+
+</div>
+<div mat-dialog-actions style="float:right;">
+    <button mat-flat-button color="primary" (click)="changeStatus()">Continue</button>
+    <button mat-flat-button color="primary" (click)="close()" cdkFocusInitial>Cancel</button>
+</div>

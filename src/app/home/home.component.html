@@ -51,7 +51,11 @@
 
     <ng-container matColumnDef="releasestatus">
       <mat-header-cell *matHeaderCellDef>Release Status</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.project_release_status}}</mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.project_release_status}}
+        <!-- <button *ngIf="row.isTaskCompleted" mat-icon-button matTooltip="{{row.toolTipMessage}}">
+          <mat-icon aria-label="Edit" style="color: orange;">flag</mat-icon>
+        </button> -->
+      </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
