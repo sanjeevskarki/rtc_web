@@ -82,7 +82,7 @@
         </mat-form-field>
      
         <br>
-        <mat-form-field appearance="outline" style="width: 23rem;margin-right: 1rem;">
+        <mat-form-field appearance="outline" style="width: 30rem;margin-right: 1rem;">
             <mat-label>Qual Owner Name</mat-label>
             <input type="text" matInput formControlName="qualowner">
             <mat-error
@@ -90,7 +90,7 @@
                 Owner is required
             </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 22rem;margin-right: 1rem;">
+        <mat-form-field appearance="outline" style="width: 30rem;margin-right: 1rem;">
             <mat-label>Qual Owner Email</mat-label>
             <input type="text" matInput formControlName="qualowneremail">
             <mat-error
@@ -101,7 +101,40 @@
                 Please enter a valid email address
             </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 22rem;margin-right: 1rem;">
+        <mat-form-field *ngIf="!isIngredient" appearance="outline" style="width: 30rem;">
+            <mat-label>Grading Type</mat-label>
+            <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" [disabled]=editMode>
+                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
+                    {{grading.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
+                Grading Type is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="isIngredient" appearance="outline" style="width:15rem;margin-right: 1rem;">
+            <mat-label>Grading Type</mat-label>
+            <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" [disabled]=editMode>
+                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
+                    {{grading.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
+                Grading Type is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="isIngredient" appearance="outline" style="width:14rem;">
+            <mat-label>Platform</mat-label>
+            <mat-select formControlName="platform" [disabled]=editMode>
+                <mat-option *ngFor="let platform of platformProjects" [value]="platform.value">
+                    {{platform.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="releaseForm.controls.platform.hasError('required') && releaseForm.controls.platform.touched">
+                Platform is required
+            </mat-error>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" style="width: 22rem;margin-right: 1rem;">
             <mat-label>Attorney Name</mat-label>
             <input type="text" matInput formControlName="attorneyname">
             <mat-error
@@ -119,7 +152,7 @@
             <mat-error *ngIf="releaseForm.controls.attorneyemail.hasError('attorneyemail')">
                 Please enter a valid email address
             </mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
         <br>
         <mat-form-field appearance="outline" style="width: 92rem;">
             <mat-label>Description</mat-label>
@@ -132,7 +165,7 @@
     </form>
     
 
-    <div style="align-self: center;width: 92rem;margin-right: 1rem;">
+    <div style="align-self: center;width: 92rem;">
         <!-- <button mat-flat-button matTooltip="Add Stakeholder" color="primary" (click)="addContact()">
                 <mat-icon>add</mat-icon>Add Stakeholder
             </button> -->
@@ -142,6 +175,12 @@
         </button>
         <div id="modalTarget" #targetModal *ngIf="stakeholders!.length > 0">
             <mat-table #stakeholdertable [dataSource]="stakeholders">
+                <ng-container matColumnDef="notification">
+                    <mat-header-cell *matHeaderCellDef><mat-icon> email</mat-icon></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <mat-checkbox color="primary" checked={{row.email_notification}} (change)="changeEmailNotification($event,row)"></mat-checkbox>
+                    </mat-cell>
+                </ng-container>
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>

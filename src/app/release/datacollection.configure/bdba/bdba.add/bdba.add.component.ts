@@ -21,7 +21,7 @@ export class BdbaAddComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<BdbaAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    // this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.addBdbaConfigForm = this.formBuilder.group({
       product_id: [null, [Validators.required,Validators.pattern('^[0-9]{7}$')]],
       product_name: [null, []],
@@ -56,20 +56,18 @@ export class BdbaAddComponent implements OnInit {
    * Create BDBA Config object
    */
   createNewBdba() {
-    if(this.selectedProject){
-      if (this.selectedBdbaConfig) {
-        this.selectedBdbaConfig.product_id = this.addBdbaConfigForm.controls['product_id'].value;
-        this.selectedBdbaConfig.product_name = this.addBdbaConfigForm.controls['product_name'].value;
-        this.selectedBdbaConfig.user_added = this.user_added;
-        this.updateBdbaConfig = this.selectedBdbaConfig;
-      } else {
-        this.newBdbaConfig = <Bdba_Config>{};
-        this.newBdbaConfig.product_id = this.addBdbaConfigForm.controls['product_id'].value;
-        this.newBdbaConfig.product_name = this.addBdbaConfigForm.controls['product_name'].value;
-        this.newBdbaConfig.project_id = this.selectedProject.project_id;
-        this.newBdbaConfig.user_added = this.user_added;
-        this.updateBdbaConfig = this.newBdbaConfig;
-      }
+    if (this.selectedBdbaConfig) {
+      this.selectedBdbaConfig.product_id = this.addBdbaConfigForm.controls['product_id'].value;
+      this.selectedBdbaConfig.product_name = this.addBdbaConfigForm.controls['product_name'].value;
+      this.selectedBdbaConfig.user_added = this.user_added;
+      this.updateBdbaConfig = this.selectedBdbaConfig;
+    } else {
+      this.newBdbaConfig = <Bdba_Config>{};
+      this.newBdbaConfig.product_id = this.addBdbaConfigForm.controls['product_id'].value;
+      this.newBdbaConfig.product_name = this.addBdbaConfigForm.controls['product_name'].value;
+      // this.newBdbaConfig.project_id = this.selectedProject.project_id;
+      this.newBdbaConfig.user_added = this.user_added;
+      this.updateBdbaConfig = this.newBdbaConfig;
     }
   }
 

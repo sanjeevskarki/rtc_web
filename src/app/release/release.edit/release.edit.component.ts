@@ -3,10 +3,11 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import {
   ATTACHMENTS_LOWERCASE, ATTORNEY_EMAIL, ATTORNEY_NAME, BUSINESS_UNIT_LOWERCASE, DATA_COLLECTION_LOWERCASE, DATE_FORMAT, DATE_LOWERCASE, DELETE_LOWERCASE, DESCRIPTION_LOWERCASE,
   EVIDENCES_LOWERCASE, EXTERNAL_WITHOUT_HANDOVER, EXTERNAL_WITH_HANDOVER, HANDOVER_LOWERCASE, INTERNAL, MILESTONE_LOWERCASE,
-  NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, RELEASE_STATUS, RELEASE_TYPE, stakeholderNotificationList, SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE
+  NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, RELEASE_STATUS, RELEASE_TYPE, stakeholderNotificationList,
+  SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE, CHECKLIST_LOWERCASE, NOT_ASSOCIATED_PLATFORM, PLATFORM, INGREDIENT, PLATFORM_LOWERCASE, GRADING_TYPE
 } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
-import { Checklist, NotificationSetting, ReleaseChecklist, Stakeholder } from 'src/app/home/home.models';
+import { NotificationSetting, ReleaseChecklist, Stakeholder } from 'src/app/home/home.models';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
 
 import * as moment from 'moment';
@@ -17,10 +18,10 @@ import { ConfirmDeleteStakeholderDialogComponent } from '../confirmdeletestakeho
 import { DatacollectionConfigureComponent } from '../datacollection.configure/datacollection.configure.component';
 import { forkJoin } from 'rxjs';
 import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
-import { MatSelect } from '@angular/material/select';
 
-import { openStatusArray } from 'src/app/home/home.constants';
+import { ACTIVE_LOWERCASE, CANCELLED_LOWERCASE, DEFERRED_LOWERCASE, openStatusArray, RELEASED_LOWERCASE } from 'src/app/home/home.constants';
 import { ConfirmReleaseStatusComponent } from '../confirm.release.status/confirm.release.status.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-release.edit',
@@ -47,14 +48,21 @@ export class ReleaseEditComponent implements OnInit {
     { value: INTERNAL, viewValue: INTERNAL },
   ];
 
+  gradingTypes: any[] = [
+    { value: INGREDIENT, viewValue: INGREDIENT },
+    { value: PLATFORM, viewValue: PLATFORM },
+    { value: NOT_ASSOCIATED_PLATFORM, viewValue: NOT_ASSOCIATED_PLATFORM },
+  ];
+
   releaseStatus: any[] = [
-    { value: 'Active' , viewValue: 'Active' },
-    { value: 'Released', viewValue: 'Released' },
-    { value: 'Cancelled', viewValue: 'Cancelled' },
-    { value: 'Deferred', viewValue: 'Deferred' },
+    { value: ACTIVE_LOWERCASE, viewValue: ACTIVE_LOWERCASE },
+    { value: RELEASED_LOWERCASE, viewValue: RELEASED_LOWERCASE },
+    { value: CANCELLED_LOWERCASE, viewValue: CANCELLED_LOWERCASE },
+    { value: DEFERRED_LOWERCASE, viewValue: DEFERRED_LOWERCASE },
   ];
 
   public businessUnits: any[] = [];
+  public platformProjects: any[] = [];
   showSpinner: boolean = false;
 
   milestoneList: Milestone[] = [];
@@ -71,7 +79,7 @@ export class ReleaseEditComponent implements OnInit {
   newGuidlines: BackendGuideline[] = [];
   task!: ReleaseTask;
   taskList: ReleaseTask[] = [];
-  stakeholderDisplayedColumns = ['name', 'email', 'wwid', 'role', 'actions'];
+  stakeholderDisplayedColumns = ['notification','name', 'email', 'wwid', 'role', 'actions'];
   color = TABLE_HEADER_COLOR;
   public commentRule: { [name: string]: { [rule: string]: Object } } = {
     rte: { required: [true, 'Enter valid notes'] }
@@ -96,9 +104,11 @@ export class ReleaseEditComponent implements OnInit {
   ];
   public localFields: Object = { text: 'newRowPosition', value: 'id' };
   businessUnitList: BusinessUnit[] = [];
-  editMode:boolean=false;
-  taskCompletionStatus:boolean=true;
-  newProtexConfigList : Protex_Config[]=[];
+  editMode: boolean = false;
+  taskCompletionStatus: boolean = true;
+  newProtexConfigList: Protex_Config[] = [];
+  newBdbaConfigList: Bdba_Config[] = [];
+  newKwConfigList: Kw_Config[] = [];
   constructor(private formBuilder: UntypedFormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -107,18 +117,19 @@ export class ReleaseEditComponent implements OnInit {
     // this.tempRelease = <NewRelease>{};
     this.getBusinessUnits();
     this.getMilestones();
+    this.getPlatformProject();
 
 
     this.projectStakeholders = [];
     // this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
-    // this.newProtexConfigList = JSON.parse(localStorage.getItem('newProtexConfigList')!);
+   
     if (this.selectedProject) {
-      this.editMode=true;
+      this.editMode = true;
       this.getProjectStakeholders();
       this.checkDataCollectionStatus();
-    }else{
-      this.editMode=false;
+    } else {
+      this.editMode = false;
     }
 
     this.releaseForm = this.formBuilder.group({
@@ -138,6 +149,8 @@ export class ReleaseEditComponent implements OnInit {
       releasestatus: [null, []],
       releasetype: [null, []],
       notes: [null, []],
+      gradingtype: [null, Validators.required],
+      platform: [null, []],
     });
 
 
@@ -160,6 +173,7 @@ export class ReleaseEditComponent implements OnInit {
         this.tempProjectStakeholders = response;
         // alert(this.tempProjectStakeholders);
         this.stakeholders = this.projectStakeholders;
+        console.log(JSON.stringify(this.stakeholders));
       },
       (err) => {
         console.log(err.name);
@@ -175,7 +189,7 @@ export class ReleaseEditComponent implements OnInit {
   //   this.newRelease.type = this.releaseForm.controls[RELEASE_TYPE_LOWERCASE].value;
   //   this.newRelease.handover = this.releaseForm.controls[HANDOVER_LOWERCASE].value;
   //   this.newRelease.milestone = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
-    
+
   //   if (this.releaseForm.controls[DATE_LOWERCASE].value !== null) {
   //     this.newRelease.date = this.releaseForm.controls[DATE_LOWERCASE].value;
   //   } else {
@@ -225,6 +239,27 @@ export class ReleaseEditComponent implements OnInit {
     if (this.businessUnitList != null) {
       for (var i = 0; i < this.businessUnitList.length; i++) {
         this.businessUnits.push({ value: this.businessUnitList[i].name, viewValue: this.businessUnitList[i].name });
+      }
+    }
+  }
+
+  platformProjectList!: Project[];
+  getPlatformProject() {
+    this.service.getPlatformProjects().subscribe(
+      (response) => {
+        this.platformProjectList = response;
+        this.createPlatformDropdown();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+
+  createPlatformDropdown() {
+    if (this.platformProjectList != null) {
+      for (var i = 0; i < this.platformProjectList.length; i++) {
+        this.platformProjects.push({ value: this.platformProjectList[i].project_name, viewValue: this.platformProjectList[i].project_name });
       }
     }
   }
@@ -285,10 +320,10 @@ export class ReleaseEditComponent implements OnInit {
       return false;
     }
   }
-  previousSelectedValue!:string;
+  previousSelectedValue!: string;
   editForm() {
     if (this.selectedProject) {
-      this.previousSelectedValue=this.selectedProject.project_release_status;
+      this.previousSelectedValue = this.selectedProject.project_release_status;
       this.releaseForm.patchValue({
         name: this.selectedProject.project_name,
         releasetype: this.selectedProject.project_release_type,
@@ -302,15 +337,21 @@ export class ReleaseEditComponent implements OnInit {
         qualowner: this.selectedProject.project_owner_name,
         status: '',
         qualowneremail: this.selectedProject.project_owner_email,
-        attorneyname: this.selectedProject.project_attorney_name,
-        attorneyemail: this.selectedProject.project_attorney_email,
+        // attorneyname: this.selectedProject.project_attorney_name,
+        // attorneyemail: this.selectedProject.project_attorney_email,
         notes: '',
         description: this.selectedProject.project_description,
-        releasestatus: this.selectedProject.project_release_status
+        releasestatus: this.selectedProject.project_release_status,
+        gradingtype: this.selectedProject.project_grading_type,
+        platform: this.selectedProject.project_platform
       });
       this.workWeek = this.selectedProject.project_release_date!.toString();
       this.isWorkWeekVisible = true;
+      if(this.selectedProject.project_grading_type ===  INGREDIENT){
+        this.isIngredient = true;
+      }
     }
+
     this.initalValues = this.releaseForm.value;
   }
 
@@ -324,7 +365,6 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   updateRelease() {
-
     this.newProject = <Project>{};
 
     this.newProject.project_name = this.releaseForm.controls[NAME_LOWERCASE].value;
@@ -334,10 +374,12 @@ export class ReleaseEditComponent implements OnInit {
     this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWERCASE].value;
     this.newProject.project_owner_name = this.releaseForm.controls[QUAL_OWNER_NAME].value;
     this.newProject.project_owner_email = this.releaseForm.controls[QUAL_OWNER_EMAIL].value;
-    this.newProject.project_attorney_name = this.releaseForm.controls[ATTORNEY_NAME].value;
-    this.newProject.project_attorney_email = this.releaseForm.controls[ATTORNEY_EMAIL].value;
+    // this.newProject.project_attorney_name = this.releaseForm.controls[ATTORNEY_NAME].value;
+    // this.newProject.project_attorney_email = this.releaseForm.controls[ATTORNEY_EMAIL].value;
     this.newProject.project_release_status = this.releaseForm.controls[RELEASE_STATUS].value;
     this.newProject.project_release_type = this.releaseForm.controls[RELEASE_TYPE].value;
+    this.newProject.project_grading_type = this.releaseForm.controls[GRADING_TYPE].value;
+    this.newProject.project_platform = this.releaseForm.controls[PLATFORM_LOWERCASE].value;
     this.newProject.project_task_status = this.taskCompletionStatus;
     if (this.selectedProject) {
       this.newProject.project_id = this.selectedProject.project_id;
@@ -376,11 +418,33 @@ export class ReleaseEditComponent implements OnInit {
       this.createGuideLine(project);
       this.createBuFolder();
       this.createStakehoders(project);
-      this.createNotificationSetting(project);
-      if(this.newProtexConfigList.length>0){
-        this.saveProtexConfig(project);
+      this.createNotificationSetting(project);     
+      this.saveProtexConfig(project);
+      this.saveBdbaConfig(project);
+      this.saveKwConfig(project);
+    });
+  }
+
+  createGuideLine(project: Project) {
+    this.guidlines = [];
+    for (var release of this.details!) {
+      for (var detail of release.details) {
+        this.releaseGuideline = <BackendGuideline>{};
+        this.releaseGuideline.vector_id = release.vector;
+        this.releaseGuideline.task_name = detail.detail;
+        this.releaseGuideline.task_description = detail.detail;
+        this.releaseGuideline.required_evidence = "Yes";
+
+        this.guidlines.push(this.releaseGuideline);
       }
-      
+    }
+    this.saveGuidelines(project.project_id!);
+  }
+
+  saveGuidelines(id: number) {
+    this.service.addGuidelines(this.guidlines).subscribe(data => {
+      this.newGuidlines = data;
+      this.saveTask(id);
     });
   }
 
@@ -400,30 +464,9 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  createGuideLine(project:Project) {
-    this.guidlines = [];
-    for (var release of this.details!) {
-      for (var detail of release.details) {
-        this.releaseGuideline = <BackendGuideline>{};
-        this.releaseGuideline.vector_id = release.vector;
-        this.releaseGuideline.task_name = detail.detail;
-        this.releaseGuideline.task_description = detail.detail;
-        this.releaseGuideline.required_evidence = "Yes";
+  
 
-        this.guidlines.push(this.releaseGuideline);
-      }
-    }
-    this.saveGuidelines(project.project_id!);
-  }
-
-  saveGuidelines(id:number) {
-    this.service.addGuidelines(this.guidlines).subscribe(data => {
-      this.newGuidlines = data;
-      this.saveTask(id);
-    });
-  }
-
-  saveTask(id:number) {
+  saveTask(id: number) {
     this.taskList = [];
     for (var _guideline of this.newGuidlines!) {
       this.task = <ReleaseTask>{};
@@ -473,15 +516,49 @@ export class ReleaseEditComponent implements OnInit {
 
   }
 
-  saveProtexConfig(project:Project){
-    var protexConfigs:Protex_Config[]=[];
-    for(var protexConfig of this.newProtexConfigList){
-      protexConfig.project_id = project.project_id;
-      protexConfigs.push(protexConfig);
+  saveProtexConfig(project: Project) {
+    this.newProtexConfigList = JSON.parse(localStorage.getItem('newProtexConfigList')!);
+    if (this.newProtexConfigList.length > 0) {
+      var protexConfigs: Protex_Config[] = [];
+      alert(this.newProtexConfigList.length);
+      for (var protexConfig of this.newProtexConfigList) {
+        protexConfig.project_id = project.project_id;
+        protexConfigs.push(protexConfig);
+      }
+      this.service.addProtexConfigs(protexConfigs).subscribe(data => {
+        localStorage.setItem('newProtexConfigList', JSON.stringify([]));
+      });
     }
-    this.service.addProtexConfigs(protexConfigs).subscribe(data => {
-      localStorage.removeItem('newProtexConfig');
-    });
+  }
+
+  saveBdbaConfig(project: Project) {
+    this.newBdbaConfigList = JSON.parse(localStorage.getItem('newBdbaConfigList')!);
+    if (this.newBdbaConfigList.length > 0) {
+      var bdbaConfigs: Bdba_Config[] = [];
+      alert(this.newBdbaConfigList.length);
+      for (var bdbaConfig of this.newBdbaConfigList) {
+        bdbaConfig.project_id = project.project_id;
+        bdbaConfigs.push(bdbaConfig);
+      }
+      this.service.addBdbaConfigs(bdbaConfigs).subscribe(data => {
+        localStorage.setItem('newBdbaConfigList', JSON.stringify([]));
+      });
+    }
+  }
+
+  saveKwConfig(project: Project) {
+    this.newKwConfigList = JSON.parse(localStorage.getItem('newKwConfigList')!);
+    if (this.newKwConfigList.length > 0) {
+      var kwConfigs: Kw_Config[] = [];
+      alert(this.newKwConfigList.length);
+      for (var kwConfig of this.newKwConfigList) {
+        kwConfig.project_id = project.project_id;
+        kwConfigs.push(kwConfig);
+      }
+      this.service.addKwConfigs(kwConfigs).subscribe(data => {
+        localStorage.setItem('newKwConfigList', JSON.stringify([]));
+      });
+    }
   }
 
   sendEmail() {
@@ -509,7 +586,7 @@ export class ReleaseEditComponent implements OnInit {
    */
   openAddStakeholderDialog() {
     const dialogRef = this.dialog.open(ReleaseStakeholderComponent, {
-      height: '50%',
+      height: '55%',
       width: '30%',
       disableClose: true,
 
@@ -580,7 +657,6 @@ export class ReleaseEditComponent implements OnInit {
         }
       }
     });
-
   }
 
   /**
@@ -629,14 +705,13 @@ export class ReleaseEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.checkDataCollectionStatus();
     });
-
   }
 
   /**
    * Select Data Collection status based on the result
    */
   checkDataCollectionStatus() {
-    if(this.selectedProject){
+    if (this.selectedProject) {
       let res1 = this.service.getProtexConfig(this.selectedProject.project_id!);
       let res2 = this.service.getKwConfig(this.selectedProject.project_id!);
       let res3 = this.service.getBdbaConfig(this.selectedProject.project_id!);
@@ -645,10 +720,10 @@ export class ReleaseEditComponent implements OnInit {
         this.kwConfigList = data2;
         this.bdbaConfigList = data3;
         if (this.protexConfigList!.length > 0 || this.kwConfigList!.length > 0 || this.bdbaConfigList!.length > 0) {
-          if(this.protexConfigList.find(x => x.user_added) || this.bdbaConfigList.find(x => x.user_added)){
-            this.dataCollectionStatus = "Active";
-          }else{
-          this.dataCollectionStatus = "Not Active";
+          if (this.protexConfigList.find(x => x.user_added) || this.bdbaConfigList.find(x => x.user_added)) {
+            this.dataCollectionStatus = ACTIVE_LOWERCASE;
+          } else {
+            this.dataCollectionStatus = "Not Active";
           }
         } else {
           this.dataCollectionStatus = "Not Active";
@@ -656,31 +731,28 @@ export class ReleaseEditComponent implements OnInit {
       });
     }
   }
-  
- 
-  doSomething(){
-    if(this.selectedProject){
-      if(this.releaseForm.controls[RELEASE_STATUS].value ===  'Released'){
+
+
+  doSomething() {
+    if (this.selectedProject) {
+      if (this.releaseForm.controls[RELEASE_STATUS].value === RELEASED_LOWERCASE) {
         this.checkAllTaskStatus();
-       }else{
-        this.taskCompletionStatus=true;
-       }
+      } else {
+        this.taskCompletionStatus = true;
+      }
     }
-  
   }
 
-  
-  checkAllTaskStatus(){
-    var storedReleaseChecklist: ReleaseChecklist[] = JSON.parse(localStorage.getItem("checkList")!);
-    for(var task of storedReleaseChecklist){
-      if(openStatusArray.find((str) => str === task.status)){
+
+  checkAllTaskStatus() {
+    var storedReleaseChecklist: ReleaseChecklist[] = JSON.parse(localStorage.getItem(CHECKLIST_LOWERCASE)!);
+    for (var task of storedReleaseChecklist) {
+      if (openStatusArray.find((str) => str === task.status)) {
         const dialogRef = this.dialog.open(ConfirmReleaseStatusComponent, {
           height: '25%',
           width: '30%',
           disableClose: true,
-         
         });
-    
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
             if (result.data === 'close') {
@@ -689,14 +761,28 @@ export class ReleaseEditComponent implements OnInit {
               });
             }
             if (result.data === 'change') {
-             this.taskCompletionStatus=false;
+              this.taskCompletionStatus = false;
             }
           }
         });
         break;
       }
     }
-    console.log("**** == "+storedReleaseChecklist[0].status);
+    console.log("**** == " + storedReleaseChecklist[0].status);
   }
 
+  isIngredient: boolean = false;
+  selectGrade(selectedGrade: string) {
+    // alert(selectedGrade);
+    if (selectedGrade === INGREDIENT) {
+      this.isIngredient = true;
+    } else {
+      this.isIngredient = false;
+    }
+  }
+
+  changeEmailNotification(event: MatCheckboxChange, item: any){
+    alert(item.email_notification);
+    alert(event.checked);
+  }
 }

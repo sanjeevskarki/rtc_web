@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { TokenStorageService } from '../account/token-storage.service';
+import { ADMIN_USER } from './home.constants';
 
-import { Project } from './home.models';
+import { BackendTask, Project } from './home.models';
 import { HomeService } from './home.service';
 
 @Component({
@@ -12,27 +15,53 @@ import { HomeService } from './home.service';
 export class HomeComponent implements OnInit {
 
   projects: Project[] = [];
-
+  // ownerProject!:OwnerProject;
   @ViewChild("listview") element: any;
   displayedColumns = ['actions', 'businessunit', 'name', 'milestone', 'date', 'releasetype','releasestatus'];
   color = '#f1f3f4';
   isLoading = true;
   projectList:Project[]=[];
-  constructor(private service: HomeService, private router: Router) {
+  backendTasks: BackendTask[] = [];
+  taskToolTipMessage!:string;
+  userName!:string;
+  constructor(private service: HomeService, public dialog: MatDialog, private router: Router, private tokenStorage: TokenStorageService) {
 
   }
 
   ngOnInit(): void {
     localStorage.removeItem('selectedProject');
     localStorage.removeItem('notificationSettings');
-    this.getShortList();
-
+    localStorage.setItem('newProtexConfigList', JSON.stringify([]));
+    localStorage.setItem('newBdbaConfigList', JSON.stringify([]));
+    localStorage.setItem('newKwConfigList', JSON.stringify([]));
+    this.userName = this.tokenStorage.getUser();
+    if(this.userName === ADMIN_USER){
+      this.getAdminProject();
+    }else{
+      this.getProjectByEmail(this.userName);
+    }
+    
   }
 
-  getShortList() {
+  getAdminProject() {
     this.service.shortCheckList().subscribe(
       (response) => {
         this.projects = response;
+        this.isLoading = false;
+        this.checkReleaseDateStatus();
+      },
+      (err) => {
+        console.log(err.name);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  getProjectByEmail(email:string) {
+    this.service.getPojectsByEmail(email).subscribe(
+      (response) => {
+        this.projects = response;
+       
         this.isLoading = false;
         this.checkReleaseDateStatus();
       },
@@ -66,7 +95,7 @@ export class HomeComponent implements OnInit {
       }
       if(!project.project_task_status && project.project_release_status === 'Released'){
         project.isTaskCompleted=true;
-        project.toolTipMessage = "Task(s) Not Completed";
+        this.taskToolTipMessage = "Task(s) Not Completed";
       }
     }
   }
@@ -83,6 +112,56 @@ export class HomeComponent implements OnInit {
 
   openReleaseInfo() {
     this.router.navigate(['checklist/releaseinfo']);
+  }
+
+  templateRef!:any;
+  getTaskDetail(selectedProject: Project,taskDialog:any){
+    this.templateRef = taskDialog;
+    this.service.getSelectedProjectTask(selectedProject.project_id!).subscribe(
+      (response) => {
+        this.backendTasks = response;
+        this.getPendingTasks();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+  openTask=0;
+  wipTask=0;
+  pendingTask=0;
+  taskDialogRef: any;
+  getPendingTasks(){
+    
+    for(var task of this.backendTasks){
+      if (task.status_id === 'WIP') {
+        this.wipTask++;
+      }
+      if (task.status_id === 'Open') {
+        this.openTask++;
+      }
+      if (task.status_id === 'Pending Exception') {
+        this.pendingTask++;
+      }
+    }
+    this.taskDialogRef = this.dialog.open(this.templateRef, {
+      height: '22%',
+      width: '20%',
+      disableClose: true
+    });
+
+    // this.evidenceDialogRef.afterClosed().subscribe(() => {
+    //   localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
+    // });
+    // alert(wipTask+"------"+openTask+"-----"+pendingTask);
+  }
+
+  /**
+   * Close Comments List Dialog
+   */
+   closeTaskDialog() {
+    this.taskDialogRef.close();
+    // this.commentDialog.hide();
   }
 
 

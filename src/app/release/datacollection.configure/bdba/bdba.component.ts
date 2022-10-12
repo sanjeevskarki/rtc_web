@@ -42,6 +42,9 @@ export class BdbaComponent implements OnInit {
           console.log(err.name);
         }
       );
+    }else{
+      this.bdbaConfigList = JSON.parse (localStorage.getItem('newBdbaConfigList')!);
+      this.tempBdbaConfigList = this.bdbaConfigList ;
     }
   }
 
@@ -60,10 +63,21 @@ export class BdbaComponent implements OnInit {
       if (result) {
         this.newBdbaConfig = <Bdba_Config>{};
         this.newBdbaConfig = result.data;
-        this.service.addBdbaConfig(this.newBdbaConfig).subscribe(data => {
-          this.tempBdbaConfigList.unshift(data);
+        if (this.selectedProject) {
+          this.newBdbaConfig.project_id = this.selectedProject.project_id;
+          this.service.addBdbaConfig(this.newBdbaConfig).subscribe(data => {
+            this.tempBdbaConfigList.unshift(data);
+            this.createBdbaConfigList(this.tempBdbaConfigList);
+          });
+        }else{
+          this.tempBdbaConfigList!.unshift(this.newBdbaConfig);
           this.createBdbaConfigList(this.tempBdbaConfigList);
-        })
+          localStorage.setItem('newBdbaConfigList', JSON.stringify(this.tempBdbaConfigList));
+        }
+        // this.service.addBdbaConfig(this.newBdbaConfig).subscribe(data => {
+        //   this.tempBdbaConfigList.unshift(data);
+        //   this.createBdbaConfigList(this.tempBdbaConfigList);
+        // })
       }
     });
 

@@ -26,13 +26,13 @@ export class KwComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
-    this.getProtexConfig();
+    this.getKwConfig();
   }
 
   /**
    * Call API for Getting Protex Config
    */
-  getProtexConfig() {
+  getKwConfig() {
     if(this.selectedProject){
       this.service.getKwConfig(this.selectedProject.project_id!).subscribe(
         (response) => {
@@ -43,6 +43,9 @@ export class KwComponent implements OnInit {
           console.log(err.name);
         }
       );
+    }else{
+      this.kwConfigList = JSON.parse (localStorage.getItem('newKwConfigList')!);
+      this.tempKwConfigList = this.kwConfigList ;
     }
   }
 
@@ -51,7 +54,7 @@ export class KwComponent implements OnInit {
    */
   openKwConfig() {
     const dialogRef = this.dialog.open(KwAddComponent, {
-      height: '30%',
+      height: '35%',
       width: '30%',
       disableClose: true
 
@@ -60,10 +63,22 @@ export class KwComponent implements OnInit {
       if (result) {
         this.newKwConfig = <Kw_Config>{};
         this.newKwConfig = result.data;
-        this.service.addKwConfig(this.newKwConfig).subscribe(data => {
-          this.tempKwConfigList.unshift(data);
+        if (this.selectedProject) {
+          this.newKwConfig.project_id = this.selectedProject.project_id;
+          this.service.addKwConfig(this.newKwConfig).subscribe(data => {
+            this.tempKwConfigList.unshift(data);
+            this.createKwConfigList(this.tempKwConfigList);
+          });
+        }else{
+          this.tempKwConfigList!.unshift(this.newKwConfig);
           this.createKwConfigList(this.tempKwConfigList);
-        })
+          console.log(JSON.stringify(this.tempKwConfigList));
+          localStorage.setItem('newKwConfigList', JSON.stringify(this.tempKwConfigList));
+        }
+        // this.service.addKwConfig(this.newKwConfig).subscribe(data => {
+        //   this.tempKwConfigList.unshift(data);
+        //   this.createKwConfigList(this.tempKwConfigList);
+        // })
       }
     });
 
@@ -75,8 +90,8 @@ export class KwComponent implements OnInit {
    */
   createKwConfigList(kwConfigList: Kw_Config[]) {
     this.kwConfigList = [];
-    for (var protexConfig of kwConfigList) {
-      this.kwConfigList.push(protexConfig);
+    for (var kwConfig of kwConfigList) {
+      this.kwConfigList.push(kwConfig);
     }
   }
 
@@ -86,7 +101,7 @@ export class KwComponent implements OnInit {
    */
   updateKwConfig(kwConfig: Kw_Config) {
     const dialogRef = this.dialog.open(KwAddComponent, {
-      height: '30%',
+      height: '35%',
       width: '30%',
       disableClose: true,
       data: {

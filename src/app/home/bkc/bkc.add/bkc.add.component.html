@@ -7,16 +7,17 @@
             Title is required
         </mat-error>
     </mat-form-field>
+    <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Version</mat-label>
         <input type="text" matInput formControlName="version">
     </mat-form-field>
+    <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Comment</mat-label>
         <textarea matInput formControlName="comment"></textarea>
     </mat-form-field>
-
-
+    <div style="height: 0.5rem;"></div>
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
         (click)="closeBkc()">Close</button>
     <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"

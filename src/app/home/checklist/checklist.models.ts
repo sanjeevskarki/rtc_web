@@ -119,16 +119,22 @@ export interface TaskStatus {
 	status: string;
 }
 
-export interface BdbaResults {
+export interface BdbaResult {
 	project_id: string;
-	results: any;
+	results: {
+		ScanDate: string;
+		VulnerabilityCount: string;
+	};
 	file_name: string;
 	collection_status: boolean;
 }
 
 export interface KwResults {
 	project_id: string;
-	results: any;
+	results: {
+		ErrorCount: string;
+		CriticalCount: string;
+	};
 	collection_status: boolean;
 }
 
@@ -143,6 +149,9 @@ export interface ProtexResult {
 	id: number;
 	collection_status: boolean;
 }
+
+
+
 
 
 

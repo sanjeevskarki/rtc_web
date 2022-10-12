@@ -24,7 +24,7 @@ export class KwAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.getKwServer();
-    this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    // this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
     this.addKwConfigForm = this.formBuilder.group({
       kw_server: [null, []],
       kw_project_name: [null, []],
@@ -58,8 +58,7 @@ export class KwAddComponent implements OnInit {
    * Create New KW Config object
    */
   createNewKw() {
-    if(this.selectedProject){
-      if (this.selectedKwConfig) {
+    if (this.selectedKwConfig) {
         this.selectedKwConfig.kw_server = this.addKwConfigForm.controls['kw_server'].value;
         this.selectedKwConfig.kw_project_name = this.addKwConfigForm.controls['kw_project_name'].value;
         this.updatedKwCofig = this.selectedKwConfig;
@@ -67,10 +66,9 @@ export class KwAddComponent implements OnInit {
         this.newKwConfig = <Kw_Config>{};
         this.newKwConfig.kw_server = this.addKwConfigForm.controls['kw_server'].value;
         this.newKwConfig.kw_project_name = this.addKwConfigForm.controls['kw_project_name'].value;
-        this.newKwConfig.project_id = this.selectedProject.project_id;
+        // this.newKwConfig.project_id = this.selectedProject.project_id;
         this.updatedKwCofig = this.newKwConfig;
       }
-    }
   }
 
   

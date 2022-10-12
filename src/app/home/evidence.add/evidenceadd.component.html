@@ -10,7 +10,7 @@
         Title is required
         </mat-error> -->
     </mat-form-field>
-
+    <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
         <mat-select (selectionChange)="onEvidenceTypeSelect($event)" formControlName="type">
@@ -38,6 +38,7 @@
             </mat-error>
         </mat-form-field>
     </div>
+   
     <div class="form-group" *ngIf="isFileUploadSelected">
         <!-- <mat-form-field appearance="fill"> -->
         <!-- <mat-label>File</mat-label> -->
@@ -49,15 +50,29 @@
                 font-size: smaller;
                 margin-top: -10px;">
                 <mat-hint >MaxFileSize: 10mb</mat-hint>
+                <!-- <mat-error *ngIf="!validFileSize">
+                    File Size Exceed the (10mb) limit
+                </mat-error> -->
                 </div>
             </div>
+            
             <div style="font-size: smaller;margin-left: 2px;">
                 <input id="fileInput" hidden type="file" (change)="selectEvidenceFile($event)" formControlName="upload"
                 name="upload" accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">
                 <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
             </div>
         </div>
-        <div *ngIf="uploading">Uploading File to Server..
+        <!-- <div
+            class="progress-bar progress-bar-info progress-bar-striped"
+            role="progressbar"
+            attr.aria-valuenow="{{ progress }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [ngStyle]="{ width: progress + '%' }">
+            {{ progress }}%
+        </div> -->
+        <div style="height: 0.5rem;"></div>
+        <div >Uploading File to Server..
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
             <br>
         </div>
@@ -67,7 +82,7 @@
         <!-- </mat-form-field> -->
 
     </div>
-
+    <div style="height: 0.5rem;"></div>
 
     <mat-form-field appearance="outline">
         <mat-label>Comments</mat-label>
@@ -80,9 +95,9 @@
         </mat-error> -->
     </mat-form-field>
 
-    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
         (click)="close()">Close</button>
-    <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;"
         [disabled]="!evidenceForm.valid" (click)="saveEvidence()">Save</button>
 
 </form>

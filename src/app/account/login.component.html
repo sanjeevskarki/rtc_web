@@ -1,0 +1,61 @@
+<div>
+    <mat-toolbar color="primary">
+       <span>{{rtcVersion}}</span>
+       <span class="example-spacer"></span>
+       <div class="image-container">
+           <img class="img-div" src="./assets/sqba.png" />
+       </div>
+       &nbsp;
+       <div class="image-container">
+           <img class="img-div" src="./assets/intel-logo-white-100.png" />
+       </div>
+   </mat-toolbar>
+   <div class="container" class="container mat-elevation-z9" *ngIf="!isLoggedIn">
+    <!-- <h2>Login</h2> -->
+    <mat-toolbar color="primary">Welcome to RTC</mat-toolbar>
+    <div style="align-self: center;
+    margin-top: 3rem;">
+        <form [formGroup]="loginForm">
+            <mat-form-field appearance="outline" style="width: 30rem;">
+                <mat-label>Username</mat-label>
+                <input type="text" matInput formControlName="email">
+                <mat-error *ngIf="loginForm.controls.email.hasError('required') && loginForm.controls.email.touched">
+                    Username is required
+                </mat-error>
+            </mat-form-field>  
+        </form>
+        <div class="error-msg" *ngIf="notExist">No Release found for " {{userName}} "</div>
+        <br>
+        <button mat-flat-button color="primary" style="align-self: center;width: 30rem;"
+                [disabled]="!loginForm.valid || isValidEmailId()" (click)="login() ">Login</button>
+        <div *ngIf="isLoading" class="loader">
+            <mat-progress-spinner strokeWidth="3" [diameter]="50" color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+    </div>
+    </div>
+    <mat-toolbar color="primary" *ngIf="isLoggedIn">
+        <mat-toolbar-row>
+            <div>
+                <a mat-button [routerLink]="'/home'" routerLinkActive="active-list-item"> Home </a>
+                 <a mat-button [routerLink]="'/report'" routerLinkActive="active-list-item"> Reports </a>
+                <a mat-button [routerLink]="'/help'" routerLinkActive="active-list-item"> Help </a>
+            </div>
+            <div style="flex: 1 1 auto;">
+                
+                <a mat-button routerLinkActive="active-list-item" (click)="logout()" style="float: right;"> LogOut </a>
+                <a mat-button routerLinkActive="active-list-item" style="float: right;"> {{userName}} </a>
+                 <!-- <a href class="nav-link" (click)="logout()">LogOut</a> -->
+            </div>
+            <!-- <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+                <li class="nav-item">
+                  <a href="/profile" class="nav-link" routerLink="profile">test</a>
+                </li>
+                <li class="nav-item">
+                  <a href class="nav-link" (click)="logout()">LogOut</a>
+                </li>
+              </ul> -->
+        </mat-toolbar-row>
+    </mat-toolbar>
+   <router-outlet *ngIf="isLoggedIn"></router-outlet>
+</div>

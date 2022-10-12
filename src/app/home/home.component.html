@@ -52,8 +52,8 @@
     <ng-container matColumnDef="releasestatus">
       <mat-header-cell *matHeaderCellDef>Release Status</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.project_release_status}}
-        <!-- <button *ngIf="row.isTaskCompleted" mat-icon-button matTooltip="{{row.toolTipMessage}}">
-          <mat-icon aria-label="Edit" style="color: orange;">flag</mat-icon>
+        <!-- <button *ngIf="row.isTaskCompleted" mat-icon-button  #tooltip="matTooltip" matTooltipPosition='above' matTooltip="Click to View">
+          <mat-icon aria-label="Edit" style="color: orange;" (click)="getTaskDetail(row,taskDialog)">flag</mat-icon>
         </button> -->
       </mat-cell>
     </ng-container>
@@ -74,3 +74,16 @@
 <button mat-flat-button matTooltip="Add Release" color="primary" style="margin-left: 15px" (click)="openReleaseInfo()">
   <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>Add Release
 </button>
+
+<ng-template #taskDialog>
+  <h1 mat-dialog-title>Task Detail</h1>
+  <div>WIP : {{wipTask}}</div>
+  <div>Open : {{openTask}}</div>
+  <div>Pending : {{pendingTask}}</div>
+  <div class="form-group" style="float: right;padding-bottom: 5px;">
+      <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 8px 0;"
+          (click)="closeTaskDialog()">Close</button>
+     
+
+  </div>
+</ng-template>

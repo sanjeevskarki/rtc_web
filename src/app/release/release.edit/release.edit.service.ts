@@ -168,11 +168,39 @@ export class ReleaseEditService {
 
   /**
    * Add new Protex Config Objects
-   * @param protexConfig Selected Project Config
+   * @param protexConfigs protex config list
    * @returns Saved Protex Config Objects
    */
    public addProtexConfigs(protexConfigs: Protex_Config[]): Observable<Protex_Config[]> {
-    return this.httpClient.post<Protex_Config[]>(this.endpoint_url + this.protex+"/bulks", protexConfigs, { headers: this.headers });
+    return this.httpClient.post<Protex_Config[]>(this.endpoint_url + this.protex+"/bulk", protexConfigs, { headers: this.headers });
   }
+
+  /**
+   * Add new BDBA Config Objects
+   * @param bdbaConfigs bdba config list
+   * @returns Saved BDBA Config Objects
+   */
+   public addBdbaConfigs(bdbaConfigs: Bdba_Config[]): Observable<Bdba_Config[]> {
+    return this.httpClient.post<Bdba_Config[]>(this.endpoint_url + this.bdba+"/bulk", bdbaConfigs, { headers: this.headers });
+  }
+
+  /**
+   * Add new KW Config Objects
+   * @param bdbaConfigs bdba config list
+   * @returns Saved BDBA Config Objects
+   */
+   public addKwConfigs(kwConfigs: Kw_Config[]): Observable<Kw_Config[]> {
+    return this.httpClient.post<Kw_Config[]>(this.endpoint_url + this.kw+"/bulk", kwConfigs, { headers: this.headers });
+  }
+
+  /**
+   * Add new Protex Config Objects
+   * @param protexConfig Selected Project Config
+   * @returns Saved Protex Config Objects
+   */
+  public getPlatformProjects(): Observable<Project[]> {
+    return this.httpClient.get<Project[]>(this.endpoint_url + this.project+"/grade/platform", { headers: this.headers });
+  }
+  
  
 }

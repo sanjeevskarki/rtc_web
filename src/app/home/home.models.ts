@@ -150,8 +150,8 @@ export interface Project {
   project_notes?: string;
   project_owner_name: string;
   project_owner_email: string;
-  project_attorney_name: string;
-  project_attorney_email: string;
+  // project_attorney_name: string;
+  // project_attorney_email: string;
   project_release_status: string;
   project_release_type:string;
   isOverdue?:boolean;
@@ -159,6 +159,8 @@ export interface Project {
   toolTipMessage?:string;
   project_task_status?:boolean,
   isTaskCompleted?:boolean;
+  project_grading_type?:string;
+  project_platform?:string;
 }
 
 export interface Notes {
@@ -236,6 +238,7 @@ export interface Stakeholder {
   project_id?: number;
   project_name?: string;
   project_milestone?: string;
+  email_notification?:boolean;
 }
 
 export interface OwnerEmail {

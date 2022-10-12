@@ -1,30 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { HomeComponent } from './home/home.component';
 import { WorkWeekPipePipe, DateTimeFormatPipe } from './home/work-week-pipe.pipe';
-
 import { ReportComponent } from './report/report.component';
 import { ChecklistComponent } from './home/checklist/checklist.component';
 import { AdminComponent } from './admin/admin.component';
 import { HelpComponent } from './help/help.component';
 import { HttpClientModule } from '@angular/common/http';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { EvidenceAddComponent } from './home/evidence.add/evidenceadd.component';
 import { ReleaseComponent } from './release/release.component';
-
-
 import { ChecklistMenuComponent } from './home/checklist.menu/checklist.menu.component';
 import { ReleaseEditComponent } from './release/release.edit/release.edit.component';
 import { NotificationComponent } from './home/notification/notification.component';
 import { BkcComponent } from './home/bkc/bkc.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -47,7 +40,6 @@ import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmDeleteStakeholderDialogComponent } from './release/confirmdeletestakeholderdialog/confirm.delete.stakeholder.dialog.component';
 import { ReleaseConfirmDialogComponent } from './release/releaseconfirmdialog/release.confirm.dialog.component';
-
 import { ReleaseStakeholderComponent } from './release/release.stakeholder/release.stakeholder.component';
 import { BkcAddComponent } from './home/bkc/bkc.add/bkc.add.component';
 import { ConfirmDeleteBkcDialogComponent } from './home/bkc/confirmdeletebkcdialog/confirm.delete.bkc.dialog.component';
@@ -61,9 +53,11 @@ import { BdbaAddComponent } from './release/datacollection.configure/bdba/bdba.a
 import { ConfirmDeleteProtexDialogComponent } from './release/datacollection.configure/protex/confirmdeleteprotexdialog/confirm.delete.protex.dialog.component';
 import { ConfirmDeleteBdbaDialogComponent } from './release/datacollection.configure/bdba/confirmdeletebdbadialog/confirm.delete.bdba.dialog.component';
 import { ConfirmDeleteKwDialogComponent } from './release/datacollection.configure/kw/confirmdeletekwdialog/confirm.delete.kw.dialog.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DownloadingstatusComponent } from './downloadingstatus/downloadingstatus.component';
 import { ConfirmReleaseStatusComponent } from './release/confirm.release.status/confirm.release.status.component';
+import { ConfirmUploadFileComponent } from './home/checklist/confirm.upload.file/confirm.upload.file.component';
+import { LoginComponent } from './account/login.component';
 
 
 @NgModule({
@@ -99,7 +93,9 @@ import { ConfirmReleaseStatusComponent } from './release/confirm.release.status/
     ConfirmDeleteBdbaDialogComponent,
     ConfirmDeleteKwDialogComponent,
     DownloadingstatusComponent,
-    ConfirmReleaseStatusComponent
+    ConfirmReleaseStatusComponent,
+    ConfirmUploadFileComponent,
+    LoginComponent
   ],
   imports: [
     HttpClientModule, BrowserModule, AppRoutingModule,

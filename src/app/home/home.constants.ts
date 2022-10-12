@@ -118,3 +118,10 @@ export const RELEASE_STATUS_UPDATED_TO_STAKEHOLDER_BODY = (role: string, product
 
 
 export const openStatusArray:string[]=['WIP','Open','Pending Exception'];
+
+export const RELEASED_LOWERCASE = 'Released';
+export const ACTIVE_LOWERCASE = 'Active';
+export const CANCELLED_LOWERCASE = 'Cancelled';
+export const DEFERRED_LOWERCASE = 'Deferred';
+
+export const ADMIN_USER = 'rtcadmin@intel.com';

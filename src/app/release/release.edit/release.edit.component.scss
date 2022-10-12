@@ -29,6 +29,13 @@
   border: 1px solid #f1f3f4;
 }
 
+.mat-column-notification {
+  border-right: 1px solid #b2bbbf;
+  align-self: stretch;
+  text-align: center;
+  margin-left: 10px;
+  flex: 0 0 3%;
+}
 
 .mat-column-name {
   border-right: 1px solid #b2bbbf;

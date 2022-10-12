@@ -6,12 +6,13 @@ import * as moment from 'moment';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
-import { Bdba, Checkmarx, DataCollection, Kw, Project as ProtexProject, ProtexResult, TaskStatus } from './checklist.models';
-import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, openStatusArray, PROTEX_MATCHES_LICENSE_CONFLICTS, STATIC_ANALYSIS_ISSUE } from '../home.constants';
+import { Bdba, BdbaResult, Checkmarx, DataCollection, Kw, KwResults, Project as ProtexProject, ProtexResult, TaskStatus } from './checklist.models';
+import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, openStatusArray, PROTEX_MATCHES_LICENSE_CONFLICTS, RELEASED_LOWERCASE, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
+import { CHECKLIST_LOWERCASE, COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
 import { DownloadingstatusComponent } from 'src/app/downloadingstatus/downloadingstatus.component';
+import { ConfirmUploadFileComponent } from './confirm.upload.file/confirm.upload.file.component';
 
 export class Group {
   level = 0;
@@ -69,7 +70,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   infoCount: number = 0;
   // protexProj1!: ProtexProject;
   // protexProj2!: ProtexProject;
-  bdba!: Bdba;
+  // bdba!: Bdba;
+  bdbaResults: BdbaResult[] = [];
   newLine = "\r\n";
   backendTasks: BackendTask[] = [];
 
@@ -84,7 +86,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   errorCount: number = 0;
   criticalCount: number = 0;
   responseText!: string;
-  tempText!: string;
+  // tempText!: string;
+  kwResults: KwResults[] = [];
   kwData: string[] = [];
   groupByColumns: string[] = [];
   color = '#f1f3f4';
@@ -108,7 +111,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   isBdba!: boolean;
   isLoaded!: boolean;
   ownerEmails: OwnerEmail[] = [];
-  selectedFiles?: FileList;
+  // selectedFiles?: FileList;
   currentFile?: File;
   public selectedCommentFile!: any;
   newComment!: BackendComments;
@@ -119,7 +122,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   tempOwnerName!: string;
   tempOwnerEmail!: string;
   public taskStatus: any[] = [];
-  protexResults:ProtexResult[]=[];
+  protexResults: ProtexResult[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
     public domSanitizer: DomSanitizer) {
@@ -160,7 +163,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     });
 
     // this.filter = { type: "CheckBox" };
-    this.checkList = JSON.parse(localStorage.getItem("checkList")!);
+    this.checkList = JSON.parse(localStorage.getItem(CHECKLIST_LOWERCASE)!);
     this.getNotificationSettings();
     this.getSelectedTask();
 
@@ -233,32 +236,34 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.mediumCount = 0;
     this.infoCount = 0;
     this.protexData = [];
-    let res1 = this.service.checkmarxScan(this.data_collection);
-    let res2 = this.service.kwScan(this.data_collection);
+    // let res1 = this.service.checkmarxScan(this.data_collection);
+    // let res2 = this.service.kwScan(this.data_collection);
+    let res2 = this.service.getKwResults(this.selectedProject.project_id!);
     let res3 = this.service.getProtexResults(this.selectedProject.project_id!);
     // let res3 = this.service.protexScanFile1(this.data_collection);
     // let res6 = this.service.protexScanFile2(this.data_collection);
-    let res4 = this.service.bdbaScan(this.data_collection);
+    let res4 = this.service.getBdbaResults(this.selectedProject.project_id!);
+    // let res4 = this.service.bdbaScan(this.data_collection);
     // Get the static data for associated with each task, currently we are geting this data from local stored files
     let res5 = this.service.getStaticData(this.milestone?.toLocaleLowerCase()!);
     // forkJoin([res1, res2, res3, res4, res5, res6]).subscribe(([data1, data2, data3, data4, data5, data6]) => {
-    forkJoin([res1, res2, res3, res4, res5]).subscribe(([data1, data2, data3, data4, data5]) => {
-      this.checkMarxIssue = data1;
-      this.tempText = data2;
+    forkJoin([res2, res3, res4, res5]).subscribe(([data2, data3, data4, data5]) => {
+      // this.checkMarxIssue = data1;
+      this.kwResults = data2;
       this.protexResults = data3;
       // this.protexProj2 = data6;
-      this.bdba = data4;
+      this.bdbaResults = data4;
       this.details = data5;
-      if (this.checkMarxIssue)
-        this.runCheckMarxScan();
-      if (this.tempText)
-        this.getKwScan();
-      if (this.protexResults)
+      // if (this.checkMarxIssue)
+      //   this.runCheckMarxScan();
+      if (this.kwResults.length > 0)
+        this.getKwScan(this.kwResults);
+      if (this.protexResults.length > 0)
         this.geProtexFile(this.protexResults);
       // if (this.protexProj2)
       //   this.geProtexFile(this.protexProj2);
-      if (this.bdba)
-        this.geBdbaFile();
+      if (this.bdbaResults.length > 0)
+        this.geBdbaFile(this.bdbaResults);
 
       this.createTasks();
     });
@@ -329,7 +334,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     this.releaseChecklist = this.viewReleaseChecklist;
 
-    localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+    localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
 
     this.isLoading = false;
   }
@@ -358,7 +363,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     );
   }
 
-  downloadStatusDialogRef!:any;
+  downloadStatusDialogRef!: any;
   /**
    * Open selected Comment or Evidence file
    * @param fileName Name of the file
@@ -371,9 +376,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       disableClose: true
     });
 
-    console.log("Downloading starts at ===== "+moment().format('MMMM Do YYYY, h:mm:ss a'));
+    console.log("Downloading starts at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
     this.data_collection.file_type = type;
-    
+
     var fileext = fileName.split(".").pop();
     // alert("fileext = "+fileext);
     let fileMIMEType = this.getMIMEtype(fileext!);
@@ -386,9 +391,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       document.body.appendChild(a);
       a.click();
       // URL.revokeObjectURL(fileURL);
-      
+
       this.downloadStatusDialogRef.close();
-      console.log("Downloading ends at ===== "+moment().format('MMMM Do YYYY, h:mm:ss a'));
+      console.log("Downloading ends at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
     },
       (error) => {
         console.log('getPDF error: ', error);
@@ -571,7 +576,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     });
 
     this.evidenceDialogRef.afterClosed().subscribe(() => {
-      localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+      localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
     });
   }
 
@@ -633,7 +638,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.releaseChecklist![itemIndex] = _selectedRelease;
   }
 
-  isReleaseStatusCheck:boolean=false;
+  isReleaseStatusCheck: boolean = false;
   /**
    * Create Updated Task List and Save 
    */
@@ -651,20 +656,20 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       newBackendTask.project_id_id = this.selectedProject.project_id!;
 
       newBackendTaskArray.push(newBackendTask);
-      if(!this.isReleaseStatusCheck && this.selectedProject.project_release_status === 'Released' && openStatusArray.find((str) => str === release.status)){
-          this.isReleaseStatusCheck = true;
-          this.checkReleaseStatus(newBackendTask.project_id_id,false);
+      if (!this.isReleaseStatusCheck && this.selectedProject.project_release_status === RELEASED_LOWERCASE && openStatusArray.find((str) => str === release.status)) {
+        this.isReleaseStatusCheck = true;
+        this.checkReleaseStatus(newBackendTask.project_id_id, false);
       }
 
     }
-    if(!this.isReleaseStatusCheck && this.selectedProject.project_release_status === 'Released'){
-      this.checkReleaseStatus(this.selectedProject.project_id!,true);
+    if (!this.isReleaseStatusCheck && this.selectedProject.project_release_status === RELEASED_LOWERCASE) {
+      this.checkReleaseStatus(this.selectedProject.project_id!, true);
     }
 
     this.sendEmails();
-    
+
     this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
-      localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+      localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
       this.isSaved = false;
 
       if (navigate) {
@@ -679,8 +684,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * 
    * @param projectId 
    */
-  checkReleaseStatus(projectId:number,status:boolean){
-    this.service.changeTaskStatus(projectId,status).subscribe((status) => {
+  checkReleaseStatus(projectId: number, status: boolean) {
+    this.service.changeTaskStatus(projectId, status).subscribe((status) => {
     });
   }
 
@@ -705,12 +710,13 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       disableClose: true
     });
 
-    // addCommentDialogRef.afterClosed().subscribe((result ) => {
-    //   this.commentLoaded = false;
-    //   this.selectedRelease.comments.unshift(result);
-    //   this.createCommentList(this.selectedRelease,false);
-    //   // this.animal = result;
-    // });
+    this.addCommentDialogRef.afterClosed().subscribe(( ) => {
+      this.addComment(this.newComment);
+      // this.commentLoaded = false;
+      // this.selectedRelease.comments.unshift(result);
+      // this.createCommentList(this.selectedRelease,false);
+      // this.animal = result;
+    });
   }
 
   /**
@@ -742,7 +748,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    */
   addEvidence() {
     const addEvidenceDialogRef = this.dialog.open(EvidenceAddComponent, {
-      height: '50%',
+      height: '55%',
       width: '40%',
       disableClose: true,
       data: { task_id: this.selectedReleaseGuideline }
@@ -771,7 +777,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * @returns boolean value true if data change, false when nothing changed
    */
   checkData() {
-    var storedReleaseChecklist: Checklist[] = JSON.parse(localStorage.getItem("checkList")!);
+    var storedReleaseChecklist: Checklist[] = JSON.parse(localStorage.getItem(CHECKLIST_LOWERCASE)!);
     if (JSON.stringify(storedReleaseChecklist) === JSON.stringify(this.releaseChecklist)) {
       return false;
     } else {
@@ -819,14 +825,18 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   /**
    * Prepare BDBA Scan data
    */
-  geBdbaFile() {
+  geBdbaFile(bdbaResults: BdbaResult[]) {
     this.bdbaData = [];
-    const summary = this.bdba.results.summary;
-    const totalVun = summary["vuln-count"].total;
-
-    this.bdbaData.push("BDBA Scan Data".bold());
-    this.bdbaData.push("ScanDate: " + moment(this.bdba.results.last_updated).format('ll'));
-    this.bdbaData.push("Total Vulnerability: " + totalVun);
+    // const summary = this.bdba.results.summary;
+    // const totalVun = summary["vuln-count"].total;
+    if (bdbaResults) {
+      for (var bdbaResult of bdbaResults) {
+        this.bdbaData.push(bdbaResult.file_name.bold());
+        this.bdbaData.push("ScanDate: " + moment(bdbaResult.results.ScanDate).format('MMMM Do YYYY, h:mm:ss a'));
+        this.bdbaData.push("Total Vulnerability: " + bdbaResult.results.VulnerabilityCount);
+        this.bdbaData.push("<br>");
+      }
+    }
   }
 
 
@@ -866,52 +876,62 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   /**
    * Prepare KW scan data
    */
-  getKwScan() {
-    this.errorCount = 0;
-    this.criticalCount = 0;
-    this.kwIssue = [];
-    let re = /\}{/gi;
-    this.responseText = "[" + this.tempText.replace(re, "},{") + "]";
-    this.kwIssue = JSON.parse(this.responseText);
-    console.log(JSON.parse(this.responseText));
-    this.runKwScan();
-  }
+  getKwScan(kwResults: KwResults[]) {
 
-
-  runKwScan() {
-    this.kwData = [];
-    this.kwAnalyzeIssue = this.kwIssue.filter(data => data.status === 'Analyze');
-    for (var issue of this.kwAnalyzeIssue) {
-      switch (issue.severity) {
-        case 'Error':
-          this.errorCount++;
-          break;
-        case 'Critical':
-          this.criticalCount++;
-          break;
-        default:
+    if (kwResults) {
+      for (var kwResult of kwResults) {
+        this.kwData.push("KW Scan Data".bold());
+        this.kwData.push("Critical Count: " + kwResult.results.CriticalCount);
+        this.kwData.push("Error Count: " + kwResult.results.ErrorCount);
+        this.kwData.push("<br>");
       }
     }
-    this.kwData.push("KW Scan Data".bold());
-    this.kwData.push("Critical Count: " + this.criticalCount);
-    this.kwData.push("Error Count: " + this.errorCount);
-    this.kwData.push("<br>");
+
+    // this.errorCount = 0;
+    // this.criticalCount = 0;
+    // this.kwIssue = [];
+    // let re = /\}{/gi;
+    // this.responseText = "[" + this.tempText.replace(re, "},{") + "]";
+    // this.kwIssue = JSON.parse(this.responseText);
+    // console.log(JSON.parse(this.responseText));
+    // this.runKwScan();
   }
+
+
+  // runKwScan() {
+  //   this.kwData = [];
+  //   this.kwAnalyzeIssue = this.kwIssue.filter(data => data.status === 'Analyze');
+  //   for (var issue of this.kwAnalyzeIssue) {
+  //     switch (issue.severity) {
+  //       case 'Error':
+  //         this.errorCount++;
+  //         break;
+  //       case 'Critical':
+  //         this.criticalCount++;
+  //         break;
+  //       default:
+  //     }
+  //   }
+  //   this.kwData.push("KW Scan Data".bold());
+  //   this.kwData.push("Critical Count: " + this.criticalCount);
+  //   this.kwData.push("Error Count: " + this.errorCount);
+  //   this.kwData.push("<br>");
+  // }
 
 
   async geProtexFile(protexResults: ProtexResult[]) {
     // this.protexData = [];
-    var count =1;
+    var count = 1;
     if (protexResults) {
-      for(var protexResult of protexResults){
-        this.protexData.push(("Protex File:"+count).bold());
+      for (var protexResult of protexResults) {
+        this.protexData.push(("Protex File:" + count).bold());
         this.protexData.push("Scan Date: " + moment(protexResult.results.lastAnalyzed).format('MMMM Do YYYY, h:mm:ss a'));
         this.protexData.push("Code Matches:" + protexResult.results.pendingID);
         this.protexData.push("License Conflicts:" + protexResult.results.BOMComponentLicenseConflicts);
         this.protexData.push("<br>");
         count++;
       }
-      
+
     }
   }
 
@@ -925,53 +945,91 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
   getClass(proj: ReleaseChecklist) {
-    if (proj.status === 'Done') {
-      return '#E3FCEF';
+
+    switch (proj.status) {
+      case 'Done': {
+        return '#E3FCEF';
+      }
+      case 'WIP': {
+        return '#d6dbf0';
+      }
+      case 'Open': {
+        return '#FFEBE6';
+      }
+      case 'N/A': {
+        return '#F4F5F7';
+      }
+      case 'Pending Exception': {
+        return '#FFEBE6';
+      }
+      case 'Formal Exception Approved': {
+        return '#E3FCEF';
+      }
+      case 'Deviation Approved': {
+        return '#E3FCEF';
+      }
+      default: {
+        //statements; 
+        break;
+      }
     }
-    if (proj.status === 'WIP') {
-      return '#d6dbf0';
-    }
-    if (proj.status === 'Open') {
-      return '#FFEBE6';
-    }
-    if (proj.status === 'N/A') {
-      return '#F4F5F7';
-    }
-    if (proj.status === 'Pending Exception') {
-      return '#FFEBE6';
-    }
-    if (proj.status === 'Formal Exception Approved') {
-      return '#E3FCEF';
-    }
-    if (proj.status === 'Deviation Approved') {
-      return '#E3FCEF';
-    }
-    // else{
-    //   return 'green';
-    // }
+
   }
+
 
   openCommentInput() {
     document!.getElementById("commentFileInput")!.click();
   }
 
-
+  // validFileSize: boolean = true;
   selectCommentFile(fileInputEvent: any) {
-    this.selectedFiles = fileInputEvent.target.files;
-    this.selectedCommentFile = fileInputEvent.target.files[0];
+    let sizeInBytes: number = fileInputEvent.target.files[0].size;
+    // alert(sizeInBytes);
+    if (sizeInBytes / 1024 / 1024 < 10) {
+      // this.validFileSize = true;
+      var file = fileInputEvent.target.files[0].name;
+      var fileName = file.substr(0, file.lastIndexOf('.'));
+      var fileExtension = '.' + fileInputEvent.target.files[0].name.split('.').pop();
+
+      var name = fileName + "_" + new Date().getTime() + fileExtension;
+      var blob = fileInputEvent.target.files[0].slice(0, fileInputEvent.target.files[0].size, fileInputEvent.target.files[0].type);
+      this.selectedCommentFile = new File([blob], name, { type: fileInputEvent.target.files[0].type });
+    } else {
+      // this.validFileSize = false;
+      this.openFileErrorUploadDialog();
+    }
+
+
   }
 
-  uploading:boolean=false;
+  fileErrorRef: any;
+  /**
+   * open FIle Size Error Dialog 
+   */
+  openFileErrorUploadDialog() {
+    this.fileErrorRef = this.dialog.open(ConfirmUploadFileComponent, {
+      height: '15%',
+      width: '20%',
+      disableClose: true
+    });
+  }
+
+  uploading: boolean = false;
   public saveComment(): void {
-    this.uploading = true;
-    console.log("starts at ===== "+moment().format('MMMM Do YYYY, h:mm:ss a'));
+
+    console.log("starts at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
     this.createNewComment();
     this.service.saveComment(this.newComment).subscribe((status) => {
-      this.uploadCommentFile();
+      if (this.selectedCommentFile?.name) {
+        this.uploadCommentFile();
+      }else{
+        this.addCommentForm.reset();
+        this.addCommentDialogRef.close();
+      }
     });
 
-    this.addComment(this.newComment);
-    
+    // this.addComment(this.newComment);
+
   }
 
   createNewComment() {
@@ -989,21 +1047,21 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * Upload comment file to server
    */
   uploadCommentFile() {
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedCommentFile;
-      if (file) {
-        this.currentFile = file;
-        this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
-          console.log("Ends at ====== "+moment().format('MMMM Do YYYY, h:mm:ss a') +" with status = "+status.message);
-          this.uploading=false;
-          this.addCommentForm.reset();
-          this.addCommentDialogRef.close();
-          localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
-        });
-      }
+    const file: File | null = this.selectedCommentFile;
+    // alert(file);
+    if (file) {
+      this.uploading = true;
+      this.currentFile = file;
+      this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
+        console.log("Ends at ====== " + moment().format('MMMM Do YYYY, h:mm:ss a') + " with status = " + status.message);
+        this.uploading = false;
+        this.addCommentForm.reset();
+        this.addCommentDialogRef.close();
+        localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
+       
+      });
     }
   }
-
 
   /**
    * 
@@ -1029,7 +1087,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     });
 
     this.ownerDialogRef.afterClosed().subscribe(() => {
-      localStorage.setItem("checkList", JSON.stringify(this.releaseChecklist));
+      localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
     });
   }
 

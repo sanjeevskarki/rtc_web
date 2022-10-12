@@ -62,7 +62,6 @@ export class ProtexAddComponent implements OnInit {
    * Create Protex Config Object
    */
   createNewProtex() {
-    // if (this.selectedProject) {
       if (this.selectedProtexConfig) {
         this.selectedProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
         this.selectedProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;
@@ -76,13 +75,6 @@ export class ProtexAddComponent implements OnInit {
         // this.newProtexConfig.project_id = this.selectedProject.project_id;
         this.updateProtexCofig = this.newProtexConfig;
       }
-    // }else{
-    //   this.newProtexConfig = <Protex_Config>{};
-    //   this.newProtexConfig.protex_server = this.addProtexConfigForm.controls['protex_server'].value;
-    //   this.newProtexConfig.protex_project_id = this.addProtexConfigForm.controls['protex_project_id'].value;
-    //   this.newProtexConfig.user_added = this.user_added;
-    //   this.updateProtexCofig = this.newProtexConfig;
-    // }
   }
 
   /**
@@ -94,13 +86,15 @@ export class ProtexAddComponent implements OnInit {
   }
 
   endsWithNumber( str:any ){
+   
+    
     return isNaN(str.slice(-5)) ? false : true;
   }
 
-  // ('^[0-9]{7}$')
   isValidId() {
+    var strTemp = this.addProtexConfigForm.controls['protex_project_id'].value?.slice(0,-5);
     if (this.addProtexConfigForm.controls['protex_project_id'].value?.startsWith(this.prefix) &&
-    this.endsWithNumber(this.addProtexConfigForm.controls['protex_project_id'].value!)) {
+    this.endsWithNumber(this.addProtexConfigForm.controls['protex_project_id'].value!) && strTemp.slice(-1) == '_' ) {
       return false;
     } else {
       return true;

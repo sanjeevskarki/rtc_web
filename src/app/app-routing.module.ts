@@ -11,10 +11,13 @@ import { ReleaseEditComponent } from './release/release.edit/release.edit.compon
 import { BkcComponent } from './home/bkc/bkc.component';
 import { ChecklistMenuComponent } from './home/checklist.menu/checklist.menu.component';
 import { NotificationComponent } from './home/notification/notification.component';
+import { LoginComponent } from './account/login.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+
   { path: 'home', component: HomeComponent },
   { path: 'release', component: ReleaseComponent},
   { path: 'admin', component: AdminComponent },
@@ -43,7 +46,7 @@ const routes: Routes = [
           }
        ]           
 
-  }
+  },
 ];
 
 @NgModule({

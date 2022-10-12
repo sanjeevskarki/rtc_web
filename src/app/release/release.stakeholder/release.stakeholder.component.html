@@ -8,6 +8,7 @@
             Name is required
         </mat-error>
     </mat-form-field>
+    <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Email</mat-label>
         <input type="text" matInput formControlName="email">
@@ -19,6 +20,7 @@
             Please enter a valid email address
         </mat-error>
     </mat-form-field>
+    <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>WWID</mat-label>
         <input type="text" matInput formControlName="wwid">
@@ -27,6 +29,7 @@
             WWID is required
         </mat-error>
     </mat-form-field>
+    <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Role</mat-label>
         <!-- <input type="text" matInput formControlName="role"> -->
@@ -40,7 +43,11 @@
             Role is required
         </mat-error>
     </mat-form-field>
+    <!-- <div style="height: 0.5rem;"></div>
+    
+    <mat-checkbox color="primary" formControlName="email_notification">Email Notification</mat-checkbox> -->
 
+    <div style="height: 0.5rem;"></div>
     <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
         (click)="close()">Close</button>
     <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveStakeholder()"

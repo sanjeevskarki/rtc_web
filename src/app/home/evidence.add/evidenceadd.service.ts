@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EVIDENCES_LOWERCASE, UPLOAD_LOWERCASE } from 'src/app/release/release.constants';
 import { environment } from 'src/environments/environment';
-import { BackendEvidences } from '../home.models';
+import { ApiResponse, BackendEvidences } from '../home.models';
 
 
 /**
@@ -32,7 +32,7 @@ export class EvidenceAddService {
 
   }
 
-  public uploadFile(file: File, businessUnit: string, projectName: string, milestone: string): Observable<HttpEvent<any>> {
+  public uploadFile(file: File, businessUnit: string, projectName: string, milestone: string): Observable<ApiResponse> {
     const formData: FormData = new FormData();
     formData.append('file', file);
 
@@ -46,15 +46,15 @@ export class EvidenceAddService {
       responseType: 'json',
       params: params,
     }
+    return this.httpClient.post<ApiResponse>(`${this.baseUrl}upload`, formData, requestOptions);
+    // const req = new HttpRequest('POST', `${this.baseUrl}upload`, formData, requestOptions);
 
-    const req = new HttpRequest('POST', `${this.baseUrl}upload`, formData, requestOptions);
-
-    return this.httpClient.request(req);
+    // return this.httpClient.request(req);
   }
 
   public saveEvidence(evidence: BackendEvidences): Observable<boolean> {
     const body = JSON.stringify(evidence);
     return this.httpClient.post<boolean>(`${this.baseUrl}evidences`, body, { headers: this.headers });
   }
-  
+
 }

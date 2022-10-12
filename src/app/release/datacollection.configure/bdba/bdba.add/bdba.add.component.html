@@ -9,7 +9,7 @@
             Product Id is required
         </mat-error>
     </mat-form-field>
-    <div style="height: 2px;"></div>
+    <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Product Name</mat-label>
         <input type="text" matInput formControlName="product_name">
@@ -18,17 +18,17 @@
             Product Name is required
         </mat-error>
     </mat-form-field>
+    <div style="height: 0.5rem;"></div>
     <div>
-        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">User Added
+        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">Faceless User
+             Added
         </mat-checkbox>
     </div>
-
-   
-    <div style="margin-top: 2rem;">
+    <div style="height: 0.5rem;"></div>
+    
         <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
             (click)="close()">Close</button>
         <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveBdbaConfig()"
             [disabled]="!addBdbaConfigForm.valid">Save</button>
-    </div>
-
+    
 </form>

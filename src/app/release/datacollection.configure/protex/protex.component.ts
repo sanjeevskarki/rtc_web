@@ -46,7 +46,8 @@ export class ProtexComponent implements OnInit {
         }
       );
     }else{
-      this.protexConfig = JSON.parse(localStorage.getItem('newProtexConfig')!);
+      this.protexConfigList = JSON.parse (localStorage.getItem('newProtexConfigList')!);
+      this.tempProtexConfigList = this.protexConfigList ;
     }
   }
 
@@ -72,10 +73,9 @@ export class ProtexComponent implements OnInit {
             this.createProtexConfigList(this.tempProtexConfigList);
           });
         }else{
-          this.tempProtexConfigList.unshift(this.newProtexConfig);
+          this.tempProtexConfigList!.unshift(this.newProtexConfig);
           this.createProtexConfigList(this.tempProtexConfigList);
-          // alert(this.createProtexConfigList);
-          localStorage.setItem('newProtexConfigList', JSON.stringify(this.createProtexConfigList));
+          localStorage.setItem('newProtexConfigList', JSON.stringify(this.tempProtexConfigList));
         }
       }
     });

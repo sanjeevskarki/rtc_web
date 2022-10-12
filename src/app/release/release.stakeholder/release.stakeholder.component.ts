@@ -25,6 +25,7 @@ export class ReleaseStakeholderComponent implements OnInit {
     { value: 'Security Champion', viewValue: 'Security Champion' },
     { value: 'Product Security Expert', viewValue: 'Product Security Expert (PSE)' },
     { value: 'Security & Privacy Lead', viewValue: 'Security & Privacy Lead (SPL)' },
+    { value: 'Attorney', viewValue: 'Attorney' },
     { value: 'Other', viewValue: 'Other' },
   ];
   constructor(private formBuilder: UntypedFormBuilder,public dialogRef: MatDialogRef<ReleaseStakeholderComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
@@ -35,7 +36,7 @@ export class ReleaseStakeholderComponent implements OnInit {
       name: [null, Validators.required],
       email: [null, [Validators.required,Validators.email]],
       wwid: [null, []],
-      role: [null, Validators.required],
+      role: [null, Validators.required]
     });
     if (this.data) {
       this.selectedStakeholder = this.data.data;
@@ -44,6 +45,7 @@ export class ReleaseStakeholderComponent implements OnInit {
         email: this.selectedStakeholder.email,
         wwid: this.selectedStakeholder.wwid,
         role: this.selectedStakeholder.role,
+        email_notification: this.selectedStakeholder.email_notification,
       });
     }
   }
@@ -67,11 +69,16 @@ export class ReleaseStakeholderComponent implements OnInit {
    * Create New Stakeholder object
    */
   createNewStakeholder(){
+    let emailNotification:boolean=true;
+    // alert(this.addStakeholderForm.controls['email_notification'].value);
     let tempid;
     if(this.selectedStakeholder) {
       tempid= this.selectedStakeholder.id;
     }else{
       tempid= Math.floor(Math.random() * 90000) + 10000;
+    }
+    if(this.addStakeholderForm.controls['role'].value === 'Attorney'){
+      emailNotification = false;
     }
     const newStakeholder: Stakeholder = {
       id: tempid,
@@ -79,6 +86,7 @@ export class ReleaseStakeholderComponent implements OnInit {
       email: this.addStakeholderForm.controls['email'].value,
       wwid: this.addStakeholderForm.controls['wwid'].value,
       role: this.addStakeholderForm.controls['role'].value,
+      email_notification: emailNotification,
     };
     this.newStakeholder = newStakeholder;
   }

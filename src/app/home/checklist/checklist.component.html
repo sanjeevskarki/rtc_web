@@ -120,7 +120,7 @@
                     <div>
                         <div class="firstline cell-line">No Evidence Found</div>
                         <div class="secondline cell-line">
-                            <button mat-stroked-button matTooltip="Add Evidence" color="primary"
+                            <button mat-stroked-button color="primary"
                                 (click)="onEvidenceClicked(evidenceDialog,row.id)">
                                 <mat-icon>add</mat-icon>Add Evidence
                             </button>
@@ -153,7 +153,7 @@
                     <div>
                         <div class="firstline cell-line">No Comment Found</div>
                         <div class="secondline cell-line">
-                            <button mat-stroked-button matTooltip="Add Comments" color="primary"
+                            <button mat-stroked-button color="primary"
                                 (click)="onCommentClicked(commentDialog,row.id)">
                                 <mat-icon>add</mat-icon>Add Comments
                             </button>
@@ -209,9 +209,9 @@
         No Comments Found, Click <b> &nbsp;Add Another Comment&nbsp; </b> for adding New Comment
     </div>
     <div class="form-group" style="float: right;padding-bottom: 5px;">
-        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 8px 0;"
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;"
             (click)="closeCommentDialog()">Close</button>
-        <button mat-flat-button matTooltip="Add Comment" color="primary" style="float: right;margin: 8px 0 0;"
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
             (click)="openCommentDialog(addCommentDialog)">Add Another Comment</button>
 
     </div>
@@ -230,6 +230,7 @@
                 Comment is required
             </mat-error>
         </mat-form-field>
+        <div style="height: 0.5rem;"></div>
         <div class="form-group">
             <div style="display: flex;">
                 <div>
@@ -239,6 +240,9 @@
                     font-size: smaller;
                     margin-top: -10px;">
                     <mat-hint >MaxFileSize: 10mb</mat-hint>
+                    <!-- <mat-error *ngIf="!validFileSize">
+                        File Size Exceed the (10mb) limit
+                    </mat-error> -->
                     </div>
                 </div>
                 <div style="font-size: smaller;margin-left: 2px;">
@@ -266,9 +270,9 @@
             </div> -->
         </div>
         <br>
-        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
             (click)="closeAddCommentDialog()">Close</button>
-        <button mat-flat-button matTooltip="Save" color="primary" style="float: right;margin: 8px 8px 0;"
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;"
             (click)="saveComment()" [disabled]="!addCommentForm.valid">Save</button>
     </form>
 </ng-template>
@@ -332,11 +336,11 @@
         No Evidence Found, Click <b> &nbsp;Add Evidence&nbsp; </b> for adding New Evidence
     </div>
 
-    <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
         (click)="closeEvidenceListDialog()">
         Close
     </button>
-    <button mat-flat-button matTooltip="Add Evidence" color="primary" style="float: right;margin: 8px 8px 0;"
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;"
         (click)="addEvidence()">
         Add Evidence
     </button>
@@ -373,9 +377,9 @@
             </mat-error>
         </mat-form-field>
         <br>
-        <button mat-flat-button matTooltip="Close" color="primary" style="float: right;margin: 8px 0 0;"
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
             (click)="closeAddOwnerDialog()">Close</button>
-        <button mat-flat-button matTooltip="Add" color="primary" style="float: right;margin: 8px 8px 0;"
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;"
             (click)="saveOwner()" [disabled]="!addOwnerForm.valid">Add</button>
     </form>
 </ng-template>

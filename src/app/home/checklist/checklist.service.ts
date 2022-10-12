@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTION, FUTURE, KW_SCAN_FILE, NOTIFICATION_LOWER, PAST, PROJECT, PROTEX_D457_SCAN_FILE1, PROTEX_D457_SCAN_FILE2, PROTEX_META_SCAN_FILE1, PROTEX_META_SCAN_FILE2, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
 import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, ApiResponse, BackendComments, OwnerEmail, NotificationSetting } from '../home.models';
-import { Bdba, BdbaResults, Checkmarx, DataCollection, KwResults, Project, ProtexResult, TaskStatus } from './checklist.models';
+import { Bdba, BdbaResult, Checkmarx, DataCollection, KwResults, Project, ProtexResult, TaskStatus } from './checklist.models';
 import { switchMap } from "rxjs/operators";
 
 declare var require: any;
@@ -397,20 +397,23 @@ export class ChecklistService {
     return this.httpClient.get<NotificationSetting>(this.endpoint_url + this.notification, requestOptions);
   }
 
-  public getBdbaResults(projectId: string): Observable<BdbaResults> {
-    return this.httpClient.get<BdbaResults>(this.endpoint_url + this.bdbaResults + "/" + projectId);
+  public getBdbaResults(projectId: number): Observable<BdbaResult[]> {
+    return this.httpClient.get<BdbaResult[]>(this.endpoint_url + this.bdbaResults + "/" + projectId);
   }
 
-  public getKwResults(projectId: string): Observable<KwResults> {
-    return this.httpClient.get<KwResults>(this.endpoint_url + this.kwResults + "/" + projectId);
+  public getKwResults(projectId: number): Observable<KwResults[]> {
+    return this.httpClient.get<KwResults[]>(this.endpoint_url + this.kwResults + "/" + projectId);
   }
 
   public getProtexResults(projectId: number): Observable<ProtexResult[]> {
     return this.httpClient.get<ProtexResult[]>(this.endpoint_url + this.protexResults + "/" + projectId);
   }
+  
 
   public changeTaskStatus(projectId: number,status:boolean): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(this.endpoint_url + this.project + "/"+projectId+ "/"+status);
   }
+
+  
 
 }

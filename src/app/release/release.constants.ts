@@ -20,6 +20,11 @@ export const ALPHA = 'Alpha';
 export const EXTERNAL_LOWERCASE = 'external';
 export const EXTERNAL_WITH_HANDOVER= 'External With Handover';
 export const EXTERNAL_WITHOUT_HANDOVER = 'External Without Handover';
+
+export const INGREDIENT = 'Ingredient';
+export const PLATFORM= 'Platform';
+export const NOT_ASSOCIATED_PLATFORM = 'Not associated with a Platform';
+
 export const INTERNAL = 'Internal';
 export const MILESTONE_LOWERCASE = 'milestone';
 export const RELEASE_TYPE_LOWERCASE = 'releasetype';
@@ -37,6 +42,8 @@ export const ATTORNEY_NAME = 'attorneyname';
 export const ATTORNEY_EMAIL = 'attorneyemail';
 export const RELEASE_STATUS = 'releasestatus';
 export const RELEASE_TYPE = 'releasetype';
+export const GRADING_TYPE = 'gradingtype';
+export const PLATFORM_LOWERCASE = 'platform';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const RTC_VERSION = 'RTC V0.1 - Release Tracking Center';
 export const REPORTS_LOWERCASE = 'reports';
@@ -78,3 +85,4 @@ export const ownerNotificationList: any[] = [
     { value: 'releasescheduleupdate_qualowner', viewValue: 'Notify all stakeholders when release schedule was updated.', checked: false }
   ];
   
+  export const CHECKLIST_LOWERCASE = 'checklist';
