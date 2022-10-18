@@ -31,7 +31,17 @@
     <div>
         <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
             (click)="close()">Close</button>
-        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveProtexConfig()"
-            [disabled]="!addProtexConfigForm.valid || isValidId()">Save</button>
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveProtexConfig(protexConfirmDialog)"
+            [disabled]="!addProtexConfigForm.valid">Save</button>
     </div>
 </form>
+
+<ng-template #protexConfirmDialog>
+    <div mat-dialog-content>
+        <p style="color: red;">Protex ID should be comprised of a prefix 'c_' and suffix '_5 digits'.</p>    
+    </div>
+    <div mat-dialog-actions style="float:right;">
+        <!-- <button mat-flat-button color="primary" (click)="continue()">Continue</button> -->
+        <button mat-flat-button color="primary" (click)="closeConfirmDialog()" cdkFocusInitial>Cancel</button>
+    </div>
+</ng-template>

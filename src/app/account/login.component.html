@@ -24,10 +24,10 @@
                 </mat-error>
             </mat-form-field>  
         </form>
-        <div class="error-msg" *ngIf="notExist">No Release found for " {{userName}} "</div>
+        <!-- <div class="error-msg" *ngIf="notExist">No Release found for " {{userName}} "</div> -->
         <br>
         <button mat-flat-button color="primary" style="align-self: center;width: 30rem;"
-                [disabled]="!loginForm.valid || isValidEmailId()" (click)="login() ">Login</button>
+                [disabled]="!loginForm.valid || isValidEmailId()" (click)="login(loginConfirmDialog) ">Login</button>
         <div *ngIf="isLoading" class="loader">
             <mat-progress-spinner strokeWidth="3" [diameter]="50" color="primary" mode="indeterminate">
             </mat-progress-spinner>
@@ -59,3 +59,17 @@
     </mat-toolbar>
    <router-outlet *ngIf="isLoggedIn"></router-outlet>
 </div>
+
+
+<ng-template #loginConfirmDialog>
+    <div mat-dialog-content>
+        <p style="color: red;">No Release found for " {{userName}} ". Do you still want to Continue.</p>
+        <!-- <p>Do you still want to continue ?</p> -->
+    
+    </div>
+    
+    <div mat-dialog-actions style="float:right;">
+        <button mat-flat-button color="primary" (click)="continue()">Continue</button>
+        <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
+    </div>
+</ng-template>

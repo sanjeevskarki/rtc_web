@@ -189,9 +189,14 @@
     Dialog shows the comments list
 -->
 <ng-template #commentDialog>
-    <h1 mat-dialog-title>{{commentsHeader}}</h1>
+    <h1 mat-dialog-title>{{commentsHeader}}</h1> 
     <mat-list>
         <mat-list-item *ngFor="let comment of displayComments">
+            <div style="display: flex;">
+            <button mat-icon-button color="primary" matTooltip="Edit Comment"
+                    (click)="editSelectedComment(addCommentDialog,comment)">
+                    <mat-icon>edit</mat-icon>
+            </button>
             <div style="width:100%">
                 <div style="font-size: 12px;" class="detailsAnswer"><b>{{comment.date | dateTimePipe}}</b>
                 </div>
@@ -202,8 +207,11 @@
                     <u>{{ comment.content }}</u>
                 </div><br>
             </div>
+        </div>
         </mat-list-item>
+        
     </mat-list>
+  
     <br>
     <div class="no-results" [style.display]="displayComments.length == 0 ? '' : 'none'">
         No Comments Found, Click <b> &nbsp;Add Another Comment&nbsp; </b> for adding New Comment
@@ -220,7 +228,7 @@
     Dialog for adding a new comment
 -->
 <ng-template #addCommentDialog>
-    <h1 mat-dialog-title>Add Comment</h1>
+    <h1 mat-dialog-title>{{commentFormHeader}}</h1>
     <form class="example-form" [formGroup]="addCommentForm">
         <mat-form-field appearance="outline" style="display: inline;">
             <mat-label>Comments</mat-label>
@@ -248,9 +256,10 @@
                 <div style="font-size: smaller;margin-left: 2px;">
                     <input id="commentFileInput" hidden type="file" (change)="selectCommentFile($event)" formControlName="upload"
                     name="upload" accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">
-                    <mat-label *ngIf="selectedCommentFile">{{selectedCommentFile.name}}</mat-label>
+                    <mat-label *ngIf="selectedCommentFile">{{selectedFilename}}</mat-label>
                 </div>
             </div>
+            <div style="height: 1rem;"></div>
             <div *ngIf="uploading">Uploading File to Server..
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                 <br>
@@ -286,9 +295,9 @@
             <mat-header-cell *matHeaderCellDef>
             </mat-header-cell>
             <mat-cell *matCellDef="let row; let i=index;">
-                <button mat-icon-button color="primary" matTooltip="Delete Release"
-                    (click)="selectDeletedEvidence(row)">
-                    <mat-icon aria-label="Delete">delete</mat-icon>
+                <button mat-icon-button color="primary" matTooltip="Edit Evidence"
+                    (click)="editSelectedEvidence(row)">
+                    <mat-icon aria-label="Delete">edit</mat-icon>
                 </button>
             </mat-cell>
         </ng-container>

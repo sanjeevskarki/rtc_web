@@ -9,11 +9,12 @@ import {
 import { BackendEvidences, Project } from '../home.models';
 import { EvidenceAddService } from './evidenceadd.service';
 import { environment } from 'src/environments/environment';
-import { UPLOAD_LOWERCASE } from 'src/app/release/release.constants';
+import { EVIDENCES_LOWERCASE, UPLOAD_LOWERCASE } from 'src/app/release/release.constants';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ConfirmUploadFileComponent } from '../checklist/confirm.upload.file/confirm.upload.file.component';
+import { DataCollection } from '../checklist/checklist.models';
 
 @Component({
   selector: 'app-evidenceadd',
@@ -28,7 +29,7 @@ export class EvidenceAddComponent implements OnInit {
 
   public width: string = '30%';
   public height: string = '50%';
-  public evidenceHeader: string = 'Add Evidence';
+  public evidenceHeader!: string ;
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
   public evidenceType!: string;
 
@@ -53,6 +54,7 @@ export class EvidenceAddComponent implements OnInit {
   newEvidence!: BackendEvidences;
   selectedFile!: any;
   selectedProject!: Project;
+  existingFileName!:string;
 
   uploadTypes: any[] = [
     { value: 'file', viewValue: 'File' },
@@ -70,6 +72,53 @@ export class EvidenceAddComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder, private service: EvidenceAddService, public dialogRef: MatDialogRef<EvidenceAddComponent>, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: BackendEvidences) {
 
+  }
+
+  selectedEvidence!:BackendEvidences;
+  ngOnInit() {
+    this.selectedEvidence = this.data;
+    this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+    this.isLinkSelected = false;
+    this.isFileUploadSelected = false;
+    this.evidenceForm = this.formBuilder.group({
+      title: [null, Validators.required],
+      type: [null, []],
+      link: [null, [Validators.pattern(this.reg)]],
+      upload: [null, []],
+      comment: [null, Validators.required],
+    });
+
+    if(this.selectedEvidence.id){
+      this.evidenceHeader='Update Evidence';
+      this.evidenceForm.patchValue({
+        title: this.selectedEvidence.title,
+        type: this.selectedEvidence.type,
+        // link: this.selectedEvidence.evidence,
+        // upload: this.selectedEvidence.,
+        comment: this.selectedEvidence.comments,
+      });
+      if (this.selectedEvidence.type === 'file') {
+        this.isFileUploadSelected = true;
+        this.isLinkSelected = false;
+       
+        // this.evidenceForm.patchValue({
+        //   upload: this.selectedEvidence.evidence,
+        // });
+        this.existingFileName = this.selectedEvidence.evidence;
+        this.selectedFilename = this.selectedEvidence.evidence;
+        this.selectedFile = this.selectedEvidence.evidence;
+      } else {
+        this.evidenceForm.patchValue({
+          link: this.selectedEvidence.evidence,
+        });
+        
+        this.isLinkSelected = true;
+        this.isFileUploadSelected = false;
+      }
+      this.evidenceType = this.selectedEvidence.type;
+    }else{
+      this.evidenceHeader='Add Evidence';
+    }
   }
 
   isValueExist(value: string): boolean {
@@ -101,7 +150,7 @@ export class EvidenceAddComponent implements OnInit {
   // selectedFiles?: FileList;
   currentFile?: File;
   // validFileSize:boolean=true;
-
+  selectedFilename!:string;
   selectEvidenceFile(fileInputEvent: any) {
     
     let sizeInBytes: number = fileInputEvent.target.files[0].size;
@@ -114,6 +163,7 @@ export class EvidenceAddComponent implements OnInit {
       var name = fileName+"_"+ new Date().getTime() + fileExtension;
       var blob = fileInputEvent.target.files[0].slice(0, fileInputEvent.target.files[0].size, fileInputEvent.target.files[0].type); 
       this.selectedFile = new File([blob], name, {type: fileInputEvent.target.files[0].type});
+      this.selectedFilename = this.selectedFile.name;
     }else{
       // this.validFileSize = false;
       this.openFileErrorUploadDialog();
@@ -139,18 +189,35 @@ export class EvidenceAddComponent implements OnInit {
 }
 
   uploading:boolean=false;
+  addedEvidence!:BackendEvidences;
   /**
    * Save Evidence
    */
   public saveEvidence(): void {
     this.createNewEvidence();
-    this.service.saveEvidence(this.newEvidence).subscribe((status) => {
+    console.log(JSON.stringify(this.updateEvidence));
+    if (this.selectedEvidence.id) {
+      if (this.evidenceType === 'file') {
+        if(this.updateEvidence.evidence){
+          this.deleteEvidenceFile(this.existingFileName);
+          this.uploadEvidenceFile();
+        }else{
+          this.updateEvidence.evidence = this.selectedFilename; 
+        }
+      }
+      this.service.updateEvidence(this.updateEvidence).subscribe((status) => {
+        this.dialogRef.close({ data: this.updateEvidence });
+      });
+    }else{
       if (this.evidenceType === 'file') {
         this.uploadEvidenceFile();
-      }else{
-        this.dialogRef.close({ data: this.newEvidence });
       }
-    });
+      this.service.saveEvidence(this.updateEvidence).subscribe((status) => {
+        this.addedEvidence=status;
+        this.dialogRef.close({ data: this.addedEvidence });
+      });
+    }
+    
   }
   progress = 0;
   /**
@@ -165,18 +232,18 @@ export class EvidenceAddComponent implements OnInit {
           this.currentFile = file;
           this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, 
             this.selectedProject.project_milestone_id).subscribe((status) => {
-              alert(status.message)
+              // alert(status.message)
               // alert(event.type)
               // if (event.type === HttpEventType.UploadProgress) {
               //   this.progress = Math.round(100 * event.loaded / event.total);
               //   console.log('Progress-------- ' + this.progress + '%');
               // }
               this.uploading=false;
-              this.dialogRef.close({ data: this.newEvidence });
+              // this.dialogRef.close({ data: this.updateEvidence });
           });
         }
       }else{
-        this.dialogRef.close({ data: this.newEvidence });
+        // this.dialogRef.close({ data: this.newEvidence });
       }
   }
 
@@ -184,18 +251,23 @@ export class EvidenceAddComponent implements OnInit {
     document!.getElementById("fileInput")!.click();
   }
 
-  ngOnInit() {
+  data_collection!: DataCollection;
+  deleteEvidenceFile(fileName:string){
+    this.data_collection = <DataCollection>{};
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
-    this.isLinkSelected = false;
-    this.isFileUploadSelected = false;
+    this.data_collection.business_unit = this.selectedProject.project_business_unit_id.toLowerCase().replace(/\s/g, "");
+    this.data_collection.milestone_id = this.selectedProject.project_milestone_id.toLowerCase().replace(/\s/g, "");
+    this.data_collection.project_id = this.selectedProject.project_name.toLowerCase().replace(/\s/g, "");
+    this.data_collection.file_type = EVIDENCES_LOWERCASE;
+   
+    this.service.deleteFile(this.data_collection, fileName).subscribe((data) => {
+      
+    },
+    (error) => {
+      console.log('getPDF error: ', error);
+    }
+    );
 
-    this.evidenceForm = this.formBuilder.group({
-      title: [null, Validators.required],
-      type: [null, []],
-      link: [null, [Validators.pattern(this.reg)]],
-      upload: [null, []],
-      comment: [null, Validators.required],
-    });
   }
 
   requiredFileType(type: string) {
@@ -232,20 +304,40 @@ export class EvidenceAddComponent implements OnInit {
     }.bind(this), 200);
   }
 
+  updateEvidence!:BackendEvidences;
   /**
    * Create Evidence object
    */
   createNewEvidence() {
-    const newEvidence: BackendEvidences = {
-      id: Math.floor(Math.random() * 90000) + 10000,
-      task_id: this.data.task_id!,
-      title: this.evidenceForm.controls['title'].value,
-      comments: this.evidenceForm.controls['comment'].value,
-      evidence: this.getEvidence(),
-      type: this.evidenceType,
-      date: moment(new Date().getTime()).format()
-    };
-    this.newEvidence = newEvidence;
+    if (this.selectedEvidence.id) {
+      this.selectedEvidence.task_id = this.selectedEvidence.task_id!;
+      this.selectedEvidence.title = this.evidenceForm.controls['title'].value;
+      this.selectedEvidence.comments = this.evidenceForm.controls['comment'].value;
+      // alert("this.getEvidence() = "+this.getEvidence());
+      this.selectedEvidence.evidence= this.getEvidence();
+      this.selectedEvidence.type= this.evidenceType;
+      this.selectedEvidence.date = moment(new Date().getTime()).format();
+      this.updateEvidence = this.selectedEvidence;
+    } else {
+      this.newEvidence = <BackendEvidences>{};
+      this.newEvidence.task_id = this.data.task_id!,
+      this.newEvidence.title = this.evidenceForm.controls['title'].value,
+      this.newEvidence.comments = this.evidenceForm.controls['comment'].value,
+      this.newEvidence.evidence= this.getEvidence(),
+      this.newEvidence.type= this.evidenceType,
+      this.newEvidence.date = moment(new Date().getTime()).format();
+      this.updateEvidence = this.newEvidence;
+    }
+
+    // const newEvidence: BackendEvidences = {
+    //   task_id: this.data.task_id!,
+    //   title: this.evidenceForm.controls['title'].value,
+    //   comments: this.evidenceForm.controls['comment'].value,
+    //   evidence: this.getEvidence(),
+    //   type: this.evidenceType,
+    //   date: moment(new Date().getTime()).format()
+    // };
+    // this.newEvidence = newEvidence;
   }
 
   /**

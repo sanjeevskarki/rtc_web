@@ -83,23 +83,15 @@ export interface Unit {
   exact?: number[];
 }
 
-export interface ViewComment {
-  id: number;
-  comments: string;
+export interface BackendComments {
+  id?: number;
   content: string;
-  date: string;
   task_id: number;
+  comments: string;
+  date: string;
 }
 
-export interface ViewEvidence {
-  id: number;
-  seq: number;
-  evidence: string | undefined;
-  title: string;
-  comments: string;
-  date: string | undefined;
-  type: string;
-}
+
 
 export interface Details {
   id: string;
@@ -195,18 +187,13 @@ export interface BackendTask {
   backend_comments?: BackendComments[];
 }
 
-export interface BackendComments {
-  id: number;
-  content: string;
-  task_id: number;
-  comments: string;
-  date: string;
-}
+
 
 export interface BackendEvidences {
   id: number;
+  seq?: number;
   title: string;
-  task_id: number;
+  task_id?: number;
   comments: string;
   evidence: string;
   type: string;

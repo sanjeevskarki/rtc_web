@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validator, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Project } from 'src/app/home/home.models';
 import { ReleaseService } from 'src/app/release/release.service';
 import { Protex_Config, Scan_Server } from '../../datacollection.models';
@@ -23,7 +23,8 @@ export class ProtexAddComponent implements OnInit {
   prefix = 'c_';
   scanServerList!: Scan_Server[];
   scanServers!: any[];
-  constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private service: ReleaseService) { }
+  constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any, 
+  private service: ReleaseService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getServer();
@@ -49,13 +50,26 @@ export class ProtexAddComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
-
+  protexConfirmDialogRef:any;
   /**
-   * Save Protec Config Object
+   * Save Protex Config Object
    */
-  saveProtexConfig() {
-    this.createNewProtex();
-    this.dialogRef.close({ data: this.updateProtexCofig });
+  saveProtexConfig(_templateRef: any) {
+    if(this.isValidId()){
+      this.protexConfirmDialogRef = this.dialog.open(_templateRef, {
+        height: '17%',
+        width: '32%',
+        disableClose: true
+      });
+    }else{
+      this.createNewProtex();
+      this.dialogRef.close({ data: this.updateProtexCofig });
+    }
+  
+  }
+
+  closeConfirmDialog(){
+    this.protexConfirmDialogRef.close();
   }
 
   /**

@@ -520,7 +520,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newProtexConfigList = JSON.parse(localStorage.getItem('newProtexConfigList')!);
     if (this.newProtexConfigList.length > 0) {
       var protexConfigs: Protex_Config[] = [];
-      alert(this.newProtexConfigList.length);
+      
       for (var protexConfig of this.newProtexConfigList) {
         protexConfig.project_id = project.project_id;
         protexConfigs.push(protexConfig);
@@ -535,7 +535,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newBdbaConfigList = JSON.parse(localStorage.getItem('newBdbaConfigList')!);
     if (this.newBdbaConfigList.length > 0) {
       var bdbaConfigs: Bdba_Config[] = [];
-      alert(this.newBdbaConfigList.length);
+     
       for (var bdbaConfig of this.newBdbaConfigList) {
         bdbaConfig.project_id = project.project_id;
         bdbaConfigs.push(bdbaConfig);
@@ -550,7 +550,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newKwConfigList = JSON.parse(localStorage.getItem('newKwConfigList')!);
     if (this.newKwConfigList.length > 0) {
       var kwConfigs: Kw_Config[] = [];
-      alert(this.newKwConfigList.length);
+      
       for (var kwConfig of this.newKwConfigList) {
         kwConfig.project_id = project.project_id;
         kwConfigs.push(kwConfig);
@@ -768,7 +768,6 @@ export class ReleaseEditComponent implements OnInit {
         break;
       }
     }
-    console.log("**** == " + storedReleaseChecklist[0].status);
   }
 
   isIngredient: boolean = false;
@@ -782,7 +781,9 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   changeEmailNotification(event: MatCheckboxChange, item: any){
-    alert(item.email_notification);
-    alert(event.checked);
+    // alert(item.email_notification);
+    // alert(event.checked);
+    this.service.changeEmailNotification(item.id, event.checked).subscribe((status) => {
+    });
   }
 }

@@ -201,6 +201,10 @@ export class ReleaseEditService {
   public getPlatformProjects(): Observable<Project[]> {
     return this.httpClient.get<Project[]>(this.endpoint_url + this.project+"/grade/platform", { headers: this.headers });
   }
+
+  public changeEmailNotification(projectId: number,status:boolean): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(this.endpoint_url + this.stakeholder + "/"+projectId+ "/"+status);
+  }
   
  
 }

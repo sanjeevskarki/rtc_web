@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Evidence</h1>
+<h1 mat-dialog-title>{{evidenceHeader}}</h1>
 <form class="example-form" [formGroup]="evidenceForm">
     <mat-form-field appearance="outline">
         <mat-label>Title</mat-label>
@@ -59,7 +59,7 @@
             <div style="font-size: smaller;margin-left: 2px;">
                 <input id="fileInput" hidden type="file" (change)="selectEvidenceFile($event)" formControlName="upload"
                 name="upload" accept=".txt,.csv,.xlsv,.docx,.pdf,.msg,.ppt,.doc,.rtf,.pptx,.xls">
-                <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
+                <mat-label *ngIf="selectedFile">{{selectedFilename}}</mat-label>
             </div>
         </div>
         <!-- <div
@@ -71,8 +71,8 @@
             [ngStyle]="{ width: progress + '%' }">
             {{ progress }}%
         </div> -->
-        <div style="height: 0.5rem;"></div>
-        <div >Uploading File to Server..
+        <div style="height: 1rem;"></div>
+        <div *ngIf="uploading">Uploading File to Server..
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
             <br>
         </div>

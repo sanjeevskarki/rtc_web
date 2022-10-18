@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ADMIN_USER } from '../home/home.constants';
 import { RTC_VERSION } from '../release/release.constants';
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
   userName!:string;
   notExist:boolean = false;
   isLoading:boolean=false;
-  constructor(private formBuilder: UntypedFormBuilder, private router: Router, private service: LoginService, private tokenStorage: TokenStorageService) { }
+  constructor(private formBuilder: UntypedFormBuilder, private router: Router, private service: LoginService,public dialog: MatDialog, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -35,7 +36,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(){
+  loginConfirmDialogRef:any;
+  login(_templateRef: any){
     this.notExist=false;
     this.isLoading = true;
     this.userName = this.loginForm.controls['email'].value; // "yossi.avni@intel.com";
@@ -48,7 +50,7 @@ export class LoginComponent implements OnInit {
     }else{
       this.service.login(this.userName).subscribe(
         data => {
-          // if(data.status){
+          if(data.status){
             this.tokenStorage.saveToken(data.token!);
             this.tokenStorage.saveUser(this.userName);
 
@@ -56,10 +58,15 @@ export class LoginComponent implements OnInit {
             this.isLoggedIn = true;
             this.isLoading = false;
             this.router.navigate(['/home']);
-          // }else{
-          //   this.isLoading = false;
-          //   this.notExist=true;
-          // }
+          }else{
+            this.loginConfirmDialogRef = this.dialog.open(_templateRef, {
+              height: '17%',
+              width: '30%',
+              disableClose: true
+            });
+            this.isLoading = false;
+            this.notExist=true;
+          }
         },
         err => {
           this.errorMessage = err.error.message;
@@ -69,6 +76,21 @@ export class LoginComponent implements OnInit {
     }
     
   }
+
+  closeDialog(){
+    this.loginConfirmDialogRef.close();
+  }
+  continue(){
+    this.loginConfirmDialogRef.close();
+    this.isLoginFailed = false;
+    this.isLoggedIn = true;
+    this.isLoading = false;
+    this.router.navigate(['/home']);
+  }
+
+  // close(){
+
+  // }
 
   reloadPage(): void {
     window.location.reload();

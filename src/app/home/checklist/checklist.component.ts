@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackendComments, BackendTask, Checklist, NotificationSetting, OwnerEmail, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask, ViewComment, ViewEvidence } from '../home.models';
+import { BackendComments, BackendEvidences, BackendTask, Checklist, NotificationSetting, OwnerEmail, Project, ReleaseChecklist, ReleaseDetails, ReleaseTask } from '../home.models';
 import { ChecklistService } from './checklist.service';
 import * as moment from 'moment';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
@@ -10,7 +10,7 @@ import { Bdba, BdbaResult, Checkmarx, DataCollection, Kw, KwResults, Project as 
 import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, openStatusArray, PROTEX_MATCHES_LICENSE_CONFLICTS, RELEASED_LOWERCASE, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CHECKLIST_LOWERCASE, COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
+import { ATTACHMENTS_LOWERCASE, CHECKLIST_LOWERCASE, COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
 import { DownloadingstatusComponent } from 'src/app/downloadingstatus/downloadingstatus.component';
 import { ConfirmUploadFileComponent } from './confirm.upload.file/confirm.upload.file.component';
 
@@ -42,12 +42,12 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   releaseName!: string;
   milestone!: string;
   workWeek!: string;
-  viewComments: ViewComment[] = [];
-  displayComments: ViewComment[] = [];
-  viewComment!: ViewComment;
-  viewEvidence!: ViewEvidence;
-  viewEvidences: ViewEvidence[] = [];
-  displayEvidences: ViewEvidence[] = [];
+  viewComments: BackendComments[] = [];
+  displayComments: BackendComments[] = [];
+  viewComment!: BackendComments;
+  viewEvidence!: BackendEvidences;
+  viewEvidences: BackendEvidences[] = [];
+  displayEvidences: BackendEvidences[] = [];
 
   selectedRelease!: ReleaseChecklist;
 
@@ -58,7 +58,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   @ViewChild(EvidenceAddComponent, { static: false }) evidenceAddComponent!: EvidenceAddComponent;
 
-  selectedEvidence!: ViewEvidence;
+  selectedEvidence!: BackendEvidences;
   viewReleaseChecklist: ReleaseChecklist[] = [];
   details: ReleaseDetails[] = [];
 
@@ -114,7 +114,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   // selectedFiles?: FileList;
   currentFile?: File;
   public selectedCommentFile!: any;
-  newComment!: BackendComments;
+  // newComment!: BackendComments;
   ownerDialogRef: any;
   addOwnerTemplateRef: any;
   ownerTaskId!: number;
@@ -123,6 +123,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   tempOwnerEmail!: string;
   public taskStatus: any[] = [];
   protexResults: ProtexResult[] = [];
+  commentFormHeader!:string;
 
   constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
     public domSanitizer: DomSanitizer) {
@@ -130,7 +131,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
   displayedColumns = ['vector', 'details', 'owner', 'detailedStatus', 'status', 'releaseCriteria', 'evidence', 'comments'];
-  evidenceDisplayedColumns = ['seq', 'actions', 'title', 'evidenceChild', 'evidenceDate', 'comments'];
+  evidenceDisplayedColumns = ['seq', 'evidenceActions', 'actions', 'title', 'evidenceChild', 'evidenceDate', 'comments'];
   public allowExtensions: string = '.doc, .docx, .xls, .xlsx, .pdf';
 
 
@@ -180,7 +181,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // alert("data save");
     // this.saveAndContinue();
     this.saveRelease(true);
   }
@@ -215,6 +215,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * Get the selected project task
    */
   getSelectedTask() {
+    // alert("get selected task");
     this.service.getSelectedProjectTask(this.selectedReleaseId!).subscribe(
       (response) => {
         this.getDataCollections(); // temparory commented due to time taken
@@ -376,11 +377,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       disableClose: true
     });
 
-    console.log("Downloading starts at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
+    // console.log("Downloading starts at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
     this.data_collection.file_type = type;
 
     var fileext = fileName.split(".").pop();
-    // alert("fileext = "+fileext);
     let fileMIMEType = this.getMIMEtype(fileext!);
     this.service.getFile(this.data_collection, fileName).subscribe((data) => {
 
@@ -393,7 +393,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       // URL.revokeObjectURL(fileURL);
 
       this.downloadStatusDialogRef.close();
-      console.log("Downloading ends at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
+      // console.log("Downloading ends at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
     },
       (error) => {
         console.log('getPDF error: ', error);
@@ -418,11 +418,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  /**
-   * Change Status of Checklist
-   * @param id Unique Release Checklist ID
-   * @param args New Changed Status
-   */
+
   changeStatus(id: string, value: string) {
     this.showSpinner = true;
     var newStatus: string | undefined = value;
@@ -439,20 +435,20 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   /**
    * Get list of comments
    */
-  getComments() {
-    var selectedTask: BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == this.selectedRelease.guidelineId)!;
-    this.viewComments = [];
-    this.displayComments = [];
+  // getComments() {
+  //   var selectedTask: BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == this.selectedRelease.guidelineId)!;
+  //   this.viewComments = [];
+  //   this.displayComments = [];
 
-    for (var comment of selectedTask.backend_comments!) {
-      this.viewComment = <ViewComment>{};
-      this.viewComment.comments = comment.comments;
-      this.viewComment.date = moment(comment.date).format('LLL');
-      this.viewComment.content = comment.content;
-      this.viewComments.push(this.viewComment);
-    }
-    this.displayComments = this.viewComments;
-  }
+  //   for (var comment of selectedTask.backend_comments!) {
+  //     this.viewComment = <ViewComment>{};
+  //     this.viewComment.comments = comment.comments;
+  //     this.viewComment.date = moment(comment.date).format('LLL');
+  //     this.viewComment.content = comment.content;
+  //     this.viewComments.push(this.viewComment);
+  //   }
+  //   this.displayComments = this.viewComments;
+  // }
 
   /**
    * Call when user click on View/Add Comment
@@ -482,10 +478,12 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     // if(_selectedRelease.comments.length > 0){
     for (var comment of selectedTask.backend_comments!) {
-      this.viewComment = <ViewComment>{};
+      this.viewComment = <BackendComments>{};
+      this.viewComment.id = comment.id!;
       this.viewComment.comments = comment.comments;
       this.viewComment.date = moment(comment.date).format('LLL');
       this.viewComment.content = comment.content;
+      this.viewComment.task_id = comment.task_id;
       this.viewComments.push(this.viewComment);
     }
     this.displayComments = this.viewComments;
@@ -526,16 +524,17 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.displayEvidences = [];
     this.viewEvidences = [];
     var selectedTask: BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == _selectedRelease.guidelineId)!;
-    // if(_selectedRelease.evidences.length > 0){
-    for (var evidence of selectedTask.backend_evidences!) {
+    if(selectedTask.backend_evidences != null){
+    for (var evidence of selectedTask.backend_evidences) {
       num++;
-      this.viewEvidence = <ViewEvidence>{};
+      this.viewEvidence = <BackendEvidences>{};
       this.viewEvidence.seq = num;
       this.viewEvidence.evidence = evidence.evidence;
       this.viewEvidence.date = moment(evidence.date).format('LLL');
       this.viewEvidence.id = evidence.id;
       this.viewEvidence.title = evidence.title;
       this.viewEvidence.comments = evidence.comments;
+      this.viewEvidence.task_id = evidence.task_id;
       this.viewEvidence.type = evidence.type;
       // this.viewComment.date = this.service.getNiceTime(duration);
       this.viewEvidences.push(this.viewEvidence);
@@ -544,7 +543,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     if (state)
       this.openEvidenceListDialog();
     // this.evidenceDialog.show();
-    // }
+    }
     // else{
     //   // this.evidenceDialog.show(); 
     //   this.openEvidenceListDialog();
@@ -571,7 +570,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   openEvidenceListDialog() {
     this.evidenceDialogRef = this.dialog.open(this.templateRef, {
       height: '60%',
-      width: '70%',
+      width: '75%',
       disableClose: true
     });
 
@@ -586,7 +585,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   openAddCommentDialog() {
     this.commentDialogRef = this.dialog.open(this.commentTemplateRef, {
       height: '60%',
-      width: '70%',
+      width: '75%',
       disableClose: true
     });
 
@@ -619,14 +618,15 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     // this.evidenceDialog.hide();
   }
 
-  /**
-   * Create a new Comment
-   * @param newComment New Comment
-   */
-  addComment(newComment: BackendComments) {
-    this.selectedRelease.comments.unshift(newComment);
-    this.createCommentList(this.selectedRelease, false);
-  }
+  // /**
+  //  * Create a new Comment
+  //  * @param newComment New Comment
+  //  */
+  // addComment(newComment: BackendComments) {
+  //   this.selectedRelease.comments.unshift(newComment);
+  //   this.createCommentList(this.selectedRelease, false);
+  // }
+
 
 
   /**
@@ -701,9 +701,11 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * Open Add Evidence Dialog
    */
   openCommentDialog(_templateRef: any) {
+    this.selectedFilename='';
+    this.commentFormHeader = 'Add Comment';
+    this.selectedComment = <BackendComments>{};
     this.addCommentTemplateRef = _templateRef;
     this.selectedCommentFile = <any>{};
-    // this.addCommentHeader = "Add Comment";
     this.addCommentDialogRef = this.dialog.open(this.addCommentTemplateRef, {
       height: '50%',
       width: '40%',
@@ -711,11 +713,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     });
 
     this.addCommentDialogRef.afterClosed().subscribe(( ) => {
-      this.addComment(this.newComment);
-      // this.commentLoaded = false;
-      // this.selectedRelease.comments.unshift(result);
-      // this.createCommentList(this.selectedRelease,false);
-      // this.animal = result;
+      if (this.updatedComment) {
+        this.selectedRelease.comments.unshift(this.updatedComment);
+        this.createCommentList(this.selectedRelease, false);
+      }
     });
   }
 
@@ -723,8 +724,24 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * Call when evidence delete
    * @param _selectedEvidence Selected Evidence to delete
    */
-  selectDeletedEvidence(_selectedEvidence: ViewEvidence): void {
+   editSelectedEvidence(_selectedEvidence: BackendEvidences): void {
     this.selectedEvidence = _selectedEvidence;
+    const editEvidenceDialogRef = this.dialog.open(EvidenceAddComponent, {
+      height: '57%',
+      width: '40%',
+      disableClose: true,
+      data: this.selectedEvidence
+    });
+
+    editEvidenceDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.evidenceLoaded = false;
+        let index = this.selectedRelease.evidences.findIndex( x => x.id === result.data.id);
+        this.selectedRelease.evidences.splice(index, 1);
+        this.selectedRelease.evidences.unshift(result.data);
+        this.createEvidenceList(this.selectedRelease, false);
+      }
+    });
     // this.confirmDialog.show();
   }
 
@@ -748,7 +765,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    */
   addEvidence() {
     const addEvidenceDialogRef = this.dialog.open(EvidenceAddComponent, {
-      height: '55%',
+      height: '57%',
       width: '40%',
       disableClose: true,
       data: { task_id: this.selectedReleaseGuideline }
@@ -815,8 +832,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * Close Add Comments Dialog
    */
   closeAddCommentDialog() {
-    this.addCommentDialogRef.close();
     this.addCommentForm.reset();
+    this.addCommentDialogRef.close();
+    
   }
   public onFileSelected() {
     document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button')!.click(); return false;
@@ -981,10 +999,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     document!.getElementById("commentFileInput")!.click();
   }
 
+  selectedFilename!:string;
   // validFileSize: boolean = true;
   selectCommentFile(fileInputEvent: any) {
     let sizeInBytes: number = fileInputEvent.target.files[0].size;
-    // alert(sizeInBytes);
     if (sizeInBytes / 1024 / 1024 < 10) {
       // this.validFileSize = true;
       var file = fileInputEvent.target.files[0].name;
@@ -994,6 +1012,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       var name = fileName + "_" + new Date().getTime() + fileExtension;
       var blob = fileInputEvent.target.files[0].slice(0, fileInputEvent.target.files[0].size, fileInputEvent.target.files[0].type);
       this.selectedCommentFile = new File([blob], name, { type: fileInputEvent.target.files[0].type });
+      this.selectedFilename = this.selectedCommentFile.name;
     } else {
       // this.validFileSize = false;
       this.openFileErrorUploadDialog();
@@ -1013,34 +1032,55 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       disableClose: true
     });
   }
-
+  existingFileName!:string;
   uploading: boolean = false;
   public saveComment(): void {
-
-    console.log("starts at ===== " + moment().format('MMMM Do YYYY, h:mm:ss a'));
     this.createNewComment();
-    this.service.saveComment(this.newComment).subscribe((status) => {
-      if (this.selectedCommentFile?.name) {
+    if(this.selectedComment.id){
+      if(this.updatedComment.content){
+        this.deleteEvidenceFile(this.existingFileName);
         this.uploadCommentFile();
       }else{
-        this.addCommentForm.reset();
-        this.addCommentDialogRef.close();
+        this.updatedComment.content = this.existingFileName; 
       }
-    });
+      this.service.updateComment(this.updatedComment).subscribe((status) => {    
+          this.addCommentForm.reset();
+          this.addCommentDialogRef.close();
+      });
+    }else{
+      this.service.saveComment(this.updatedComment).subscribe((status) => {
+        if (this.selectedCommentFile?.name) {
+          this.uploadCommentFile();
+        }else{
+          this.addCommentForm.reset();
+          this.addCommentDialogRef.close();
+        }
+      });
+    }
 
     // this.addComment(this.newComment);
 
   }
 
+  updatedComment!:BackendComments;
   createNewComment() {
-    const newComments: BackendComments = {
-      id: Math.floor(Math.random() * 90000) + 10000,
-      comments: this.addCommentForm.controls[COMMENT_LOWERCASE].value,
-      date: moment(new Date().getTime()).format(),
-      content: this.selectedCommentFile.name ? this.selectedCommentFile.name : '',
-      task_id: this.selectedReleaseGuideline
-    };
-    this.newComment = newComments;
+    if(this.selectedComment.id){
+      this.selectedComment.task_id = this.selectedComment.task_id!;
+      this.selectedComment.date = moment(new Date().getTime()).format();
+      this.selectedComment.content = this.selectedCommentFile.name ? this.selectedCommentFile.name : '';
+      this.selectedComment.comments = this.addCommentForm.controls[COMMENT_LOWERCASE].value;
+      this.updatedComment=this.selectedComment;
+    }else{
+      const newComments: BackendComments = {
+        // id: Math.floor(Math.random() * 90000) + 10000,
+        comments: this.addCommentForm.controls[COMMENT_LOWERCASE].value,
+        date: moment(new Date().getTime()).format(),
+        content: this.selectedCommentFile.name ? this.selectedCommentFile.name : '',
+        task_id: this.selectedReleaseGuideline
+      };
+      this.updatedComment = newComments;
+    }
+    
   }
 
   /**
@@ -1048,12 +1088,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    */
   uploadCommentFile() {
     const file: File | null = this.selectedCommentFile;
-    // alert(file);
     if (file) {
       this.uploading = true;
       this.currentFile = file;
       this.service.uploadFile(this.currentFile, this.selectedProject.project_business_unit_id, this.selectedProject.project_name, this.selectedProject.project_milestone_id).subscribe((status) => {
-        console.log("Ends at ====== " + moment().format('MMMM Do YYYY, h:mm:ss a') + " with status = " + status.message);
         this.uploading = false;
         this.addCommentForm.reset();
         this.addCommentDialogRef.close();
@@ -1061,6 +1099,34 @@ export class ChecklistComponent implements OnInit, OnDestroy {
        
       });
     }
+  }
+
+  selectedComment!:BackendComments;
+  editSelectedComment(_templateRef:any,selectedComment:BackendComments){
+    this.commentFormHeader = 'Update Comment';
+    this.selectedComment=selectedComment;
+    this.existingFileName = selectedComment.content;
+    this.selectedFilename = selectedComment.content;
+    this.addCommentForm.patchValue({
+      comment: selectedComment.comments,
+      upload: selectedComment.content,
+    });
+    this.addCommentTemplateRef = _templateRef;
+    this.selectedCommentFile = <any>{};
+    this.addCommentDialogRef = this.dialog.open(this.addCommentTemplateRef, {
+      height: '50%',
+      width: '40%',
+      disableClose: true
+    });
+
+    this.addCommentDialogRef.afterClosed().subscribe(( ) => {
+      if(this.updatedComment){
+        let index = this.selectedRelease.comments.findIndex( x => x.id === this.updatedComment.id);
+        this.selectedRelease.comments.splice(index, 1);
+        this.selectedRelease.comments.unshift(this.updatedComment);
+        this.createCommentList(this.selectedRelease, false);
+        }
+    });
   }
 
   /**
@@ -1133,6 +1199,19 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    */
   closeAddOwnerDialog() {
     this.ownerDialogRef.close();
+  }
+
+  
+  deleteEvidenceFile(fileName:string){
+    this.data_collection.file_type = ATTACHMENTS_LOWERCASE;
+    this.service.deleteFile(this.data_collection, fileName).subscribe((data) => {
+      
+    },
+    (error) => {
+      console.log('getPDF error: ', error);
+    }
+    );
+
   }
 
 }

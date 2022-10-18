@@ -414,6 +414,25 @@ export class ChecklistService {
     return this.httpClient.get<ApiResponse>(this.endpoint_url + this.project + "/"+projectId+ "/"+status);
   }
 
+  public updateComment(comment: BackendComments): Observable<boolean> {
+    const body = JSON.stringify(comment);
+    return this.httpClient.put<boolean>(`${this.endpoint_url}evidences`, body, { headers: this.headers });
+  }
   
+  public deleteFile(data_collection: DataCollection, fileName: string): Observable<any> {
+    let params = new HttpParams()
+      .set('business_unit', data_collection.business_unit)
+      .set('milestone_id', data_collection.milestone_id)
+      .set('project_id', data_collection.project_id)
+      .set('file_type', data_collection.file_type)
+      .set('file_name', fileName);
+    const requestOptions: Object = {
+      headers: this.headers,
+      responseType: 'blob',
+      params: params,
+    }
+
+    return this.httpClient.delete<any>(this.endpoint_url + this.file, requestOptions);
+  }
 
 }
