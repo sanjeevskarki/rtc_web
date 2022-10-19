@@ -416,7 +416,7 @@ export class ChecklistService {
 
   public updateComment(comment: BackendComments): Observable<boolean> {
     const body = JSON.stringify(comment);
-    return this.httpClient.put<boolean>(`${this.endpoint_url}evidences`, body, { headers: this.headers });
+    return this.httpClient.put<boolean>(`${this.endpoint_url}comments`, body, { headers: this.headers });
   }
   
   public deleteFile(data_collection: DataCollection, fileName: string): Observable<any> {

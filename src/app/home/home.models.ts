@@ -87,8 +87,14 @@ export interface BackendComments {
   id?: number;
   content: string;
   task_id: number;
-  comments: string;
+  comments?: CommentObject;
   date: string;
+}
+
+export interface CommentObject {
+  type?: string;
+  content: object;
+ 
 }
 
 

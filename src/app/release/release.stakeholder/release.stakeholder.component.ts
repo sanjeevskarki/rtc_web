@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { map, Observable, startWith } from 'rxjs';
 import { Stakeholder } from 'src/app/home/home.models';
 
 @Component({
@@ -13,25 +14,27 @@ export class ReleaseStakeholderComponent implements OnInit {
   addStakeholderForm!: UntypedFormGroup;
   newStakeholder!:Stakeholder;
   selectedStakeholder!:Stakeholder;
+  filteredOptions!: Observable<string[]>;
+  stakeholderHeader!:string;
   roles: any[] = [
-    { value: 'Project Manager', viewValue: 'Project Manager' },
-    { value: 'Program Manager', viewValue: 'Program Manager' },
-    { value: 'Product Architect', viewValue: 'Product Architect' },
-    { value: 'System Architect', viewValue: 'System Architect' },
-    { value: 'Security Lead', viewValue: 'Security Lead' },
-    { value: 'Development Lead', viewValue: 'Development Lead' },
-    { value: 'Validation Lead', viewValue: 'Validation Lead' },
-    { value: 'Marketing', viewValue: 'Marketing' },
-    { value: 'Security Champion', viewValue: 'Security Champion' },
-    { value: 'Product Security Expert', viewValue: 'Product Security Expert (PSE)' },
-    { value: 'Security & Privacy Lead', viewValue: 'Security & Privacy Lead (SPL)' },
-    { value: 'Attorney', viewValue: 'Attorney' },
-    { value: 'Other', viewValue: 'Other' },
+    'Attorney',
+    'Development Lead', 
+    'Marketing',
+    'Product Architect',
+    'Product Security Expert', 
+    'Program Manager',
+    'Project Manager',
+    'Security Champion',
+    'Security & Privacy Lead',
+    'Security Lead',
+    'System Architect', 
+    'Validation Lead',
+    'Other'
   ];
   constructor(private formBuilder: UntypedFormBuilder,public dialogRef: MatDialogRef<ReleaseStakeholderComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    
+    this.stakeholderHeader='Add Stakeholder';
     this.addStakeholderForm = this.formBuilder.group({
       name: [null, Validators.required],
       email: [null, [Validators.required,Validators.email]],
@@ -39,6 +42,7 @@ export class ReleaseStakeholderComponent implements OnInit {
       role: [null, Validators.required]
     });
     if (this.data) {
+      this.stakeholderHeader='Update Stakeholder';
       this.selectedStakeholder = this.data.data;
       this.addStakeholderForm.patchValue({
         name: this.selectedStakeholder.name,
@@ -48,6 +52,10 @@ export class ReleaseStakeholderComponent implements OnInit {
         email_notification: this.selectedStakeholder.email_notification,
       });
     }
+    this.filteredOptions = this.addStakeholderForm.controls['role'].valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value!)),
+    );
   }
 
   /**
@@ -62,33 +70,51 @@ export class ReleaseStakeholderComponent implements OnInit {
    */
   saveStakeholder() {
     this.createNewStakeholder();
-    this.dialogRef.close({ data: this.newStakeholder });
+    this.dialogRef.close({ data: this.updatedStakeholder });
   }
 
+  updatedStakeholder!:Stakeholder;
   /**
    * Create New Stakeholder object
    */
   createNewStakeholder(){
     let emailNotification:boolean=true;
-    // alert(this.addStakeholderForm.controls['email_notification'].value);
-    let tempid;
-    if(this.selectedStakeholder) {
-      tempid= this.selectedStakeholder.id;
-    }else{
-      tempid= Math.floor(Math.random() * 90000) + 10000;
-    }
+
     if(this.addStakeholderForm.controls['role'].value === 'Attorney'){
       emailNotification = false;
     }
-    const newStakeholder: Stakeholder = {
-      id: tempid,
-      name: this.addStakeholderForm.controls['name'].value,
-      email: this.addStakeholderForm.controls['email'].value,
-      wwid: this.addStakeholderForm.controls['wwid'].value,
-      role: this.addStakeholderForm.controls['role'].value,
-      email_notification: emailNotification,
-    };
-    this.newStakeholder = newStakeholder;
+
+    if (this.selectedStakeholder) {
+      this.selectedStakeholder.name = this.addStakeholderForm.controls['name'].value;
+      this.selectedStakeholder.email = this.addStakeholderForm.controls['email'].value;
+      this.selectedStakeholder.wwid = this.addStakeholderForm.controls['wwid'].value;
+      this.selectedStakeholder.role = this.addStakeholderForm.controls['role'].value;
+      this.selectedStakeholder.email_notification = this.selectedStakeholder.email_notification!;;
+      this.updatedStakeholder = this.selectedStakeholder;
+    } else {
+      this.newStakeholder = <Stakeholder>{};
+      this.newStakeholder.name = this.addStakeholderForm.controls['name'].value;
+      this.newStakeholder.email = this.addStakeholderForm.controls['email'].value;
+      this.newStakeholder.wwid = this.addStakeholderForm.controls['wwid'].value;
+      this.newStakeholder.role = this.addStakeholderForm.controls['role'].value;
+      this.newStakeholder.email_notification = emailNotification;
+      this.updatedStakeholder = this.newStakeholder;
+    }
+    
+    // const newStakeholder: Stakeholder = {
+    //   // id: tempid,
+    //   name: this.addStakeholderForm.controls['name'].value,
+    //   email: this.addStakeholderForm.controls['email'].value,
+    //   wwid: this.addStakeholderForm.controls['wwid'].value,
+    //   role: this.addStakeholderForm.controls['role'].value,
+    //   email_notification: emailNotification,
+    // };
+    // this.newStakeholder = newStakeholder;
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.roles.filter(option => option.toLowerCase().includes(filterValue));
   }
 
 }

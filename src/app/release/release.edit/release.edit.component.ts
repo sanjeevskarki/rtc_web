@@ -417,7 +417,7 @@ export class ReleaseEditComponent implements OnInit {
       project = data;
       this.createGuideLine(project);
       this.createBuFolder();
-      this.createStakehoders(project);
+      this.createStakeholders(project);
       this.createNotificationSetting(project);     
       this.saveProtexConfig(project);
       this.saveBdbaConfig(project);
@@ -479,21 +479,6 @@ export class ReleaseEditComponent implements OnInit {
     this.service.addTasks(this.taskList).subscribe(data => {
       this.showSpinner = false;
     });
-  }
-
-
-  createStakehoders(project: Project) {
-    let tempStakeHolders: Stakeholder[] = [];
-    if (this.stakeholders.length > 0) {
-      for (var stakeholder of this.stakeholders) {
-        stakeholder.project_id = project.project_id;
-        tempStakeHolders.push(stakeholder);
-      }
-
-      this.service.addStakeholders(tempStakeHolders).subscribe(data => {
-        this.sendEmail();
-      });
-    }
   }
 
   createNotificationSetting(project: Project) {
@@ -600,11 +585,21 @@ export class ReleaseEditComponent implements OnInit {
         if (this.tempProjectStakeholders?.indexOf(this.newStakeholder) == -1) {
           this.stakeholderEmails.push(this.newStakeholder);
         }
+
+        // alert(this.projectStakeholders.length);
         this.projectStakeholders.unshift(this.newStakeholder);
+        // alert(this.projectStakeholders.length);
         this.createStakeholderList(this.projectStakeholders);
         this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
+        
         if (this.selectedProject) {
-          this.createStakehoders(this.selectedProject);
+          var tempStakeholders = [];
+          this.newStakeholder.project_id = this.selectedProject.project_id;
+          tempStakeholders.push(this.newStakeholder);
+          this.service.addStakeholders(tempStakeholders).subscribe(data => {
+            // this.sendEmail();
+          });
+          // this.createStakeholders(this.selectedProject);
         }
       }
     });
@@ -618,6 +613,20 @@ export class ReleaseEditComponent implements OnInit {
     this.stakeholders = [];
     for (var stakeholder of stakeholders) {
       this.stakeholders.push(stakeholder);
+    }
+  }
+
+  createStakeholders(project: Project) {
+    let tempStakeHolders: Stakeholder[] = [];
+    if (this.stakeholders.length > 0) {
+      for (var stakeholder of this.stakeholders) {
+        stakeholder.project_id = project.project_id;
+        tempStakeHolders.push(stakeholder);
+      }
+
+      this.service.addStakeholders(tempStakeHolders).subscribe(data => {
+        // this.sendEmail();
+      });
     }
   }
 

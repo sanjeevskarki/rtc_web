@@ -16,7 +16,7 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Protex Project Id</mat-label>
         <input type="text" matInput formControlName="protex_project_id">
-        <mat-hint >Protex ID should be comprised of a prefix 'c_' and suffix '_5 digits'</mat-hint>
+        <mat-hint>Protex ID should be comprised of a prefix 'c_' and suffix '_5 digits'</mat-hint>
         <mat-error
             *ngIf="addProtexConfigForm.controls.protex_project_id.hasError('required') && addProtexConfigForm.controls.protex_project_id.touched">
             Protex Project Id is required
@@ -24,24 +24,24 @@
     </mat-form-field>
     <div style="height: 0.5rem;"></div>
     <div>
-        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">Faceless User Added
+        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">Faceless User:
+            '{{facelessUser}}',<br>was added to the Protex project users list.
         </mat-checkbox>
     </div>
     <div style="height: 0.5rem;"></div>
     <div>
-        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
-            (click)="close()">Close</button>
-        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveProtexConfig(protexConfirmDialog)"
-            [disabled]="!addProtexConfigForm.valid">Save</button>
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;" (click)="close()">Close</button>
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;"
+            (click)="saveProtexConfig(protexConfirmDialog)" [disabled]="!addProtexConfigForm.valid">Save</button>
     </div>
 </form>
 
 <ng-template #protexConfirmDialog>
     <div mat-dialog-content>
-        <p style="color: red;">Protex ID should be comprised of a prefix 'c_' and suffix '_5 digits'.</p>    
+        <p style="color: red;">Protex ID should be comprised of a prefix 'c_' and suffix '_5 digits'.</p>
     </div>
     <div mat-dialog-actions style="float:right;">
         <!-- <button mat-flat-button color="primary" (click)="continue()">Continue</button> -->
-        <button mat-flat-button color="primary" (click)="closeConfirmDialog()" cdkFocusInitial>Cancel</button>
+        <button mat-flat-button color="primary" (click)="closeConfirmDialog()" cdkFocusInitial>Close</button>
     </div>
 </ng-template>

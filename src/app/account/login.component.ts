@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
           }else{
             this.loginConfirmDialogRef = this.dialog.open(_templateRef, {
               height: '17%',
-              width: '30%',
+              width: '25%',
               disableClose: true
             });
             this.isLoading = false;

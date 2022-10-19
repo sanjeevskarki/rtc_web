@@ -9,7 +9,7 @@
         *ngIf="isReleaseComplianceVisible"> Release Compliance </a>
       <a mat-button [routerLink]="'releaseinfo'" routerLinkActive="active-list-item" *ngIf="isReleaseInfoVisible">
         {{releaseInfoLabel}} </a>
-      <a mat-button [routerLink]="'bkc'" routerLinkActive="active-list-item" *ngIf="isBkcVisble"> BKC </a>
+      <a mat-button [routerLink]="'bkc'" routerLinkActive="active-list-item" *ngIf="isBkcVisble"> Configuration </a>
       <a mat-button [matMenuTriggerFor]="admin" #adminMenu="matMenuTrigger" *ngIf="isNotificationVisble"> Admin </a>
       <mat-menu #admin="matMenu" [overlapTrigger]="false">
         <button mat-menu-item [routerLink]="'notification'">

@@ -6,6 +6,7 @@ import { Project } from 'src/app/home/home.models';
 import { ReleaseService } from 'src/app/release/release.service';
 import { Protex_Config, Scan_Server } from '../../datacollection.models';
 import { AbstractControl } from '@angular/forms';
+import { FACELESS_USER } from 'src/app/home/home.constants';
 
 @Component({
   selector: 'app-protex.add',
@@ -23,6 +24,7 @@ export class ProtexAddComponent implements OnInit {
   prefix = 'c_';
   scanServerList!: Scan_Server[];
   scanServers!: any[];
+  facelessUser = FACELESS_USER;
   constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any, 
   private service: ReleaseService, public dialog: MatDialog) { }
 

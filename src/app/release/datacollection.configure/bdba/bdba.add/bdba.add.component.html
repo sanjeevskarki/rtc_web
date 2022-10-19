@@ -3,7 +3,7 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Product Id</mat-label>
         <input type="text" matInput formControlName="product_id">
-        <mat-hint >Product Id should be comprised of 7 digit only</mat-hint>
+        <mat-hint>Product Id should be comprised of 7 digit only</mat-hint>
         <mat-error
             *ngIf="addBdbaConfigForm.controls.product_id.hasError('required') && addBdbaConfigForm.controls.product_id.touched">
             Product Id is required
@@ -20,15 +20,13 @@
     </mat-form-field>
     <div style="height: 0.5rem;"></div>
     <div>
-        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">Faceless User
-             Added
-        </mat-checkbox>
+        <mat-checkbox color="primary" formControlName="user_added" (change)="checkUserAdded($event)">Faceless User:
+            '{{facelessUser}}', <br>was added to the BDBA project users list. </mat-checkbox>
     </div>
     <div style="height: 0.5rem;"></div>
-    
-        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
-            (click)="close()">Close</button>
-        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveBdbaConfig()"
-            [disabled]="!addBdbaConfigForm.valid">Save</button>
-    
+
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;" (click)="close()">Close</button>
+    <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;" (click)="saveBdbaConfig()"
+        [disabled]="!addBdbaConfigForm.valid">Save</button>
+
 </form>

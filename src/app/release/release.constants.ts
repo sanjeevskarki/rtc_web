@@ -18,8 +18,8 @@ export const POC_LOWERCASE = 'poc';
 export const PRE_ALPHA = 'Pre-Alpha';
 export const ALPHA = 'Alpha';
 export const EXTERNAL_LOWERCASE = 'external';
-export const EXTERNAL_WITH_HANDOVER= 'External With Handover';
-export const EXTERNAL_WITHOUT_HANDOVER = 'External Without Handover';
+export const EXTERNAL_WITH_HANDOVER= 'External – Shipping to Customer';
+export const EXTERNAL_WITHOUT_HANDOVER = 'External – Demo without Shipping to Customer';
 
 export const INGREDIENT = 'Ingredient';
 export const PLATFORM= 'Platform';

@@ -30,6 +30,7 @@ import { MatChipsModule } from '@angular/material/chips';
 
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -58,6 +59,8 @@ import { DownloadingstatusComponent } from './downloadingstatus/downloadingstatu
 import { ConfirmReleaseStatusComponent } from './release/confirm.release.status/confirm.release.status.component';
 import { ConfirmUploadFileComponent } from './home/checklist/confirm.upload.file/confirm.upload.file.component';
 import { LoginComponent } from './account/login.component';
+import { NgxEditorModule } from "ngx-editor";
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -104,7 +107,7 @@ import { LoginComponent } from './account/login.component';
     MatButtonModule, MatTableModule, MatDialogModule, MatInputModule,
     MatPaginatorModule, MatSortModule, MatTooltipModule,
     MatSelectModule, MatGridListModule, MatDatepickerModule, MatNativeDateModule,
-    MatRippleModule, MatProgressSpinnerModule, MatMenuModule, MatCheckboxModule, MatChipsModule, MatProgressBarModule
+    MatRippleModule, MatProgressSpinnerModule, MatMenuModule, MatCheckboxModule, MatChipsModule, MatProgressBarModule, NgxEditorModule, MatAutocompleteModule, MatFormFieldModule
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

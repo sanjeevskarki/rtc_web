@@ -6,13 +6,14 @@ import * as moment from 'moment';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { EvidenceAddComponent } from '../evidence.add/evidenceadd.component';
 import { forkJoin, Subject } from 'rxjs';
-import { Bdba, BdbaResult, Checkmarx, DataCollection, Kw, KwResults, Project as ProtexProject, ProtexResult, TaskStatus } from './checklist.models';
+import { BdbaResult, Checkmarx, DataCollection, Kw, KwResults, Project as ProtexProject, ProtexResult, TaskStatus } from './checklist.models';
 import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, openStatusArray, PROTEX_MATCHES_LICENSE_CONFLICTS, RELEASED_LOWERCASE, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ATTACHMENTS_LOWERCASE, CHECKLIST_LOWERCASE, COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
 import { DownloadingstatusComponent } from 'src/app/downloadingstatus/downloadingstatus.component';
 import { ConfirmUploadFileComponent } from './confirm.upload.file/confirm.upload.file.component';
+import { Editor, Toolbar } from 'ngx-editor';
 
 export class Group {
   level = 0;
@@ -124,6 +125,18 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   public taskStatus: any[] = [];
   protexResults: ProtexResult[] = [];
   commentFormHeader!:string;
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+  vieweditor!: Editor;
 
   constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private service: ChecklistService, public dialog: MatDialog,
     public domSanitizer: DomSanitizer) {
@@ -136,6 +149,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.editor = new Editor();
     // this.evidenceLoaded=false;
     this.getTaskStatus();
 
@@ -475,6 +489,12 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     var selectedTask: BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == _selectedRelease.guidelineId)!;
     this.viewComments = [];
     this.displayComments = [];
+    // form = new FormGroup({
+    //   editorContent: new FormControl(
+    //     { value: jsonDoc, disabled: false },
+    //     Validators.required()
+    //   ),
+    // });
 
     // if(_selectedRelease.comments.length > 0){
     for (var comment of selectedTask.backend_comments!) {
@@ -497,6 +517,13 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     this.updateReleaseCheckList(this.selectedRelease);
   }
+
+  // extractContent(htmlCode: string) {
+  //   let span = document.getElementById('cmt');
+  //   span.innerHTML = htmlCode;
+  //   return span.textContent || span.innerText;
+  // };
+
   selectedReleaseGuideline!: number;
 
   /**
@@ -1064,6 +1091,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   updatedComment!:BackendComments;
   createNewComment() {
+    console.log("**********"+JSON.stringify(this.addCommentForm.controls[COMMENT_LOWERCASE].value));
     if(this.selectedComment.id){
       this.selectedComment.task_id = this.selectedComment.task_id!;
       this.selectedComment.date = moment(new Date().getTime()).format();
@@ -1073,7 +1101,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     }else{
       const newComments: BackendComments = {
         // id: Math.floor(Math.random() * 90000) + 10000,
-        comments: this.addCommentForm.controls[COMMENT_LOWERCASE].value,
+        comments: this.addCommentForm.controls[COMMENT_LOWERCASE].value,//this.addCommentForm.controls[COMMENT_LOWERCASE].value,
         date: moment(new Date().getTime()).format(),
         content: this.selectedCommentFile.name ? this.selectedCommentFile.name : '',
         task_id: this.selectedReleaseGuideline

@@ -200,6 +200,8 @@
             <div style="width:100%">
                 <div style="font-size: 12px;" class="detailsAnswer"><b>{{comment.date | dateTimePipe}}</b>
                 </div>
+                <!-- <ngx-editor [editor]="editor" (value)="comment.comments">
+				</ngx-editor> -->
                 <div class="posting">{{comment.comments}}</div>
                 <div class="posting" (click)="openFile(comment.content,'attachments')" style="cursor: pointer;
                 font-size: 11px;
@@ -230,6 +232,12 @@
 <ng-template #addCommentDialog>
     <h1 mat-dialog-title>{{commentFormHeader}}</h1>
     <form class="example-form" [formGroup]="addCommentForm">
+            <!-- <div class="editor">
+				<ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+				</ngx-editor-menu>
+				<ngx-editor [editor]="editor" formControlName="comment">
+				</ngx-editor>
+			</div> -->
         <mat-form-field appearance="outline" style="display: inline;">
             <mat-label>Comments</mat-label>
             <textarea matInput formControlName="comment"></textarea>
@@ -237,7 +245,7 @@
                 *ngIf="addCommentForm.controls.comment.hasError('required') && addCommentForm.controls.comment.touched">
                 Comment is required
             </mat-error>
-        </mat-form-field>
+         </mat-form-field>
         <div style="height: 0.5rem;"></div>
         <div class="form-group">
             <div style="display: flex;">

@@ -22,6 +22,7 @@
                 <mat-error *ngIf="loginForm.controls.email.hasError('required') && loginForm.controls.email.touched">
                     Username is required
                 </mat-error>
+                <mat-hint>Please enter your full email</mat-hint>
             </mat-form-field>  
         </form>
         <!-- <div class="error-msg" *ngIf="notExist">No Release found for " {{userName}} "</div> -->
@@ -63,13 +64,13 @@
 
 <ng-template #loginConfirmDialog>
     <div mat-dialog-content>
-        <p style="color: red;">No Release found for " {{userName}} ". Do you still want to Continue.</p>
+        <p>Notice: No Release found for " {{userName}} ".</p>
         <!-- <p>Do you still want to continue ?</p> -->
     
     </div>
     
     <div mat-dialog-actions style="float:right;">
-        <button mat-flat-button color="primary" (click)="continue()">Continue</button>
-        <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
+        <button mat-flat-button color="primary" (click)="continue()">Continue With User</button>
+        <button mat-flat-button color="primary" (click)="closeDialog()">Back to Login</button>
     </div>
 </ng-template>

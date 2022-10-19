@@ -125,3 +125,5 @@ export const CANCELLED_LOWERCASE = 'Cancelled';
 export const DEFERRED_LOWERCASE = 'Deferred';
 
 export const ADMIN_USER = 'rtcadmin@intel.com';
+
+export const FACELESS_USER = 'sys_storagertc@intel.com';

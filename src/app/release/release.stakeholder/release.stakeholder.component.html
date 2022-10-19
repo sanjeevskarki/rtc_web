@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Stakeholder</h1>
+<h1 mat-dialog-title>{{stakeholderHeader}}</h1>
 <form class="example-form" [formGroup]="addStakeholderForm">
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Name</mat-label>
@@ -32,12 +32,22 @@
     <div style="height: 0.5rem;"></div>
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Role</mat-label>
+        <input type="text" matInput
+           placeholder="Select Role"
+           aria-label="Number"
+           formControlName="role"
+           [matAutocomplete]="auto">
         <!-- <input type="text" matInput formControlName="role"> -->
-        <mat-select formControlName="role">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let role of filteredOptions | async" [value]="role">
+              {{role}}
+            </mat-option>
+          </mat-autocomplete>
+        <!-- <mat-select formControlName="role">
             <mat-option *ngFor="let role of roles" [value]="role.value">
                 {{role.viewValue}}
             </mat-option>
-        </mat-select>
+        </mat-select> -->
         <mat-error
             *ngIf="addStakeholderForm.controls.role.hasError('required') && addStakeholderForm.controls.role.touched">
             Role is required

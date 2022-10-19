@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FACELESS_USER } from 'src/app/home/home.constants';
 import { Project } from 'src/app/home/home.models';
 import { Bdba_Config } from '../../datacollection.models';
 
@@ -18,6 +19,7 @@ export class BdbaAddComponent implements OnInit {
   updateBdbaConfig!: Bdba_Config;
   newBdbaConfig!: Bdba_Config;
   user_added:boolean=false;
+  facelessUser = FACELESS_USER;
   constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<BdbaAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
