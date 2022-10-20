@@ -26,6 +26,11 @@
       <mat-cell *matCellDef="let row">{{row.project_name}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="version">
+      <mat-header-cell *matHeaderCellDef>Version</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.project_version}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="milestone">
       <mat-header-cell *matHeaderCellDef>Milestone</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.project_milestone_id}}</mat-cell>
@@ -57,6 +62,17 @@
         </button> -->
       </mat-cell>
     </ng-container>
+    <!-- <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef>
+
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button mat-icon-button color="primary" matTooltip="Delete Release" (click)="onReleaseDelete(row,confirmDeleteDialog)">
+          <mat-icon aria-label="Delete">delete_outline</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container> -->
 
     <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -85,5 +101,15 @@
           (click)="closeTaskDialog()">Close</button>
      
 
+  </div>
+</ng-template>
+
+<ng-template #confirmDeleteDialog>
+  <div mat-dialog-content>
+    <p>Do you want to Remove <b>{{selectedDeleteRelease.project_name}} </b> ?</p>
+  </div>
+  <div mat-dialog-actions style="float:right;">
+      <button mat-flat-button color="primary" (click)="deleteRelease()">Delete</button>
+      <button mat-flat-button color="primary" (click)="closeRelease()">Cancel</button>
   </div>
 </ng-template>

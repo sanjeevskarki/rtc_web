@@ -7,6 +7,10 @@
     color: #000000 !important;
 }
 
+:host ::ng-deep .mat-checkbox-inner-container{
+  margin-top:5px;
+}
+
 .mat-table::ng-deep {
     border: 1px solid #f1f3f4;
 }

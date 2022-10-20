@@ -14,7 +14,7 @@ import { KwService } from './kw.service';
 })
 export class KwComponent implements OnInit {
 
-  kwDisplayedColumns = ['kw_server', 'kw_project_name', 'actions'];
+  kwDisplayedColumns = ['kw_server', 'kw_project_name','user_added', 'actions'];
   color = TABLE_HEADER_COLOR;
   newKwConfig!: Kw_Config;
   tempKwConfigList: Kw_Config[] = [];
@@ -54,7 +54,7 @@ export class KwComponent implements OnInit {
    */
   openKwConfig() {
     const dialogRef = this.dialog.open(KwAddComponent, {
-      height: '35%',
+      height: '40%',
       width: '30%',
       disableClose: true
 

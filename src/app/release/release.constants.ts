@@ -44,6 +44,7 @@ export const RELEASE_STATUS = 'releasestatus';
 export const RELEASE_TYPE = 'releasetype';
 export const GRADING_TYPE = 'gradingtype';
 export const PLATFORM_LOWERCASE = 'platform';
+export const VERSION_LOWERCASE = 'version';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const RTC_VERSION = 'RTC V0.1 - Release Tracking Center';
 export const REPORTS_LOWERCASE = 'reports';

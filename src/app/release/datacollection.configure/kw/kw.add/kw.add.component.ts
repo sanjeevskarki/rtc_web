@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FACELESS_USER } from 'src/app/home/home.constants';
 import { Project } from 'src/app/home/home.models';
 import { ReleaseService } from 'src/app/release/release.service';
 import { Kw_Config, Scan_Server } from '../../datacollection.models';
@@ -20,6 +22,7 @@ export class KwAddComponent implements OnInit {
   newKwConfig!: Kw_Config;
   scanServerList!:Scan_Server[];
   scanServers!:any[];
+  facelessUser = FACELESS_USER;
   constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<KwAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private service:ReleaseService) { }
 
   ngOnInit(): void {
@@ -61,11 +64,13 @@ export class KwAddComponent implements OnInit {
     if (this.selectedKwConfig) {
         this.selectedKwConfig.kw_server = this.addKwConfigForm.controls['kw_server'].value;
         this.selectedKwConfig.kw_project_name = this.addKwConfigForm.controls['kw_project_name'].value;
+        this.selectedKwConfig.user_added = this.user_added;
         this.updatedKwCofig = this.selectedKwConfig;
       } else {
         this.newKwConfig = <Kw_Config>{};
         this.newKwConfig.kw_server = this.addKwConfigForm.controls['kw_server'].value;
         this.newKwConfig.kw_project_name = this.addKwConfigForm.controls['kw_project_name'].value;
+        this.newKwConfig.user_added = this.user_added;
         // this.newKwConfig.project_id = this.selectedProject.project_id;
         this.updatedKwCofig = this.newKwConfig;
       }
@@ -94,9 +99,14 @@ export class KwAddComponent implements OnInit {
     this.scanServers=[];
     if (this.scanServerList != null) {
       for (var i = 0; i < this.scanServerList.length; i++) {
-        this.scanServers.push({ value: this.scanServerList[i].server_name, viewValue: this.scanServerList[i].server_name });
+        this.scanServers.push({ value: this.scanServerList[i].server_name, viewValue: this.scanServerList[i].region+" - "+this.scanServerList[i].server_name });
       }
     }
+  }
+
+  user_added: boolean = false;
+  checkUserAdded(event: MatCheckboxChange) {
+    this.user_added = event.checked;
   }
   
 

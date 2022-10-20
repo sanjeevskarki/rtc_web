@@ -31,7 +31,7 @@ export const TIMEINTERVAL = {
   YEARS_MONTHS: (count: number, more: number) => `${count}  years and ${more} months`,
 };
 
-export const PROJECT = 'project';
+export const PROJECT_LOWERCASE = 'project';
 
 export const PROTEX_SCAN_FILE = 'protex_scanresults_c_idiwellnesspcathena_46683.xml';
 export const PROTEX_META_SCAN_FILE1 = 'ds5_meta_driver.xml';

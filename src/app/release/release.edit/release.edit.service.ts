@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BackendGuideline, Project, ReleaseDetails, ReleaseTask, ApiResponse, NotificationSetting } from '../../home/home.models';
-import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST, STAKEHOLDER_LOWERCASE, EMAIL_LOWERCASE, KW_LOWERCASE, PROTEX_LOWERCASE, BDBA_LOWERCASE } from '../release.constants';
+import { BackendGuideline, Project, ReleaseDetails, ReleaseTask, ApiResponse, NotificationSetting, Platform } from '../../home/home.models';
+import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST, STAKEHOLDER_LOWERCASE, EMAIL_LOWERCASE, KW_LOWERCASE, PROTEX_LOWERCASE, BDBA_LOWERCASE, PLATFORM_LOWERCASE } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { Stakeholder } from 'src/app/home/home.models';
 import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
@@ -32,6 +32,7 @@ export class ReleaseEditService {
   bdba: string = BDBA_LOWERCASE;
   protex: string = PROTEX_LOWERCASE;
   notification: string = NOTIFICATION_LOWER;
+  platform: string = PLATFORM_LOWERCASE;
   /**
    *
    * @param httpClient Http Client.
@@ -193,18 +194,16 @@ export class ReleaseEditService {
     return this.httpClient.post<Kw_Config[]>(this.endpoint_url + this.kw+"/bulk", kwConfigs, { headers: this.headers });
   }
 
-  /**
-   * Add new Protex Config Objects
-   * @param protexConfig Selected Project Config
-   * @returns Saved Protex Config Objects
-   */
-  public getPlatformProjects(): Observable<Project[]> {
-    return this.httpClient.get<Project[]>(this.endpoint_url + this.project+"/grade/platform", { headers: this.headers });
+  public getPlatform(): Observable<Platform[]> {
+    return this.httpClient.get<Platform[]>(this.endpoint_url + this.platform, { headers: this.headers });
   }
 
   public changeEmailNotification(projectId: number,status:boolean): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(this.endpoint_url + this.stakeholder + "/"+projectId+ "/"+status);
   }
   
+  public createPlatform(platform:Platform): Observable<Platform> {
+    return this.httpClient.post<Platform>(this.endpoint_url + this.platform, platform,{ headers: this.headers });
+  }
  
 }

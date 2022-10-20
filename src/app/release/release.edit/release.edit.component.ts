@@ -4,10 +4,10 @@ import {
   ATTACHMENTS_LOWERCASE, ATTORNEY_EMAIL, ATTORNEY_NAME, BUSINESS_UNIT_LOWERCASE, DATA_COLLECTION_LOWERCASE, DATE_FORMAT, DATE_LOWERCASE, DELETE_LOWERCASE, DESCRIPTION_LOWERCASE,
   EVIDENCES_LOWERCASE, EXTERNAL_WITHOUT_HANDOVER, EXTERNAL_WITH_HANDOVER, HANDOVER_LOWERCASE, INTERNAL, MILESTONE_LOWERCASE,
   NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, RELEASE_STATUS, RELEASE_TYPE, stakeholderNotificationList,
-  SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE, CHECKLIST_LOWERCASE, NOT_ASSOCIATED_PLATFORM, PLATFORM, INGREDIENT, PLATFORM_LOWERCASE, GRADING_TYPE
+  SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE, CHECKLIST_LOWERCASE, NOT_ASSOCIATED_PLATFORM, PLATFORM, INGREDIENT, PLATFORM_LOWERCASE, GRADING_TYPE, VERSION_LOWERCASE
 } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
-import { NotificationSetting, ReleaseChecklist, Stakeholder } from 'src/app/home/home.models';
+import { NotificationSetting, Platform, ReleaseChecklist, Stakeholder } from 'src/app/home/home.models';
 import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
 
 import * as moment from 'moment';
@@ -16,7 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReleaseStakeholderComponent } from '../release.stakeholder/release.stakeholder.component';
 import { ConfirmDeleteStakeholderDialogComponent } from '../confirmdeletestakeholderdialog/confirm.delete.stakeholder.dialog.component';
 import { DatacollectionConfigureComponent } from '../datacollection.configure/datacollection.configure.component';
-import { forkJoin } from 'rxjs';
+import { forkJoin, map, Observable, startWith } from 'rxjs';
 import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
 
 import { ACTIVE_LOWERCASE, CANCELLED_LOWERCASE, DEFERRED_LOWERCASE, openStatusArray, RELEASED_LOWERCASE } from 'src/app/home/home.constants';
@@ -62,7 +62,7 @@ export class ReleaseEditComponent implements OnInit {
   ];
 
   public businessUnits: any[] = [];
-  public platformProjects: any[] = [];
+  public platformProjects: string[] = [];
   showSpinner: boolean = false;
 
   milestoneList: Milestone[] = [];
@@ -79,7 +79,7 @@ export class ReleaseEditComponent implements OnInit {
   newGuidlines: BackendGuideline[] = [];
   task!: ReleaseTask;
   taskList: ReleaseTask[] = [];
-  stakeholderDisplayedColumns = ['notification','name', 'email', 'wwid', 'role', 'actions'];
+  stakeholderDisplayedColumns = ['notification', 'name', 'email', 'wwid', 'role', 'actions'];
   color = TABLE_HEADER_COLOR;
   public commentRule: { [name: string]: { [rule: string]: Object } } = {
     rte: { required: [true, 'Enter valid notes'] }
@@ -109,9 +109,12 @@ export class ReleaseEditComponent implements OnInit {
   newProtexConfigList: Protex_Config[] = [];
   newBdbaConfigList: Bdba_Config[] = [];
   newKwConfigList: Kw_Config[] = [];
+  productLabel: string = 'Name';
+  isGradeSelected: boolean = true;
   constructor(private formBuilder: UntypedFormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    // this.releaseForm.controls['name'].disable();
     this.stakeholders = [];
     this.isWorkWeekVisible = false;
     // this.tempRelease = <NewRelease>{};
@@ -123,7 +126,7 @@ export class ReleaseEditComponent implements OnInit {
     this.projectStakeholders = [];
     // this.tempRelease = JSON.parse(localStorage.getItem("tempCheckList")!);
     this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
-   
+
     if (this.selectedProject) {
       this.editMode = true;
       this.getProjectStakeholders();
@@ -144,13 +147,14 @@ export class ReleaseEditComponent implements OnInit {
       description: [null, []],
       qualowner: [null, Validators.required],
       status: [null, []],
-      attorneyname: [null, []],
-      attorneyemail: [null, [Validators.email]],
-      releasestatus: [null, []],
+      // attorneyname: [null, []],
+      // attorneyemail: [null, [Validators.email]],
+      releasestatus: [null, Validators.required],
       releasetype: [null, []],
       notes: [null, []],
       gradingtype: [null, Validators.required],
       platform: [null, []],
+      version: [null, []],
     });
 
 
@@ -161,8 +165,17 @@ export class ReleaseEditComponent implements OnInit {
       role: [null, Validators.required],
     });
 
+    this.filteredOptions = this.releaseForm.controls['platform'].valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value!)),
+    );
   }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.platformProjects.filter(option => option.toLowerCase().includes(filterValue));
+  }
+  filteredOptions!: Observable<string[]>;
   public initalValues: any;
 
   getProjectStakeholders() {
@@ -243,11 +256,11 @@ export class ReleaseEditComponent implements OnInit {
     }
   }
 
-  platformProjectList!: Project[];
+  platformList!: any[];
   getPlatformProject() {
-    this.service.getPlatformProjects().subscribe(
+    this.service.getPlatform().subscribe(
       (response) => {
-        this.platformProjectList = response;
+        this.platformList = response;
         this.createPlatformDropdown();
       },
       (err) => {
@@ -257,9 +270,9 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   createPlatformDropdown() {
-    if (this.platformProjectList != null) {
-      for (var i = 0; i < this.platformProjectList.length; i++) {
-        this.platformProjects.push({ value: this.platformProjectList[i].project_name, viewValue: this.platformProjectList[i].project_name });
+    if (this.platformList != null) {
+      for (var i = 0; i < this.platformList.length; i++) {
+        this.platformProjects.push(this.platformList[i].name);
       }
     }
   }
@@ -343,12 +356,25 @@ export class ReleaseEditComponent implements OnInit {
         description: this.selectedProject.project_description,
         releasestatus: this.selectedProject.project_release_status,
         gradingtype: this.selectedProject.project_grading_type,
-        platform: this.selectedProject.project_platform
+        platform: this.selectedProject.project_platform,
+        version: this.selectedProject.project_version
       });
       this.workWeek = this.selectedProject.project_release_date!.toString();
       this.isWorkWeekVisible = true;
-      if(this.selectedProject.project_grading_type ===  INGREDIENT){
+      if (this.selectedProject.project_grading_type === INGREDIENT) {
         this.isIngredient = true;
+        this.isPlatform = false;
+        this.productLabel = 'Ingredient Name';
+      }
+      else if (this.selectedProject.project_grading_type === PLATFORM) {
+        this.isIngredient = false;
+        this.isPlatform = true;
+        this.productLabel = 'Platform Name';
+      }
+      else {
+        this.productLabel = 'Project Name';
+        this.isIngredient = false;
+        this.isPlatform = false;
       }
     }
 
@@ -365,6 +391,7 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   updateRelease() {
+    this.stateChange();
     this.newProject = <Project>{};
 
     this.newProject.project_name = this.releaseForm.controls[NAME_LOWERCASE].value;
@@ -381,6 +408,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newProject.project_grading_type = this.releaseForm.controls[GRADING_TYPE].value;
     this.newProject.project_platform = this.releaseForm.controls[PLATFORM_LOWERCASE].value;
     this.newProject.project_task_status = this.taskCompletionStatus;
+    this.newProject.project_version = this.releaseForm.controls[VERSION_LOWERCASE].value;
     if (this.selectedProject) {
       this.newProject.project_id = this.selectedProject.project_id;
       this.updateProject();
@@ -388,8 +416,36 @@ export class ReleaseEditComponent implements OnInit {
       // this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
       this.getStaticData();
     }
+    // this.stateChange();
+    if (this.platformProjects.indexOf(this.newProject.project_platform!) === -1) {
+      this.createPlatform(this.newProject.project_platform!);
+    }
     this.initalValues = this.releaseForm.value;
     localStorage.setItem('selectedProject', JSON.stringify(this.newProject));
+  }
+
+  showMsg: boolean = false;
+  stateChange() {
+    this.showMsg = true;
+    // setTimeout(function () {
+
+    // }, 3000);
+    // this.showMsg=false;
+  }
+
+  savedPlatform!: Platform;
+  createPlatform(platformName: string) {
+    var paltform: Platform = <Platform>{};
+    paltform.name = platformName;
+    this.service.createPlatform(paltform).subscribe(
+      (response) => {
+        this.savedPlatform = response;
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+
   }
 
   /**
@@ -418,7 +474,7 @@ export class ReleaseEditComponent implements OnInit {
       this.createGuideLine(project);
       this.createBuFolder();
       this.createStakeholders(project);
-      this.createNotificationSetting(project);     
+      this.createNotificationSetting(project);
       this.saveProtexConfig(project);
       this.saveBdbaConfig(project);
       this.saveKwConfig(project);
@@ -464,7 +520,7 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  
+
 
   saveTask(id: number) {
     this.taskList = [];
@@ -505,7 +561,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newProtexConfigList = JSON.parse(localStorage.getItem('newProtexConfigList')!);
     if (this.newProtexConfigList.length > 0) {
       var protexConfigs: Protex_Config[] = [];
-      
+
       for (var protexConfig of this.newProtexConfigList) {
         protexConfig.project_id = project.project_id;
         protexConfigs.push(protexConfig);
@@ -520,7 +576,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newBdbaConfigList = JSON.parse(localStorage.getItem('newBdbaConfigList')!);
     if (this.newBdbaConfigList.length > 0) {
       var bdbaConfigs: Bdba_Config[] = [];
-     
+
       for (var bdbaConfig of this.newBdbaConfigList) {
         bdbaConfig.project_id = project.project_id;
         bdbaConfigs.push(bdbaConfig);
@@ -535,7 +591,7 @@ export class ReleaseEditComponent implements OnInit {
     this.newKwConfigList = JSON.parse(localStorage.getItem('newKwConfigList')!);
     if (this.newKwConfigList.length > 0) {
       var kwConfigs: Kw_Config[] = [];
-      
+
       for (var kwConfig of this.newKwConfigList) {
         kwConfig.project_id = project.project_id;
         kwConfigs.push(kwConfig);
@@ -591,7 +647,7 @@ export class ReleaseEditComponent implements OnInit {
         // alert(this.projectStakeholders.length);
         this.createStakeholderList(this.projectStakeholders);
         this.selectedProject = JSON.parse(localStorage.getItem('selectedProject')!);
-        
+
         if (this.selectedProject) {
           var tempStakeholders = [];
           this.newStakeholder.project_id = this.selectedProject.project_id;
@@ -742,7 +798,7 @@ export class ReleaseEditComponent implements OnInit {
   }
 
 
-  doSomething() {
+  releaseStatusChange() {
     if (this.selectedProject) {
       if (this.releaseForm.controls[RELEASE_STATUS].value === RELEASED_LOWERCASE) {
         this.checkAllTaskStatus();
@@ -780,19 +836,36 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   isIngredient: boolean = false;
+  isPlatform: boolean = false;
+  
   selectGrade(selectedGrade: string) {
+
     // alert(selectedGrade);
     if (selectedGrade === INGREDIENT) {
+      this.productLabel = 'Ingredient Name';
       this.isIngredient = true;
-    } else {
+      this.isPlatform = false;
+      this.isGradeSelected = false;
+    }
+    else if (selectedGrade === PLATFORM) {
+      this.productLabel = 'Platform Name';
       this.isIngredient = false;
+      this.isPlatform = true;
+      this.isGradeSelected = false;
+    }
+    else {
+      this.productLabel = 'Project Name';
+      this.isIngredient = false;
+      this.isPlatform = false;
+      this.isGradeSelected = false;
     }
   }
 
-  changeEmailNotification(event: MatCheckboxChange, item: any){
+  changeEmailNotification(event: MatCheckboxChange, item: any) {
     // alert(item.email_notification);
     // alert(event.checked);
     this.service.changeEmailNotification(item.id, event.checked).subscribe((status) => {
     });
   }
+
 }

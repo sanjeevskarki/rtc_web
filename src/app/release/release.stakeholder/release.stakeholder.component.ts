@@ -16,7 +16,7 @@ export class ReleaseStakeholderComponent implements OnInit {
   selectedStakeholder!:Stakeholder;
   filteredOptions!: Observable<string[]>;
   stakeholderHeader!:string;
-  roles: any[] = [
+  roles: string[] = [
     'Attorney',
     'Development Lead', 
     'Marketing',

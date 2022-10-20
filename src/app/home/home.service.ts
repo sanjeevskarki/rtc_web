@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { TASK_LOWERCASE } from '../release/release.constants';
-import { PROJECT } from './home.constants';
+import { BDBA_LOWERCASE, KW_LOWERCASE, PROTEX_LOWERCASE, STAKEHOLDER_LOWERCASE, TASK_LOWERCASE } from '../release/release.constants';
+import { PROJECT_LOWERCASE } from './home.constants';
 
-import { BackendTask, Project } from './home.models';
+import { ApiResponse, BackendTask, Project } from './home.models';
 /**
  * Dependecy Injection.
  */
@@ -15,7 +15,11 @@ import { BackendTask, Project } from './home.models';
 export class HomeService {
   endpoint_url: string = environment.ENDPOINT;
   task: string = TASK_LOWERCASE;
-  project: string = PROJECT;
+  stakeholder: string = STAKEHOLDER_LOWERCASE;
+  kw: string = KW_LOWERCASE;
+  protex: string = PROTEX_LOWERCASE;
+  bdba: string = BDBA_LOWERCASE;
+  project: string = PROJECT_LOWERCASE;
   /**
    *
    * @param httpClient Http Client.
@@ -42,6 +46,30 @@ export class HomeService {
 
   public getPojectsByEmail(emailId: string): Observable<Project[]> {
     return this.httpClient.get<Project[]>(this.endpoint_url + this.project + "/email/"+emailId);
+  }
+
+  public deleteTask(projectId: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.task + "/"+projectId);
+  }
+
+  public deleteStakeholder(projectId: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.stakeholder + "/project/"+projectId);
+  }
+
+  public deleteKwConfig(projectId: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.kw + "/project/"+projectId);
+  }
+
+  public deleteProtexConfig(projectId: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.protex + "/project/"+projectId);
+  }
+
+  public deleteBdbaConfig(projectId: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.bdba + "/project/"+projectId);
+  }
+
+  public deleteProject(projectId: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.endpoint_url + this.project + "/"+projectId);
   }
 
 

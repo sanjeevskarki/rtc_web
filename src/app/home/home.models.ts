@@ -159,6 +159,7 @@ export interface Project {
   isTaskCompleted?:boolean;
   project_grading_type?:string;
   project_platform?:string;
+  project_version?:string;
 }
 
 export interface Notes {
@@ -283,4 +284,9 @@ export interface Bkc {
   last_updated: string;
   comment: string;
   project_id?: number;
+}
+
+
+export interface Platform {
+  name: string;
 }

@@ -14,24 +14,66 @@
                 Business unit is required
             </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 30rem;margin-right: 1rem;">
-            <mat-label>Product Name</mat-label>
-            <input type="text" matInput formControlName="name" [readonly]=editMode>
-            <mat-error *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched">
-                Product Name is required
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 30rem;">
-            <mat-label>Release Status</mat-label>
-            <mat-select formControlName="releasestatus" (selectionChange)="doSomething()">
-                <mat-option *ngFor="let status of releaseStatus" [value]="status.value">
-                    {{status.viewValue}}
+        <mat-form-field *ngIf="!isIngredient" appearance="outline" style="width: 30rem;margin-right: 1rem;">
+            <mat-label>Grading Type</mat-label>
+            <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" >
+                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
+                    {{grading.viewValue}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="releaseForm.controls.releasestatus.hasError('required') && releaseForm.controls.releasestatus.touched">
-                Release Status is required
+            <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
+                Grading Type is required
             </mat-error>
         </mat-form-field>
+        <mat-form-field *ngIf="isIngredient" appearance="outline" style="width:15rem;margin-right: 1rem;">
+            <mat-label>Grading Type</mat-label>
+            <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" >
+                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
+                    {{grading.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
+                Grading Type is required
+            </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field *ngIf="isIngredient" appearance="outline" style="width:14rem;margin-right: 1rem;">
+            <mat-label>Platform</mat-label>
+            <mat-select formControlName="platform" >
+                <mat-option *ngFor="let platform of platformProjects" [value]="platform">
+                    {{platform}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="releaseForm.controls.platform.hasError('required') && releaseForm.controls.platform.touched">
+                Platform is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="isPlatform" appearance="outline" style="width:30rem;margin-right: 1rem;">
+            <mat-label>Platform</mat-label>
+            <input type="text" matInput
+            placeholder="Select Platform or Create New"
+            aria-label="Number"
+            formControlName="name"
+            [matAutocomplete]="auto">
+            <!-- <input type="text" matInput formControlName="role"> -->
+            <mat-autocomplete #auto="matAutocomplete">
+             <mat-option *ngFor="let platform of filteredOptions | async" [value]="platform">
+               {{platform}}
+             </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="releaseForm.controls.platform.hasError('required') && releaseForm.controls.platform.touched">
+                Platform is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="!isPlatform" appearance="outline" style="width: 30rem;margin-right: 1rem;" >
+            <mat-label>{{productLabel}}</mat-label>
+            <input type="text" matInput formControlName="name" [readonly]=isGradeSelected >
+            <mat-error *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched">
+                {{productLabel}} is required
+            </mat-error>
+            <mat-hint *ngIf="isGradeSelected">Please select Grade type</mat-hint>
+        </mat-form-field>
+        
         <br>
         <mat-form-field appearance="outline" style="width: 23rem;margin-right: 1rem;">
             <mat-label>Release Date</mat-label>
@@ -47,18 +89,6 @@
             <!-- <div *ngIf="isWorkWeekVisible">{{workWeek | workWeekPipe}}</div> -->
         </mat-form-field>
 
-
-        <mat-form-field appearance="outline" style="width: 30rem;margin-right: 1rem;">
-            <mat-label>Release Type</mat-label>
-            <mat-select formControlName="releasetype">
-                <mat-option *ngFor="let release of releaseTypes" [value]="release.value">
-                    {{release.viewValue}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="releaseForm.controls.releasetype.hasError('required') && releaseForm.controls.releasetype.touched">
-                Release Type is required
-            </mat-error>
-        </mat-form-field>
         <mat-form-field appearance="outline" style="width: 15rem;margin-right: 1rem;">
             <mat-label>Select Milestone</mat-label>
             <mat-select formControlName="milestone" [disabled]=editMode>
@@ -71,6 +101,28 @@
                 Milestone is required
             </mat-error>
         </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 14rem;margin-right: 1rem;">
+            <mat-label>Version</mat-label>
+            <input type="text" matInput formControlName="version">
+            <mat-error *ngIf="releaseForm.controls.version.hasError('required') && releaseForm.controls.version.touched">
+                Version is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 15rem;margin-right: 1rem;">
+            <mat-label>Release Status</mat-label>
+            <mat-select formControlName="releasestatus" (selectionChange)="releaseStatusChange()">
+                <mat-option *ngFor="let status of releaseStatus" [value]="status.value">
+                    {{status.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="releaseForm.controls.releasestatus.hasError('required') && releaseForm.controls.releasestatus.touched">
+                Release Status is required
+            </mat-error>
+        </mat-form-field>
+      
+       
+        
         <mat-form-field appearance="outline" style="width: 14rem;">
             <mat-icon aria-label="Edit" matSuffix color="primary" style="cursor: pointer;" (click)="openDataCollectionDialog()">edit</mat-icon>
             <mat-label>Data Collection Status</mat-label>
@@ -101,39 +153,18 @@
                 Please enter a valid email address
             </mat-error>
         </mat-form-field>
-        <mat-form-field *ngIf="!isIngredient" appearance="outline" style="width: 30rem;">
-            <mat-label>Grading Type</mat-label>
-            <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" [disabled]=editMode>
-                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
-                    {{grading.viewValue}}
+        <mat-form-field appearance="outline" style="width: 30rem;">
+            <mat-label>Release Type</mat-label>
+            <mat-select formControlName="releasetype">
+                <mat-option *ngFor="let release of releaseTypes" [value]="release.value">
+                    {{release.viewValue}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
-                Grading Type is required
+            <mat-error *ngIf="releaseForm.controls.releasetype.hasError('required') && releaseForm.controls.releasetype.touched">
+                Release Type is required
             </mat-error>
         </mat-form-field>
-        <mat-form-field *ngIf="isIngredient" appearance="outline" style="width:15rem;margin-right: 1rem;">
-            <mat-label>Grading Type</mat-label>
-            <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" [disabled]=editMode>
-                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
-                    {{grading.viewValue}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
-                Grading Type is required
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field *ngIf="isIngredient" appearance="outline" style="width:14rem;">
-            <mat-label>Platform</mat-label>
-            <mat-select formControlName="platform" [disabled]=editMode>
-                <mat-option *ngFor="let platform of platformProjects" [value]="platform.value">
-                    {{platform.viewValue}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="releaseForm.controls.platform.hasError('required') && releaseForm.controls.platform.touched">
-                Platform is required
-            </mat-error>
-        </mat-form-field>
+      
         <!-- <mat-form-field appearance="outline" style="width: 22rem;margin-right: 1rem;">
             <mat-label>Attorney Name</mat-label>
             <input type="text" matInput formControlName="attorneyname">
@@ -163,6 +194,7 @@
             </mat-error>
         </mat-form-field>
     </form>
+    
     
 
     <div style="align-self: center;width: 92rem;">
@@ -222,6 +254,14 @@
             </mat-table>
         </div>
     </div>
+    <!-- <div *ngIf="showMsg">
+       
+          <p class="alert alert-success" style="align-self: center;width: 50%;margin-top: 10px; margin-inline: auto;" >
+              <strong>Release saved Successfully</strong>
+
+          </p>
+      
+    </div> -->
     <div style="width: 10%;margin-top: 10px; margin-bottom: 10px;margin-inline: auto;"></div>
     <button mat-flat-button matTooltip="Add/Update Release" color="primary"
         [disabled]="!releaseForm.valid || isReallyDifferent()" style="width: 10%;
