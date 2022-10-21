@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { HomeComponent } from './home/home.component';
-import { WorkWeekPipePipe, DateTimeFormatPipe } from './home/work-week-pipe.pipe';
+import { WorkWeekPipePipe, DateTimeFormatPipe, ReplaceDevtoolString, ReplaceIntelString } from './home/work-week-pipe.pipe';
 import { ReportComponent } from './report/report.component';
 import { ChecklistComponent } from './home/checklist/checklist.component';
 import { AdminComponent } from './admin/admin.component';
@@ -61,6 +61,7 @@ import { ConfirmUploadFileComponent } from './home/checklist/confirm.upload.file
 import { LoginComponent } from './account/login.component';
 import { NgxEditorModule } from "ngx-editor";
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { PlatformComponent } from './platform/platform.component';
 
 
 @NgModule({
@@ -70,6 +71,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     HomeComponent,
     WorkWeekPipePipe,
     DateTimeFormatPipe,
+    ReplaceDevtoolString, 
+    ReplaceIntelString,
     ReportComponent,
     ChecklistComponent,
     AdminComponent,
@@ -98,7 +101,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     DownloadingstatusComponent,
     ConfirmReleaseStatusComponent,
     ConfirmUploadFileComponent,
-    LoginComponent
+    LoginComponent,
+    PlatformComponent
   ],
   imports: [
     HttpClientModule, BrowserModule, AppRoutingModule,

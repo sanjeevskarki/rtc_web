@@ -160,6 +160,7 @@ export interface Project {
   project_grading_type?:string;
   project_platform?:string;
   project_version?:string;
+  tier?:string;
 }
 
 export interface Notes {

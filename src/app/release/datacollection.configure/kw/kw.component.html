@@ -5,7 +5,7 @@
     <mat-table #kwconfigtable [dataSource]="kwConfigList">
         <ng-container matColumnDef="kw_server">
             <mat-header-cell *matHeaderCellDef>KW Server</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.kw_server}}</mat-cell>
+            <mat-cell *matCellDef="let row">{{row.kw_server | replaceDevtoolString | replaceIntelString }}:{{row.port}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="kw_project_name">
             <mat-header-cell *matHeaderCellDef>Project Name</mat-header-cell>

@@ -62,7 +62,7 @@
         </button> -->
       </mat-cell>
     </ng-container>
-    <!-- <ng-container matColumnDef="delete">
+    <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef>
 
       </mat-header-cell>
@@ -72,7 +72,7 @@
           <mat-icon aria-label="Delete">delete_outline</mat-icon>
         </button>
       </mat-cell>
-    </ng-container> -->
+    </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" [style.background-color]="color"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -106,10 +106,12 @@
 
 <ng-template #confirmDeleteDialog>
   <div mat-dialog-content>
-    <p>Do you want to Remove <b>{{selectedDeleteRelease.project_name}} </b> ?</p>
+    <p>Are you sure you want to Remove <b>{{selectedDeleteRelease.project_name}} </b> ?</p>
   </div>
   <div mat-dialog-actions style="float:right;">
-      <button mat-flat-button color="primary" (click)="deleteRelease()">Delete</button>
-      <button mat-flat-button color="primary" (click)="closeRelease()">Cancel</button>
+      <button mat-flat-button color="primary" (click)="deleteRelease()">
+        <mat-icon>check</mat-icon>Yes</button>
+      <button mat-flat-button color="primary" (click)="closeRelease()" cdkFocusInitial>
+        <mat-icon>close</mat-icon>No</button>
   </div>
 </ng-template>

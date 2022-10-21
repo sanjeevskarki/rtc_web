@@ -13,6 +13,7 @@ export interface Kw_Config {
   kw_project_name: string;
   project_id?: number;
   user_added?:boolean;
+  port: string;
 }
 
 export interface Bdba_Config {
@@ -28,4 +29,9 @@ export interface Scan_Server {
   server_name: string;
   data_collection_name: string;
   region?: string;
+}
+
+export interface ServerPort {
+  name: string;
+  port: string;
 }

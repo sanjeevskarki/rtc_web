@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   projects: Project[] = [];
   // ownerProject!:OwnerProject;
   @ViewChild("listview") element: any;
-  displayedColumns = ['actions', 'businessunit', 'name', 'version','milestone', 'date', 'releasetype','releasestatus'];
+  displayedColumns = ['actions', 'businessunit', 'name', 'version','milestone', 'date', 'releasetype','releasestatus','delete'];
   color = '#f1f3f4';
   isLoading = true;
   projectList:Project[]=[];
@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit {
     if(selectedProject.project_owner_email === this.userName){
       this.deleteDialogRef = this.dialog.open(this.deleteTemplateRef, {
         height: '18%',
-        width: '20%',
+        width: '22%',
         disableClose: true
       });
     }else{

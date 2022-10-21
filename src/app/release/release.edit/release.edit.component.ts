@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
-  ATTACHMENTS_LOWERCASE, ATTORNEY_EMAIL, ATTORNEY_NAME, BUSINESS_UNIT_LOWERCASE, DATA_COLLECTION_LOWERCASE, DATE_FORMAT, DATE_LOWERCASE, DELETE_LOWERCASE, DESCRIPTION_LOWERCASE,
+  ATTACHMENTS_LOWERCASE, BUSINESS_UNIT_LOWERCASE, DATA_COLLECTION_LOWERCASE, DATE_FORMAT, DATE_LOWERCASE, DELETE_LOWERCASE, DESCRIPTION_LOWERCASE,
   EVIDENCES_LOWERCASE, EXTERNAL_WITHOUT_HANDOVER, EXTERNAL_WITH_HANDOVER, HANDOVER_LOWERCASE, INTERNAL, MILESTONE_LOWERCASE,
   NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, RELEASE_STATUS, RELEASE_TYPE, stakeholderNotificationList,
   SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE, CHECKLIST_LOWERCASE, NOT_ASSOCIATED_PLATFORM, PLATFORM, INGREDIENT, PLATFORM_LOWERCASE, GRADING_TYPE, VERSION_LOWERCASE
@@ -71,6 +71,7 @@ export class ReleaseEditComponent implements OnInit {
   public formlayout!: ElementRef;
   newProject!: Project;
   selectedMilestone!: string;
+  selectedBusinessUnit!: string;
   selectedType!: string;
   selectedHandoverType!: string;
   guidlines: BackendGuideline[] = [];
@@ -111,6 +112,12 @@ export class ReleaseEditComponent implements OnInit {
   newKwConfigList: Kw_Config[] = [];
   productLabel: string = 'Name';
   isGradeSelected: boolean = true;
+  showMsg: boolean = false;
+  tiers: string[] = [
+    'Tier0',
+    'Tier1', 
+    'Tier3'
+  ];
   constructor(private formBuilder: UntypedFormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -136,7 +143,7 @@ export class ReleaseEditComponent implements OnInit {
     }
 
     this.releaseForm = this.formBuilder.group({
-      name: [null, Validators.required],
+      name: [null ,[Validators.required]],
       handover: [null, []],
       milestone: [null, Validators.required],
       date: [null, Validators.required],
@@ -155,6 +162,7 @@ export class ReleaseEditComponent implements OnInit {
       gradingtype: [null, Validators.required],
       platform: [null, []],
       version: [null, []],
+      tier: [null, []],
     });
 
 
@@ -165,7 +173,7 @@ export class ReleaseEditComponent implements OnInit {
       role: [null, Validators.required],
     });
 
-    this.filteredOptions = this.releaseForm.controls['platform'].valueChanges.pipe(
+    this.filteredOptions = this.releaseForm.controls['name'].valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value!)),
     );
@@ -285,17 +293,11 @@ export class ReleaseEditComponent implements OnInit {
         return milestoneA.milestone - milestoneB.milestone;
       }
     });
-    this.createMilestoneDropdown();
+    this.editForm();
+    // this.createMilestoneDropdown();
   }
 
-  createMilestoneDropdown() {
-    if (this.milestoneList != null) {
-      for (var i = 0; i < this.milestoneList.length; i++) {
-        this.milestones.push({ value: this.milestoneList[i].milestone, viewValue: this.milestoneList[i].milestone });
-      }
-    }
-    this.editForm();
-  }
+ 
 
   actionBegin(args: any): void {
     let gridInstance: any = (<any>document.getElementById('Normalgrid')).ej2_instances[0];
@@ -372,7 +374,7 @@ export class ReleaseEditComponent implements OnInit {
         this.productLabel = 'Platform Name';
       }
       else {
-        this.productLabel = 'Project Name';
+        this.productLabel = 'Product Name';
         this.isIngredient = false;
         this.isPlatform = false;
       }
@@ -391,7 +393,7 @@ export class ReleaseEditComponent implements OnInit {
   }
 
   updateRelease() {
-    this.stateChange();
+    this.showMsg=true;
     this.newProject = <Project>{};
 
     this.newProject.project_name = this.releaseForm.controls[NAME_LOWERCASE].value;
@@ -416,22 +418,16 @@ export class ReleaseEditComponent implements OnInit {
       // this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
       this.getStaticData();
     }
-    // this.stateChange();
-    if (this.platformProjects.indexOf(this.newProject.project_platform!) === -1) {
-      this.createPlatform(this.newProject.project_platform!);
+    alert(this.newProject.project_grading_type);
+    if (this.newProject.project_grading_type === PLATFORM && this.platformProjects.indexOf(this.newProject.project_name!) === -1) {
+      this.createPlatform(this.newProject.project_name!);
     }
     this.initalValues = this.releaseForm.value;
     localStorage.setItem('selectedProject', JSON.stringify(this.newProject));
   }
 
-  showMsg: boolean = false;
-  stateChange() {
-    this.showMsg = true;
-    // setTimeout(function () {
-
-    // }, 3000);
-    // this.showMsg=false;
-  }
+  
+  
 
   savedPlatform!: Platform;
   createPlatform(platformName: string) {
@@ -456,7 +452,8 @@ export class ReleaseEditComponent implements OnInit {
     this.selectedMilestone = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
     this.selectedType = this.releaseForm.controls[RELEASE_TYPE_LOWERCASE].value;
     this.selectedHandoverType = this.releaseForm.controls[HANDOVER_LOWERCASE].value;
-    this.service.details(this.selectedMilestone.toLocaleLowerCase()!, this.selectedHandoverType?.toLocaleLowerCase()!, this.selectedType?.toLocaleLowerCase()!).subscribe(
+    this.selectedBusinessUnit = this.releaseForm.controls[BUSINESS_UNIT_LOWERCASE].value;
+    this.service.details(this.selectedMilestone.toLocaleLowerCase()!, this.selectedHandoverType?.toLocaleLowerCase()!, this.selectedType?.toLocaleLowerCase()!, this.selectedBusinessUnit?.toLocaleLowerCase()!).subscribe(
       (response) => {
         this.details = response;
         this.saveProject();
@@ -471,6 +468,7 @@ export class ReleaseEditComponent implements OnInit {
     let project: Project;
     this.service.addProject(this.newProject).subscribe((data) => {
       project = data;
+      this.showMsg=false;
       this.createGuideLine(project);
       this.createBuFolder();
       this.createStakeholders(project);
@@ -617,7 +615,7 @@ export class ReleaseEditComponent implements OnInit {
    */
   updateProject() {
     this.service.updateProject(this.newProject).subscribe(data => {
-
+      this.showMsg=false;
     });
 
   }
@@ -839,7 +837,6 @@ export class ReleaseEditComponent implements OnInit {
   isPlatform: boolean = false;
   
   selectGrade(selectedGrade: string) {
-
     // alert(selectedGrade);
     if (selectedGrade === INGREDIENT) {
       this.productLabel = 'Ingredient Name';
@@ -861,11 +858,56 @@ export class ReleaseEditComponent implements OnInit {
     }
   }
 
+  selectBU(selectedBusinessUnit: string){
+    let milestoneList:Milestone[]=[];
+    if(selectedBusinessUnit === 'AXG'){
+      milestoneList = this.milestoneList.filter(x => x.business_unit === selectedBusinessUnit);
+      // alert();
+      this.createMilestoneDropdown(milestoneList);
+    }else{
+      this.Axg=false;
+      // milestoneList = this.milestoneList.filter(({business_unit}) => !business_unit!.includes(selectedBusinessUnit))
+      milestoneList = this.milestoneList.filter(r => r.business_unit === null)
+      
+      this.createMilestoneDropdown(milestoneList);
+    }
+  }
+
+
+  createMilestoneDropdown(mList: Milestone[]) {
+    this.milestones =[];
+    if (mList != null) {
+      for (var i = 0; i < mList.length; i++) {
+        this.milestones.push({ value: mList[i].milestone, viewValue: mList[i].milestone });
+      }
+    }
+  }
+
   changeEmailNotification(event: MatCheckboxChange, item: any) {
     // alert(item.email_notification);
     // alert(event.checked);
     this.service.changeEmailNotification(item.id, event.checked).subscribe((status) => {
     });
+  }
+
+  Axg:boolean=false;
+  preSiMilestone:string[]=['IPVal 0.85','IPVal 0.5/ VS0','IPVal 1/ VS1','VSV']
+  selectMilestone(selectedMilestone: string){
+    var bu = this.releaseForm.controls[BUSINESS_UNIT_LOWERCASE].value;
+    let milestoneList:Milestone[]=[];
+    if(bu === 'AXG' && this.preSiMilestone.indexOf(selectedMilestone) !== -1){
+      this.Axg=true;
+      // milestoneList = this.milestoneList.filter(x => x.business_unit === selectedBusinessUnit);
+      // // alert();
+      // this.createMilestoneDropdown(milestoneList);
+    }
+    else{
+      this.Axg=false;
+      // milestoneList = this.milestoneList.filter(({business_unit}) => !business_unit!.includes(selectedBusinessUnit))
+      milestoneList = this.milestoneList.filter(r => r.business_unit === null)
+      
+      this.createMilestoneDropdown(milestoneList);
+    }
   }
 
 }

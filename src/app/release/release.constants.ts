@@ -11,6 +11,7 @@ export const BUSINESS_UNIT = 'businessunit';
 export const PROJECT = 'project';
 export const BKC_LOWERCASE = 'bkc';
 export const PROTEX_LOWERCASE = 'protex';
+export const ROLES_LOWERCASE = 'roles';
 export const BDBA_LOWERCASE = 'bdba';
 export const KW_LOWERCASE = 'kw';
 export const POC_UPPER = 'POC';
@@ -57,6 +58,7 @@ export const TABLE_HEADER_COLOR = '#f1f3f4';
 export const BDBA_RESULTS_LOWERCASE = 'bdbaresult';
 export const KW_RESULTS_LOWERCASE = 'kwresult';
 export const PROTEX_RESULTS_LOWERCASE = 'protexresult';
+export const AXG_LOWERCASE = 'axg';
 
 
 export const ownerNotificationList: any[] = [

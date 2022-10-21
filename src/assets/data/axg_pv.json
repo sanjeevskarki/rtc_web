@@ -1,0 +1,266 @@
+[
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad31",
+        "vector": "Requirements",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad46",
+                "detail": "Requirements and Change Control",
+                "releaseCriteria": "Requirements under Change Control, reviewed and approved"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad32",
+        "vector": "Development",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad47",
+                "detail": "Code completion",
+                "releaseCriteria": "Code Complete of Pre-Alpha committed requirements"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad33",
+        "vector": "Collateral",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad48",
+                "detail": "Customer Documentation Readiness",
+                "releaseCriteria": "All collateral for PV ready for release, including known SW limitations & defects"
+            },
+            {
+                "id": "poiud5a66f5735b084076f81af70ad48",
+                "detail": "Programmer Reference Manual",
+                "releaseCriteria": "PRM v1.x published to https://01.org/  (if applicable)"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad34",
+        "vector": "Defects/Bugs",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad49",
+                "detail": "Impact assessment of defects (includes customer, platform, and telemetry ), Assess exposure vs PV",
+                "releaseCriteria": "Record total # open ingredient defects by exposure and total % open (If required, % open < threshold) All milestone must-fix/P1 defects from all sources resolved and verified 0 Critical exposure/severity Defects"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70io89",
+                "detail": "# of Stability & Display Flickering bugs",
+                "releaseCriteria": "Resolve all Must fix Stability issues (TDR, App crashes, BSODs) &  Display Flicker issues"
+            },
+            {
+                "id": "poiud5a66f5098b084075f81af70io89",
+                "detail": "Integrated Platform/Card",
+                "releaseCriteria": "Platform milestone-gating ingredient defects from latest available BKC validation resolved and verified. Note: Platform milestone gates ingredient milestone declaration"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad35",
+        "vector": "Validation",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad50",
+                "detail": "Gfx Functional Validation Plan",
+                "releaseCriteria": "Plan Approved & coverage is 100% of the functional requirements"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad51",
+                "detail": "Gfx Functional validation Execution",
+                "releaseCriteria": "GSE Target: Attempted: 100% Pass: 100% (on all Verticals too) Tested with HW ≥ QS & recent Platform HW/SW BKC"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af79op09",
+                "detail": "E2E Functional",
+                "releaseCriteria": "Attempted: 100%; Pass ≥95%"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad54",
+                "detail": "Stress & Stability Plan",
+                "releaseCriteria": "Plan reviewed & Approved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad55",
+                "detail": "Stress & Stability validation execution",
+                "releaseCriteria": "Gfx Stress Tests: ≤ 200 DPMT Power Management ≤ 200 DPMO Concurrent Operations ≤ 200 DPMT (Recommend match platform cycles per system & target DPMO < 100)"
+            },
+            {
+                "id": "poiud5a66f5735b084075f82nf70ad55",
+                "detail": "Composite Passrate",
+                "releaseCriteria": "Attempted: 100%; Pass: ≥95%"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad52",
+                "detail": "KPIs targets Defnition",
+                "releaseCriteria": "All KPI targets ratified"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad53",
+                "detail": "KPI measurement",
+                "releaseCriteria": "All KPI’s tested with each at < 5% deviation from target"
+            },
+            {
+                "id": "poiud5a66f5090b084075f81af70ad53",
+                "detail": "Customer Configs & Validation",
+                "releaseCriteria": "On CSLP systems, run E2E OST Gfx Validation. E2E OST Gfx Validation (PV): Attempted: 100%; Pass ≥ 95%"
+            },
+            {
+                "id": "poiud5a66f5020b084075f81af70ad53",
+                "detail": "Localization",
+                "releaseCriteria": "PV criteria met (L10n as expected, all locales pass Basic acceptance test + Native ling + smoke test)"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad36",
+        "vector": "Compliance",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad56",
+                "detail": "OS Cert completeness (% pass), Standards compliance (FUSA), & Waiver Status",
+                "releaseCriteria": "Certification tests are completed & 100% passed, No issues gate final certification (Accessibility requirements met)"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad37",
+        "vector": "Legal",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad57",
+                "detail": "Export",
+                "releaseCriteria": "Approved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad58",
+                "detail": "TM&B",
+                "releaseCriteria": "Approved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad59",
+                "detail": "Protex Scan",
+                "releaseCriteria": "Running"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad60",
+                "detail": "Protex BOM",
+                "releaseCriteria": "fully & accurately populated including the correct usage per component"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad61",
+                "detail": "Protex Matches & License conflicts",
+                "releaseCriteria": "All Protex Matches & License conflicts resolved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad62",
+                "detail": "Protex Obligations",
+                "releaseCriteria": "All Protex Obligations fulfilled and checked in Protex"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad63",
+                "detail": "OBL",
+                "releaseCriteria": "Defined and approved by BU attorney"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad64",
+                "detail": "OS PDT",
+                "releaseCriteria": "Approved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad65",
+                "detail": "Copyright readme file",
+                "releaseCriteria": "Ready"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad66",
+                "detail": "TPP/Attributions file",
+                "releaseCriteria": "Ready"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad67",
+                "detail": "Legal text file ",
+                "releaseCriteria": "Integrate as part of the released SW package "
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad68",
+                "detail": "Record Center ",
+                "releaseCriteria": "Release SWLC evidence archived in the Record Center"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad38",
+        "vector": "Privacy",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad69",
+                "detail": "PIA (Privacy Impact Assesment)",
+                "releaseCriteria": "Approved"
+            }
+        ]
+    },
+    {
+        "id": "hjkld5a66f5735b084075f81af70ad39",
+        "vector": "Security",
+        "details": [
+            {
+                "id": "poiud5a66f5735b084075f81af70ad73",
+                "detail": "Static Analysis setup",
+                "releaseCriteria": "Running"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad74",
+                "detail": "Static Analysis issues",
+                "releaseCriteria": "Zero Security Critical issues, errors, and banned functions"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad70",
+                "detail": "SDLe project creation",
+                "releaseCriteria": "SDLe Project survey completed & tasks dispositioned"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad71",
+                "detail": "Crypto review",
+                "releaseCriteria": "Approved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad72",
+                "detail": "SAFE Review & Threat Model",
+                "releaseCriteria": "Approved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad75",
+                "detail": "Composition Analysis setup (SNYK / BDBA)",
+                "releaseCriteria": "Running"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad76",
+                "detail": "Composition Analysis issues",
+                "releaseCriteria": "Dispositioned"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad77",
+                "detail": "NetSparker deployment on the pre-production environment",
+                "releaseCriteria": "Deployed & running and all issues resolved"
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad78",
+                "detail": "NetSparker deployment on the production environment",
+                "releaseCriteria": "Deployed & Running "
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad79",
+                "detail": "A/V Scan",
+                "releaseCriteria": "Scan is clean for the released SW "
+            },
+            {
+                "id": "poiud5a66f5735b084075f81af70ad80",
+                "detail": "SDLe tasks",
+                "releaseCriteria": "All required pre-production tasks meet creteria"
+            }
+        ]
+    }
+]

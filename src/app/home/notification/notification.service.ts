@@ -14,7 +14,7 @@ import { NOTIFICATION_LOWER } from '../home.constants';
 export class NotificationService {
   endpoint_url: string = environment.ENDPOINT;
 
-  notification: string = NOTIFICATION_LOWER;
+  // notification: string = NOTIFICATION_LOWER;
 
   amount!: number;
   displayTime!: string;
@@ -35,12 +35,12 @@ export class NotificationService {
 
   public addNotification(notificationSetting: NotificationSetting): Observable<Project> {
     const body = JSON.stringify(notificationSetting);
-    return this.httpClient.post<Project>(this.endpoint_url + this.notification, body, { headers: this.headers });
+    return this.httpClient.post<Project>(this.endpoint_url + NOTIFICATION_LOWER, body, { headers: this.headers });
   }
 
   public updateNotification(notificationSetting: NotificationSetting): Observable<string> {
     const body = JSON.stringify(notificationSetting);
-    return this.httpClient.put<string>(this.endpoint_url + this.notification, body, { headers: this.headers });
+    return this.httpClient.put<string>(this.endpoint_url + NOTIFICATION_LOWER, body, { headers: this.headers });
   }
 
   public getNotifications(qualOwnerId: string): Observable<NotificationSetting> {
@@ -50,7 +50,7 @@ export class NotificationService {
       responseType: 'json',
       params: params,
     }
-    return this.httpClient.get<NotificationSetting>(this.endpoint_url + this.notification, requestOptions);
+    return this.httpClient.get<NotificationSetting>(this.endpoint_url + NOTIFICATION_LOWER, requestOptions);
   }
 
 }

@@ -80,3 +80,17 @@
 .row {
   display: flex;
 }
+
+.success-message-div{
+  background-color: lightgreen;
+  width: 40%;
+  align-self: center;
+}
+
+.success-message-p{
+  align-self: center;
+  width: 30%;
+  margin-top: 10px; 
+  margin-inline: auto;
+  color: darkgreen;
+}

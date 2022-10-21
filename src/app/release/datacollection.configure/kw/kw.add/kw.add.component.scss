@@ -1,3 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 25rem;
+  max-height: 50rem;
+  overflow: auto;
+}
+
 .mat-header-cell {
     font-size: 13px;
     font-weight: 600;

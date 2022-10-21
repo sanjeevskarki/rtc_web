@@ -3,6 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, Observable, startWith } from 'rxjs';
 import { Stakeholder } from 'src/app/home/home.models';
+import { Roles } from '../release.models';
+import { ReleaseStakeholderService } from './release.stakeholder.service';
 
 @Component({
   selector: 'app-release.stakeholder',
@@ -16,24 +18,25 @@ export class ReleaseStakeholderComponent implements OnInit {
   selectedStakeholder!:Stakeholder;
   filteredOptions!: Observable<string[]>;
   stakeholderHeader!:string;
-  roles: string[] = [
-    'Attorney',
-    'Development Lead', 
-    'Marketing',
-    'Product Architect',
-    'Product Security Expert', 
-    'Program Manager',
-    'Project Manager',
-    'Security Champion',
-    'Security & Privacy Lead',
-    'Security Lead',
-    'System Architect', 
-    'Validation Lead',
-    'Other'
-  ];
-  constructor(private formBuilder: UntypedFormBuilder,public dialogRef: MatDialogRef<ReleaseStakeholderComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  // roles: string[] = [
+  //   'Attorney',
+  //   'Development Lead', 
+  //   'Marketing',
+  //   'Product Architect',
+  //   'Product Security Expert', 
+  //   'Program Manager',
+  //   'Project Manager',
+  //   'Security Champion',
+  //   'Security & Privacy Lead',
+  //   'Security Lead',
+  //   'System Architect', 
+  //   'Validation Lead',
+  //   'Other'
+  // ];
+  constructor(private formBuilder: UntypedFormBuilder,public dialogRef: MatDialogRef<ReleaseStakeholderComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private service: ReleaseStakeholderService) { }
 
   ngOnInit(): void {
+    this.getRoles();
     this.stakeholderHeader='Add Stakeholder';
     this.addStakeholderForm = this.formBuilder.group({
       name: [null, Validators.required],
@@ -51,6 +54,30 @@ export class ReleaseStakeholderComponent implements OnInit {
         role: this.selectedStakeholder.role,
         email_notification: this.selectedStakeholder.email_notification,
       });
+    }
+   
+  }
+
+  roleList!:Roles[];
+  roles!:string[];
+  getRoles() {
+    this.service.getRoles().subscribe(
+      (response) => {
+        this.roleList = response;
+        this.createRolesDropdown();
+      },
+      (err) => {
+        console.log(err.name);
+      }
+    );
+  }
+
+  createRolesDropdown() {
+    this.roles =[];
+    if (this.roleList != null) {
+      for (var i = 0; i < this.roleList.length; i++) {
+        this.roles.push(this.roleList[i].name);
+      }
     }
     this.filteredOptions = this.addStakeholderForm.controls['role'].valueChanges.pipe(
       startWith(''),

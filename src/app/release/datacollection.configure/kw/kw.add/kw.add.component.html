@@ -1,8 +1,9 @@
+
 <h1 mat-dialog-title>Config KW</h1>
-<form class="example-form" [formGroup]="addKwConfigForm">
-    <mat-form-field appearance="outline" style="display: inline;">
+<form class="example-form" [formGroup]="addKwConfigForm" style="align-self: center;">
+    <mat-form-field appearance="outline" style="width: 22rem;margin-right: 1rem;">
         <mat-label>Select KW Server</mat-label>
-        <mat-select formControlName="kw_server">
+        <mat-select formControlName="kw_server" (selectionChange)="selectPort($event.value)">
             <mat-option *ngFor="let server of scanServers" [value]="server.value">
                 {{server.viewValue}}
             </mat-option>
@@ -10,6 +11,18 @@
         <mat-error
             *ngIf="addKwConfigForm.controls.kw_server.hasError('required') && addKwConfigForm.controls.kw_server.touched">
             KW Server is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 10rem;">
+        <mat-label>Port</mat-label>
+        <mat-select formControlName="port">
+            <mat-option *ngFor="let port of portList" [value]="port">
+                {{port}}
+            </mat-option>
+        </mat-select>
+        <mat-error
+            *ngIf="addKwConfigForm.controls.port.hasError('required') && addKwConfigForm.controls.port.touched">
+            Port is required
         </mat-error>
     </mat-form-field>
     <div style="height: 0.5rem;"></div>

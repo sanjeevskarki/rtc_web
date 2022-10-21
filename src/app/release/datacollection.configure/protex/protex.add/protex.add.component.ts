@@ -7,6 +7,7 @@ import { ReleaseService } from 'src/app/release/release.service';
 import { Protex_Config, Scan_Server } from '../../datacollection.models';
 import { AbstractControl } from '@angular/forms';
 import { FACELESS_USER } from 'src/app/home/home.constants';
+import { PROTEX_LOWERCASE } from 'src/app/release/release.constants';
 
 @Component({
   selector: 'app-protex.add',
@@ -121,7 +122,7 @@ export class ProtexAddComponent implements OnInit {
  * Get all the availbale Protex Server from DB
  */
   getServer() {
-    this.service.getServer("protex").subscribe(
+    this.service.getServer(PROTEX_LOWERCASE).subscribe(
       (response) => {
         this.scanServerList = response;
         this.createProtexServerDropdown();

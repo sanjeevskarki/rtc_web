@@ -12,6 +12,7 @@ import { BkcComponent } from './home/bkc/bkc.component';
 import { ChecklistMenuComponent } from './home/checklist.menu/checklist.menu.component';
 import { NotificationComponent } from './home/notification/notification.component';
 import { LoginComponent } from './account/login.component';
+import { PlatformComponent } from './platform/platform.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'release', component: ReleaseComponent},
   { path: 'admin', component: AdminComponent },
+  { path: 'platform', component: PlatformComponent },
   // { path: 'notification', component: NotificationComponent },
   { path: 'report', component: ReportComponent },
   { path: 'help', component: HelpComponent },
