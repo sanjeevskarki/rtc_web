@@ -251,6 +251,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.mediumCount = 0;
     this.infoCount = 0;
     this.protexData = [];
+    var fileName:string;
     // let res1 = this.service.checkmarxScan(this.data_collection);
     // let res2 = this.service.kwScan(this.data_collection);
     let res2 = this.service.getKwResults(this.selectedProject.project_id!);
@@ -260,7 +261,12 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     let res4 = this.service.getBdbaResults(this.selectedProject.project_id!);
     // let res4 = this.service.bdbaScan(this.data_collection);
     // Get the static data for associated with each task, currently we are geting this data from local stored files
-    let res5 = this.service.getStaticData(this.milestone?.toLocaleLowerCase()!);
+    if(this.data_collection.business_unit === 'AXG'){
+      fileName = this.data_collection.business_unit.toLocaleLowerCase()+"_"+this.milestone?.toLocaleLowerCase();
+    }else{
+      fileName = this.milestone?.toLocaleLowerCase();
+    }
+    let res5 = this.service.getStaticData(fileName);
     // forkJoin([res1, res2, res3, res4, res5, res6]).subscribe(([data1, data2, data3, data4, data5, data6]) => {
     forkJoin([res2, res3, res4, res5]).subscribe(([data2, data3, data4, data5]) => {
       // this.checkMarxIssue = data1;
