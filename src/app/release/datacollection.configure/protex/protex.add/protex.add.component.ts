@@ -24,7 +24,7 @@ export class ProtexAddComponent implements OnInit {
   user_added: boolean = false;
   prefix = 'c_';
   scanServerList!: Scan_Server[];
-  scanServers!: any[];
+  scanServers!: string[];
   facelessUser = FACELESS_USER;
   constructor(private formBuilder: UntypedFormBuilder, public dialogRef: MatDialogRef<ProtexAddComponent>, @Inject(MAT_DIALOG_DATA) public data: any, 
   private service: ReleaseService, public dialog: MatDialog) { }
@@ -140,9 +140,13 @@ export class ProtexAddComponent implements OnInit {
     this.scanServers = [];
     if (this.scanServerList != null) {
       for (var i = 0; i < this.scanServerList.length; i++) {
-        this.scanServers.push({ value: this.scanServerList[i].server_name, viewValue: this.scanServerList[i].server_name });
+        this.scanServers.push(this.scanServerList[i].server_name);
       }
     }
+  }
+
+  trackByFn(index:any, item:any) {    
+    return item.id; // unique id corresponding to the item
   }
 
 }

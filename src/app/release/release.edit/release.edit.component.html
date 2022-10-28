@@ -5,8 +5,8 @@
         <mat-form-field appearance="outline" style="width: 30rem;margin-right: 1rem;">
             <mat-label>Business Unit</mat-label>
             <mat-select formControlName="businessunit" [disabled]=editMode (selectionChange)="selectBU($event.value)" >
-                <mat-option *ngFor="let businessunit of businessUnits" [value]="businessunit.value" >
-                    {{businessunit.viewValue}}
+                <mat-option *ngFor="let businessunit of businessUnits;trackBy: trackByFn" [value]="businessunit" >
+                    {{businessunit}}
                 </mat-option>
             </mat-select>
             <mat-error
@@ -17,8 +17,8 @@
         <mat-form-field *ngIf="!isIngredient" appearance="outline" style="width: 30rem;margin-right: 1rem;">
             <mat-label>Grading Type</mat-label>
             <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" >
-                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
-                    {{grading.viewValue}}
+                <mat-option *ngFor="let grading of gradingTypes;trackBy: trackByFn" [value]="grading">
+                    {{grading}}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
@@ -28,8 +28,8 @@
         <mat-form-field *ngIf="isIngredient" appearance="outline" style="width:15rem;margin-right: 1rem;">
             <mat-label>Grading Type</mat-label>
             <mat-select formControlName="gradingtype" (selectionChange)="selectGrade($event.value)" >
-                <mat-option *ngFor="let grading of gradingTypes" [value]="grading.value">
-                    {{grading.viewValue}}
+                <mat-option *ngFor="let grading of gradingTypes;trackBy: trackByFn" [value]="grading">
+                    {{grading}}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="releaseForm.controls.gradingtype.hasError('required') && releaseForm.controls.gradingtype.touched">
@@ -41,7 +41,7 @@
             <mat-label>Platform</mat-label>
             <mat-select formControlName="platform" >
                 <mat-option value=""></mat-option>
-                <mat-option *ngFor="let platform of platformProjects" [value]="platform">
+                <mat-option *ngFor="let platform of platformProjects;trackBy: trackByFn" [value]="platform">
                     {{platform}}
                 </mat-option>
             </mat-select>
@@ -58,7 +58,7 @@
             [matAutocomplete]="auto">
             <!-- <input type="text" matInput formControlName="role"> -->
             <mat-autocomplete #auto="matAutocomplete">
-             <mat-option *ngFor="let platform of filteredOptions | async" [value]="platform">
+             <mat-option *ngFor="let platform of filteredOptions | async;trackBy: trackByFn" [value]="platform">
                {{platform}}
              </mat-option>
             </mat-autocomplete>
@@ -72,7 +72,7 @@
             <mat-error *ngIf="releaseForm.controls.name.hasError('required') && releaseForm.controls.name.touched">
                 {{productLabel}} is required
             </mat-error>
-            <mat-hint *ngIf="isGradeSelected">Please select Grade type</mat-hint>
+            <mat-hint *ngIf="isGradeSelected">Please select Grading type</mat-hint>
         </mat-form-field>
         
         <br>
@@ -93,8 +93,8 @@
         <mat-form-field *ngIf="!Axg" appearance="outline" style="width: 15rem;margin-right: 1rem;">
             <mat-label>Select Milestone</mat-label>
             <mat-select formControlName="milestone" [disabled]=editMode (selectionChange)="selectMilestone($event.value)">
-                <mat-option *ngFor="let milestone of milestones" [value]="milestone.value">
-                    {{milestone.viewValue}}
+                <mat-option *ngFor="let milestone of milestones;trackBy: trackByFn" [value]="milestone">
+                    {{milestone}}
                 </mat-option>
             </mat-select>
             <mat-error
@@ -105,8 +105,8 @@
         <mat-form-field *ngIf="Axg" appearance="outline" style="width: 8rem;margin-right: 1rem;">
             <mat-label>Select Milestone</mat-label>
             <mat-select formControlName="milestone" [disabled]=editMode (selectionChange)="selectMilestone($event.value)">
-                <mat-option *ngFor="let milestone of milestones" [value]="milestone.value">
-                    {{milestone.viewValue}}
+                <mat-option *ngFor="let milestone of milestones;trackBy: trackByFn" [value]="milestone">
+                    {{milestone}}
                 </mat-option>
             </mat-select>
             <mat-error
@@ -117,7 +117,7 @@
         <mat-form-field *ngIf="Axg" appearance="outline" style="width: 6rem;margin-right: 1rem;">
             <mat-label>Select Tier</mat-label>
             <mat-select formControlName="tier" [disabled]=editMode>
-                <mat-option *ngFor="let tier of tiers" [value]="tier">
+                <mat-option *ngFor="let tier of tiers;trackBy: trackByFn" [value]="tier">
                     {{tier}}
                 </mat-option>
             </mat-select>
@@ -137,8 +137,8 @@
         <mat-form-field appearance="outline" style="width: 15rem;margin-right: 1rem;">
             <mat-label>Release Status</mat-label>
             <mat-select formControlName="releasestatus" (selectionChange)="releaseStatusChange()">
-                <mat-option *ngFor="let status of releaseStatus" [value]="status.value">
-                    {{status.viewValue}}
+                <mat-option *ngFor="let status of releaseStatus;trackBy: trackByFn" [value]="status">
+                    {{status}}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="releaseForm.controls.releasestatus.hasError('required') && releaseForm.controls.releasestatus.touched">
@@ -181,8 +181,8 @@
         <mat-form-field appearance="outline" style="width: 30rem;">
             <mat-label>Release Type</mat-label>
             <mat-select formControlName="releasetype">
-                <mat-option *ngFor="let release of releaseTypes" [value]="release.value">
-                    {{release.viewValue}}
+                <mat-option *ngFor="let release of releaseTypes;trackBy: trackByFn" [value]="release">
+                    {{release}}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="releaseForm.controls.releasetype.hasError('required') && releaseForm.controls.releasetype.touched">

@@ -3,8 +3,8 @@
     <mat-form-field appearance="outline" style="display: inline;">
         <mat-label>Select Protex Server</mat-label>
         <mat-select formControlName="protex_server">
-            <mat-option *ngFor="let server of scanServers" [value]="server.value">
-                {{server.viewValue}}
+            <mat-option *ngFor="let server of scanServers;trackBy: trackByFn" [value]="server">
+                {{server}}
             </mat-option>
         </mat-select>
         <mat-error

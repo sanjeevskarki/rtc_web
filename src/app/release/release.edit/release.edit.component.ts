@@ -4,11 +4,11 @@ import {
   ATTACHMENTS_LOWERCASE, BUSINESS_UNIT_LOWERCASE, DATA_COLLECTION_LOWERCASE, DATE_FORMAT, DATE_LOWERCASE, DELETE_LOWERCASE, DESCRIPTION_LOWERCASE,
   EVIDENCES_LOWERCASE, EXTERNAL_WITHOUT_HANDOVER, EXTERNAL_WITH_HANDOVER, HANDOVER_LOWERCASE, INTERNAL, MILESTONE_LOWERCASE,
   NAME_LOWERCASE, ownerNotificationList, qualOwnerNotificationList, QUAL_OWNER_EMAIL, QUAL_OWNER_NAME, RELEASE_STATUS, RELEASE_TYPE, stakeholderNotificationList,
-  SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE, CHECKLIST_LOWERCASE, NOT_ASSOCIATED_PLATFORM, PLATFORM, INGREDIENT, PLATFORM_LOWERCASE, GRADING_TYPE, VERSION_LOWERCASE
+  SUCCESS_LOWERCASE, TABLE_HEADER_COLOR, RELEASE_TYPE_LOWERCASE, CHECKLIST_LOWERCASE, NOT_ASSOCIATED_PLATFORM, PLATFORM, INGREDIENT, PLATFORM_LOWERCASE, GRADING_TYPE, VERSION_LOWERCASE, TIER_LOWERCASE, AXG_LOWERCASE, AXG_UPPERCASE, COMMON_LOWERCASE, OPEN
 } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { NotificationSetting, Platform, ReleaseChecklist, Stakeholder } from 'src/app/home/home.models';
-import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
+import { Project, ReleaseDetails, ReleaseTask } from 'src/app/home/home.models';
 
 import * as moment from 'moment';
 import { ReleaseEditService } from './release.edit.service';
@@ -17,7 +17,7 @@ import { ReleaseStakeholderComponent } from '../release.stakeholder/release.stak
 import { ConfirmDeleteStakeholderDialogComponent } from '../confirmdeletestakeholderdialog/confirm.delete.stakeholder.dialog.component';
 import { DatacollectionConfigureComponent } from '../datacollection.configure/datacollection.configure.component';
 import { forkJoin, map, Observable, startWith } from 'rxjs';
-import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
+import { Bdba_Config, Kw_Config, Protex_Config, ReleaseChecklistLookup } from '../datacollection.configure/datacollection.models';
 
 import { ACTIVE_LOWERCASE, CANCELLED_LOWERCASE, DEFERRED_LOWERCASE, openStatusArray, RELEASED_LOWERCASE } from 'src/app/home/home.constants';
 import { ConfirmReleaseStatusComponent } from '../confirm.release.status/confirm.release.status.component';
@@ -39,29 +39,24 @@ export class ReleaseEditComponent implements OnInit {
   public format: string = 'dd-MMM-yy';
   isWorkWeekVisible: boolean = false;
   workWeek!: string;
-  public milestones: any[] = [];
+  public milestones: string[] = [];
   public milestonefields: Object = { text: 'Milestone', value: 'Id' };
 
-  releaseTypes: any[] = [
-    { value: EXTERNAL_WITH_HANDOVER, viewValue: EXTERNAL_WITH_HANDOVER },
-    { value: EXTERNAL_WITHOUT_HANDOVER, viewValue: EXTERNAL_WITHOUT_HANDOVER },
-    { value: INTERNAL, viewValue: INTERNAL },
+  releaseTypes: string[] = [
+    EXTERNAL_WITH_HANDOVER,
+    EXTERNAL_WITHOUT_HANDOVER,
+    INTERNAL,
   ];
 
-  gradingTypes: any[] = [
-    { value: INGREDIENT, viewValue: INGREDIENT },
-    { value: PLATFORM, viewValue: PLATFORM },
-    { value: NOT_ASSOCIATED_PLATFORM, viewValue: NOT_ASSOCIATED_PLATFORM },
+  gradingTypes: string[] = [
+    INGREDIENT ,PLATFORM , NOT_ASSOCIATED_PLATFORM 
   ];
 
-  releaseStatus: any[] = [
-    { value: ACTIVE_LOWERCASE, viewValue: ACTIVE_LOWERCASE },
-    { value: RELEASED_LOWERCASE, viewValue: RELEASED_LOWERCASE },
-    { value: CANCELLED_LOWERCASE, viewValue: CANCELLED_LOWERCASE },
-    { value: DEFERRED_LOWERCASE, viewValue: DEFERRED_LOWERCASE },
+  releaseStatus: string[] = [
+    ACTIVE_LOWERCASE ,RELEASED_LOWERCASE, CANCELLED_LOWERCASE,DEFERRED_LOWERCASE
   ];
 
-  public businessUnits: any[] = [];
+  public businessUnits: string[] = [];
   public platformProjects: string[] = [];
   showSpinner: boolean = false;
 
@@ -72,12 +67,13 @@ export class ReleaseEditComponent implements OnInit {
   newProject!: Project;
   selectedMilestone!: string;
   selectedBusinessUnit!: string;
+  selectedTier!: string;
   selectedType!: string;
   selectedHandoverType!: string;
-  guidlines: BackendGuideline[] = [];
-  details: ReleaseDetails[] = [];
-  releaseGuideline!: BackendGuideline;
-  newGuidlines: BackendGuideline[] = [];
+  // guidlines: BackendGuideline[] = [];
+  // details: ReleaseDetails[] = [];
+  // releaseGuideline!: BackendGuideline;
+  // newGuidlines: BackendGuideline[] = [];
   task!: ReleaseTask;
   taskList: ReleaseTask[] = [];
   stakeholderDisplayedColumns = ['notification', 'name', 'email', 'wwid', 'role', 'actions'];
@@ -89,7 +85,7 @@ export class ReleaseEditComponent implements OnInit {
   stakeholders!: Stakeholder[];
   projectStakeholders!: Stakeholder[];
   tempProjectStakeholders!: Stakeholder[];
-  milestoneOrderCategory: any = { 'VS0': 1, 'VS1': 2, 'VSV': 3, 'POC': 4, 'Pre-Alpha': 5, 'Alpha': 6, 'Beta': 7, 'PC': 8, 'Gold': 9 };
+  // milestoneOrderCategory: any = { 'VS0': 1, 'VS1': 2, 'VSV': 3, 'POC': 4, 'Pre-Alpha': 5, 'Alpha': 6, 'Beta': 7, 'PC': 8, 'Gold': 9 };
   formVaueChanged: boolean = false;
   protexConfigList: Protex_Config[] = [];
   kwConfigList: Kw_Config[] = [];
@@ -118,6 +114,9 @@ export class ReleaseEditComponent implements OnInit {
     'Tier1', 
     'Tier3'
   ];
+  Axg:boolean=false;
+  preSiMilestone:string[]=['IPVal 0.85','IPVal 0.5/ VS0','IPVal 1/ VS1','VSV'];
+
   constructor(private formBuilder: UntypedFormBuilder, private service: ReleaseEditService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -234,14 +233,27 @@ export class ReleaseEditComponent implements OnInit {
   getMilestones() {
     this.service.getMilestones().subscribe(
       (response) => {
-        this.milestoneList = response;
-        this.createSortOrder();
+        this.milestoneList = response;        
+        this.createMilestoneDropdown(this.milestoneList);
+        this.editForm();
       },
       (err) => {
         console.log(err.name);
       }
     );
   }
+
+  // createSortOrder() {
+  //   this.milestoneList.sort((milestoneA, milestoneB) => {
+  //     if (milestoneA.milestone !== milestoneB.milestone) {
+  //       return this.milestoneOrderCategory[milestoneA.milestone] - this.milestoneOrderCategory[milestoneB.milestone];
+  //     } else {
+  //       return milestoneA.milestone - milestoneB.milestone;
+  //     }
+  //   });
+  //   this.editForm();
+  //   // this.createMilestoneDropdown();
+  // }
 
 
   getBusinessUnits() {
@@ -259,7 +271,7 @@ export class ReleaseEditComponent implements OnInit {
   createBusinessUnitDropdown() {
     if (this.businessUnitList != null) {
       for (var i = 0; i < this.businessUnitList.length; i++) {
-        this.businessUnits.push({ value: this.businessUnitList[i].name, viewValue: this.businessUnitList[i].name });
+        this.businessUnits.push(this.businessUnitList[i].name);
       }
     }
   }
@@ -285,64 +297,34 @@ export class ReleaseEditComponent implements OnInit {
     }
   }
 
-  createSortOrder() {
-    this.milestoneList.sort((milestoneA, milestoneB) => {
-      if (milestoneA.milestone !== milestoneB.milestone) {
-        return this.milestoneOrderCategory[milestoneA.milestone] - this.milestoneOrderCategory[milestoneB.milestone];
-      } else {
-        return milestoneA.milestone - milestoneB.milestone;
-      }
-    });
-    this.editForm();
-    // this.createMilestoneDropdown();
-  }
-
- 
-
-  actionBegin(args: any): void {
-    let gridInstance: any = (<any>document.getElementById('Normalgrid')).ej2_instances[0];
-    if (args.requestType === 'save') {
-      if (gridInstance.pageSettings.currentPage !== 1 && gridInstance.editSettings.newRowPosition === 'Top') {
-        args.index = (gridInstance.pageSettings.currentPage * gridInstance.pageSettings.pageSize) - gridInstance.pageSettings.pageSize;
-      } else if (gridInstance.editSettings.newRowPosition === 'Bottom') {
-        args.index = (gridInstance.pageSettings.currentPage * gridInstance.pageSettings.pageSize) - 1;
-      }
-    }
-  }
-
-  actionNoteComplete(args: any) {
-    if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
-      const dialog = args.dialog;
-      dialog.showCloseIcon = false;
-      dialog.height = 400;
-      // change the header of the dialog
-      dialog.header = args.requestType === 'beginEdit' ? 'Edit Notes' : 'Add Notes';
-    }
-    if (args.requestType === DELETE_LOWERCASE) {
-      return true;
-    }
-  }
-
-  actionContactComplete(args: any) {
-    if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
-      const dialog = args.dialog;
-      dialog.showCloseIcon = false;
-      dialog.height = 400;
-      // change the header of the dialog
-      dialog.header = args.requestType === 'beginEdit' ? 'Edit Contact' : 'Add Contact';
-    }
-    if (args.requestType === DELETE_LOWERCASE) {
-      return false;
-    }
-  }
   previousSelectedValue!: string;
+  updatedMilestone!:string;
+  updatedTier!:string;
   editForm() {
     if (this.selectedProject) {
       this.previousSelectedValue = this.selectedProject.project_release_status;
+      // alert(this.selectedProject.project_business_unit_id);
+      // alert(this.selectedProject.project_milestone_id);
+      if(this.selectedProject.project_business_unit_id === AXG_UPPERCASE){
+        if(this.preSiMilestone.some(x => this.selectedProject.project_milestone_id.includes(x))){
+          var newarr = this.selectedProject.project_milestone_id.split("-");
+          this.updatedMilestone = newarr[0];
+          this.updatedTier = newarr[1];
+          this.Axg=true;
+        }else{
+          this.Axg=false;
+          this.updatedMilestone = this.selectedProject.project_milestone_id;
+        }
+        // if(this.selectedProject.project_milestone_id.)
+      }else{
+        this.Axg=false;
+        this.updatedMilestone = this.selectedProject.project_milestone_id;
+      }
+      
       this.releaseForm.patchValue({
         name: this.selectedProject.project_name,
         releasetype: this.selectedProject.project_release_type,
-        milestone: this.selectedProject.project_milestone_id,
+        milestone: this.updatedMilestone,
         // handover:this.selectedProject.handover,
         date: this.selectedProject.project_release_date,
         // contact: this.tempRelease.contact,
@@ -359,8 +341,12 @@ export class ReleaseEditComponent implements OnInit {
         releasestatus: this.selectedProject.project_release_status,
         gradingtype: this.selectedProject.project_grading_type,
         platform: this.selectedProject.project_platform,
-        version: this.selectedProject.project_version
+        version: this.selectedProject.project_version,
+        // if(this.updatedTier){
+        tier: this.updatedTier
+        // },
       });
+      
       this.workWeek = this.selectedProject.project_release_date!.toString();
       this.isWorkWeekVisible = true;
       if (this.selectedProject.project_grading_type === INGREDIENT) {
@@ -395,10 +381,17 @@ export class ReleaseEditComponent implements OnInit {
   updateRelease() {
     this.showMsg=true;
     this.newProject = <Project>{};
+    let selectedMilestone = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
+    let selectedTier = this.releaseForm.controls[TIER_LOWERCASE].value;
+    if(selectedTier){
+      this.newProject.project_milestone_id = selectedMilestone+"-"+selectedTier;
+    }else{
+      this.newProject.project_milestone_id = selectedMilestone;
+    }
 
     this.newProject.project_name = this.releaseForm.controls[NAME_LOWERCASE].value;
     this.newProject.project_business_unit_id = this.releaseForm.controls[BUSINESS_UNIT_LOWERCASE].value;
-    this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
+    // this.newProject.project_milestone_id = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
     this.newProject.project_release_date = moment(this.releaseForm.controls[DATE_LOWERCASE].value).format(DATE_FORMAT);
     this.newProject.project_description = this.releaseForm.controls[DESCRIPTION_LOWERCASE].value;
     this.newProject.project_owner_name = this.releaseForm.controls[QUAL_OWNER_NAME].value;
@@ -417,8 +410,9 @@ export class ReleaseEditComponent implements OnInit {
     } else {
       // this.newProject.project_id = Math.floor(Math.random() * 90000) + 10000;
       this.getStaticData();
+      // this.saveProject();
     }
-    alert(this.newProject.project_grading_type);
+    // alert(this.newProject.project_grading_type);
     if (this.newProject.project_grading_type === PLATFORM && this.platformProjects.indexOf(this.newProject.project_name!) === -1) {
       this.createPlatform(this.newProject.project_name!);
     }
@@ -444,18 +438,27 @@ export class ReleaseEditComponent implements OnInit {
 
   }
 
+  releaseChecklistLookup:ReleaseChecklistLookup[]=[];
   /**
    * Get Details for Guidelines file, Getting the file based on the Project Data.
    * (Currently we are picking those file from asset folder)
    */
   getStaticData() {
+    var checklistName:string;
     this.selectedMilestone = this.releaseForm.controls[MILESTONE_LOWERCASE].value;
     this.selectedType = this.releaseForm.controls[RELEASE_TYPE_LOWERCASE].value;
     this.selectedHandoverType = this.releaseForm.controls[HANDOVER_LOWERCASE].value;
     this.selectedBusinessUnit = this.releaseForm.controls[BUSINESS_UNIT_LOWERCASE].value;
-    this.service.details(this.selectedMilestone.toLocaleLowerCase()!, this.selectedHandoverType?.toLocaleLowerCase()!, this.selectedType?.toLocaleLowerCase()!, this.selectedBusinessUnit?.toLocaleLowerCase()!).subscribe(
+    this.selectedTier = this.releaseForm.controls[TIER_LOWERCASE].value;
+    if(this.selectedBusinessUnit === AXG_UPPERCASE){
+      checklistName = this.selectedBusinessUnit.toLocaleLowerCase().replace(/\s/g, "")+"_"+this.selectedMilestone.toLocaleLowerCase().replace(/\s/g, "")+(this.selectedTier?"-"+this.selectedTier.toLocaleLowerCase().replace(/\s/g, ""):'');
+    }else{
+      checklistName = COMMON_LOWERCASE+"_"+this.selectedMilestone.toLocaleLowerCase().replace(/\s/g, "");
+    }
+    // alert("checklistName = "+checklistName);
+    this.service.getReleaseChecklist(checklistName).subscribe(
       (response) => {
-        this.details = response;
+        this.releaseChecklistLookup = response;
         this.saveProject();
       },
       (err) => {
@@ -469,7 +472,8 @@ export class ReleaseEditComponent implements OnInit {
     this.service.addProject(this.newProject).subscribe((data) => {
       project = data;
       this.showMsg=false;
-      this.createGuideLine(project);
+      // this.createGuideLine(project);
+      this.saveTask(project.project_id!);
       this.createBuFolder();
       this.createStakeholders(project);
       this.createNotificationSetting(project);
@@ -479,28 +483,28 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  createGuideLine(project: Project) {
-    this.guidlines = [];
-    for (var release of this.details!) {
-      for (var detail of release.details) {
-        this.releaseGuideline = <BackendGuideline>{};
-        this.releaseGuideline.vector_id = release.vector;
-        this.releaseGuideline.task_name = detail.detail;
-        this.releaseGuideline.task_description = detail.detail;
-        this.releaseGuideline.required_evidence = "Yes";
+  // createGuideLine(project: Project) {
+  //   this.guidlines = [];
+  //   for (var release of this.details!) {
+  //     for (var detail of release.details) {
+  //       this.releaseGuideline = <BackendGuideline>{};
+  //       this.releaseGuideline.vector_id = release.vector;
+  //       this.releaseGuideline.task_name = detail.detail;
+  //       this.releaseGuideline.task_description = detail.detail;
+  //       this.releaseGuideline.required_evidence = "Yes";
 
-        this.guidlines.push(this.releaseGuideline);
-      }
-    }
-    this.saveGuidelines(project.project_id!);
-  }
+  //       this.guidlines.push(this.releaseGuideline);
+  //     }
+  //   }
+  //   this.saveGuidelines(project.project_id!);
+  // }
 
-  saveGuidelines(id: number) {
-    this.service.addGuidelines(this.guidlines).subscribe(data => {
-      this.newGuidlines = data;
-      this.saveTask(id);
-    });
-  }
+  // saveGuidelines(id: number) {
+  //   this.service.addGuidelines(this.guidlines).subscribe(data => {
+  //     this.newGuidlines = data;
+  //     this.saveTask(id);
+  //   });
+  // }
 
   /**
    * Check folder heirarchy on server if not exist create it.
@@ -522,12 +526,12 @@ export class ReleaseEditComponent implements OnInit {
 
   saveTask(id: number) {
     this.taskList = [];
-    for (var _guideline of this.newGuidlines!) {
+    for (var checklistId of this.releaseChecklistLookup!) {
       this.task = <ReleaseTask>{};
-      this.task.guidelines_ptr_id = _guideline.id;
       this.task.owner = "";
       this.task.project_id_id = id;
-      this.task.status_id = "Open";
+      this.task.status_id = OPEN;
+      this.task.release_checklist_id = checklistId.id;
       this.taskList.push(this.task);
     }
     this.service.addTasks(this.taskList).subscribe(data => {
@@ -862,7 +866,6 @@ export class ReleaseEditComponent implements OnInit {
     let milestoneList:Milestone[]=[];
     if(selectedBusinessUnit === 'AXG'){
       milestoneList = this.milestoneList.filter(x => x.business_unit === selectedBusinessUnit);
-      // alert();
       this.createMilestoneDropdown(milestoneList);
     }else{
       this.Axg=false;
@@ -878,7 +881,7 @@ export class ReleaseEditComponent implements OnInit {
     this.milestones =[];
     if (mList != null) {
       for (var i = 0; i < mList.length; i++) {
-        this.milestones.push({ value: mList[i].milestone, viewValue: mList[i].milestone });
+        this.milestones.push(mList[i].milestone);
       }
     }
   }
@@ -890,15 +893,13 @@ export class ReleaseEditComponent implements OnInit {
     });
   }
 
-  Axg:boolean=false;
-  preSiMilestone:string[]=['IPVal 0.85','IPVal 0.5/ VS0','IPVal 1/ VS1','VSV']
+  
   selectMilestone(selectedMilestone: string){
     var bu = this.releaseForm.controls[BUSINESS_UNIT_LOWERCASE].value;
     let milestoneList:Milestone[]=[];
     if(bu === 'AXG' && this.preSiMilestone.indexOf(selectedMilestone) !== -1){
       this.Axg=true;
       // milestoneList = this.milestoneList.filter(x => x.business_unit === selectedBusinessUnit);
-      // // alert();
       // this.createMilestoneDropdown(milestoneList);
     }
     else{
@@ -908,6 +909,10 @@ export class ReleaseEditComponent implements OnInit {
       
       this.createMilestoneDropdown(milestoneList);
     }
+  }
+
+  trackByFn(index:any, item:any) {    
+    return item.id; // unique id corresponding to the item
   }
 
 }

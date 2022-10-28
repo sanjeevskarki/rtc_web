@@ -48,56 +48,56 @@
                 <div *ngIf="row.status === 'Done'" class="statustemp e-donecolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Done"
                         [(value)]="row.status">
-                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
-                            {{status.viewValue}}
+                        <mat-option *ngFor="let status of taskStatus;trackBy: trackByFn" [value]="status">
+                            {{status}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'WIP'" class="statustemp e-wipcolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="WIP"
                         [(value)]="row.status">
-                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
-                            {{status.viewValue}}
+                        <mat-option *ngFor="let status of taskStatus;trackBy: trackByFn" [value]="status">
+                            {{status}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'Open'" class="statustemp e-opencolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Open"
                         [(value)]="row.status">
-                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
-                            {{status.viewValue}}
+                        <mat-option *ngFor="let status of taskStatus;trackBy: trackByFn" [value]="status">
+                            {{status}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'N/A'" class="statustemp e-nacolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="N/A"
                         [(value)]="row.status">
-                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
-                            {{status.viewValue}}
+                        <mat-option *ngFor="let status of taskStatus;trackBy: trackByFn" [value]="status">
+                            {{status}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'Pending Exception'" class="statustemp e-opencolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Pending Exception"
                         [(value)]="row.status">
-                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
-                            {{status.viewValue}}
+                        <mat-option *ngFor="let status of taskStatus" [value]="status">
+                            {{status}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'Formal Exception Approved'" class="statustemp e-donecolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)"
                         matTooltip="Formal Exception Approved" [(value)]="row.status">
-                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
-                            {{status.viewValue}}
+                        <mat-option *ngFor="let status of taskStatus;trackBy: trackByFn" [value]="status">
+                            {{status}}
                         </mat-option>
                     </mat-select>
                 </div>
                 <div *ngIf="row.status === 'Deviation Approved'" class="statustemp e-donecolor">
                     <mat-select (selectionChange)="changeStatus(row.id,$event.value)" matTooltip="Deviation Approved"
                         [(value)]="row.status">
-                        <mat-option *ngFor="let status of taskStatus" [value]="status.value">
-                            {{status.viewValue}}
+                        <mat-option *ngFor="let status of taskStatus;trackBy: trackByFn" [value]="status">
+                            {{status}}
                         </mat-option>
                     </mat-select>
                 </div>
@@ -191,7 +191,7 @@
 <ng-template #commentDialog>
     <h1 mat-dialog-title>{{commentsHeader}}</h1> 
     <mat-list>
-        <mat-list-item *ngFor="let comment of displayComments">
+        <mat-list-item *ngFor="let comment of displayComments;trackBy: trackByFn">
             <div style="display: flex;">
             <button mat-icon-button color="primary" matTooltip="Edit Comment"
                     (click)="editSelectedComment(addCommentDialog,comment)">

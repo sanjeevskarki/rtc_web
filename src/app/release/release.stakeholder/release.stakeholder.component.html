@@ -39,12 +39,12 @@
            [matAutocomplete]="auto">
         <!-- <input type="text" matInput formControlName="role"> -->
         <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let role of filteredOptions | async" [value]="role">
+            <mat-option *ngFor="let role of filteredOptions | async;trackBy: trackByFn" [value]="role">
               {{role}}
             </mat-option>
           </mat-autocomplete>
         <!-- <mat-select formControlName="role">
-            <mat-option *ngFor="let role of roles" [value]="role.value">
+            <mat-option *ngFor="let role of roles;trackBy: trackByFn" [value]="role.value">
                 {{role.viewValue}}
             </mat-option>
         </mat-select> -->

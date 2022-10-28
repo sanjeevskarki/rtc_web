@@ -1,1 +1,36 @@
-<p>platform works!</p>
+Platform Coming Soon
+<!-- <button mat-flat-button matTooltip="Add Platform" color="primary" style="margin-left: 15px;margin-top: 15px;;" (click)="openPlatformDialog(addPlatformDialog)">
+    <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>Add Platform
+</button>
+
+<button mat-flat-button matTooltip="Delete Platform" color="primary" style="margin-left: 15px;margin-top: 15px;;" (click)="openPlatformDialog(addPlatformDialog)">
+    <mat-icon aria-label="Example icon-button with a heart icon">delete_outline</mat-icon>Delete Platform
+</button>
+<div class="container" class="container mat-elevation-z9">
+<mat-selection-list #platform>
+    <mat-list-option color="primary" *ngFor="let platform of platformList;trackBy: trackByFn" (ngModelChange)="onNgModelChange($event)">
+      {{platform.name}}
+    </mat-list-option>
+  </mat-selection-list>
+  
+</div>
+
+<ng-template #addPlatformDialog>
+    <h1 mat-dialog-title>Add Platform</h1>
+    <form class="example-form" [formGroup]="addPlatformForm">
+        <mat-form-field appearance="outline" style="display: inline;">
+            <mat-label>Name</mat-label>
+            <input type="text" matInput formControlName="name">
+            <mat-error
+                *ngIf="addPlatformForm.controls.name.hasError('required') && addPlatformForm.controls.name.touched">
+                Name is required
+            </mat-error>
+         </mat-form-field>
+
+        <br>
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 0 0;"
+            (click)="closeAddPlatformDialog()">Close</button>
+        <button mat-flat-button color="primary" style="float: right;margin: 8px 8px 0;"
+            (click)="savePlatform()" [disabled]="!addPlatformForm.valid">Save</button>
+    </form>
+</ng-template> -->

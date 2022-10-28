@@ -144,4 +144,8 @@ export class ReleaseStakeholderComponent implements OnInit {
     return this.roles.filter(option => option.toLowerCase().includes(filterValue));
   }
 
+  trackByFn(index:any, item:any) {    
+    return item.id; // unique id corresponding to the item
+  }
+
 }

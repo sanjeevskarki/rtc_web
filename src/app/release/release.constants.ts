@@ -14,6 +14,7 @@ export const PROTEX_LOWERCASE = 'protex';
 export const ROLES_LOWERCASE = 'roles';
 export const BDBA_LOWERCASE = 'bdba';
 export const KW_LOWERCASE = 'kw';
+
 export const POC_UPPER = 'POC';
 export const POC_LOWERCASE = 'poc';
 export const PRE_ALPHA = 'Pre-Alpha';
@@ -33,7 +34,7 @@ export const HANDOVER_LOWERCASE = 'handover';
 export const NAME_LOWERCASE = 'name';
 export const EMAIL_LOWERCASE = 'email';
 export const COMMENT_LOWERCASE = 'comment';
-
+export const TIER_LOWERCASE = 'tier';
 export const BUSINESS_UNIT_LOWERCASE = 'businessunit';
 export const DATE_LOWERCASE = 'date';
 export const DESCRIPTION_LOWERCASE = 'description';
@@ -59,7 +60,11 @@ export const BDBA_RESULTS_LOWERCASE = 'bdbaresult';
 export const KW_RESULTS_LOWERCASE = 'kwresult';
 export const PROTEX_RESULTS_LOWERCASE = 'protexresult';
 export const AXG_LOWERCASE = 'axg';
-
+export const AXG_UPPERCASE = 'AXG';
+export const COMMON_LOWERCASE = 'common';
+export const OPEN = 'Open';
+export const WIP_UPPERCASE = 'WIP';
+export const PENIDING_EXCEPTION = 'Pending Exception';
 
 export const ownerNotificationList: any[] = [
     { value: 'assigntask', viewValue: 'Notify owner upon assignment to a task.', checked: false },

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { TokenStorageService } from '../account/token-storage.service';
+import { OPEN, PENIDING_EXCEPTION, WIP_UPPERCASE } from '../release/release.constants';
 import { ADMIN_USER } from './home.constants';
 
 import { BackendTask, Project } from './home.models';
@@ -191,13 +192,13 @@ export class HomeComponent implements OnInit {
   getPendingTasks(){
     
     for(var task of this.backendTasks){
-      if (task.status_id === 'WIP') {
+      if (task.status_id === WIP_UPPERCASE) {
         this.wipTask++;
       }
-      if (task.status_id === 'Open') {
+      if (task.status_id === OPEN) {
         this.openTask++;
       }
-      if (task.status_id === 'Pending Exception') {
+      if (task.status_id === PENIDING_EXCEPTION) {
         this.pendingTask++;
       }
     }

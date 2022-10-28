@@ -1,3 +1,5 @@
+import { OPEN, PENIDING_EXCEPTION, WIP_UPPERCASE } from "../release/release.constants";
+
 export const FUTURE = (time: string) => `in ${time}`;
 export const PAST = (time: string) => `${time} ago`;
 export const TIMEINTERVAL = {
@@ -117,7 +119,7 @@ export const RELEASE_STATUS_UPDATED_TO_STAKEHOLDER_SUBJECT = 'RTC notification f
 export const RELEASE_STATUS_UPDATED_TO_STAKEHOLDER_BODY = (role: string, product: string, milestone: string, vector: string) => `As a ${vector} task owner of product ${product},${milestone} release, please notice that the stakeholder has been removed from the release stakeholder list`;
 
 
-export const openStatusArray:string[]=['WIP','Open','Pending Exception'];
+export const openStatusArray:string[]=[WIP_UPPERCASE,OPEN, PENIDING_EXCEPTION];
 
 export const RELEASED_LOWERCASE = 'Released';
 export const ACTIVE_LOWERCASE = 'Active';

@@ -378,4 +378,8 @@ export class EvidenceAddComponent implements OnInit {
     }
   }
 
+  trackByFn(index:any, item:any) {    
+    return item.id; // unique id corresponding to the item
+  }
+
 }

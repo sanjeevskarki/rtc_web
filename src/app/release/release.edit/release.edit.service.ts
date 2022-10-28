@@ -2,11 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BackendGuideline, Project, ReleaseDetails, ReleaseTask, ApiResponse, NotificationSetting, Platform } from '../../home/home.models';
-import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST, STAKEHOLDER_LOWERCASE, EMAIL_LOWERCASE, KW_LOWERCASE, PROTEX_LOWERCASE, BDBA_LOWERCASE, PLATFORM_LOWERCASE, AXG_LOWERCASE } from '../release.constants';
+import { Project, ReleaseDetails, ReleaseTask, ApiResponse, NotificationSetting, Platform } from '../../home/home.models';
+import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST, STAKEHOLDER_LOWERCASE, EMAIL_LOWERCASE, KW_LOWERCASE, PROTEX_LOWERCASE, BDBA_LOWERCASE, PLATFORM_LOWERCASE, AXG_LOWERCASE, CHECKLIST_LOWERCASE } from '../release.constants';
 import { BusinessUnit, Milestone } from '../release.models';
 import { Stakeholder } from 'src/app/home/home.models';
-import { Bdba_Config, Kw_Config, Protex_Config } from '../datacollection.configure/datacollection.models';
+import { Bdba_Config, Kw_Config, Protex_Config, ReleaseChecklistLookup } from '../datacollection.configure/datacollection.models';
 import { NOTIFICATION_LOWER } from 'src/app/home/home.constants';
 /**
  * Dependecy Injection.
@@ -51,7 +51,6 @@ export class ReleaseEditService {
 
   public details(milestone: string, handoverType: string, type: string, businessUnit:string ): Observable<ReleaseDetails[]> {
     var fileName;
-    alert(businessUnit);
     if(businessUnit === AXG_LOWERCASE){
       fileName = 'axg_'+milestone + ".json";
     }else{
@@ -88,10 +87,10 @@ export class ReleaseEditService {
     return this.httpClient.put<string>(this.endpoint_url + PROJECT, body, { headers: this.headers });
   }
 
-  public addGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
-    // const body=JSON.stringify(guideline);
-    return this.httpClient.post<BackendGuideline[]>(this.endpoint_url + GUIDELINE_LOWERCASE, guideline, { headers: this.headers });
-  }
+  // public addGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
+  //   // const body=JSON.stringify(guideline);
+  //   return this.httpClient.post<BackendGuideline[]>(this.endpoint_url + GUIDELINE_LOWERCASE, guideline, { headers: this.headers });
+  // }
 
   public addTasks(task: ReleaseTask[]): Observable<ReleaseTask[]> {
     // const body=JSON.stringify(task);
@@ -211,4 +210,7 @@ export class ReleaseEditService {
     return this.httpClient.post<Platform>(this.endpoint_url + PLATFORM_LOWERCASE, platform,{ headers: this.headers });
   }
  
+  public getReleaseChecklist(name: string): Observable<ReleaseChecklistLookup[]> {
+    return this.httpClient.get<ReleaseChecklistLookup[]>(this.endpoint_url + CHECKLIST_LOWERCASE + "/" + name);
+  }
 }

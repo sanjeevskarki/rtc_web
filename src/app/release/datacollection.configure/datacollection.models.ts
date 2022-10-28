@@ -35,3 +35,11 @@ export interface ServerPort {
   name: string;
   port: string;
 }
+
+export interface ReleaseChecklistLookup {
+  id: number;
+  detail: string;
+  release_criteria: string;
+  name?: string;
+  vector_name?:string;
+}

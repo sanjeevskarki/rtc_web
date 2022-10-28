@@ -4,7 +4,7 @@
     <mat-form-field appearance="outline" style="width: 22rem;margin-right: 1rem;">
         <mat-label>Select KW Server</mat-label>
         <mat-select formControlName="kw_server" (selectionChange)="selectPort($event.value)">
-            <mat-option *ngFor="let server of scanServers" [value]="server.value">
+            <mat-option *ngFor="let server of scanServers;trackBy: trackByFn" [value]="server.value">
                 {{server.viewValue}}
             </mat-option>
         </mat-select>
@@ -16,7 +16,7 @@
     <mat-form-field appearance="outline" style="width: 10rem;">
         <mat-label>Port</mat-label>
         <mat-select formControlName="port">
-            <mat-option *ngFor="let port of portList" [value]="port">
+            <mat-option *ngFor="let port of portList;trackBy: trackByFn" [value]="port">
                 {{port}}
             </mat-option>
         </mat-select>

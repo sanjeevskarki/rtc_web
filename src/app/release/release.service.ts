@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BackendGuideline, Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
+import { Project, ReleaseDetails, ReleaseTask } from '../home/home.models';
 import { Scan_Server } from './datacollection.configure/datacollection.models';
 import { TASK_LOWERCASE, BUSINESS_UNIT, MILESTONE, PROJECT, GUIDELINE_LOWERCASE, IS_FOLDER_EXIST } from './release.constants';
 import { BusinessUnit, Milestone } from './release.models';
@@ -96,14 +96,14 @@ export class ReleaseService {
     return this.httpClient.put<string>(this.endpoint_url + this.project, body, { headers: this.headers });
   }
 
-  /**
-   * Add Guideline
-   * @param guideline Backend Guideline List
-   * @returns Backend Guideline List
-   */
-  public addGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
-    return this.httpClient.post<BackendGuideline[]>(this.endpoint_url + this.guideline, guideline, { headers: this.headers });
-  }
+  // /**
+  //  * Add Guideline
+  //  * @param guideline Backend Guideline List
+  //  * @returns Backend Guideline List
+  //  */
+  // public addGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
+  //   return this.httpClient.post<BackendGuideline[]>(this.endpoint_url + this.guideline, guideline, { headers: this.headers });
+  // }
 
   /**
    * Add Task

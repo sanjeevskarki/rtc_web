@@ -1,3 +1,5 @@
+import { ReleaseChecklistLookup } from "../release/datacollection.configure/datacollection.models";
+
 export interface ReleaseShortChecklist {
   id: string;
   releaseName: string;
@@ -27,7 +29,8 @@ export interface ReleaseChecklist {
   evidences: BackendEvidences[];
   comments: BackendComments[];
   bdbaStatus?: boolean;
-  guidelineId?: number;
+  release_checklist_id:number;
+  // guidelineId?: number;
 }
 
 // export interface ViewReleaseChecklist {
@@ -169,11 +172,12 @@ export interface Notes {
 }
 
 export interface ReleaseTask {
-  guidelines_ptr_id: number;
+  id?: number;
   owner: string;
   owner_email: string;
   project_id_id: number;
   status_id: string;
+  release_checklist_id:number;
 }
 
 // export interface Guideline {
@@ -185,12 +189,13 @@ export interface ReleaseTask {
 // }
 
 export interface BackendTask {
-  guidelines_ptr_id: number;
+  id: number;
   owner: string;
   owner_email: string;
   project_id_id: string;
   status_id: string;
-  backend_guideline?: BackendGuideline;
+  release_checklist_id:number,
+  release_checklist_lookup?: ReleaseChecklistLookup;
   backend_evidences?: BackendEvidences[];
   backend_comments?: BackendComments[];
 }
@@ -208,13 +213,13 @@ export interface BackendEvidences {
   date: string;
 }
 
-export interface BackendGuideline {
-  id: number;
-  task_name: string;
-  task_description: string;
-  required_evidence: string;
-  vector_id: string;
-}
+// export interface BackendGuideline {
+//   id: number;
+//   task_name: string;
+//   task_description: string;
+//   required_evidence: string;
+//   vector_id: string;
+// }
 
 export interface ApiResponse {
   message: string;

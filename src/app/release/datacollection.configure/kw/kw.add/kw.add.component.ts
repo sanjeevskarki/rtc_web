@@ -141,15 +141,15 @@ export class KwAddComponent implements OnInit {
     if (serverName.indexOf(".intel.com") > -1 ){
       serverName = serverName.replace(".intel.com", "");
     }
-    alert(serverName);
     this.portList=[];
     this.selectedServerPort=this.serverPortList.filter(x => x.name === serverName);
     for (var i = 0; i < this.selectedServerPort.length; i++) {
       this.portList.push(this.selectedServerPort[i].port);
     }
-
-    // alert(serverName);
   }
   
+  trackByFn(index:any, item:any) {    
+    return item.id; // unique id corresponding to the item
+  }
 
 }

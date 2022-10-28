@@ -5,7 +5,7 @@ import { ATTACHMENTS_LOWERCASE, BDBA_RESULTS_LOWERCASE, EMAIL_LOWERCASE, FILE_LO
 import { environment } from 'src/environments/environment';
 import { BDBA_SCAN_FILE, BDBA_SCAN_PDF_FILE, CHECKMARX_SCAN_FILE, DATA_COLLECTION, FUTURE, KW_SCAN_FILE, NOTIFICATION_LOWER, PAST, PROJECT_LOWERCASE, PROTEX_D457_SCAN_FILE1, PROTEX_D457_SCAN_FILE2, PROTEX_META_SCAN_FILE1, PROTEX_META_SCAN_FILE2, PROTEX_SCAN_FILE, TIMEINTERVAL } from '../home.constants';
 
-import { BackendTask, BackendGuideline, ReleaseDetails, ReleaseTask, Unit, ApiResponse, BackendComments, OwnerEmail, NotificationSetting } from '../home.models';
+import { BackendTask, ReleaseDetails, ReleaseTask, Unit, ApiResponse, BackendComments, OwnerEmail, NotificationSetting } from '../home.models';
 import { Bdba, BdbaResult, Checkmarx, DataCollection, KwResults, Project, ProtexResult, TaskStatus } from './checklist.models';
 import { switchMap } from "rxjs/operators";
 
@@ -109,14 +109,14 @@ export class ChecklistService {
     return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
   }
 
-  // public getEvidences(projectId: number): Observable<BackendTask[]> {
-  //   return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
-  // }
+  // // public getEvidences(projectId: number): Observable<BackendTask[]> {
+  // //   return this.httpClient.get<BackendTask[]>(this.endpoint_url + this.task + "/" + projectId);
+  // // }
 
-  public updateGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
-    // const body=JSON.stringify(guideline);
-    return this.httpClient.put<BackendGuideline[]>(this.endpoint_url + this.guideline, guideline, { headers: this.headers });
-  }
+  // public updateGuidelines(guideline: BackendGuideline[]): Observable<BackendGuideline[]> {
+  //   // const body=JSON.stringify(guideline);
+  //   return this.httpClient.put<BackendGuideline[]>(this.endpoint_url + this.guideline, guideline, { headers: this.headers });
+  // }
 
   public updateTasks(task: ReleaseTask[]): Observable<ApiResponse> {
     // const body=JSON.stringify(task);

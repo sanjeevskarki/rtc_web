@@ -64,7 +64,7 @@ export class EvidenceAddService {
   }
 
   file: string = FILE_LOWERCASE;
-  public deleteFile(data_collection: DataCollection, fileName: string): Observable<any> {
+  public deleteFile(data_collection: DataCollection, fileName: string): Observable<ApiResponse> {
     let params = new HttpParams()
       .set('business_unit', data_collection.business_unit)
       .set('milestone_id', data_collection.milestone_id)
@@ -77,7 +77,7 @@ export class EvidenceAddService {
       params: params,
     }
 
-    return this.httpClient.delete<any>(this.baseUrl + this.file, requestOptions);
+    return this.httpClient.delete<ApiResponse>(this.baseUrl + this.file, requestOptions);
   }
 
 }

@@ -5,7 +5,7 @@
             <div>
                 <div style="margin: 0 2rem">
                     <div mat-dialog-title>Task owner Notifications </div><br>
-                    <section *ngFor="let item of ownerNotificationList">
+                    <section *ngFor="let item of ownerNotificationList;trackBy: trackByFn">
                         <mat-checkbox color="primary" [checked]="item.checked" (change)="checkOwner($event,item)">
                             {{item.viewValue}}</mat-checkbox>
                     </section>
@@ -14,7 +14,7 @@
             <div>
                 <div style="margin: 0 2rem">
                     <div mat-dialog-title>Stakeholder Notifications</div><br>
-                    <section *ngFor="let stakeholder of stakeholderNotificationList">
+                    <section *ngFor="let stakeholder of stakeholderNotificationList;trackBy: trackByFn">
                         <mat-checkbox color="primary" [checked]="stakeholder.checked"
                             (change)="checkStakeholder($event,stakeholder)">{{stakeholder.viewValue}}</mat-checkbox>
                     </section>
@@ -23,7 +23,7 @@
         </div>
         <div>
             <div mat-dialog-title>Send to Qual Owner?</div><br>
-            <section *ngFor="let item of qualOwnerNotificationList" style="padding-left: 5rem;margin-bottom: 4px;">
+            <section *ngFor="let item of qualOwnerNotificationList;trackBy: trackByFn" style="padding-left: 5rem;margin-bottom: 4px;">
                 <div *ngIf="item.value == 'addrelease_qualowner'" style="margin-bottom: 70%;"></div>
                 <mat-checkbox color="primary" [checked]="item.checked" (change)="checkQualOwner($event,item)">
                 </mat-checkbox>

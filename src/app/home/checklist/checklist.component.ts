@@ -10,7 +10,7 @@ import { BdbaResult, Checkmarx, DataCollection, Kw, KwResults, Project as Protex
 import { COMPOSITION_ANALYSIS_ISSUES, MIMETypes, openStatusArray, PROTEX_MATCHES_LICENSE_CONFLICTS, RELEASED_LOWERCASE, STATIC_ANALYSIS_ISSUE } from '../home.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ATTACHMENTS_LOWERCASE, CHECKLIST_LOWERCASE, COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE } from 'src/app/release/release.constants';
+import { ATTACHMENTS_LOWERCASE, CHECKLIST_LOWERCASE, COMMENT_LOWERCASE, EMAIL_LOWERCASE, NAME_LOWERCASE, OPEN } from 'src/app/release/release.constants';
 import { DownloadingstatusComponent } from 'src/app/downloadingstatus/downloadingstatus.component';
 import { ConfirmUploadFileComponent } from './confirm.upload.file/confirm.upload.file.component';
 import { Editor, Toolbar } from 'ngx-editor';
@@ -61,7 +61,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   selectedEvidence!: BackendEvidences;
   viewReleaseChecklist: ReleaseChecklist[] = [];
-  details: ReleaseDetails[] = [];
+  // details: ReleaseDetails[] = [];
 
   scanDate!: string;
   checkMarxIssue!: Checkmarx;
@@ -122,7 +122,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   isSaved = false;
   tempOwnerName!: string;
   tempOwnerEmail!: string;
-  public taskStatus: any[] = [];
+  public taskStatus: string[] = [];
   protexResults: ProtexResult[] = [];
   commentFormHeader!:string;
   editor!: Editor;
@@ -220,7 +220,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
   createTaskStatusDropdown() {
     if (this.taskStatusList != null) {
       for (var i = 0; i < this.taskStatusList.length; i++) {
-        this.taskStatus.push({ value: this.taskStatusList[i].status, viewValue: this.taskStatusList[i].status });
+        this.taskStatus.push(this.taskStatusList[i].status);
       }
     }
   }
@@ -266,15 +266,15 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     }else{
       fileName = this.milestone?.toLocaleLowerCase();
     }
-    let res5 = this.service.getStaticData(fileName);
+    // let res5 = this.service.getStaticData(fileName);
     // forkJoin([res1, res2, res3, res4, res5, res6]).subscribe(([data1, data2, data3, data4, data5, data6]) => {
-    forkJoin([res2, res3, res4, res5]).subscribe(([data2, data3, data4, data5]) => {
+    forkJoin([res2, res3, res4]).subscribe(([data2, data3, data4]) => {
       // this.checkMarxIssue = data1;
       this.kwResults = data2;
       this.protexResults = data3;
       // this.protexProj2 = data6;
       this.bdbaResults = data4;
-      this.details = data5;
+      // this.details = data5;
       // if (this.checkMarxIssue)
       //   this.runCheckMarxScan();
       if (this.kwResults.length > 0)
@@ -298,57 +298,61 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     this.testData = [];
     var taskList: ReleaseChecklist[] = [];
     for (var task of this.backendTasks!) {
-      var checkList: ReleaseChecklist = <ReleaseChecklist>{};
-      checkList.bdbaStatus = false;
-      checkList.id = task.guidelines_ptr_id;
-      checkList.vector = task.backend_guideline?.vector_id!;
-      checkList.details = task.backend_guideline?.task_name!;
-      checkList.owner = task.owner;
-      checkList.owner_email = task.owner_email;
-      checkList.status = task.status_id;
-      checkList.guidelineId = task.backend_guideline?.id;
-      checkList.detailedStatus = [];
-      if (checkList.details.toLowerCase().replace(/\s/g, "") === STATIC_ANALYSIS_ISSUE) {
-        checkList.detailedStatus = this.kwData.concat(this.checkmarxData);
-        // checkList.detailedStatus = this.kwData;
-        this.testData = checkList.detailedStatus;
-      }
-      if (checkList.details.toLowerCase().replace(/\s/g, "") === PROTEX_MATCHES_LICENSE_CONFLICTS) {
-        checkList.detailedStatus = this.protexData;
-        this.testData = checkList.detailedStatus;
-      }
-      if (checkList.details.toLowerCase().replace(/\s/g, "") === COMPOSITION_ANALYSIS_ISSUES) {
-        checkList.detailedStatus = this.bdbaData;
-        checkList.bdbaStatus = true;
-      }
-
-      checkList.evidences = [];
-      checkList.comments = [];
-      // checkList.comments=release.comments.sort(function(a:any,b:any): any{
-      //   return new Date(b.date).getTime() - new Date(a.date).getTime();
-      // });
-      var selectedDetail = this.details.find(x => x.vector === task.backend_guideline?.vector_id);
-
-      checkList.releaseCriteria = selectedDetail?.details.find(x => x.detail === task.backend_guideline?.task_name)?.releaseCriteria!;
-      checkList.comments = task.backend_comments!.sort((a, b) => {
-        if (b.date > a.date) {
-          return 1;
-        } else if (b.date < a.date) {
-          return -1;
-        } else {
-          return 0;
+      if(task.release_checklist_lookup) {
+        var checkList: ReleaseChecklist = <ReleaseChecklist>{};
+        checkList.bdbaStatus = false;
+        checkList.id = task.id;
+        checkList.vector = task.release_checklist_lookup?.vector_name!;
+        checkList.details = task.release_checklist_lookup?.detail!;
+        checkList.owner = task.owner;
+        checkList.owner_email = task.owner_email;
+        checkList.status = task.status_id;
+        checkList.release_checklist_id = task.release_checklist_id;
+        // checkList.guidelineId = task.backend_guideline?.id;
+        checkList.releaseCriteria = task.release_checklist_lookup?.release_criteria;
+        checkList.detailedStatus = [];
+        if (checkList.details?.toLowerCase().replace(/\s/g, "") === STATIC_ANALYSIS_ISSUE) {
+          checkList.detailedStatus = this.kwData.concat(this.checkmarxData);
+          // checkList.detailedStatus = this.kwData;
+          this.testData = checkList.detailedStatus;
         }
-      });
-      checkList.evidences = task.backend_evidences!.sort((a, b) => {
-        if (b.date > a.date) {
-          return 1;
-        } else if (b.date < a.date) {
-          return -1;
-        } else {
-          return 0;
+        if (checkList.details?.toLowerCase().replace(/\s/g, "") === PROTEX_MATCHES_LICENSE_CONFLICTS) {
+          checkList.detailedStatus = this.protexData;
+          this.testData = checkList.detailedStatus;
         }
-      });
-      taskList.push(checkList);
+        if (checkList.details?.toLowerCase().replace(/\s/g, "") === COMPOSITION_ANALYSIS_ISSUES) {
+          checkList.detailedStatus = this.bdbaData;
+          checkList.bdbaStatus = true;
+        }
+
+        checkList.evidences = [];
+        checkList.comments = [];
+        // checkList.comments=release.comments.sort(function(a:any,b:any): any{
+        //   return new Date(b.date).getTime() - new Date(a.date).getTime();
+        // });
+        // var selectedDetail = this.details.find(x => x.vector === task.backend_guideline?.vector_id);
+
+        // checkList.releaseCriteria = selectedDetail?.details.find(x => x.detail === task.backend_guideline?.task_name)?.releaseCriteria!;
+        checkList.comments = task.backend_comments!.sort((a, b) => {
+          if (b.date > a.date) {
+            return 1;
+          } else if (b.date < a.date) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        checkList.evidences = task.backend_evidences!.sort((a, b) => {
+          if (b.date > a.date) {
+            return 1;
+          } else if (b.date < a.date) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        taskList.push(checkList);
+      }
     }
     this.showSpinner = false;
     this.viewReleaseChecklist = taskList;
@@ -492,7 +496,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    */
   createCommentList(_selectedRelease: ReleaseChecklist, state: boolean) {
 
-    var selectedTask: BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == _selectedRelease.guidelineId)!;
+    var selectedTask: BackendTask = this.backendTasks.find(x => x.id == _selectedRelease.id)!;
     this.viewComments = [];
     this.displayComments = [];
     // form = new FormGroup({
@@ -556,7 +560,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     let num: number = 0;
     this.displayEvidences = [];
     this.viewEvidences = [];
-    var selectedTask: BackendTask = this.backendTasks.find(x => x.guidelines_ptr_id == _selectedRelease.guidelineId)!;
+    var selectedTask: BackendTask = this.backendTasks.find(x => x.id == _selectedRelease.id)!;
     if(selectedTask.backend_evidences != null){
     for (var evidence of selectedTask.backend_evidences) {
       num++;
@@ -676,31 +680,30 @@ export class ChecklistComponent implements OnInit, OnDestroy {
    * Create Updated Task List and Save 
    */
   saveRelease(navigate: boolean) {
+    // alert('save'+this.releaseChecklist!.length);
     this.isSaved = true;
     var newBackendTask: ReleaseTask;
-
     var newBackendTaskArray: ReleaseTask[] = [];
     for (var release of this.releaseChecklist!) {
       newBackendTask = <ReleaseTask>{};
-      newBackendTask.guidelines_ptr_id = release.id;
+      newBackendTask.id = release.id;
       newBackendTask.owner = release.owner;
       newBackendTask.owner_email = release.owner_email;
       newBackendTask.status_id = release.status!;
       newBackendTask.project_id_id = this.selectedProject.project_id!;
-
+      newBackendTask.release_checklist_id = release.release_checklist_id;
       newBackendTaskArray.push(newBackendTask);
       if (!this.isReleaseStatusCheck && this.selectedProject.project_release_status === RELEASED_LOWERCASE && openStatusArray.find((str) => str === release.status)) {
         this.isReleaseStatusCheck = true;
         this.checkReleaseStatus(newBackendTask.project_id_id, false);
       }
-
     }
     if (!this.isReleaseStatusCheck && this.selectedProject.project_release_status === RELEASED_LOWERCASE) {
       this.checkReleaseStatus(this.selectedProject.project_id!, true);
     }
 
-    this.sendEmails();
-
+    // this.sendEmails();
+    // alert("passed = "+newBackendTaskArray.length);
     this.service.updateTasks(newBackendTaskArray).subscribe((status) => {
       localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
       this.isSaved = false;
@@ -708,9 +711,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       if (navigate) {
         this.onSelection(true);
       }
-
     });
-
   }
 
   /**
@@ -1004,7 +1005,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
       case 'WIP': {
         return '#d6dbf0';
       }
-      case 'Open': {
+      case OPEN: {
         return '#FFEBE6';
       }
       case 'N/A': {
@@ -1097,7 +1098,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
   updatedComment!:BackendComments;
   createNewComment() {
-    console.log("**********"+JSON.stringify(this.addCommentForm.controls[COMMENT_LOWERCASE].value));
     if(this.selectedComment.id){
       this.selectedComment.task_id = this.selectedComment.task_id!;
       this.selectedComment.date = moment(new Date().getTime()).format();
@@ -1247,5 +1247,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     );
 
   }
+
+  trackByFn(index:any, item:any) {    
+    return item.id; // unique id corresponding to the item
+ }
 
 }

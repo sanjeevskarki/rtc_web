@@ -14,7 +14,7 @@
     <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
         <mat-select (selectionChange)="onEvidenceTypeSelect($event)" formControlName="type">
-            <mat-option *ngFor="let status of uploadTypes" [value]="status.value">
+            <mat-option *ngFor="let status of uploadTypes;trackBy: trackByFn" [value]="status.value">
                 {{status.viewValue}}
             </mat-option>
         </mat-select>

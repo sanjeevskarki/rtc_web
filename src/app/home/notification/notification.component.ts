@@ -205,4 +205,8 @@ export class NotificationComponent implements OnInit, OnDestroy {
     }
   }
 
+  trackByFn(index:any, item:any) {    
+    return item.id; // unique id corresponding to the item
+  }
+
 }
