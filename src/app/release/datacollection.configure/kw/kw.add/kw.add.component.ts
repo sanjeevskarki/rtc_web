@@ -41,9 +41,9 @@ export class KwAddComponent implements OnInit {
   patchValue(){
     if (this.data) {
       this.selectedKwConfig = this.data.data;
-      alert(this.selectedKwConfig.kw_server);
-      alert(this.selectedKwConfig.kw_project_name);
-      alert(this.selectedKwConfig.port);
+      // alert(this.selectedKwConfig.kw_server);
+      // alert(this.selectedKwConfig.kw_project_name);
+      // alert(this.selectedKwConfig.port);
       this.addKwConfigForm.patchValue({
         kw_server: this.selectedKwConfig.kw_server,
         kw_project_name: this.selectedKwConfig.kw_project_name,
@@ -131,7 +131,7 @@ export class KwAddComponent implements OnInit {
         }
         this.serverPortList.push(this.serverPort);
       }
-      alert(this.serverPortList.length);
+      // alert(this.serverPortList.length);
       this.patchValue();
     }
   }
