@@ -23,7 +23,7 @@ export class ProtexComponent implements OnInit {
   selectedProject!: Project;
   newProtexConfig!: Protex_Config;
   existingProtexConfig!: Protex_Config;
-
+  loading = false;
   constructor(public dialog: MatDialog, private service: ProtexService) { }
 
   ngOnInit(): void {
@@ -129,6 +129,7 @@ export class ProtexComponent implements OnInit {
    * @param protexConfig Selected Protex Config
    */
   deleteProtexConfig(protexConfig: Protex_Config) {
+    this.loading = true;
     const deleteProtexDialogRef = this.dialog.open(ConfirmDeleteProtexDialogComponent, {
       height: '18%',
       width: '23%',
@@ -142,6 +143,7 @@ export class ProtexComponent implements OnInit {
           this.service.deleteProtexConfig(protexConfig).subscribe(data => {
             if (data.message === SUCCESS_LOWERCASE) {
               const index = this.tempProtexConfigList.indexOf(protexConfig, 0);
+              this.loading = false;
               if (index > -1) {
                 this.tempProtexConfigList.splice(index, 1);
                 this.createProtexConfigList(this.tempProtexConfigList);

@@ -109,7 +109,7 @@
     <p>Are you sure you want to Remove <b>{{selectedDeleteRelease.project_name}} </b> ?</p>
   </div>
   <div mat-dialog-actions style="float:right;">
-      <button mat-flat-button color="primary" (click)="deleteRelease()">
+      <button mat-flat-button color="primary" (click)="deleteRelease()" [class.spinner]="loading" [disabled]="loading">
         <mat-icon>check</mat-icon>Yes</button>
       <button mat-flat-button color="primary" (click)="closeRelease()" cdkFocusInitial>
         <mat-icon>close</mat-icon>No</button>

@@ -21,6 +21,7 @@ export class BdbaComponent implements OnInit {
   bdbaConfigList: Bdba_Config[] = [];
   existingBdbaConfig!: Bdba_Config;
   selectedProject!: Project;
+  loading = false;
   constructor(public dialog: MatDialog, private service: BdbaService) { }
 
   ngOnInit(): void {
@@ -131,6 +132,7 @@ export class BdbaComponent implements OnInit {
    * @param bdbaConfig Selected BDBA Config
    */
   deleteBdbaConfig(bdbaConfig: Bdba_Config) {
+    this.loading=true;
     const deleteBdbaDialogRef = this.dialog.open(ConfirmDeleteBdbaDialogComponent, {
       height: '18%',
       width: '23%',
@@ -144,6 +146,7 @@ export class BdbaComponent implements OnInit {
             if (data.message === SUCCESS_LOWERCASE) {
               const index = this.tempBdbaConfigList.indexOf(bdbaConfig, 0);
               // alert(index)
+              this.loading=false;
               if (index > -1) {
                 this.tempBdbaConfigList.splice(index, 1);
                 this.createBdbaConfigList(this.tempBdbaConfigList);

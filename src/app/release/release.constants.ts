@@ -2,7 +2,10 @@
 export const MILESTONE = 'milestone';
 export const TASK_LOWERCASE = 'task';
 export const FILE_LOWERCASE = 'file';
+export const FILE = 'File';
 export const UPLOAD_LOWERCASE = 'upload';
+export const LINK_LOWERCASE = 'link'
+export const LINK = 'Link'
 export const IS_FOLDER_EXIST = 'isExist';
 export const GUIDELINE_LOWERCASE = 'guideline';
 export const TASK_STATUS_LOWERCASE = 'taskstatus';
@@ -14,6 +17,7 @@ export const PROTEX_LOWERCASE = 'protex';
 export const ROLES_LOWERCASE = 'roles';
 export const BDBA_LOWERCASE = 'bdba';
 export const KW_LOWERCASE = 'kw';
+export const TITLE_LOWERCASE = 'title'
 
 export const POC_UPPER = 'POC';
 export const POC_LOWERCASE = 'poc';

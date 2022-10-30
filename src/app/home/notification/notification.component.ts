@@ -61,11 +61,9 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.ownerExistingChecklist = [];
     this.stakeholderExistingChecklist = [];
     this.qualOwnerExistingChecklist = [];
-    // this.service.getNotifications(this.selectedProject.project_owner_email).subscribe((response) => {
-
+    
     this.existingNotificationSetting = JSON.parse(localStorage.getItem('notificationSettings')!);;
     if (this.existingNotificationSetting) {
-      console.log(JSON.stringify(this.existingNotificationSetting.setting));
       for (let ownerCheck of this.ownerNotificationList) {
         if (this.existingNotificationSetting.setting[ownerCheck.value]) {
           this.ownerExistingChecklist.push(ownerCheck.value);
@@ -85,8 +83,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
     } else {
       this.setDefaultChecks(this.ownerDefaultChecklist, this.stakeholderDefaultChecklist, this.qualOwnerDefaultChecklist);
     }
-
-    // });
 
   }
 
@@ -113,7 +109,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
       });
     } else {
-      this.notificationSetting.id = Math.floor(Math.random() * 90000) + 10000;
+      // this.notificationSetting.id = Math.floor(Math.random() * 90000) + 10000;
       this.service.addNotification(this.notificationSetting).subscribe(data => {
 
       });

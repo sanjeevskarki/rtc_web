@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { TokenStorageService } from '../account/token-storage.service';
-import { OPEN, PENIDING_EXCEPTION, WIP_UPPERCASE } from '../release/release.constants';
+import { OPEN, PENIDING_EXCEPTION, SUCCESS_LOWERCASE, WIP_UPPERCASE } from '../release/release.constants';
 import { ADMIN_USER } from './home.constants';
 
 import { BackendTask, Project } from './home.models';
@@ -17,7 +17,6 @@ import { HomeService } from './home.service';
 export class HomeComponent implements OnInit {
 
   projects: Project[] = [];
-  // ownerProject!:OwnerProject;
   @ViewChild("listview") element: any;
   displayedColumns = ['actions', 'businessunit', 'name', 'version','milestone', 'date', 'releasetype','releasestatus','delete'];
   color = '#f1f3f4';
@@ -34,6 +33,7 @@ export class HomeComponent implements OnInit {
   pendingTask=0;
   taskDialogRef: any;
   templateRef!:any;
+  loading = false;
   constructor(private service: HomeService, public dialog: MatDialog, private router: Router, private tokenStorage: TokenStorageService) {
 
   }
@@ -120,7 +120,6 @@ export class HomeComponent implements OnInit {
    */
   onReleaseSelect(selectedProject: Project) {
     localStorage.setItem('selectedProject', JSON.stringify(selectedProject));
-    // this.sharedChecklistService.setReleaseList(selecteditem["data"]);
     this.router.navigate(['checklist/releasecompliance']);
   }
 
@@ -145,6 +144,7 @@ export class HomeComponent implements OnInit {
   }
 
   deleteRelease(){
+    this.loading = true;
     let res2 = this.service.deleteTask(this.selectedDeleteRelease.project_id!);
     let res3 = this.service.deleteStakeholder(this.selectedDeleteRelease.project_id!);
     let res4 = this.service.deleteKwConfig(this.selectedDeleteRelease.project_id!);
@@ -160,10 +160,11 @@ export class HomeComponent implements OnInit {
   deleteProject(){
     this.service.deleteProject(this.selectedDeleteRelease.project_id!).subscribe(
       (result) => {
-        if(result.message === 'success'){
+        if(result.message === SUCCESS_LOWERCASE){
           this.getReleases();
-        }
-        this.deleteDialogRef.close();
+          this.loading = false;
+          this.deleteDialogRef.close();
+        }     
       },
       (err) => {
         console.log(err.name);
@@ -190,7 +191,6 @@ export class HomeComponent implements OnInit {
   }
 
   getPendingTasks(){
-    
     for(var task of this.backendTasks){
       if (task.status_id === WIP_UPPERCASE) {
         this.wipTask++;
@@ -208,10 +208,6 @@ export class HomeComponent implements OnInit {
       disableClose: true
     });
 
-    // this.evidenceDialogRef.afterClosed().subscribe(() => {
-    //   localStorage.setItem(CHECKLIST_LOWERCASE, JSON.stringify(this.releaseChecklist));
-    // });
-    // alert(wipTask+"------"+openTask+"-----"+pendingTask);
   }
 
   /**

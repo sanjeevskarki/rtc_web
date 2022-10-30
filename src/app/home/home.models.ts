@@ -256,7 +256,7 @@ export interface OwnerNotificationStatus {
 }
 
 export interface NotificationSetting {
-  id: number;
+  id?: number;
   qual_owner_id: string;
   setting: any;
 }

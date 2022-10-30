@@ -234,7 +234,7 @@ export class ReleaseEditComponent implements OnInit {
     this.service.getMilestones().subscribe(
       (response) => {
         this.milestoneList = response;        
-        this.createMilestoneDropdown(this.milestoneList);
+        // this.createMilestoneDropdown(this.milestoneList);
         this.editForm();
       },
       (err) => {

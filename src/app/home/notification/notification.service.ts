@@ -43,14 +43,14 @@ export class NotificationService {
     return this.httpClient.put<string>(this.endpoint_url + NOTIFICATION_LOWER, body, { headers: this.headers });
   }
 
-  public getNotifications(qualOwnerId: string): Observable<NotificationSetting> {
-    let params = new HttpParams().set('id', qualOwnerId);
-    const requestOptions: Object = {
-      reportProgress: true,
-      responseType: 'json',
-      params: params,
-    }
-    return this.httpClient.get<NotificationSetting>(this.endpoint_url + NOTIFICATION_LOWER, requestOptions);
-  }
+  // public getNotifications(qualOwnerId: string): Observable<NotificationSetting> {
+  //   let params = new HttpParams().set('id', qualOwnerId);
+  //   const requestOptions: Object = {
+  //     reportProgress: true,
+  //     responseType: 'json',
+  //     params: params,
+  //   }
+  //   return this.httpClient.get<NotificationSetting>(this.endpoint_url + NOTIFICATION_LOWER, requestOptions);
+  // }
 
 }

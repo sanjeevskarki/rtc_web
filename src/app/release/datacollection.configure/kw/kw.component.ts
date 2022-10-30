@@ -22,6 +22,7 @@ export class KwComponent implements OnInit {
   selectedProject!: Project;
 
   existingKwConfig!: Kw_Config;
+  loading = false;
   constructor(public dialog: MatDialog, private service: KwService) { }
 
   ngOnInit(): void {
@@ -101,7 +102,7 @@ export class KwComponent implements OnInit {
    */
   updateKwConfig(kwConfig: Kw_Config) {
     const dialogRef = this.dialog.open(KwAddComponent, {
-      height: '35%',
+      height: '40%',
       width: '30%',
       disableClose: true,
       data: {
@@ -131,6 +132,7 @@ export class KwComponent implements OnInit {
    * @param kwConfig Selected KW  config Object
    */
   deleteKwConfig(kwConfig: Kw_Config) {
+    this.loading = true;
     const deleteProtexDialogRef = this.dialog.open(ConfirmDeleteKwDialogComponent, {
       height: '18%',
       width: '23%',
@@ -145,6 +147,7 @@ export class KwComponent implements OnInit {
             if (data.message === SUCCESS_LOWERCASE) {
               const index = this.tempKwConfigList.indexOf(kwConfig, 0);
               // alert(index)
+              this.loading = false;
               if (index > -1) {
                 this.tempKwConfigList.splice(index, 1);
                 this.createKwConfigList(this.tempKwConfigList);
